@@ -6,7 +6,7 @@ import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
         getValue(*indeces)
 
 /*inline*/ operator fun <T> ReadOnlyNDArray<T>.get(indexArray: Any): ReadOnlyNDArray<T> =
-        getReadOnlyView(indexArray)
+        getView(indexArray)
 
 /*inline*/ operator fun <T> ReadOnlyNDArray<T>.get(indexArray: ReadOnlyIntNDArray) =
         getValue(indexArray)

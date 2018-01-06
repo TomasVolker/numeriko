@@ -7,31 +7,24 @@ import tomasvolker.numeriko.core.util.incrementIndexArray
 import tomasvolker.numeriko.core.util.indexArrayToLinearIndex
 import tomasvolker.numeriko.core.util.viewIndexArrayToLinearIndex
 
-//TODO Collapsed dimensions
-
 class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDArrayCursor {
 
     override val currentIndexes = arrayNDArrayFactory.intArray(shape = array.indexShape)
 
     private val data = array.data
 
-    private val shape: IntNDArray = array.viewShapeArray.toNDArray()
+    private val shape = array.shape
 
     private val widthArray: IntArray = dimensionWidthArray(array.shape, array.strideArray)
 
-    private var linearIndex: Int = indexArrayToLinearIndex(
-            shapeArray = array.shapeArray,
-            indexArray = array.offsetArray
-    )
+    private var linearIndex: Int = array.offset
 
-    private val lastLinearIndex: Int = indexArrayToLinearIndex(
+    private val lastLinearIndex: Int = viewIndexArrayToLinearIndex(
             shapeArray = array.shapeArray,
-            indexArray = array.offsetArray.mapIndexed { i, offset -> offset + shape[i] * array.strideArray[i] - 1 }.toIntArray()
+            indexArray = array.shapeArray.map { it - 1 }.toIntArray(),
+            offset = array.offset,
+            strideArray = array.strideArray
     )
-
-    init {
-        println("lastLinearIndex: $lastLinearIndex")
-    }
 
     override fun hasNext() = linearIndex in 0..lastLinearIndex
 
@@ -89,24 +82,20 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
 
     override fun setPosition(vararg indexArray: Int) {
         linearIndex = viewIndexArrayToLinearIndex(
-                array.shapeArray,
-                array.viewShapeArray,
-                array.offsetArray,
-                array.strideArray,
-                array.collapseArray,
-                indexArray
+                shapeArray = array.shapeArray,
+                offset = array.offset,
+                strideArray = array.strideArray,
+                indexArray = indexArray
         )
         currentIndexes.setAllInline { index ->  indexArray[index[0]] }
     }
 
     override fun setPosition(indexArray: ReadOnlyIntNDArray) {
         linearIndex = viewIndexArrayToLinearIndex(
-                array.shapeArray,
-                array.viewShapeArray,
-                array.offsetArray,
-                array.strideArray,
-                array.collapseArray,
-                indexArray.dataAsIntArray()
+                shapeArray = array.shapeArray,
+                offset = array.offset,
+                strideArray = array.strideArray,
+                indexArray = indexArray
         )
         currentIndexes.setAllInline { index ->  indexArray[index[0]] }
     }
@@ -148,7 +137,7 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
     }
 
     override fun moveToLast() {
-        setPosition(*array.viewShapeArray.map { it - 1 }.toIntArray())
+        setPosition(*array.shapeArray.map { it - 1 }.toIntArray())
     }
 
     override fun incrementBy(dimension: Int, amount: Int) {

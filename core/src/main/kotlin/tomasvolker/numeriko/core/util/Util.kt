@@ -13,7 +13,7 @@ fun computeSizeFromShape(shape: IntArray): Int {
     for (i in shape.indices) {
 
         if(shape[i] <= 0)
-            throw IllegalArgumentException("dimension $i$ size cannot be negative ${shape[i]}")
+            throw IllegalArgumentException("rank $i size cannot be non positive (${shape[i]})")
 
         result *= shape[i]
     }
@@ -56,7 +56,7 @@ internal inline fun indexArrayToLinearIndex(
         index = indexFunction(dimension)
 
         if (index < -shape || shape <= index)
-            throw IndexOutOfBoundsException("Index ${index - shape} in dimension $dimension exceeds size ${shape}")
+            throw IndexOutOfBoundsException("Index ${index - shape} in rank $dimension exceeds size ${shape}")
 
         result += ((index + shape) % shape) * factor
         factor *= shape
@@ -67,10 +67,6 @@ internal inline fun indexArrayToLinearIndex(
 }
 
 internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: IntArray): Int {
-
-    require(shapeArray.size == 1) {
-        "shapeArray dimension (${shapeArray.size}) must be 1"
-    }
 
     require(indexArray.size == shapeArray.size) {
         "indexArray (${indexArray.size}) and shapeArray (${shapeArray.size}) must have the same size"
@@ -85,11 +81,11 @@ internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: IntArray)
 internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: ReadOnlyIntNDArray): Int {
 
     require(shapeArray.size == 1) {
-        "shapeArray dimension (${shapeArray.size}) must be 1"
+        "shapeArray rank (${shapeArray.size}) must be 1"
     }
 
-    require(indexArray.dimension == shapeArray.size) {
-        "indexArray (${indexArray.dimension}) and shapeArray (${shapeArray.size}) must have the same size"
+    require(indexArray.rank == shapeArray.size) {
+        "indexArray (${indexArray.rank}) and shapeArray (${shapeArray.size}) must have the same size"
     }
 
     return indexArrayToLinearIndex(
@@ -98,9 +94,9 @@ internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: ReadOnlyI
     )
 }
 
-internal fun linearIndexToIndexArray(shapeArray: IntNDArray, linearIndex: Int): IntArray {
+internal fun linearIndexToIndexArray(shapeArray: ReadOnlyIntNDArray, linearIndex: Int): IntArray {
 
-    require(shapeArray.dimension == 1) { "shapeArray dimension must be 1" }
+    require(shapeArray.rank == 1) { "shapeArray rank must be 1" }
 
     val result = dimensionWidthArray(shapeArray)
 
@@ -166,80 +162,52 @@ inline fun incrementIndexArray(
 
 internal fun viewIndexArrayToLinearIndex(
         shapeArray: IntArray,
-        viewShapeArray: IntArray,
-        offsetArray: IntArray,
+        offset: Int,
         strideArray: IntArray,
-        collapsedArray: BooleanArray,
         indexArray: IntArray
 ): Int {
     return viewIndexArrayToLinearIndex(
             shapeArray,
-            viewShapeArray,
-            offsetArray,
+            offset,
             strideArray,
-            collapsedArray,
             { dimension -> indexArray[dimension] }
     )
 }
 
 internal fun viewIndexArrayToLinearIndex(
         shapeArray: IntArray,
-        viewShapeArray: IntArray,
-        offsetArray: IntArray,
+        offset: Int,
         strideArray: IntArray,
-        collapsedArray: BooleanArray,
         indexArray: ReadOnlyIntNDArray
 ): Int {
     return viewIndexArrayToLinearIndex(
             shapeArray,
-            viewShapeArray,
-            offsetArray,
+            offset,
             strideArray,
-            collapsedArray,
             { dimension -> indexArray[dimension] }
     )
 }
 
 private inline fun viewIndexArrayToLinearIndex(
         shapeArray: IntArray,
-        viewShapeArray: IntArray,
-        offsetArray: IntArray,
+        offset: Int,
         strideArray: IntArray,
-        collapsedArray: BooleanArray,
         indexFunction: (dimension: Int) -> Int
 ): Int {
 
-    var result = 0
-    var factor = 1
-
-    var backingIndex: Int
-    var backingShape: Int
-    var viewShape: Int
-
-    var viewDimension = 0
-
-    var currentIndex: Int
+    var result = offset
+    var shape: Int
+    var index: Int
 
     for (dimension in shapeArray.lastIndex downTo 0) {
 
-        backingShape = shapeArray[dimension]
-        viewShape = viewShapeArray[dimension]
+        index = indexFunction(dimension)
+        shape = shapeArray[dimension]
 
-        if (collapsedArray[dimension]) {
-            currentIndex = 0
-        } else {
-            currentIndex = indexFunction(viewDimension)
-            viewDimension++
-        }
+        if (index < -shape || shape <= index)
+            throw IndexOutOfBoundsException("index ${index} in dimension $dimension exceeds size ${shape}")
 
-        backingIndex = offsetArray[dimension] + strideArray[dimension] * currentIndex
-
-        //Check range including negative
-        if (backingIndex < -viewShape || backingShape <= backingIndex)
-            throw IndexOutOfBoundsException("index ${backingIndex - backingShape} in dimension $dimension exceeds size ${backingShape}")
-
-        result += ((backingIndex + viewShape) % viewShape) * factor
-        factor *= backingShape
+        result += ((index + shape) % shape) * strideArray[dimension]
     }
 
     return result

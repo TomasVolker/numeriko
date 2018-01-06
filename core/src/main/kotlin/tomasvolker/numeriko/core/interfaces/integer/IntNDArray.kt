@@ -9,7 +9,7 @@ interface ReadOnlyIntNDArray: ReadOnlyNDArray<Int> {
 
     override fun getValue(indexArray: ReadOnlyIntNDArray) = getInt(indexArray)
 
-    override fun getReadOnlyView(vararg indices: Any): ReadOnlyIntNDArray
+    override fun getView(vararg indices: Any): ReadOnlyIntNDArray
 
     override fun getValue(vararg indices: Int) = getInt(*indices)
 
@@ -26,9 +26,6 @@ interface IntNDArray: ReadOnlyIntNDArray, NDArray<Int> {
     override fun copy(): IntNDArray
 
     override fun getView(vararg indices: Any): IntNDArray
-
-    override fun getReadOnlyView(vararg indices: Any): ReadOnlyIntNDArray =
-            getView(*indices)
 
     override fun setValue(value: Int, vararg indices: Int) =
             setInt(value, *indices)
@@ -94,7 +91,7 @@ interface IntNDArray: ReadOnlyIntNDArray, NDArray<Int> {
         getInt(*indeces)
 
 /*inline*/ operator fun ReadOnlyIntNDArray.get(vararg indexArray: Any): ReadOnlyIntNDArray =
-        getReadOnlyView(*indexArray)
+        getView(*indexArray)
 
 /*inline*/ operator fun ReadOnlyIntNDArray.get(indexArray: ReadOnlyIntNDArray) =
         getInt(indexArray)

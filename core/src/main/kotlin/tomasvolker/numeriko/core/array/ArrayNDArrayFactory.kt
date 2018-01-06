@@ -38,7 +38,7 @@ class ArrayNDArrayFactory: NDArrayFactory {
 
     fun intArray(shape: ReadOnlyIntNDArray): IntArrayNDArray {
 
-        require(shape.dimension == 1) { "shape dimension must be 1" }
+        require(shape.rank == 1) { "shape rank must be 1" }
 
         val shapeArray = shape.dataAsIntArray()
 

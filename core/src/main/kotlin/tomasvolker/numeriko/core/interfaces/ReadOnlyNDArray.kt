@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces
 
 import tomasvolker.numeriko.core.array.index.All
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.util.computeSizeFromShape
 
 interface ReadOnlyNDArray<out T>: Iterable<T> {
 
@@ -9,17 +10,17 @@ interface ReadOnlyNDArray<out T>: Iterable<T> {
 
     val indexShape: ReadOnlyIntNDArray get() = shape.shape
 
-    val dimension: Int
+    val rank: Int
         get() = shape.size
 
     val size: Int
-        get() = shape.reduce { acc, value ->  acc * value }
+        get() = computeSizeFromShape(shapeAsArray())
 
     fun getValue(vararg indices:Int): T
 
     fun getValue(indexArray: ReadOnlyIntNDArray): T
 
-    fun getReadOnlyView(vararg indices:Any): ReadOnlyNDArray<T>
+    fun getView(vararg indices:Any): ReadOnlyNDArray<T>
 
     fun copy(): ReadOnlyNDArray<T>
 
@@ -29,11 +30,11 @@ interface ReadOnlyNDArray<out T>: Iterable<T> {
 
     fun lastIndex(dimension: Int) = shape[dimension] - 1
 
-    override fun iterator(): ReadOnlyNDArrayLinearCursor<out T> = linearCursor()
+    override fun iterator(): ReadOnlyNDArrayLinearCursor<T> = linearCursor()
 
-    fun linearCursor(): ReadOnlyNDArrayLinearCursor<out T>
+    fun linearCursor(): ReadOnlyNDArrayLinearCursor<T>
 
-    fun cursor(): ReadOnlyNDArrayCursor<out T>
+    fun cursor(): ReadOnlyNDArrayCursor<T>
 
     fun defaultEquals(other: Any?): Boolean {
 
@@ -75,10 +76,8 @@ interface ReadOnlyNDArray<out T>: Iterable<T> {
     fun defaultToString(newLineDimension: Int = 1): String {
 
         val builder = StringBuilder()
-
-        var first = true
-
-        if (dimension == 1) {
+        
+        if (rank == 1) {
 
             builder.append(this.joinToString(
                     separator = ", ",
@@ -92,20 +91,19 @@ interface ReadOnlyNDArray<out T>: Iterable<T> {
 
             //TODO row iterator
 
+            var first = true
+
             builder.append("[ ")
 
             for (x in 0 until this.shape[0]) {
 
                 if (!first) {
                     builder.append(", ")
-                    first = false
                 }
 
-                val indeces = Array<Any>(this.shape.size) { i ->
-                    if (i == 0) x else All
-                }
+                builder.append(this.getView(x))
 
-                builder.append(this.getReadOnlyView(*indeces))
+                first = false
             }
 
             builder.append("] ")

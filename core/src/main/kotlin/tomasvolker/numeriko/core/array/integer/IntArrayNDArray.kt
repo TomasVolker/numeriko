@@ -9,6 +9,7 @@ import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.get
 import tomasvolker.numeriko.core.util.computeSizeFromShape
+import tomasvolker.numeriko.core.util.dimensionWidthArray
 import tomasvolker.numeriko.core.util.indexArrayToLinearIndex
 
 class IntArrayNDArray(
@@ -27,65 +28,80 @@ class IntArrayNDArray(
     override val shape: ReadOnlyIntNDArray
         get() = IntArrayNDArray(
                 data = shapeArray,
-                shapeArray = intArrayOf(dimension)
+                shapeArray = intArrayOf(rank)
         )
 
     override val size: Int
         get() = data.size
 
-    override val dimension: Int
+    override val rank: Int
         get() = shapeArray.size
 
     override fun getView(vararg indices: Any): IntArrayNDArrayView {
 
-        //TODO view indices
-
-        require(indices.size == dimension) {
-            "Wrong amount of indices (${indices.size} expected $dimension)"
+        require(indices.size <= rank) {
+            "Wrong amount of indices (${indices.size} expected ${rank})"
         }
 
-        val offsetArray = IntArray(indices.size)
-        val viewShapeArray = IntArray(indices.size)
-        val strideArray = IntArray(indices.size)
-        val collapseArray = BooleanArray(indices.size)
+        val widthArray = dimensionWidthArray(shape)
 
-        for(i in indices.indices) {
+        var offset = 0
+        val shapeList = mutableListOf<Int>()
+        val strideList = mutableListOf<Int>()
 
-            var index = indices[i]
+        var currentShape: Int
+        var currentStride: Int
 
-            when(index) {
+        for (dimension in indices.indices) {
+
+            var index: Any = indices[dimension]
+
+            when (index) {
                 is AbstractIndex -> {
-                    index = index.computeValue(shape, i)
+                    index = index.computeValue(shape, dimension)
                 }
                 is IndexProgression -> {
-                    index = index.computeProgression(shape, i)
+                    index = index.computeProgression(shape, dimension)
                 }
             }
 
-            when(index) {
+            currentShape = this.shapeArray[dimension]
+            currentStride = widthArray[dimension]
+
+            when (index) {
                 is Int -> {
-                    offsetArray[i] = index
-                    viewShapeArray[i] = 1
-                    strideArray[i] = 1
-                    collapseArray[i] = true
+
+                    if (index <= -currentShape|| currentShape < index ) {
+                        throw IndexOutOfBoundsException("Index ${index} in dimension ${dimension} is out of bounds")
+                    }
+
+                    offset += ((index + currentShape) % currentShape) * currentStride
                 }
                 is IntProgression -> {
-                    offsetArray[i] = index.first
-                    viewShapeArray[i] = index.count()
-                    strideArray[i] = index.step
+
+                    //TODO check out of range
+
+                    offset += index.first * currentStride
+                    shapeList.add(index.count())
+                    strideList.add(index.step * currentStride)
                 }
-                else -> throw IllegalArgumentException("Index $i is not an Int, IntProgression, AbstractIndex or IndexProgression")
+                else -> throw IllegalArgumentException("Index $index is not an Int, IntRange, AbstractIndex or IndexProgression")
             }
+
+        }
+
+        for (dimension in indices.size until rank) {
+
+            shapeList.add(this.shapeArray[dimension])
+            strideList.add(widthArray[dimension])
 
         }
 
         return IntArrayNDArrayView(
                 data = data,
-                shapeArray = shapeArray.copyOf(),
-                offsetArray = offsetArray,
-                strideArray = strideArray,
-                collapseArray = collapseArray,
-                viewShapeArray = viewShapeArray
+                offset = offset,
+                shapeArray = shapeList.toIntArray(),
+                strideArray = strideList.toIntArray()
         )
     }
 
@@ -109,21 +125,6 @@ class IntArrayNDArray(
 
     override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) {
         this[indices].setAll { value[it] }
-    }
-
-    override fun collapse(dimension: Int) {
-
-        if (shapeArray[dimension] == 1) {
-            //TODO Optimize
-            val indexList = shapeArray.indices.toMutableList()
-            indexList.removeAt(dimension)
-            shapeArray = shapeArray.sliceArray(indexList)
-        }
-
-    }
-
-    override fun collapseAll() {
-        shapeArray = shapeArray.filter { it == 1 }.toIntArray()
     }
 
     override fun copy() = IntArrayNDArray(data.copyOf(), shapeArray.copyOf())
