@@ -31,7 +31,7 @@ class DoubleComplexTest {
 
         val sin3 = (E.pow(J * x) - E.pow(-J * x)) / 2.j
 
-        assert(sin1 almostEqual sin1) {
+        assert(sin1 almostEqual sin2) {
             "sin(x) is not approximately to (exp(J * x) - exp(-J * x)) / (2 * J)"
         }
 

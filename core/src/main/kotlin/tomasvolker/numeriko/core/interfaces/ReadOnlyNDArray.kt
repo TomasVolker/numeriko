@@ -1,20 +1,70 @@
 package tomasvolker.numeriko.core.interfaces
 
-import tomasvolker.numeriko.core.array.index.All
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 
-interface ReadOnlyNDArray<out T>: Iterable<T> {
+/**
+ * Basic interface for a read-only N dimensional generic array. Note that read-only does not
+ * imply immutability (in fact the mutable NDArray interface inherits from this one). This
+ * follows Kotlin's Collection and MutableCollection design pattern.
+ */
+interface ReadOnlyNDArray<out T>: Collection<T> {
 
+    /**
+     * Shape of the NDArray as a one dimensional ReadOnlyNDArray. An empty shape indicates
+     * an NDArray of rank 0, which is equivalent to a scalar. The array contains the lengths
+     * of the diferent dimensions, which are always non-negative (may be zero).
+     */
     val shape: ReadOnlyIntNDArray
 
+    /**
+     * Shape of an index NDArray. This is equal to the shape of the shape.
+     */
     val indexShape: ReadOnlyIntNDArray get() = shape.shape
 
+    /**
+     * Rank of the NDArray, which is the size of the shape.
+     */
     val rank: Int
         get() = shape.size
 
-    val size: Int
+    /**
+     * Size of the NDArray. Indicates the amount of elements it stores. It is the product
+     * of the length in all dimensions. For a rank 0 array the size is 1.
+     */
+    override val size: Int
         get() = computeSizeFromShape(shapeAsArray())
+
+    /**
+     * Indicates if the array is empty, in other words, if the size is zero.
+     */
+    override fun isEmpty(): Boolean = size == 0
+
+    /**
+     *
+     */
+    override fun contains(element:@UnsafeVariance T): Boolean {
+
+        for (item in this) {
+
+            if (item == element)
+                return true
+
+        }
+        return false
+    }
+
+    override fun containsAll(elements: Collection<@UnsafeVariance T>): Boolean {
+
+        for (element in elements) {
+
+            if(!contains(element))
+                return false
+
+        }
+
+        return true
+    }
 
     fun getValue(vararg indices:Int): T
 
