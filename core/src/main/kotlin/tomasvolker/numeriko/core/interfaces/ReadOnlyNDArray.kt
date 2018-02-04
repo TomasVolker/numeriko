@@ -84,7 +84,7 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
     fun getValue(indexArray: ReadOnlyIntNDArray): T
 
     /**
-     * Getter function for a view on the given indices. The indices array must contain objects of class Int,
+     * Getter function for a view on the given indices. The indices array must contain objects of class Int, IntRange,
      * AbstractIndex or IndexProgression.
      */
     fun getView(vararg indices:Any): ReadOnlyNDArray<T>

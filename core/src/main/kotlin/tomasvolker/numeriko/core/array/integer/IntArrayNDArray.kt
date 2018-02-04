@@ -40,7 +40,7 @@ class IntArrayNDArray(
     override fun getView(vararg indices: Any): IntArrayNDArrayView {
 
         require(indices.size <= rank) {
-            "Wrong amount of indices (${indices.size} expected ${rank})"
+            "Too many indices (${indices.size}, must be less or equal than ${rank})"
         }
 
         val widthArray = dimensionWidthArray(shape)
