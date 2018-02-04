@@ -126,7 +126,7 @@ inline fun <T> setAll(shape: ReadOnlyIntNDArray, data: Array<Any?>, setter: (ind
 
 }
 
-inline fun incrementIndexArray(
+fun incrementIndexArray(
         shape: ReadOnlyIntNDArray,
         indexArray: IntNDArray,
         dimension: Int = indexArray.lastIndex(0),

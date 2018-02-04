@@ -1,14 +1,7 @@
 import org.junit.Test
 import tomasvolker.numeriko.core.array.arrayNDArrayFactory
-import tomasvolker.numeriko.core.array.index.All
-import tomasvolker.numeriko.core.array.index.Last
-import tomasvolker.numeriko.core.array.integer.toNDArray
-import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.get
-import tomasvolker.numeriko.core.interfaces.integer.set
-import tomasvolker.numeriko.core.util.indexArrayToLinearIndex
-import tomasvolker.numeriko.core.util.linearIndexToIndexArray
 
 class NDArrayTest {
 

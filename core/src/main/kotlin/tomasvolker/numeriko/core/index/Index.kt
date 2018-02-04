@@ -1,4 +1,4 @@
-package tomasvolker.numeriko.core.array.index
+package tomasvolker.numeriko.core.index
 
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.get
@@ -76,8 +76,7 @@ class IndexFunction2(val lhs: AbstractIndex, val rhs: AbstractIndex, val functio
             function(lhs.computeValue(shape, dimension), rhs.computeValue(shape, dimension))
 }
 
-inline fun AbstractIndex.map(noinline function: (index: Int) -> Int) =
-        IndexFunction(this, function)
+fun AbstractIndex.map(function: (index: Int) -> Int) = IndexFunction(this, function)
 
 operator fun Int.plus(index: AbstractIndex) = index.map { this + it }
 operator fun Int.minus(index: AbstractIndex) = index.map { this - it }

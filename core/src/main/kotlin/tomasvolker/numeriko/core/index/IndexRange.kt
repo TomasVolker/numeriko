@@ -1,4 +1,4 @@
-package tomasvolker.numeriko.core.array.index
+package tomasvolker.numeriko.core.index
 
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 

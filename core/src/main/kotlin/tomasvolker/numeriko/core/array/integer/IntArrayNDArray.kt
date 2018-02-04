@@ -1,10 +1,8 @@
 package tomasvolker.numeriko.core.array.integer
 
-import tomasvolker.numeriko.core.array.index.AbstractIndex
-import tomasvolker.numeriko.core.array.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.NDArray
-import tomasvolker.numeriko.core.interfaces.ReadOnlyNDArray
-import tomasvolker.numeriko.core.interfaces.get
+import tomasvolker.numeriko.core.index.AbstractIndex
+import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.*
 import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.get
@@ -19,8 +17,10 @@ class IntArrayNDArray(
 
     init {
 
-        require(data.size == computeSizeFromShape(shapeArray)) {
-            "data size (${data.size}) does not match shape size (${computeSizeFromShape(shapeArray)})"
+        val requiredSize = computeSizeFromShape(shapeArray)
+
+        require(data.size == requiredSize) {
+            "data size (${data.size}) does not match shape size ($requiredSize)"
         }
 
     }
@@ -141,8 +141,7 @@ class IntArrayNDArray(
                 return other.data.contentEquals(this.data) &&
                         other.shapeArray.contentEquals(other.shapeArray)
             }
-            is NDArray<*> -> return defaultEquals(other)
-            else -> return false
+            else -> return defaultEquals(other)
         }
     }
 

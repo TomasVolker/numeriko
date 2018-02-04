@@ -2,31 +2,31 @@ package tomasvolker.numeriko.core.interfaces
 
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 
-/*inline*/ operator fun <T> ReadOnlyNDArray<T>.get(vararg indeces: Int) =
+operator fun <T> ReadOnlyNDArray<T>.get(vararg indeces: Int) =
         getValue(*indeces)
 
-/*inline*/ operator fun <T> ReadOnlyNDArray<T>.get(indexArray: Any): ReadOnlyNDArray<T> =
+operator fun <T> ReadOnlyNDArray<T>.get(indexArray: Any): ReadOnlyNDArray<T> =
         getView(indexArray)
 
-/*inline*/ operator fun <T> ReadOnlyNDArray<T>.get(indexArray: ReadOnlyIntNDArray) =
+operator fun <T> ReadOnlyNDArray<T>.get(indexArray: ReadOnlyIntNDArray) =
         getValue(indexArray)
 
-/*inline*/ operator fun <T> NDArray<T>.get(vararg indeces: Int) =
+operator fun <T> NDArray<T>.get(vararg indeces: Int) =
         getValue(*indeces)
 
-/*inline*/ operator fun <T> NDArray<T>.get(indexArray: ReadOnlyIntNDArray) =
+operator fun <T> NDArray<T>.get(indexArray: ReadOnlyIntNDArray) =
         getValue(indexArray)
 
-/*inline*/ operator fun <T> NDArray<T>.get(indexArray: Any): NDArray<T> =
+operator fun <T> NDArray<T>.get(indexArray: Any): NDArray<T> =
         getView(indexArray)
 
-/*inline*/ operator fun <T> NDArray<T>.set(vararg indeces: Int, value: T) =
+operator fun <T> NDArray<T>.set(vararg indeces: Int, value: T) =
         setValue(value, *indeces)
 
-/*inline*/ operator fun <T> NDArray<T>.set(vararg indeces: Any, valueArray: ReadOnlyNDArray<T>) =
+operator fun <T> NDArray<T>.set(vararg indeces: Any, valueArray: ReadOnlyNDArray<T>) =
         setValue(valueArray, *indeces)
 
-/*inline*/ operator fun <T> NDArray<T>.set(indexArray: ReadOnlyIntNDArray, value: T) =
+operator fun <T> NDArray<T>.set(indexArray: ReadOnlyIntNDArray, value: T) =
         setValue(value, indexArray)
 
 

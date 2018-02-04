@@ -41,7 +41,7 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
     override fun isEmpty(): Boolean = size == 0
 
     /**
-     *
+     * Indicates if the array contains the given element.
      */
     override fun contains(element:@UnsafeVariance T): Boolean {
 
@@ -54,6 +54,9 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
         return false
     }
 
+    /**
+     * Indicates if the array contains all the given elements.
+     */
     override fun containsAll(elements: Collection<@UnsafeVariance T>): Boolean {
 
         for (element in elements) {
@@ -66,101 +69,146 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
         return true
     }
 
+    /**
+     * Getter function of the item on the given indices. If there is not the right amount of indices an
+     * IllegalArgumentException will be thrown. This the generic getter, to about boxing on primitive types the
+     * corresponding getter should be used (e.g. getInt)
+     */
     fun getValue(vararg indices:Int): T
 
+    /**
+     * Getter function of the item on the given indices. If the indexArray has not the right shape an
+     * IllegalArgumentException will be thrown. This the generic getter, to about boxing on primitive types the
+     * corresponding getter should be used (e.g. getInt)
+     */
     fun getValue(indexArray: ReadOnlyIntNDArray): T
 
+    /**
+     * Getter function for a view on the given indices. The indices array must contain objects of class Int,
+     * AbstractIndex or IndexProgression.
+     */
     fun getView(vararg indices:Any): ReadOnlyNDArray<T>
 
+    /**
+     * Copies the array using the same implementation.
+     */
     fun copy(): ReadOnlyNDArray<T>
 
+    /**
+     * Returns the data as a JVM array on row mayor order. The array return will be the backing array when possible so
+     * it should only be read, not written.
+     */
     fun dataAsArray(): Array<out T>
 
+    /**
+     * Returns the shape as a JVM array. The array return will be the backing array when possible so
+     * it should only be read, not written.
+     */
     fun shapeAsArray(): IntArray
 
+    /**
+     * Computes the last index on the given dimension.
+     */
     fun lastIndex(dimension: Int) = shape[dimension] - 1
 
+    /**
+     * Returns an iterator which traverses the array in row mayor order, also providing functionality to move on
+     * different dimensions.
+     */
     override fun iterator(): ReadOnlyNDArrayLinearCursor<T> = linearCursor()
 
+    /**
+     * Returns a linear iterator which traverses the array in row mayor order.
+     */
     fun linearCursor(): ReadOnlyNDArrayLinearCursor<T>
 
+    /**
+     * Returns a cursor which traverses the array in row mayor order, also providing functionality to move on
+     * different dimensions.
+     */
     fun cursor(): ReadOnlyNDArrayCursor<T>
 
-    fun defaultEquals(other: Any?): Boolean {
+}
 
-        when(other) {
-            is NDArray<*> -> {
+fun <T> ReadOnlyNDArray<T>.defaultEquals(other: Any?): Boolean {
 
-                if (other.shape != this.shape) {
+    when(other) {
+        is NDArray<*> -> {
+
+            if (other.rank == 1 && this.rank == 1) {
+
+                if (other.shape[0] != this.shape[0]) {
                     return false
                 }
 
-                val thisIterator = iterator()
-                val otherIterator = other.iterator()
-
-                while (thisIterator.hasNext()) {
-                    if (thisIterator.next() != otherIterator.next())
-                        return false
-                }
-
-                return true
-            }
-            else -> return false
-        }
-
-    }
-
-    fun defaultHashCode(): Int {
-
-        val shapeHash = shape.reduce { acc, value->  31 * acc + value.hashCode()}
-
-        var dataHash = 0
-
-        forEach {
-            dataHash = 31 * dataHash + (it?.hashCode() ?: 0)
-        }
-
-        return 31 * shapeHash + dataHash
-    }
-
-    fun defaultToString(newLineDimension: Int = 1): String {
-
-        val builder = StringBuilder()
-        
-        if (rank == 1) {
-
-            builder.append(this.joinToString(
-                    separator = ", ",
-                    prefix = "[ ",
-                    postfix = "] ",
-                    limit = 100,
-                    truncated = "... "
-            ))
-
-        } else {
-
-            //TODO row iterator
-
-            var first = true
-
-            builder.append("[ ")
-
-            for (x in 0 until this.shape[0]) {
-
-                if (!first) {
-                    builder.append(", ")
-                }
-
-                builder.append(this.getView(x))
-
-                first = false
+            } else if (other.shape != this.shape) {
+                return false
             }
 
-            builder.append("] ")
+            val thisIterator = this.iterator()
+            val otherIterator = other.iterator()
 
+            while (thisIterator.hasNext()) {
+                if (thisIterator.next() != otherIterator.next())
+                    return false
+            }
+
+            return true
         }
-
-        return builder.toString()
+        else -> return false
     }
 
+}
+
+fun <T> ReadOnlyNDArray<T>.defaultHashCode(): Int {
+
+    val shapeHash = shape.reduce { acc, value->  31 * acc + value.hashCode()}
+
+    var dataHash = 0
+
+    forEach {
+        dataHash = 31 * dataHash + (it?.hashCode() ?: 0)
+    }
+
+    return 31 * shapeHash + dataHash
+}
+
+fun <T> ReadOnlyNDArray<T>.defaultToString(newLineDimension: Int = 1): String {
+
+    val builder = StringBuilder()
+
+    if (rank == 1) {
+
+        builder.append(this.joinToString(
+                separator = ", ",
+                prefix = "[ ",
+                postfix = "] ",
+                limit = 100,
+                truncated = "... "
+        ))
+
+    } else {
+
+        //TODO row iterator
+
+        var first = true
+
+        builder.append("[ ")
+
+        for (x in 0 until this.shape[0]) {
+
+            if (!first) {
+                builder.append(", ")
+            }
+
+            builder.append(this.getView(x))
+
+            first = false
+        }
+
+        builder.append("] ")
+
+    }
+
+    return builder.toString()
 }

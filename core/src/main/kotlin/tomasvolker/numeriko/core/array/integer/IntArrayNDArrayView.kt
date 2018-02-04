@@ -1,8 +1,11 @@
 package tomasvolker.numeriko.core.array.integer
 
-import tomasvolker.numeriko.core.array.index.AbstractIndex
-import tomasvolker.numeriko.core.array.index.IndexProgression
+import tomasvolker.numeriko.core.index.AbstractIndex
+import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.ReadOnlyNDArray
+import tomasvolker.numeriko.core.interfaces.defaultEquals
+import tomasvolker.numeriko.core.interfaces.defaultHashCode
+import tomasvolker.numeriko.core.interfaces.defaultToString
 import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.util.computeSizeFromShape
