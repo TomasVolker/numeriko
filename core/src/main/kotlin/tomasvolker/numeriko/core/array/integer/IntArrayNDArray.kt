@@ -49,9 +49,6 @@ class IntArrayNDArray(
         val shapeList = mutableListOf<Int>()
         val strideList = mutableListOf<Int>()
 
-        var currentShape: Int
-        var currentStride: Int
-
         for (dimension in indices.indices) {
 
             var index: Any = indices[dimension]
@@ -65,8 +62,8 @@ class IntArrayNDArray(
                 }
             }
 
-            currentShape = this.shapeArray[dimension]
-            currentStride = widthArray[dimension]
+            val currentShape = this.shapeArray[dimension]
+            val currentStride = widthArray[dimension]
 
             when (index) {
                 is Int -> {

@@ -173,42 +173,38 @@ fun <T> ReadOnlyNDArray<T>.defaultHashCode(): Int {
     return 31 * shapeHash + dataHash
 }
 
-fun <T> ReadOnlyNDArray<T>.defaultToString(newLineDimension: Int = 1): String {
+fun <T> ReadOnlyNDArray<T>.defaultToString(newLineDimension: Int = 1): String =
+        buildString { appendArray(this@defaultToString) }
 
-    val builder = StringBuilder()
 
-    if (rank == 1) {
+fun <T> StringBuilder.appendArray(array: ReadOnlyNDArray<T>) {
 
-        builder.append(this.joinToString(
-                separator = ", ",
-                prefix = "[ ",
-                postfix = "] ",
-                limit = 100,
-                truncated = "... "
-        ))
+    when (array.rank) {
 
-    } else {
-
-        //TODO row iterator
-
-        var first = true
-
-        builder.append("[ ")
-
-        for (x in 0 until this.shape[0]) {
-
-            if (!first) {
-                builder.append(", ")
-            }
-
-            builder.append(this.getView(x))
-
-            first = false
+        0 -> {
+            append(array.get())
         }
 
-        builder.append("] ")
+        else -> {
 
+            //TODO row iterator
+
+            var first = true
+
+            append("[ ")
+
+            for (x in 0 until array.shape[0]) {
+
+                if (!first) append(", ")
+
+                appendArray(array.getView(x))
+
+                first = false
+            }
+
+            append("] ")
+
+        }
     }
 
-    return builder.toString()
 }

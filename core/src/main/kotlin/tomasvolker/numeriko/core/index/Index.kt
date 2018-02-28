@@ -8,10 +8,10 @@ interface AbstractIndex {
     fun computeValue(shape: ReadOnlyIntNDArray, dimension: Int): Int
 
     operator fun plus(other: Int): AbstractIndex =
-            IndexFunction(this) { it - other }
+            IndexFunction(this) { it + other }
 
     operator fun minus(other: Int): AbstractIndex =
-            IndexFunction(this) { it + other }
+            IndexFunction(this) { it - other }
 
     operator fun times(other: Int): AbstractIndex =
             IndexFunction(this) { it * other }

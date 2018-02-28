@@ -12,8 +12,9 @@ fun computeSizeFromShape(shape: IntArray): Int {
 
     for (i in shape.indices) {
 
-        if(shape[i] <= 0)
-            throw IllegalArgumentException("rank $i size cannot be non positive (${shape[i]})")
+        require(shape[i] > 0) {
+            "dimension $i size must be positive (${shape[i]})"
+        }
 
         result *= shape[i]
     }
@@ -30,7 +31,7 @@ internal fun dimensionWidthArray(
 
     var factor = 1
 
-    for (dimension in result.lastIndex downTo 0) {
+    for (dimension in result.indices.reversed()) {
         result[dimension] = factor * strideArray[dimension]
         factor *= shapeArray[dimension]
     }
@@ -49,7 +50,7 @@ internal inline fun indexArrayToLinearIndex(
     var index: Int
     var shape: Int
 
-    for (dimension in shapeArray.lastIndex downTo 0) {
+    for (dimension in shapeArray.indices.reversed()) {
 
         shape = shapeArray[dimension]
 
