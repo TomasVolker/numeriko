@@ -21,7 +21,7 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
 
     private val lastLinearIndex: Int = viewIndexArrayToLinearIndex(
             shapeArray = array.shapeArray,
-            indexArray = array.shapeArray.map { it - 1 }.toIntArray(),
+            indexArray = IntArray(array.rank) { -1 },
             offset = array.offset,
             strideArray = array.strideArray
     )
@@ -29,6 +29,7 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
     override fun hasNext() = linearIndex in 0..lastLinearIndex
 
     override fun nextInt(): Int {
+        TODO()
         val result = data[linearIndex]
         linearIndex += widthArray.last()
         incrementIndexArray(shape, currentIndexes)
@@ -152,10 +153,10 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
 
     override fun cursorInBounds(): Boolean {
 
-        for (i in 0 until currentIndexes.size) {
+        for (i in currentIndexes.indices) {
             val index = currentIndexes[i]
 
-            if (index < 0 || shape[i] <= index)
+            if (index !in 0 until index)
                 return false
 
         }

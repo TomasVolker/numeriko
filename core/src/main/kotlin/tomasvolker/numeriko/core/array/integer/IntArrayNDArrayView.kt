@@ -104,7 +104,7 @@ class IntArrayNDArrayView internal constructor(
             when (index) {
                 is Int -> {
 
-                    if (index <= -currentShape|| currentShape < index ) {
+                    if (index < -currentShape|| currentShape <= index ) {
                         throw IndexOutOfBoundsException("Index ${index} in dimension ${dimension} is out of bounds")
                     }
 
@@ -165,16 +165,23 @@ class IntArrayNDArrayView internal constructor(
         )] = value
     }
 
-    override fun copy() = IntArrayNDArrayView(
-            data = data,
-            offset = offset,
-            shapeArray = shapeArray.copyOf(),
-            strideArray = strideArray.copyOf()
+    override fun copy() = IntArrayNDArray(
+            data = dataAsIntArray(),
+            shapeArray = shapeArray.copyOf()
     )
 
-    override fun dataAsArray() = TODO("")
+    override fun dataAsArray(): Array<Int> = dataAsIntArray().toTypedArray()
 
-    override fun dataAsIntArray() = TODO("")
+    override fun dataAsIntArray(): IntArray {
+        val result = IntArray(size)
+
+        for ((i, x) in this.withIndex()) {
+            println(" ($i - $x) ")
+            result[i] = x
+        }
+
+        return result
+    }
 
     override fun shapeAsArray() = shapeArray.copyOf()
 

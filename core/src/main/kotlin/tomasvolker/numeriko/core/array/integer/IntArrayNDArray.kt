@@ -68,7 +68,7 @@ class IntArrayNDArray(
             when (index) {
                 is Int -> {
 
-                    if (index <= -currentShape|| currentShape < index ) {
+                    if (index < -currentShape|| currentShape <= index ) {
                         throw IndexOutOfBoundsException("Index ${index} in dimension ${dimension} is out of bounds")
                     }
 

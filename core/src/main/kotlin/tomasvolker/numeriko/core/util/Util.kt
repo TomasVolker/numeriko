@@ -57,7 +57,7 @@ internal inline fun indexArrayToLinearIndex(
         index = indexFunction(dimension)
 
         if (index < -shape || shape <= index)
-            throw IndexOutOfBoundsException("Index ${index - shape} in rank $dimension exceeds size ${shape}")
+            throw IndexOutOfBoundsException("Index ${index} in rank $dimension exceeds size ${shape}")
 
         result += ((index + shape) % shape) * factor
         factor *= shape
