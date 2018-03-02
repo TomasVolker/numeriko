@@ -1,10 +1,10 @@
 package tomasvolker.numeriko.core.interfaces
 
-import tomasvolker.numeriko.core.array.ArrayNDArrayFactory
+import tomasvolker.numeriko.core.array.JvmNDArrayFactory
 import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 
-val currentFactory: NDArrayFactory = ArrayNDArrayFactory()
+val currentFactory: NDArrayFactory = JvmNDArrayFactory()
 
 fun zerosInt(vararg shape: Int) =
         currentFactory.zerosInt(*shape)

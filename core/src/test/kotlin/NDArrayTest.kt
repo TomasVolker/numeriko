@@ -1,5 +1,5 @@
 import org.junit.Test
-import tomasvolker.numeriko.core.array.arrayNDArrayFactory
+import tomasvolker.numeriko.core.array.jvmNDArrayFactory
 import tomasvolker.numeriko.core.debug.DebugArrays
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Last
@@ -13,7 +13,7 @@ class NDArrayTest {
     @Test
     fun printIntNDArray() {
 
-        val array: ReadOnlyIntNDArray = arrayNDArrayFactory.array(2, 2, 2) {
+        val array: ReadOnlyIntNDArray = jvmNDArrayFactory.array(2, 2, 2) {
             it[0] + it[1] + it[2]
         }
 

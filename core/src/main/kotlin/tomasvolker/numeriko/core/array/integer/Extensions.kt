@@ -1,34 +1,34 @@
 package tomasvolker.numeriko.core.array.integer
 
-import tomasvolker.numeriko.core.array.arrayNDArrayFactory
+import tomasvolker.numeriko.core.array.jvmNDArrayFactory
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.get
 import tomasvolker.numeriko.core.interfaces.integer.set
 
-fun IntArray.wrapNDArray(vararg shape: Int = intArrayOf(this.size)) = IntArrayNDArray(
+fun IntArray.wrapNDArray(vararg shape: Int = intArrayOf(this.size)) = JvmIntNDArray(
         data = this,
         shapeArray = shape
 )
 
-fun IntArray.toNDArray(vararg shape: Int = intArrayOf(this.size)) = IntArrayNDArray(
+fun IntArray.toNDArray(vararg shape: Int = intArrayOf(this.size)) = JvmIntNDArray(
         data = this.copyOf(),
         shapeArray = shape
 )
 
-fun IntArray.wrapNDArray(shape: ReadOnlyIntNDArray) = IntArrayNDArray(
+fun IntArray.wrapNDArray(shape: ReadOnlyIntNDArray) = JvmIntNDArray(
         data = this,
         shapeArray = shape.dataAsIntArray()
 )
 
-fun IntArray.toNDArray(shape: ReadOnlyIntNDArray) = IntArrayNDArray(
+fun IntArray.toNDArray(shape: ReadOnlyIntNDArray) = JvmIntNDArray(
         data = this.copyOf(),
         shapeArray = shape.dataAsIntArray()
 )
 
 
-/*inline*/ fun IntArrayNDArray.setAllInline(setter: (indexArray: ReadOnlyIntNDArray) -> Int) {
+/*inline*/ fun JvmIntNDArray.setAllInline(setter: (indexArray: ReadOnlyIntNDArray) -> Int) {
 
-    val indexArray = arrayNDArrayFactory.zerosInt(this.indexShape)
+    val indexArray = jvmNDArrayFactory.zerosInt(this.indexShape)
 
     var dimensionIndex: Int
 
@@ -51,7 +51,7 @@ fun IntArray.toNDArray(shape: ReadOnlyIntNDArray) = IntArrayNDArray(
 
 }
 
-inline fun IntArrayNDArray.applyElementWiseInline(function: (value: Int) -> Int): IntArrayNDArray {
+inline fun JvmIntNDArray.applyElementWiseInline(function: (value: Int) -> Int): JvmIntNDArray {
 
     val result = IntArray(data.size)
 
@@ -59,11 +59,11 @@ inline fun IntArrayNDArray.applyElementWiseInline(function: (value: Int) -> Int)
         result[i] = function(data[i])
     }
 
-    return IntArrayNDArray(shapeAsArray(), result)
+    return JvmIntNDArray(shapeAsArray(), result)
 }
 
 /*
-inline fun <reified T> IntArrayNDArray.applyElementWiseInline(function: (value: Int) -> T): ArrayNDArray<T> {
+inline fun <reified T> JvmIntNDArray.applyElementWiseInline(function: (value: Int) -> T): ArrayNDArray<T> {
 
     val result = ArrayNDArray<T?>(shape) { null }
 
@@ -75,9 +75,9 @@ inline fun <reified T> IntArrayNDArray.applyElementWiseInline(function: (value: 
 }
 */
 
-inline fun IntArrayNDArray.binaryElementWiseInline(other: IntArrayNDArray, function: (lhs: Int, rhs: Int) -> Int): IntArrayNDArray {
+inline fun JvmIntNDArray.binaryElementWiseInline(other: JvmIntNDArray, function: (lhs: Int, rhs: Int) -> Int): JvmIntNDArray {
 
-    val result = arrayNDArrayFactory.zerosInt(shape)
+    val result = jvmNDArrayFactory.zerosInt(shape)
 
     for (i in data.indices) {
         result.data[i] = function(data[i], other.data[i])

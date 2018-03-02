@@ -113,7 +113,7 @@ internal fun linearIndexToIndexArray(shapeArray: ReadOnlyIntNDArray, linearIndex
 /*
 inline fun <T> setAll(shape: ReadOnlyIntNDArray, data: Array<Any?>, setter: (indexArray: ReadOnlyIntNDArray) -> T) {
 
-    val indexArray = arrayNDArrayFactory.intArray(shape.shape)
+    val indexArray = jvmNDArrayFactory.intArray(shape.shape)
 
     for (i in data.indices) {
 
@@ -222,7 +222,7 @@ private inline fun viewIndexArrayToLinearIndex(
 
 }
 
-inline fun checkRange(dimension: Int, size: Int, index: Int) {
+fun checkRange(dimension: Int, size: Int, index: Int) {
     if (index !in -size until size)/*index < -shape || shape <= index*/
         throw IndexOutOfBoundsException("index ${index} in dimension $dimension exceeds size ${size}")
 }

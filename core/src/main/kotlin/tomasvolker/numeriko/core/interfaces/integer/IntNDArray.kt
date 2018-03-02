@@ -91,33 +91,33 @@ interface IntNDArray: ReadOnlyIntNDArray, NDArray<Int> {
     */
 }
 
-/*inline*/ fun ReadOnlyIntNDArray.get(): Int = getInt()
+fun ReadOnlyIntNDArray.get(): Int = getInt()
 
-/*inline*/ operator fun ReadOnlyIntNDArray.get(vararg indexes: Int): Int =
+operator fun ReadOnlyIntNDArray.get(vararg indexes: Int): Int =
         getInt(*indexes)
 
-/*inline*/ operator fun ReadOnlyIntNDArray.get(vararg indexArray: Any): ReadOnlyIntNDArray =
+operator fun ReadOnlyIntNDArray.get(vararg indexArray: Any): ReadOnlyIntNDArray =
         getView(*indexArray)
 
-/*inline*/ operator fun ReadOnlyIntNDArray.get(indexArray: ReadOnlyIntNDArray): Int =
+operator fun ReadOnlyIntNDArray.get(indexArray: ReadOnlyIntNDArray): Int =
         getInt(indexArray)
 
-/*inline*/ operator fun IntNDArray.get(vararg indexes: Int): Int =
+operator fun IntNDArray.get(vararg indexes: Int): Int =
         getInt(*indexes)
 
-/*inline*/ operator fun IntNDArray.get(indexArray: ReadOnlyIntNDArray): Int =
+operator fun IntNDArray.get(indexArray: ReadOnlyIntNDArray): Int =
         getInt(indexArray)
 
-/*inline*/ operator fun IntNDArray.get(vararg indexArray: Any): IntNDArray =
+operator fun IntNDArray.get(vararg indexArray: Any): IntNDArray =
         getView(*indexArray)
 
-/*inline*/ fun IntNDArray.get(): Int = getInt()
+fun IntNDArray.get(): Int = getInt()
 
-/*inline*/ operator fun IntNDArray.set(vararg indexes: Int, value: Int) =
+operator fun IntNDArray.set(vararg indexes: Int, value: Int) =
         setInt(value, *indexes)
 
-/*inline*/ operator fun IntNDArray.set(vararg indexes: Any, valueArray: ReadOnlyIntNDArray) =
+operator fun IntNDArray.set(vararg indexes: Any, valueArray: ReadOnlyIntNDArray) =
         setInt(valueArray, *indexes)
 
-/*inline*/ operator fun IntNDArray.set(indexArray: ReadOnlyIntNDArray, value: Int) =
+operator fun IntNDArray.set(indexArray: ReadOnlyIntNDArray, value: Int) =
         setInt(value, indexArray)

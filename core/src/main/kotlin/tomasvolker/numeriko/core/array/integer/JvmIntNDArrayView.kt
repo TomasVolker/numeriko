@@ -12,7 +12,7 @@ import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 import tomasvolker.numeriko.core.util.viewIndexArrayToLinearIndex
 
-class IntArrayNDArrayView internal constructor(
+class JvmIntNDArrayView internal constructor(
         internal val data: IntArray,
         internal val offset: Int,
         internal val shapeArray: IntArray,
@@ -52,7 +52,7 @@ class IntArrayNDArrayView internal constructor(
     override val size: Int = computeSizeFromShape(shapeArray)
 
     override val shape: ReadOnlyIntNDArray
-        get() = IntArrayNDArray(
+        get() = JvmIntNDArray(
                 data = shapeArray,
                 shapeArray = intArrayOf(rank)
         )
@@ -73,7 +73,7 @@ class IntArrayNDArrayView internal constructor(
                     indexArray = indexArray
             )]
 
-    override fun getView(vararg indices: Any): IntArrayNDArrayView {
+    override fun getView(vararg indices: Any): JvmIntNDArrayView {
 
         require(indices.size <= rank) {
             "Wrong amount of indices (${indices.size} expected ${rank})"
@@ -127,7 +127,7 @@ class IntArrayNDArrayView internal constructor(
 
         }
 
-        return IntArrayNDArrayView(
+        return JvmIntNDArrayView(
                 data = data,
                 offset = offset,
                 shapeArray = shapeList.toIntArray(),
@@ -160,7 +160,7 @@ class IntArrayNDArrayView internal constructor(
         )] = value
     }
 
-    override fun copy() = IntArrayNDArray(
+    override fun copy() = JvmIntNDArray(
             data = dataAsIntArray(),
             shapeArray = shapeArray.copyOf()
     )
@@ -179,9 +179,9 @@ class IntArrayNDArrayView internal constructor(
 
     override fun shapeAsArray() = shapeArray.copyOf()
 
-    override fun linearCursor() = IntArrayNDArrayViewCursor(this)
+    override fun linearCursor() = JvmIntNDArrayViewCursor(this)
 
-    override fun cursor() = IntArrayNDArrayViewCursor(this)
+    override fun cursor() = JvmIntNDArrayViewCursor(this)
 
     override fun toString() = defaultToString()
 

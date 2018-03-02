@@ -5,13 +5,12 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.*
 import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
-import tomasvolker.numeriko.core.interfaces.integer.get
 import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 import tomasvolker.numeriko.core.util.dimensionWidthArray
 import tomasvolker.numeriko.core.util.indexArrayToLinearIndex
 
-class IntArrayNDArray(
+class JvmIntNDArray(
         val data: IntArray,
         internal var shapeArray: IntArray
 ) : IntNDArray {
@@ -27,7 +26,7 @@ class IntArrayNDArray(
     }
 
     override val shape: ReadOnlyIntNDArray
-        get() = IntArrayNDArray(
+        get() = JvmIntNDArray(
                 data = shapeArray,
                 shapeArray = intArrayOf(rank)
         )
@@ -38,7 +37,7 @@ class IntArrayNDArray(
     override val rank: Int
         get() = shapeArray.size
 
-    override fun getView(vararg indices: Any): IntArrayNDArrayView {
+    override fun getView(vararg indices: Any): JvmIntNDArrayView {
 
         require(indices.size <= rank) {
             "Too many indices (${indices.size}, must be less or equal than ${rank})"
@@ -93,7 +92,7 @@ class IntArrayNDArray(
 
         }
 
-        return IntArrayNDArrayView(
+        return JvmIntNDArrayView(
                 data = data,
                 offset = offset,
                 shapeArray = shapeList.toIntArray(),
@@ -121,7 +120,7 @@ class IntArrayNDArray(
     override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) =
             getView(*indices).setAll { value.getValue(it) }
 
-    override fun copy() = IntArrayNDArray(data.copyOf(), shapeArray.copyOf())
+    override fun copy() = JvmIntNDArray(data.copyOf(), shapeArray.copyOf())
 
     override fun dataAsArray() = data.toTypedArray()
 
@@ -131,7 +130,7 @@ class IntArrayNDArray(
 
     override fun equals(other: Any?): Boolean {
         when(other) {
-            is IntArrayNDArray -> {
+            is JvmIntNDArray -> {
                 return other.data.contentEquals(this.data) &&
                         other.shapeArray.contentEquals(other.shapeArray)
             }
@@ -139,9 +138,9 @@ class IntArrayNDArray(
         }
     }
 
-    override fun linearCursor() = IntArrayNDArrayLinearCursor(this)
+    override fun linearCursor() = JvmIntNDArrayLinearCursor(this)
 
-    override fun cursor() = IntArrayNDArrayCursor(this)
+    override fun cursor() = JvmIntNDArrayCursor(this)
 
     override fun hashCode() =
            31 * shapeArray.reduce { acc, i ->  31 * acc + i.hashCode()} +

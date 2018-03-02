@@ -1,18 +1,17 @@
 package tomasvolker.numeriko.core.array
 
-import tomasvolker.numeriko.core.array.integer.IntArrayNDArray
+import tomasvolker.numeriko.core.array.integer.JvmIntNDArray
 import tomasvolker.numeriko.core.array.integer.setAllInline
 import tomasvolker.numeriko.core.interfaces.NDArrayFactory
-import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 
-val arrayNDArrayFactory = ArrayNDArrayFactory()
+val jvmNDArrayFactory = JvmNDArrayFactory()
 
-class ArrayNDArrayFactory: NDArrayFactory {
+class JvmNDArrayFactory: NDArrayFactory {
 
-    override fun array(vararg shape: Int, value: (index: ReadOnlyIntNDArray) -> Int): IntArrayNDArray {
-        val result = IntArrayNDArray(
+    override fun array(vararg shape: Int, value: (index: ReadOnlyIntNDArray) -> Int): JvmIntNDArray {
+        val result = JvmIntNDArray(
                 data = allocateIntData(shape),
                 shapeArray = shape
         )
@@ -20,9 +19,9 @@ class ArrayNDArrayFactory: NDArrayFactory {
         return result
     }
 
-    override fun array(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray) -> Int): IntArrayNDArray {
+    override fun array(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray) -> Int): JvmIntNDArray {
         val shapeArray = shape.dataAsIntArray()
-        val result = IntArrayNDArray(
+        val result = JvmIntNDArray(
                 data = allocateIntData(shapeArray),
                 shapeArray = shapeArray
         )
@@ -30,13 +29,13 @@ class ArrayNDArrayFactory: NDArrayFactory {
         return result
     }
 
-    override fun zerosInt(vararg shape: Int): IntArrayNDArray =
-            IntArrayNDArray(
+    override fun zerosInt(vararg shape: Int): JvmIntNDArray =
+            JvmIntNDArray(
                     data = allocateIntData(shape),
                     shapeArray = shape
             )
 
-    override fun zerosInt(shape: ReadOnlyIntNDArray): IntArrayNDArray =
+    override fun zerosInt(shape: ReadOnlyIntNDArray): JvmIntNDArray =
             zerosInt(*shape.dataAsIntArray())
 
 
