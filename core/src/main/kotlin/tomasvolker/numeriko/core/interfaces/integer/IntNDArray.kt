@@ -3,28 +3,6 @@ package tomasvolker.numeriko.core.interfaces.integer
 import tomasvolker.numeriko.core.interfaces.NDArray
 import tomasvolker.numeriko.core.interfaces.ReadOnlyNDArray
 
-interface ReadOnlyIntNDArray: ReadOnlyNDArray<Int> {
-
-    override fun copy(): ReadOnlyIntNDArray
-
-    override fun getValue(indexArray: ReadOnlyIntNDArray) = getInt(indexArray)
-
-    override fun getView(vararg indices: Any): ReadOnlyIntNDArray
-
-    override fun getValue(vararg indices: Int) = getInt(*indices)
-
-    fun getInt(vararg indices:Int): Int
-
-    fun getInt(indexArray: ReadOnlyIntNDArray): Int
-
-    fun dataAsIntArray(): IntArray = dataAsArray().toIntArray()
-
-    infix fun equals(other: Int): Boolean {
-        return rank == 0 && getInt() == other
-    }
-
-}
-
 interface IntNDArray: ReadOnlyIntNDArray, NDArray<Int> {
 
     override fun copy(): IntNDArray
@@ -90,34 +68,3 @@ interface IntNDArray: ReadOnlyIntNDArray, NDArray<Int> {
     operator fun div(other: Double): DoubleNDArray
     */
 }
-
-fun ReadOnlyIntNDArray.get(): Int = getInt()
-
-operator fun ReadOnlyIntNDArray.get(vararg indexes: Int): Int =
-        getInt(*indexes)
-
-operator fun ReadOnlyIntNDArray.get(vararg indexArray: Any): ReadOnlyIntNDArray =
-        getView(*indexArray)
-
-operator fun ReadOnlyIntNDArray.get(indexArray: ReadOnlyIntNDArray): Int =
-        getInt(indexArray)
-
-operator fun IntNDArray.get(vararg indexes: Int): Int =
-        getInt(*indexes)
-
-operator fun IntNDArray.get(indexArray: ReadOnlyIntNDArray): Int =
-        getInt(indexArray)
-
-operator fun IntNDArray.get(vararg indexArray: Any): IntNDArray =
-        getView(*indexArray)
-
-fun IntNDArray.get(): Int = getInt()
-
-operator fun IntNDArray.set(vararg indexes: Int, value: Int) =
-        setInt(value, *indexes)
-
-operator fun IntNDArray.set(vararg indexes: Any, valueArray: ReadOnlyIntNDArray) =
-        setInt(valueArray, *indexes)
-
-operator fun IntNDArray.set(indexArray: ReadOnlyIntNDArray, value: Int) =
-        setInt(value, indexArray)

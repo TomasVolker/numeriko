@@ -128,6 +128,16 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
      */
     fun cursor(): ReadOnlyNDArrayCursor<T>
 
+    operator fun component1(): T = getValue(0)
+
+    operator fun component2(): T = getValue(1)
+
+    operator fun component3(): T = getValue(2)
+
+    operator fun component4(): T = getValue(3)
+
+    operator fun component5(): T = getValue(4)
+
 }
 
 fun <T> ReadOnlyNDArray<T>.defaultEquals(other: Any?): Boolean {
