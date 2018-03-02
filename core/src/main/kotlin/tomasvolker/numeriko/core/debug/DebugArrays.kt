@@ -7,7 +7,7 @@ object DebugArrays {
 
     fun debugIntArray(vararg shape: Int): IntNDArray {
         var aux = 0
-        return arrayNDArrayFactory.intArray(*shape) { aux++ }
+        return arrayNDArrayFactory.array(*shape) { aux++ }
 
     }
 

@@ -14,3 +14,6 @@ Roadmap:
 - Supporting different types (Generic, Int, Float, Double)
 - Basic operations (map, reduce, +, -, *, /)
 
+```kotlin
+
+```

@@ -13,7 +13,7 @@ class NDArrayTest {
     @Test
     fun printIntNDArray() {
 
-        val array: ReadOnlyIntNDArray = arrayNDArrayFactory.intArray(2, 2, 2) {
+        val array: ReadOnlyIntNDArray = arrayNDArrayFactory.array(2, 2, 2) {
             it[0] + it[1] + it[2]
         }
 

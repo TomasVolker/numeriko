@@ -58,7 +58,7 @@ class IntArrayNDArrayLinearCursor(override val array: IntArrayNDArray): IntNDArr
 
 class IntArrayNDArrayCursor(override val array: IntArrayNDArray): IntNDArrayCursor {
 
-    override val currentIndexes = arrayNDArrayFactory.intArray(array.indexShape)
+    override val currentIndexes = arrayNDArrayFactory.zerosInt(array.indexShape)
 
     private val data = array.data
 

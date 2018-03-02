@@ -28,7 +28,7 @@ fun IntArray.toNDArray(shape: ReadOnlyIntNDArray) = IntArrayNDArray(
 
 /*inline*/ fun IntArrayNDArray.setAllInline(setter: (indexArray: ReadOnlyIntNDArray) -> Int) {
 
-    val indexArray = arrayNDArrayFactory.intArray(this.indexShape)
+    val indexArray = arrayNDArrayFactory.zerosInt(this.indexShape)
 
     var dimensionIndex: Int
 
@@ -77,7 +77,7 @@ inline fun <reified T> IntArrayNDArray.applyElementWiseInline(function: (value: 
 
 inline fun IntArrayNDArray.binaryElementWiseInline(other: IntArrayNDArray, function: (lhs: Int, rhs: Int) -> Int): IntArrayNDArray {
 
-    val result = arrayNDArrayFactory.intArray(shape)
+    val result = arrayNDArrayFactory.zerosInt(shape)
 
     for (i in data.indices) {
         result.data[i] = function(data[i], other.data[i])
