@@ -1,6 +1,5 @@
 package tomasvolker.numeriko.core.util
 
-import tomasvolker.numeriko.core.array.arrayNDArrayFactory
 import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.get
@@ -48,19 +47,18 @@ internal inline fun indexArrayToLinearIndex(
     var factor = 1
 
     var index: Int
-    var shape: Int
+    var currentSize: Int
 
     for (dimension in shapeArray.indices.reversed()) {
 
-        shape = shapeArray[dimension]
+        currentSize = shapeArray[dimension]
 
         index = indexFunction(dimension)
 
-        if (index < -shape || shape <= index)
-            throw IndexOutOfBoundsException("Index ${index} in rank $dimension exceeds size ${shape}")
+        checkRange(dimension, currentSize, index)
 
-        result += ((index + shape) % shape) * factor
-        factor *= shape
+        result += ((index + currentSize) % currentSize) * factor
+        factor *= currentSize
     }
 
     return result
@@ -112,7 +110,7 @@ internal fun linearIndexToIndexArray(shapeArray: ReadOnlyIntNDArray, linearIndex
 
     return result
 }
-
+/*
 inline fun <T> setAll(shape: ReadOnlyIntNDArray, data: Array<Any?>, setter: (indexArray: ReadOnlyIntNDArray) -> T) {
 
     val indexArray = arrayNDArrayFactory.intArray(shape.shape)
@@ -126,9 +124,9 @@ inline fun <T> setAll(shape: ReadOnlyIntNDArray, data: Array<Any?>, setter: (ind
     }
 
 }
-
+*/
 fun incrementIndexArray(
-        shape: ReadOnlyIntNDArray,
+        shape: IntArray,
         indexArray: IntNDArray,
         dimension: Int = indexArray.lastIndex(0),
         amount: Int = 1) {
@@ -159,19 +157,26 @@ fun incrementIndexArray(
         }
     }
 
+    // Overflow
+    if (carry != 0) {
+        indexArray[0] += carry * shape[0]
+    }
+
 }
 
 internal fun viewIndexArrayToLinearIndex(
         shapeArray: IntArray,
         offset: Int,
         strideArray: IntArray,
-        indexArray: IntArray
+        indexArray: IntArray,
+        checkRange: Boolean = true
 ): Int {
     return viewIndexArrayToLinearIndex(
             shapeArray,
             offset,
             strideArray,
-            { dimension -> indexArray[dimension] }
+            { dimension -> indexArray[dimension] },
+            checkRange
     )
 }
 
@@ -179,13 +184,15 @@ internal fun viewIndexArrayToLinearIndex(
         shapeArray: IntArray,
         offset: Int,
         strideArray: IntArray,
-        indexArray: ReadOnlyIntNDArray
+        indexArray: ReadOnlyIntNDArray,
+        checkRange: Boolean = true
 ): Int {
     return viewIndexArrayToLinearIndex(
             shapeArray,
             offset,
             strideArray,
-            { dimension -> indexArray[dimension] }
+            { dimension -> indexArray[dimension] },
+            checkRange
     )
 }
 
@@ -193,24 +200,29 @@ private inline fun viewIndexArrayToLinearIndex(
         shapeArray: IntArray,
         offset: Int,
         strideArray: IntArray,
-        indexFunction: (dimension: Int) -> Int
+        indexFunction: (dimension: Int) -> Int,
+        checkRange: Boolean = true
 ): Int {
 
     var result = offset
-    var shape: Int
+    var size: Int
     var index: Int
 
     for (dimension in shapeArray.lastIndex downTo 0) {
 
         index = indexFunction(dimension)
-        shape = shapeArray[dimension]
+        size = shapeArray[dimension]
 
-        if (index < -shape || shape <= index)
-            throw IndexOutOfBoundsException("index ${index} in dimension $dimension exceeds size ${shape}")
+        if (checkRange) checkRange(dimension, size, index)
 
-        result += ((index + shape) % shape) * strideArray[dimension]
+        result += ((index + size) % size) * strideArray[dimension]
     }
 
     return result
 
+}
+
+inline fun checkRange(dimension: Int, size: Int, index: Int) {
+    if (index !in -size until size)/*index < -shape || shape <= index*/
+        throw IndexOutOfBoundsException("index ${index} in dimension $dimension exceeds size ${size}")
 }

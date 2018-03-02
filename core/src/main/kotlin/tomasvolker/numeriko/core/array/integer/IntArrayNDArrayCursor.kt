@@ -62,7 +62,7 @@ class IntArrayNDArrayCursor(override val array: IntArrayNDArray): IntNDArrayCurs
 
     private val data = array.data
 
-    private val shape = array.shape
+    private val shape = array.shapeArray
 
     private val widthArray: IntArray = dimensionWidthArray(array.shape)
 
@@ -166,7 +166,7 @@ class IntArrayNDArrayCursor(override val array: IntArrayNDArray): IntNDArrayCurs
 
     override fun moveToLast() {
         linearIndex = data.lastIndex
-        currentIndexes.setAllInline { shape[it] - 1 }
+        currentIndexes.setAllInline { shape[it[0]] - 1 }
     }
 
     override fun incrementBy(dimension: Int, amount: Int) {

@@ -8,6 +8,7 @@ import tomasvolker.numeriko.core.interfaces.defaultHashCode
 import tomasvolker.numeriko.core.interfaces.defaultToString
 import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 import tomasvolker.numeriko.core.util.viewIndexArrayToLinearIndex
 
@@ -82,7 +83,7 @@ class IntArrayNDArrayView internal constructor(
         val shapeList = mutableListOf<Int>()
         val strideList = mutableListOf<Int>()
 
-        var currentShape: Int
+        var currentSize: Int
         var currentStride: Int
 
         for (dimension in indices.indices) {
@@ -98,17 +99,13 @@ class IntArrayNDArrayView internal constructor(
                 }
             }
 
-            currentShape = this.shapeArray[dimension]
+            currentSize = this.shapeArray[dimension]
             currentStride = this.strideArray[dimension]
 
             when (index) {
                 is Int -> {
-
-                    if (index < -currentShape|| currentShape <= index ) {
-                        throw IndexOutOfBoundsException("Index ${index} in dimension ${dimension} is out of bounds")
-                    }
-
-                    offset += ((index + currentShape) % currentShape) * currentStride
+                    checkRange(dimension, currentSize, index)
+                    offset += ((index + currentSize) % currentSize) * currentStride
                 }
                 is IntProgression -> {
 
@@ -176,7 +173,6 @@ class IntArrayNDArrayView internal constructor(
         val result = IntArray(size)
 
         for ((i, x) in this.withIndex()) {
-            println(" ($i - $x) ")
             result[i] = x
         }
 

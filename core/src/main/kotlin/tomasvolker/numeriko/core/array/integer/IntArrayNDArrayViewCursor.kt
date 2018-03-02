@@ -9,11 +9,11 @@ import tomasvolker.numeriko.core.util.viewIndexArrayToLinearIndex
 
 class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDArrayCursor {
 
-    override val currentIndexes = arrayNDArrayFactory.intArray(shape = array.indexShape)
+    override val currentIndexes = arrayNDArrayFactory.zerosInt(shape = array.indexShape)
 
     private val data = array.data
 
-    private val shape = array.shape
+    private val shape = array.shapeArray
 
     private val widthArray: IntArray = dimensionWidthArray(array.shape, array.strideArray)
 
@@ -26,13 +26,11 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
             strideArray = array.strideArray
     )
 
-    override fun hasNext() = linearIndex in 0..lastLinearIndex
+    override fun hasNext() = cursorInBounds()
 
     override fun nextInt(): Int {
-        TODO()
         val result = data[linearIndex]
-        linearIndex += widthArray.last()
-        incrementIndexArray(shape, currentIndexes)
+        increment()
         return result
     }
 
@@ -45,8 +43,7 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
 
     override fun previousInt(): Int {
         val result = data[linearIndex]
-        currentIndexes[-1] -= widthArray.last()
-        incrementIndexArray(shape, currentIndexes, amount = -1)
+        decrement()
         return result
     }
 
@@ -59,8 +56,7 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
 
     override fun setNextInt(value: Int) {
         data[linearIndex] = value
-        linearIndex += widthArray.last()
-        incrementIndexArray(shape, currentIndexes)
+        increment()
     }
 
     override fun setNextInt(value: Int, dimension: Int) {
@@ -71,8 +67,7 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
 
     override fun setPreviousInt(value: Int) {
         data[linearIndex] = value
-        linearIndex -= widthArray.last()
-        incrementIndexArray(shape, currentIndexes, amount = -1)
+        decrement()
     }
 
     override fun setPreviousInt(value: Int, dimension: Int) {
@@ -108,13 +103,25 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
     }
 
     override fun increment() {
-        linearIndex += widthArray.last()
         incrementIndexArray(shape, currentIndexes)
+        linearIndex = viewIndexArrayToLinearIndex(
+                shapeArray = shape,
+                offset = array.offset,
+                strideArray = array.strideArray,
+                indexArray = currentIndexes,
+                checkRange = false
+        )
     }
 
     override fun decrement() {
-        linearIndex -= widthArray.last()
         incrementIndexArray(shape, currentIndexes, amount = -1)
+        linearIndex = viewIndexArrayToLinearIndex(
+                shapeArray = shape,
+                offset = array.offset,
+                strideArray = array.strideArray,
+                indexArray = currentIndexes,
+                checkRange = false
+        )
     }
 
     override fun increment(dimension: Int) {
@@ -128,17 +135,17 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
     }
 
     override fun incrementBy(amount: Int) {
-        linearIndex += amount * widthArray.last()
         incrementIndexArray(shape, currentIndexes, amount = amount)
+        linearIndex = viewIndexArrayToLinearIndex(shape, array.offset, array.strideArray, currentIndexes)
     }
 
     override fun decrementBy(amount: Int) {
-        linearIndex -= amount * widthArray.last()
         incrementIndexArray(shape, currentIndexes, amount = amount)
+        linearIndex = viewIndexArrayToLinearIndex(shape, array.offset, array.strideArray, currentIndexes)
     }
 
     override fun moveToLast() {
-        setPosition(*array.shapeArray.map { it - 1 }.toIntArray())
+        setPosition(*IntArray(array.rank) { -1 })
     }
 
     override fun incrementBy(dimension: Int, amount: Int) {
@@ -156,7 +163,7 @@ class IntArrayNDArrayViewCursor(override val array: IntArrayNDArrayView): IntNDA
         for (i in currentIndexes.indices) {
             val index = currentIndexes[i]
 
-            if (index !in 0 until index)
+            if (index !in 0 until shape[i])
                 return false
 
         }

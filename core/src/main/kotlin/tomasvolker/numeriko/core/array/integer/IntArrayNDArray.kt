@@ -6,6 +6,7 @@ import tomasvolker.numeriko.core.interfaces.*
 import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.get
+import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 import tomasvolker.numeriko.core.util.dimensionWidthArray
 import tomasvolker.numeriko.core.util.indexArrayToLinearIndex
@@ -62,17 +63,15 @@ class IntArrayNDArray(
                 }
             }
 
-            val currentShape = this.shapeArray[dimension]
+            val currentSize = this.shapeArray[dimension]
             val currentStride = widthArray[dimension]
 
             when (index) {
                 is Int -> {
 
-                    if (index < -currentShape|| currentShape <= index ) {
-                        throw IndexOutOfBoundsException("Index ${index} in dimension ${dimension} is out of bounds")
-                    }
+                    checkRange(dimension, currentSize, index)
 
-                    offset += ((index + currentShape) % currentShape) * currentStride
+                    offset += ((index + currentSize) % currentSize) * currentStride
                 }
                 is IntProgression -> {
 
