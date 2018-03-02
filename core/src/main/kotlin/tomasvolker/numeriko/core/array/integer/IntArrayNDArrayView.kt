@@ -145,13 +145,11 @@ class IntArrayNDArrayView internal constructor(
         )] = value
     }
 
-    override fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) {
-        TODO()
-    }
+    override fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) =
+            getView(*indices).setAll { value.getInt(it) }
 
-    override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) {
-        TODO("not implemented")
-    }
+    override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) =
+            getView(*indices).setAll { value.getValue(it) }
 
     override fun setInt(value: Int, indexArray: ReadOnlyIntNDArray) {
         data[viewIndexArrayToLinearIndex(

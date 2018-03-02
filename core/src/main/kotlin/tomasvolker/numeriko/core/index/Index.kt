@@ -61,6 +61,8 @@ open class Index(val value: Int): AbstractIndex {
 
 }
 
+object First: Index(0)
+
 object Last: AbstractIndex {
     override fun computeValue(shape: ReadOnlyIntNDArray, dimension: Int): Int =
             shape[dimension] - 1

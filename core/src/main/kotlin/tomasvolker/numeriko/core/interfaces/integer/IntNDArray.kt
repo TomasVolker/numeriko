@@ -19,6 +19,10 @@ interface ReadOnlyIntNDArray: ReadOnlyNDArray<Int> {
 
     fun dataAsIntArray(): IntArray = dataAsArray().toIntArray()
 
+    infix fun equals(other: Int): Boolean {
+        return rank == 0 && getInt() == other
+    }
+
 }
 
 interface IntNDArray: ReadOnlyIntNDArray, NDArray<Int> {

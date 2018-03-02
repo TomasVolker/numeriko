@@ -68,7 +68,7 @@ internal inline fun indexArrayToLinearIndex(
 internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: IntArray): Int {
 
     require(indexArray.size == shapeArray.size) {
-        "indexArray (${indexArray.size}) and shapeArray (${shapeArray.size}) must have the same size"
+        "indexArray (${indexArray.size}) and shapeArray (${shapeArray.size}) must have the same size. If you need a view use getView()."
     }
 
     return indexArrayToLinearIndex(
@@ -79,11 +79,11 @@ internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: IntArray)
 
 internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: ReadOnlyIntNDArray): Int {
 
-    require(shapeArray.size == 1) {
-        "shapeArray rank (${shapeArray.size}) must be 1"
+    require(indexArray.rank == 1) {
+        "indexArray rank (${indexArray.rank}) must be 1"
     }
 
-    require(indexArray.rank == shapeArray.size) {
+    require(indexArray.size == shapeArray.size) {
         "indexArray (${indexArray.rank}) and shapeArray (${shapeArray.size}) must have the same size"
     }
 

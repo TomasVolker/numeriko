@@ -115,13 +115,11 @@ class IntArrayNDArray(
         data[indexArrayToLinearIndex(shapeArray, indexArray)] = value
     }
 
-    override fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) {
-        this[indices].setAll { value[it] }
-    }
+    override fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) =
+            getView(*indices).setAll { value.getInt(it) }
 
-    override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) {
-        this[indices].setAll { value[it] }
-    }
+    override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) =
+            getView(*indices).setAll { value.getValue(it) }
 
     override fun copy() = IntArrayNDArray(data.copyOf(), shapeArray.copyOf())
 
