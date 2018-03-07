@@ -1,9 +1,8 @@
 import org.junit.Test
-import tomasvolker.numeriko.core.array.jvmNDArrayFactory
-import tomasvolker.numeriko.core.debug.DebugArrays
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.index.rangeTo
+import tomasvolker.numeriko.core.interfaces.intNDArray
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.interfaces.integer.get
 import tomasvolker.numeriko.core.interfaces.integer.set
@@ -13,7 +12,7 @@ class NDArrayTest {
     @Test
     fun printIntNDArray() {
 
-        val array: ReadOnlyIntNDArray = jvmNDArrayFactory.array(2, 2, 2) {
+        val array: ReadOnlyIntNDArray = intNDArray(2, 2, 2) {
             it[0] + it[1] + it[2]
         }
 
@@ -26,9 +25,11 @@ class NDArrayTest {
     @Test
     fun copyView() {
 
-        val array = DebugArrays.debugIntArray(4, 3, 5)
+        var aux = 0
 
-        val view = array[1..2, All, 2..Last]
+        val array = intNDArray(4, 3, 5) { aux++ }
+
+        val view = array.view[1..2, All, 2..Last]
 
         val viewCopy = view.copy()
 

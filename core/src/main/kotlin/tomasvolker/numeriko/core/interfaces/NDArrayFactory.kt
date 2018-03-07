@@ -6,27 +6,37 @@ import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 
 val currentFactory: NDArrayFactory = JvmNDArrayFactory()
 
-fun zerosInt(vararg shape: Int) =
-        currentFactory.zerosInt(*shape)
+fun intZeros(vararg shape: Int) =
+        currentFactory.intZeros(*shape)
 
-fun zerosInt(shape: ReadOnlyIntNDArray) =
-        currentFactory.zerosInt(shape)
+fun intZeros(shape: ReadOnlyIntNDArray) =
+        currentFactory.intZeros(shape)
 
-fun array(vararg shape: Int, value: (index: ReadOnlyIntNDArray)->Int = { 0 }) =
-        currentFactory.array(*shape) { value(it) }
+fun intNDArray(vararg shape: Int, value: (index: ReadOnlyIntNDArray)->Int = { 0 }) =
+        currentFactory.intNDArray(*shape) { value(it) }
 
-fun array(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->Int = { 0 }) =
-        currentFactory.array(shape, value)
+fun intNDArray(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->Int = { 0 }) =
+        currentFactory.intNDArray(shape, value)
+
+fun <T> ndArray(vararg shape: Int, value: (index: ReadOnlyIntNDArray)->T) =
+        currentFactory.ndArray<T>(*shape) { value(it) }
+
+fun <T> ndArray(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->T) =
+        currentFactory.ndArray(shape, value)
 
 
 interface NDArrayFactory {
 
-    fun zerosInt(vararg shape: Int): IntNDArray
+    fun intZeros(vararg shape: Int): IntNDArray
 
-    fun zerosInt(shape: ReadOnlyIntNDArray): IntNDArray
+    fun intZeros(shape: ReadOnlyIntNDArray): IntNDArray
 
-    fun array(vararg shape: Int, value: (index: ReadOnlyIntNDArray)->Int = { 0 }): IntNDArray
+    fun intNDArray(vararg shape: Int, value: (index: ReadOnlyIntNDArray)->Int = { 0 }): IntNDArray
 
-    fun array(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->Int = { 0 }): IntNDArray
+    fun intNDArray(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->Int = { 0 }): IntNDArray
+
+    fun <T> ndArray(vararg shape: Int, value: (index: ReadOnlyIntNDArray)->T): NDArray<T>
+
+    fun <T> ndArray(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->T): NDArray<T>
 
 }

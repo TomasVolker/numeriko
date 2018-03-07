@@ -31,12 +31,12 @@ interface ReadOnlyIntNDArray: ReadOnlyNDArray<Int> {
 
     fun unsafeGetDataAsIntArray(): IntArray = unsafeGetDataAsArray().toIntArray()
 
-    fun dataAsIntArray(): IntArray = unsafeGetDataAsIntArray().copyOf()
+    fun getDataAsIntArray(): IntArray = unsafeGetDataAsIntArray().copyOf()
 
     infix fun equals(other: Int): Boolean {
         return rank == 0 && getInt() == other
     }
-    /*
+
     operator fun component1(): Int = getInt(0)
 
     operator fun component2(): Int = getInt(1)
@@ -46,5 +46,5 @@ interface ReadOnlyIntNDArray: ReadOnlyNDArray<Int> {
     operator fun component4(): Int = getInt(3)
 
     operator fun component5(): Int = getInt(4)
-    */
+
 }
