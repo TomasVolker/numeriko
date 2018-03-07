@@ -3,6 +3,16 @@ package tomasvolker.numeriko.core.interfaces
 import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 
+interface ReadOnlyNDArrayViewer<out T> {
+
+    val array: ReadOnlyNDArray<T>
+
+    operator fun get(vararg indices: Any): ReadOnlyNDArray<T> = array.getView(*indices)
+
+}
+
+class DefaultReadOnlyNDArrayViewer<out T>(override val array: ReadOnlyNDArray<T>): ReadOnlyNDArrayViewer<T>
+
 /**
  * Interface for generic read only N dimensional arrays
  *
@@ -31,6 +41,8 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
      * element containing the amount of indices of a valid index.
      */
     val indexShape: ReadOnlyIntNDArray get() = shape.shape
+
+    val view: ReadOnlyNDArrayViewer<T> get() = DefaultReadOnlyNDArrayViewer(this)
 
     /**
      * Rank of the array.

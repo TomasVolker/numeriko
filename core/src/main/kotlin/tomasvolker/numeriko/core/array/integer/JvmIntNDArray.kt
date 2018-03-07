@@ -37,6 +37,26 @@ class JvmIntNDArray(
     override val rank: Int
         get() = shapeArray.size
 
+    override fun getInt(vararg indices: Int) =
+            data[indexArrayToLinearIndex(shapeArray, indices)]
+
+    override fun getInt(indexArray: ReadOnlyIntNDArray) =
+            data[indexArrayToLinearIndex(shapeArray, indexArray)]
+
+    override fun setInt(value: Int, vararg indices: Int) {
+        data[indexArrayToLinearIndex(shapeArray, indices)] = value
+    }
+
+    override fun setInt(value: Int, indexArray: ReadOnlyIntNDArray) {
+        data[indexArrayToLinearIndex(shapeArray, indexArray)] = value
+    }
+
+    override fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) =
+            getView(*indices).setAll { value.getInt(it) }
+
+    override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) =
+            getView(*indices).setAll { value.getValue(it) }
+
     override fun getView(vararg indices: Any): JvmIntNDArrayView {
 
         require(indices.size <= rank) {
@@ -100,31 +120,11 @@ class JvmIntNDArray(
         )
     }
 
-    override fun getInt(vararg indices: Int) =
-            data[indexArrayToLinearIndex(shapeArray, indices)]
-
-    override fun getInt(indexArray: ReadOnlyIntNDArray) =
-            data[indexArrayToLinearIndex(shapeArray, indexArray)]
-
-    override fun setInt(value: Int, vararg indices: Int) {
-        data[indexArrayToLinearIndex(shapeArray, indices)] = value
-    }
-
-    override fun setInt(value: Int, indexArray: ReadOnlyIntNDArray) {
-        data[indexArrayToLinearIndex(shapeArray, indexArray)] = value
-    }
-
-    override fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) =
-            getView(*indices).setAll { value.getInt(it) }
-
-    override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) =
-            getView(*indices).setAll { value.getValue(it) }
-
     override fun copy() = JvmIntNDArray(data.copyOf(), shapeArray.copyOf())
 
     override fun unsafeGetDataAsArray() = getDataAsArray()
 
-    override fun unsafeDataAsIntArray() = data
+    override fun unsafeGetDataAsIntArray() = data
 
     override fun unsafeGetShapeAsArray() = shapeArray
 

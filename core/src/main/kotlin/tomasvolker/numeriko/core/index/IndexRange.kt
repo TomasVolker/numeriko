@@ -16,6 +16,9 @@ open class IndexProgression(val first: AbstractIndex, val last: AbstractIndex, v
 operator fun Int.rangeTo(index: AbstractIndex) =
         IndexProgression(this.toIndex(), index)
 
+infix fun Int.until(index: AbstractIndex) =
+        IndexProgression(this.toIndex(), index-1)
+
 object All: IndexProgression(0.toIndex(), Last)
 
 infix fun IndexProgression.step(step: Int) = IndexProgression(first, last, step)

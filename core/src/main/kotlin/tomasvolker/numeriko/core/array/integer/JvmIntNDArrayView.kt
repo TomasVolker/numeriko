@@ -73,6 +73,30 @@ class JvmIntNDArrayView internal constructor(
                     indexArray = indexArray
             )]
 
+    override fun setInt(value: Int, vararg indices: Int) {
+        data[viewIndexArrayToLinearIndex(
+                shapeArray = shapeArray,
+                offset = offset,
+                strideArray = strideArray,
+                indexArray = indices
+        )] = value
+    }
+
+    override fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) =
+            getView(*indices).setAll { value.getInt(it) }
+
+    override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) =
+            getView(*indices).setAll { value.getValue(it) }
+
+    override fun setInt(value: Int, indexArray: ReadOnlyIntNDArray) {
+        data[viewIndexArrayToLinearIndex(
+                shapeArray = shapeArray,
+                offset = offset,
+                strideArray = strideArray,
+                indexArray = indexArray
+        )] = value
+    }
+
     override fun getView(vararg indices: Any): JvmIntNDArrayView {
 
         require(indices.size <= rank) {
@@ -134,30 +158,6 @@ class JvmIntNDArrayView internal constructor(
                 strideArray = strideList.toIntArray()
         )
 
-    }
-
-    override fun setInt(value: Int, vararg indices: Int) {
-        data[viewIndexArrayToLinearIndex(
-                shapeArray = shapeArray,
-                offset = offset,
-                strideArray = strideArray,
-                indexArray = indices
-        )] = value
-    }
-
-    override fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) =
-            getView(*indices).setAll { value.getInt(it) }
-
-    override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) =
-            getView(*indices).setAll { value.getValue(it) }
-
-    override fun setInt(value: Int, indexArray: ReadOnlyIntNDArray) {
-        data[viewIndexArrayToLinearIndex(
-                shapeArray = shapeArray,
-                offset = offset,
-                strideArray = strideArray,
-                indexArray = indexArray
-        )] = value
     }
 
     override fun copy() = JvmIntNDArray(

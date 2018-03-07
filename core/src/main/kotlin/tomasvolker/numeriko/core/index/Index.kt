@@ -37,6 +37,12 @@ interface AbstractIndex {
     operator fun rangeTo(other: Int) =
             IndexProgression(this, other.toIndex())
 
+    infix fun until(other: AbstractIndex) =
+            IndexProgression(this, other-1)
+
+    infix fun until(other: Int) =
+            IndexProgression(this, (other-1).toIndex())
+
 }
 
 open class Index(val value: Int): AbstractIndex {

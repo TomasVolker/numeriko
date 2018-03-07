@@ -5,9 +5,6 @@ import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
 operator fun <T> ReadOnlyNDArray<T>.get(vararg indeces: Int) =
         getValue(*indeces)
 
-operator fun <T> ReadOnlyNDArray<T>.get(indexArray: Any): ReadOnlyNDArray<T> =
-        getView(indexArray)
-
 operator fun <T> ReadOnlyNDArray<T>.get(indexArray: ReadOnlyIntNDArray) =
         getValue(indexArray)
 
@@ -17,14 +14,8 @@ operator fun <T> NDArray<T>.get(vararg indeces: Int) =
 operator fun <T> NDArray<T>.get(indexArray: ReadOnlyIntNDArray) =
         getValue(indexArray)
 
-operator fun <T> NDArray<T>.get(indexArray: Any): NDArray<T> =
-        getView(indexArray)
-
 operator fun <T> NDArray<T>.set(vararg indeces: Int, value: T) =
         setValue(value, *indeces)
-
-operator fun <T> NDArray<T>.set(vararg indeces: Any, valueArray: ReadOnlyNDArray<T>) =
-        setValue(valueArray, *indeces)
 
 operator fun <T> NDArray<T>.set(indexArray: ReadOnlyIntNDArray, value: T) =
         setValue(value, indexArray)

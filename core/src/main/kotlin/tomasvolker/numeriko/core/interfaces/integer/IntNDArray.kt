@@ -1,9 +1,25 @@
 package tomasvolker.numeriko.core.interfaces.integer
 
 import tomasvolker.numeriko.core.interfaces.NDArray
+import tomasvolker.numeriko.core.interfaces.NDArrayViewer
 import tomasvolker.numeriko.core.interfaces.ReadOnlyNDArray
 
+interface IntNDArrayViewer: ReadOnlyIntNDArrayViewer, NDArrayViewer<Int> {
+
+    override val array: IntNDArray
+
+    override operator fun get(vararg indices: Any): IntNDArray = array.getView(*indices)
+
+    operator fun set(vararg indices: Any, value: ReadOnlyIntNDArray) =
+            array.setValue(value, *indices)
+
+}
+
+class DefaultIntNDArrayViewer(override val array: IntNDArray): IntNDArrayViewer
+
 interface IntNDArray: ReadOnlyIntNDArray, NDArray<Int> {
+
+    override val view: IntNDArrayViewer get() = DefaultIntNDArrayViewer(this)
 
     override fun copy(): IntNDArray
 
