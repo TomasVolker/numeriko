@@ -13,15 +13,10 @@ class FFTTest {
             if(n % 2 == 0) 1 + 0.j else -1 + 0.j
         }
 
-        println(array.joinToString())
-
         val arrayFtt = fft(array)
-
-        println(arrayFtt.joinToString())
 
         val reconstructed = ifft(arrayFtt)
 
-        println(reconstructed.joinToString())
     }
 
 }

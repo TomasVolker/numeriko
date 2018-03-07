@@ -19,7 +19,7 @@ fun intNDArray(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->In
         currentFactory.intNDArray(shape, value)
 
 fun <T> ndArray(vararg shape: Int, value: (index: ReadOnlyIntNDArray)->T) =
-        currentFactory.ndArray<T>(*shape) { value(it) }
+        currentFactory.ndArray(*shape) { value(it) }
 
 fun <T> ndArray(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->T) =
         currentFactory.ndArray(shape, value)
