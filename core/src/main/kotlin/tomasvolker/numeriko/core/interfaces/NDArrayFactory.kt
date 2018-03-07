@@ -12,10 +12,10 @@ fun zerosInt(vararg shape: Int) =
 fun zerosInt(shape: ReadOnlyIntNDArray) =
         currentFactory.zerosInt(shape)
 
-fun array(vararg shape: Int, value: (index: ReadOnlyIntNDArray)->Int) =
+fun array(vararg shape: Int, value: (index: ReadOnlyIntNDArray)->Int = { 0 }) =
         currentFactory.array(*shape) { value(it) }
 
-fun array(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->Int) =
+fun array(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->Int = { 0 }) =
         currentFactory.array(shape, value)
 
 
@@ -25,8 +25,8 @@ interface NDArrayFactory {
 
     fun zerosInt(shape: ReadOnlyIntNDArray): IntNDArray
 
-    fun array(vararg shape: Int, value: (index: ReadOnlyIntNDArray)->Int): IntNDArray
+    fun array(vararg shape: Int, value: (index: ReadOnlyIntNDArray)->Int = { 0 }): IntNDArray
 
-    fun array(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->Int): IntNDArray
+    fun array(shape: ReadOnlyIntNDArray, value: (index: ReadOnlyIntNDArray)->Int = { 0 }): IntNDArray
 
 }

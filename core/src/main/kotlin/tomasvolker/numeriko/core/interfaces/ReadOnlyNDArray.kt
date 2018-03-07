@@ -183,7 +183,7 @@ fun <T> ReadOnlyNDArray<T>.defaultHashCode(): Int {
     return 31 * shapeHash + dataHash
 }
 
-fun <T> ReadOnlyNDArray<T>.defaultToString(newLineDimension: Int = 1): String =
+fun <T> ReadOnlyNDArray<T>.defaultToString(): String =
         buildString { appendArray(this@defaultToString) }
 
 
@@ -205,11 +205,13 @@ fun <T> StringBuilder.appendArray(array: ReadOnlyNDArray<T>) {
 
             for (x in 0 until array.shape[0]) {
 
-                if (!first) append(", ")
+                if (first)
+                    first = false
+                else
+                    append(", ")
 
                 appendArray(array.getView(x))
 
-                first = false
             }
 
             append("] ")

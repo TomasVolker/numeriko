@@ -11,8 +11,8 @@ fun computeSizeFromShape(shape: IntArray): Int {
 
     for (i in shape.indices) {
 
-        require(shape[i] > 0) {
-            "dimension $i size must be positive (${shape[i]})"
+        require(shape[i] >= 0) {
+            "dimension $i size must be non negative (${shape[i]})"
         }
 
         result *= shape[i]
@@ -171,6 +171,11 @@ internal fun viewIndexArrayToLinearIndex(
         indexArray: IntArray,
         checkRange: Boolean = true
 ): Int {
+
+    require(indexArray.size == shapeArray.size) {
+        "indexArray (${indexArray.size}) and shapeArray (${shapeArray.size}) must have the same size. If you need a view use getView()."
+    }
+
     return viewIndexArrayToLinearIndex(
             shapeArray,
             offset,
@@ -187,6 +192,15 @@ internal fun viewIndexArrayToLinearIndex(
         indexArray: ReadOnlyIntNDArray,
         checkRange: Boolean = true
 ): Int {
+
+    require(indexArray.rank == 1) {
+        "indexArray rank (${indexArray.rank}) must be 1"
+    }
+
+    require(indexArray.size == shapeArray.size) {
+        "indexArray (${indexArray.rank}) and shapeArray (${shapeArray.size}) must have the same size"
+    }
+
     return viewIndexArrayToLinearIndex(
             shapeArray,
             offset,

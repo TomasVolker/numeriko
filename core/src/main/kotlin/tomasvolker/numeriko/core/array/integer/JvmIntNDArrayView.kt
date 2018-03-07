@@ -35,12 +35,12 @@ class JvmIntNDArrayView internal constructor(
 
         for (i in shapeArray.indices) {
 
-            require(0 < shapeArray[i]) {
-                "shape in rank $i cannot be negative (${shapeArray[i]})"
+            require(0 <= shapeArray[i]) {
+                "shape in rank $i must be non negative (${shapeArray[i]})"
             }
 
             require(0 < strideArray[i]) {
-                "stride in rank $i cannot be negative (${strideArray[i]})"
+                "stride in rank $i must be positive (${strideArray[i]})"
             }
 
         }
