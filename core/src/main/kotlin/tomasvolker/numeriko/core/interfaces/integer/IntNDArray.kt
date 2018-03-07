@@ -11,7 +11,7 @@ interface IntNDArrayViewer: ReadOnlyIntNDArrayViewer, NDArrayViewer<Int> {
     override operator fun get(vararg indices: Any): IntNDArray = array.getView(*indices)
 
     operator fun set(vararg indices: Any, value: ReadOnlyIntNDArray) =
-            array.setValue(value, *indices)
+            array.setInt(value, *indices)
 
 }
 

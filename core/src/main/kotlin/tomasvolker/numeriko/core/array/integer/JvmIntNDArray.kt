@@ -51,9 +51,11 @@ class JvmIntNDArray(
         data[indexArrayToLinearIndex(shapeArray, indexArray)] = value
     }
 
+    // TODO Setting on itself
     override fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) =
             getView(*indices).setAll { value.getInt(it) }
 
+    // TODO Setting on itself
     override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) =
             getView(*indices).setAll { value.getValue(it) }
 

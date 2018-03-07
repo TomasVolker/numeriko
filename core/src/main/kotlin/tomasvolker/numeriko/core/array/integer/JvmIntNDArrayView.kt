@@ -82,9 +82,11 @@ class JvmIntNDArrayView internal constructor(
         )] = value
     }
 
+    //TODO set on itself
     override fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) =
             getView(*indices).setAll { value.getInt(it) }
 
+    //TODO set on itself
     override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) =
             getView(*indices).setAll { value.getValue(it) }
 
