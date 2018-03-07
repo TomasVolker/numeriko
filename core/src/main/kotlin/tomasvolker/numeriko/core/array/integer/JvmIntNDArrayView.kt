@@ -165,7 +165,9 @@ class JvmIntNDArrayView internal constructor(
             shapeArray = shapeArray.copyOf()
     )
 
-    override fun dataAsArray(): Array<Int> = dataAsIntArray().toTypedArray()
+    override fun unsafeGetDataAsArray(): Array<Int> = getDataAsArray()
+
+    override fun getDataAsArray(): Array<Int> = dataAsIntArray().toTypedArray()
 
     override fun dataAsIntArray(): IntArray {
         val result = IntArray(size)
@@ -177,7 +179,9 @@ class JvmIntNDArrayView internal constructor(
         return result
     }
 
-    override fun shapeAsArray() = shapeArray.copyOf()
+    override fun unsafeGetShapeAsArray() = shapeArray
+
+    override fun getShapeAsArray() = shapeArray.copyOf()
 
     override fun linearCursor() = JvmIntNDArrayViewCursor(this)
 

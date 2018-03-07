@@ -59,7 +59,7 @@ inline fun JvmIntNDArray.applyElementWiseInline(function: (value: Int) -> Int): 
         result[i] = function(data[i])
     }
 
-    return JvmIntNDArray(shapeAsArray(), result)
+    return JvmIntNDArray(getShapeAsArray(), result)
 }
 
 /*

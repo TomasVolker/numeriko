@@ -18,4 +18,8 @@ interface NDArray<T>: ReadOnlyNDArray<T> {
 
     fun setAll(setter: (indexArray: ReadOnlyIntNDArray) -> T) = setAllInline(setter)
 
+    override fun getDataAsArray(): Array<T>
+
+    override fun unsafeGetDataAsArray(): Array<T>
+
 }

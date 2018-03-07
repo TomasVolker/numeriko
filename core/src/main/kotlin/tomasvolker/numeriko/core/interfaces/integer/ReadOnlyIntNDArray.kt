@@ -16,7 +16,9 @@ interface ReadOnlyIntNDArray: ReadOnlyNDArray<Int> {
 
     fun getInt(indexArray: ReadOnlyIntNDArray): Int
 
-    fun dataAsIntArray(): IntArray = dataAsArray().toIntArray()
+    fun unsafeDataAsIntArray(): IntArray = unsafeGetDataAsArray().toIntArray()
+
+    fun dataAsIntArray(): IntArray = unsafeDataAsIntArray().copyOf()
 
     infix fun equals(other: Int): Boolean {
         return rank == 0 && getInt() == other

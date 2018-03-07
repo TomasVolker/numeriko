@@ -122,11 +122,15 @@ class JvmIntNDArray(
 
     override fun copy() = JvmIntNDArray(data.copyOf(), shapeArray.copyOf())
 
-    override fun dataAsArray() = data.toTypedArray()
+    override fun unsafeGetDataAsArray() = getDataAsArray()
 
-    override fun dataAsIntArray() = data.copyOf()
+    override fun unsafeDataAsIntArray() = data
 
-    override fun shapeAsArray() = shapeArray.copyOf()
+    override fun unsafeGetShapeAsArray() = shapeArray
+
+    override fun getDataAsArray() = data.toTypedArray()
+
+    override fun getShapeAsArray() = shapeArray.copyOf()
 
     override fun equals(other: Any?): Boolean {
         when(other) {
