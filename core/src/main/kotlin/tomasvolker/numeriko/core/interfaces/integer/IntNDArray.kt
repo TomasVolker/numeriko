@@ -1,23 +1,22 @@
 package tomasvolker.numeriko.core.interfaces.integer
 
-import tomasvolker.numeriko.core.interfaces.NDArray
-import tomasvolker.numeriko.core.interfaces.NDArrayViewer
-import tomasvolker.numeriko.core.interfaces.ReadOnlyNDArray
+import tomasvolker.numeriko.core.interfaces.numeric.NumericNDArray
+import tomasvolker.numeriko.core.interfaces.numeric.NumericNDArrayViewer
 
-interface IntNDArrayViewer: ReadOnlyIntNDArrayViewer, NDArrayViewer<Int> {
+interface IntNDArrayViewer: ReadOnlyIntNDArrayViewer, NumericNDArrayViewer<Int> {
 
     override val array: IntNDArray
 
     override operator fun get(vararg indices: Any): IntNDArray = array.getView(*indices)
 
-    operator fun set(vararg indices: Any, value: ReadOnlyIntNDArray) =
+    override operator fun set(vararg indices: Any, value: ReadOnlyIntNDArray) =
             array.setInt(value, *indices)
 
 }
 
 class DefaultIntNDArrayViewer(override val array: IntNDArray): IntNDArrayViewer
 
-interface IntNDArray: ReadOnlyIntNDArray, NDArray<Int> {
+interface IntNDArray: ReadOnlyIntNDArray, NumericNDArray<Int> {
 
     override val view: IntNDArrayViewer get() = DefaultIntNDArrayViewer(this)
 
@@ -25,20 +24,17 @@ interface IntNDArray: ReadOnlyIntNDArray, NDArray<Int> {
 
     override fun getView(vararg indices: Any): IntNDArray
 
-    override fun setValue(value: Int, vararg indices: Int) =
-            setInt(value, *indices)
+    override fun setValue(value: Int, indexArray: ReadOnlyIntNDArray) = setInt(value, indexArray)
 
-    override fun setValue(value: Int, indexArray: ReadOnlyIntNDArray) =
-            setInt(value, indexArray)
+    override fun setValue(value: Int, vararg indices: Int) = setInt(value, *indices)
 
-    override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any)
+    //TODO see if inherit this
+    override fun setDouble(value: Double, indexArray: ReadOnlyIntNDArray) =
+            setInt(value.toInt())
 
-    fun setInt(value: Int, indexArray: ReadOnlyIntNDArray)
-
-    fun setInt(value: Int, vararg indices: Int)
-
-    fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) =
-            setValue(value as ReadOnlyNDArray<Int>, *indices)
+    //TODO see if inherit this
+    override fun setDouble(value: Double, vararg indices: Int) =
+            setInt(value.toInt(), *indices)
 
     /*
     //sign

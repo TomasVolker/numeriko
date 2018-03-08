@@ -1,9 +1,9 @@
 package tomasvolker.numeriko.core.interfaces.integer
 
-import tomasvolker.numeriko.core.interfaces.ReadOnlyNDArray
-import tomasvolker.numeriko.core.interfaces.ReadOnlyNDArrayViewer
+import tomasvolker.numeriko.core.interfaces.numeric.ReadOnlyNumericNDArray
+import tomasvolker.numeriko.core.interfaces.numeric.ReadOnlyNumericNDArrayViewer
 
-interface ReadOnlyIntNDArrayViewer: ReadOnlyNDArrayViewer<Int> {
+interface ReadOnlyIntNDArrayViewer: ReadOnlyNumericNDArrayViewer<Int> {
 
     override val array: ReadOnlyIntNDArray
 
@@ -13,7 +13,7 @@ interface ReadOnlyIntNDArrayViewer: ReadOnlyNDArrayViewer<Int> {
 
 class DefaultReadOnlyIntNDArrayViewer(override val array: ReadOnlyIntNDArray): ReadOnlyIntNDArrayViewer
 
-interface ReadOnlyIntNDArray: ReadOnlyNDArray<Int> {
+interface ReadOnlyIntNDArray: ReadOnlyNumericNDArray<Int> {
 
     override val view: ReadOnlyIntNDArrayViewer get() = DefaultReadOnlyIntNDArrayViewer(this)
 
@@ -25,9 +25,13 @@ interface ReadOnlyIntNDArray: ReadOnlyNDArray<Int> {
 
     override fun getValue(vararg indices: Int) = getInt(*indices)
 
-    fun getInt(vararg indices:Int): Int
+    override fun getInt(vararg indices:Int): Int
 
-    fun getInt(indexArray: ReadOnlyIntNDArray): Int
+    override fun getInt(indexArray: ReadOnlyIntNDArray): Int
+
+    override fun getDouble(indexArray: ReadOnlyIntNDArray) = getInt(indexArray).toDouble()
+
+    override fun getDouble(vararg indices: Int) = getInt(*indices).toDouble()
 
     fun unsafeGetDataAsIntArray(): IntArray = unsafeGetDataAsArray().toIntArray()
 
