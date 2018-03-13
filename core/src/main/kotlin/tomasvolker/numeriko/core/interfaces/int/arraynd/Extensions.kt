@@ -1,4 +1,4 @@
-package tomasvolker.numeriko.core.interfaces.integer
+package tomasvolker.numeriko.core.interfaces.int.arraynd
 
 fun ReadOnlyIntNDArray.get(): Int = getInt()
 

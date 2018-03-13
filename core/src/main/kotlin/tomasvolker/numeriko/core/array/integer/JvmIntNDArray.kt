@@ -1,10 +1,12 @@
 package tomasvolker.numeriko.core.array.integer
 
-import tomasvolker.numeriko.core.index.AbstractIndex
+import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.*
-import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
-import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyNDArray
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultEquals
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultToString
+import tomasvolker.numeriko.core.interfaces.int.arraynd.IntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 import tomasvolker.numeriko.core.util.dimensionWidthArray
@@ -76,7 +78,7 @@ class JvmIntNDArray(
             var index: Any = indices[dimension]
 
             when (index) {
-                is AbstractIndex -> {
+                is Index -> {
                     index = index.computeValue(shape, dimension)
                 }
                 is IndexProgression -> {
@@ -102,7 +104,7 @@ class JvmIntNDArray(
                     shapeList.add(index.count())
                     strideList.add(index.step * currentStride)
                 }
-                else -> throw IllegalArgumentException("Index $index is not an Int, IntRange, AbstractIndex or IndexProgression")
+                else -> throw IllegalArgumentException("LiteralIndex $index is not an Int, IntRange, Index or IndexProgression")
             }
 
         }

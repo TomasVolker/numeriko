@@ -50,7 +50,7 @@ class UtilsTest {
         var index = intArrayOf()
 
         assert(indexArrayToLinearIndex(shape, index) == 0) {
-            "Linear Index in rank 0 array doesn't return 0"
+            "Linear LiteralIndex in rank 0 array doesn't return 0"
         }
 
         shape = intArrayOf(2, 2)

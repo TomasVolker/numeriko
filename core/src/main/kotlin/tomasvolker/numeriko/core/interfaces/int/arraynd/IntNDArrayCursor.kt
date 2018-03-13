@@ -1,9 +1,9 @@
-package tomasvolker.numeriko.core.interfaces.integer
+package tomasvolker.numeriko.core.interfaces.int.arraynd
 
-import tomasvolker.numeriko.core.interfaces.NDArrayCursor
-import tomasvolker.numeriko.core.interfaces.NDArrayLinearCursor
-import tomasvolker.numeriko.core.interfaces.ReadOnlyNDArrayCursor
-import tomasvolker.numeriko.core.interfaces.ReadOnlyNDArrayLinearCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArrayCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArrayLinearCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyNDArrayCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyNDArrayLinearCursor
 
 interface ReadOnlyIntNDArrayLinearCursor: ReadOnlyNDArrayLinearCursor<Int> {
 

@@ -2,10 +2,10 @@ import org.junit.Test
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.index.rangeTo
-import tomasvolker.numeriko.core.interfaces.intNDArray
-import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
-import tomasvolker.numeriko.core.interfaces.integer.get
-import tomasvolker.numeriko.core.interfaces.integer.set
+import tomasvolker.numeriko.core.interfaces.factory.intNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.get
+import tomasvolker.numeriko.core.interfaces.int.arraynd.set
 
 class NDArrayTest {
 

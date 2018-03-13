@@ -1,9 +1,9 @@
 package tomasvolker.numeriko.core.array.generic
 
 import tomasvolker.numeriko.core.array.jvmNDArrayFactory
-import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
-import tomasvolker.numeriko.core.interfaces.integer.get
-import tomasvolker.numeriko.core.interfaces.integer.set
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.get
+import tomasvolker.numeriko.core.interfaces.int.arraynd.set
 
 fun <T> Array<T>.wrapNDArray(vararg shape: Int = intArrayOf(this.size)) = JvmNDArray(
         data = this,

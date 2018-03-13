@@ -1,6 +1,6 @@
-package tomasvolker.numeriko.core.interfaces
+package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
-import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
 
 operator fun <T> ReadOnlyNDArray<T>.get(vararg indeces: Int) =
         getValue(*indeces)

@@ -2,9 +2,11 @@ package tomasvolker.numeriko.core.array.generic
 
 import tomasvolker.numeriko.core.array.integer.setAllInline
 import tomasvolker.numeriko.core.array.jvmNDArrayFactory
-import tomasvolker.numeriko.core.interfaces.NDArrayCursor
-import tomasvolker.numeriko.core.interfaces.NDArrayLinearCursor
-import tomasvolker.numeriko.core.interfaces.integer.*
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArrayCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArrayLinearCursor
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.get
+import tomasvolker.numeriko.core.interfaces.int.arraynd.set
 
 import tomasvolker.numeriko.core.util.dimensionWidthArray
 import tomasvolker.numeriko.core.util.incrementIndexArray

@@ -1,9 +1,9 @@
 package tomasvolker.numeriko.core.util
 
-import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
-import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
-import tomasvolker.numeriko.core.interfaces.integer.get
-import tomasvolker.numeriko.core.interfaces.integer.set
+import tomasvolker.numeriko.core.interfaces.int.arraynd.IntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.get
+import tomasvolker.numeriko.core.interfaces.int.arraynd.set
 
 fun computeSizeFromShape(shape: IntArray): Int {
 

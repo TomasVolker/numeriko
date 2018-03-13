@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.core.array.integer
 
 import tomasvolker.numeriko.core.array.jvmNDArrayFactory
-import tomasvolker.numeriko.core.interfaces.integer.*
+import tomasvolker.numeriko.core.interfaces.int.arraynd.*
 
 import tomasvolker.numeriko.core.util.dimensionWidthArray
 import tomasvolker.numeriko.core.util.incrementIndexArray

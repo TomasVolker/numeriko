@@ -1,10 +1,10 @@
 package tomasvolker.numeriko.core.array.generic
 
 import tomasvolker.numeriko.core.array.integer.JvmIntNDArray
-import tomasvolker.numeriko.core.index.AbstractIndex
+import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.*
-import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.*
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 import tomasvolker.numeriko.core.util.viewIndexArrayToLinearIndex
@@ -110,7 +110,7 @@ class JvmNDArrayView<T> internal constructor(
             var index: Any = indices[dimension]
 
             when (index) {
-                is AbstractIndex -> {
+                is Index -> {
                     index = index.computeValue(shape, dimension)
                 }
                 is IndexProgression -> {
@@ -134,7 +134,7 @@ class JvmNDArrayView<T> internal constructor(
                     shapeList.add(index.count())
                     strideList.add(index.step * currentStride)
                 }
-                else -> throw IllegalArgumentException("Index $index is not an Int, IntRange, AbstractIndex or IndexProgression")
+                else -> throw IllegalArgumentException("LiteralIndex $index is not an Int, IntRange, Index or IndexProgression")
             }
 
         }

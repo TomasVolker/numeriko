@@ -92,11 +92,14 @@ fun cooleyTukeyAlgorithm(
 
         val twiddle = unaryDoubleComplex(twiddleSign * 2 * Math.PI * k.toDouble() / halfSize.toDouble())
 
-        val even = destination[destOffset + k]
-        val odd  = destination[destOffset + halfSize + k]
+        val evenIndex = destOffset + k
+        val oddIndex  = evenIndex + halfSize
 
-        destination[destOffset + k] = even + twiddle * odd
-        destination[destOffset + halfSize + k] = even - twiddle * odd
+        val even = destination[evenIndex]
+        val odd  = destination[oddIndex]
+
+        destination[evenIndex] = even + twiddle * odd
+        destination[oddIndex]  = even - twiddle * odd
 
     }
 

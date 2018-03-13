@@ -4,9 +4,8 @@ import tomasvolker.numeriko.core.array.generic.JvmNDArray
 import tomasvolker.numeriko.core.array.generic.setAllInline
 import tomasvolker.numeriko.core.array.integer.JvmIntNDArray
 import tomasvolker.numeriko.core.array.integer.setAllInline
-import tomasvolker.numeriko.core.interfaces.NDArray
-import tomasvolker.numeriko.core.interfaces.NDArrayFactory
-import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.factory.NDArrayFactory
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 
 val jvmNDArrayFactory = JvmNDArrayFactory()

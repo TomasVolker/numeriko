@@ -1,7 +1,7 @@
-package tomasvolker.numeriko.core.interfaces.integer
+package tomasvolker.numeriko.core.interfaces.int.arraynd
 
-import tomasvolker.numeriko.core.interfaces.numeric.ReadOnlyNumericNDArray
-import tomasvolker.numeriko.core.interfaces.numeric.ReadOnlyNumericNDArrayViewer
+import tomasvolker.numeriko.core.interfaces.numeric.arraynd.ReadOnlyNumericNDArray
+import tomasvolker.numeriko.core.interfaces.numeric.arraynd.ReadOnlyNumericNDArrayViewer
 
 interface ReadOnlyIntNDArrayViewer: ReadOnlyNumericNDArrayViewer<Int> {
 

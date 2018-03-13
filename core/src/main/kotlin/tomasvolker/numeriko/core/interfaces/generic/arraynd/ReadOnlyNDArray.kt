@@ -1,6 +1,6 @@
-package tomasvolker.numeriko.core.interfaces
+package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
-import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 
 interface ReadOnlyNDArrayViewer<out T> {
@@ -130,11 +130,11 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
      * Get a view of the given indeces and index ranges.
      *
      * Getter function for a view on the given indices. The indices array must contain objects of class Int, IntRange,
-     * AbstractIndex or IndexProgression, or an [IllegalArgumentException] will be thrown. Both this array and the view
+     * Index or IndexProgression, or an [IllegalArgumentException] will be thrown. Both this array and the view
      * returned by this function work over the same backing array.
      *
      * @return a [ReadOnlyNDArray] which is a view of this array.
-     * @throws IllegalArgumentException if an object which is not a Int, IntRange, AbstractIndex or IndexProgression is
+     * @throws IllegalArgumentException if an object which is not a Int, IntRange, Index or IndexProgression is
      * passed.
      */
     fun getView(vararg indices:Any): ReadOnlyNDArray<T>

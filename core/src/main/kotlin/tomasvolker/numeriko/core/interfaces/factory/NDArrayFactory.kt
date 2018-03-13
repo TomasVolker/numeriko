@@ -1,8 +1,9 @@
-package tomasvolker.numeriko.core.interfaces
+package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.array.JvmNDArrayFactory
-import tomasvolker.numeriko.core.interfaces.integer.IntNDArray
-import tomasvolker.numeriko.core.interfaces.integer.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.IntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
 
 val currentFactory: NDArrayFactory = JvmNDArrayFactory()
 
