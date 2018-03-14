@@ -2,44 +2,22 @@ package tomasvolker.numeriko.core.interfaces.generic.array1d
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayND
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayNDCursor
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayNDLinearCursor
 import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 
-interface ReadOnlyArray1D<out T>: Collection<T> {
+interface ReadOnlyArray1D<out T>: ReadOnlyArrayND<T> {
 
-    val shape: ReadOnlyIntArray1D
+    override val shape: ReadOnlyIntArray1D get() = intArray1DOf(size)
 
-    val indexShape: ReadOnlyIntArray1D get() = shape.shape
+    override val indexShape: ReadOnlyIntArray1D get() = intArray1DOf(1)
 
-    val rank: Int get() = 1
+    override val rank: Int get() = 1
 
     override val size: Int
-
-    override fun isEmpty(): Boolean = size == 0
-
-    override fun contains(element:@UnsafeVariance T): Boolean {
-
-        for (item in this) {
-
-            if (item == element)
-                return true
-
-        }
-        return false
-    }
-
-    override fun containsAll(elements: Collection<@UnsafeVariance T>): Boolean {
-
-        for (element in elements) {
-
-            if(!contains(element))
-                return false
-
-        }
-
-        return true
-    }
 
     fun getValue(i0: Int): T
 
@@ -49,23 +27,15 @@ interface ReadOnlyArray1D<out T>: Collection<T> {
 
     fun getView(i0: IndexProgression): ReadOnlyArray1D<T>
 
-    fun copy(): ReadOnlyArray1D<T>
+    override fun getView(vararg indices: Any): ReadOnlyArrayND<T> {
+        require(indices.size <= 1) { "${indices.size} indices provided, expected 1 or less" }
 
-    fun getDataAsArray(): Array<out T>
+        TODO("implement")
+    }
 
-    fun unsafeGetDataAsArray(): Array<out T>
-
-    fun getShapeAsArray(): IntArray
-
-    fun unsafeGetShapeAsArray(): IntArray
+    override fun copy(): ReadOnlyArray1D<T>
 
     fun lastIndex() = size - 1
-
-    override fun iterator(): ReadOnlyArrayNDLinearCursor<T> = linearCursor()
-
-    fun linearCursor(): ReadOnlyArrayNDLinearCursor<T>
-
-    fun cursor(): ReadOnlyArrayNDCursor<T>
 
 }
 

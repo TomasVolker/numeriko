@@ -1,5 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
+import tomasvolker.numeriko.core.interfaces.generic.array1d.ReadOnlyArray1D
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 
 interface ArrayNDViewer<T>: ReadOnlyArrayNDViewer<T> {
@@ -27,11 +29,11 @@ interface ArrayND<T>: ReadOnlyArrayND<T> {
 
     fun setValue(value: T, vararg indices: Int)
 
-    fun setValue(value: T, indexArray: ReadOnlyIntArrayND)
+    fun setValue(value: T, indexArray: ReadOnlyIntArray1D)
 
     fun setValue(value: ReadOnlyArrayND<T>, vararg indices: Any)
 
-    fun setAll(setter: (indexArray: ReadOnlyIntArrayND) -> T) = setAllInline(setter)
+    fun setWithIndex(setter: (indexArray: ReadOnlyIntArray1D) -> T) = setAllInline(setter)
 
     override fun getDataAsArray(): Array<T>
 

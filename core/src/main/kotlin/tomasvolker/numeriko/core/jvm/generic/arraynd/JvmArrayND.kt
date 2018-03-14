@@ -3,10 +3,9 @@ package tomasvolker.numeriko.core.jvm.generic.arraynd
 import tomasvolker.numeriko.core.jvm.int.arraynd.JvmIntArrayND
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayND
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayND
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultEquals
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultToString
+import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.*
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
@@ -28,11 +27,8 @@ class JvmArrayND<T>(
 
     }
 
-    override val shape: ReadOnlyIntArrayND
-        get() = JvmIntArrayND(
-                data = shapeArray,
-                shapeArray = intArrayOf(rank)
-        )
+    override val shape: ReadOnlyIntArray1D
+        get() = intArray1DOf(*shapeArray)
 
     override val size: Int
         get() = data.size
@@ -43,20 +39,20 @@ class JvmArrayND<T>(
     override fun getValue(vararg indices: Int) =
             data[indexArrayToLinearIndex(shapeArray, indices)]
 
-    override fun getValue(indexArray: ReadOnlyIntArrayND) =
+    override fun getValue(indexArray: ReadOnlyIntArray1D) =
             data[indexArrayToLinearIndex(shapeArray, indexArray)]
 
     override fun setValue(value: T, vararg indices: Int) {
         data[indexArrayToLinearIndex(shapeArray, indices)] = value
     }
 
-    override fun setValue(value: T, indexArray: ReadOnlyIntArrayND) {
+    override fun setValue(value: T, indexArray: ReadOnlyIntArray1D) {
         data[indexArrayToLinearIndex(shapeArray, indexArray)] = value
     }
 
     // TODO Setting on itself
     override fun setValue(value: ReadOnlyArrayND<T>, vararg indices: Any) =
-            getView(*indices).setAll { value.getValue(it) }
+            getView(*indices).setAllInline { value.getValue(it) }
 
     override fun getView(vararg indices: Any): JvmArrayNDView<T> {
 

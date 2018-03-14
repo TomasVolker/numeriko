@@ -3,7 +3,9 @@ package tomasvolker.numeriko.core.jvm.generic.arraynd
 import tomasvolker.numeriko.core.jvm.int.arraynd.JvmIntArrayND
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.*
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
@@ -48,11 +50,8 @@ class JvmArrayNDView<T> internal constructor(
 
     override val size: Int = computeSizeFromShape(shapeArray)
 
-    override val shape: ReadOnlyIntArrayND
-        get() = JvmIntArrayND(
-                data = shapeArray,
-                shapeArray = intArrayOf(rank)
-        )
+    override val shape: ReadOnlyIntArray1D
+        get() = intArray1DOf(*shapeArray)
 
     override fun getValue(vararg indices: Int) =
             data[viewIndexArrayToLinearIndex(
@@ -62,7 +61,7 @@ class JvmArrayNDView<T> internal constructor(
                     indexArray = indices
             )]
 
-    override fun getValue(indexArray: ReadOnlyIntArrayND) =
+    override fun getValue(indexArray: ReadOnlyIntArray1D) =
             data[viewIndexArrayToLinearIndex(
                     shapeArray = shapeArray,
                     offset = offset,
@@ -81,9 +80,9 @@ class JvmArrayNDView<T> internal constructor(
 
     //TODO set on itself
     override fun setValue(value: ReadOnlyArrayND<T>, vararg indices: Any) =
-            getView(*indices).setAll { value.getValue(it) }
+            getView(*indices).setAllInline { value.getValue(it) }
 
-    override fun setValue(value: T, indexArray: ReadOnlyIntArrayND) {
+    override fun setValue(value: T, indexArray: ReadOnlyIntArray1D) {
         data[viewIndexArrayToLinearIndex(
                 shapeArray = shapeArray,
                 offset = offset,

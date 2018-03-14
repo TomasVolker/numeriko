@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.int.arraynd
 
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.numeric.arraynd.ReadOnlyNumericArrayND
 import tomasvolker.numeriko.core.interfaces.numeric.arraynd.ReadOnlyNumericArrayNDViewer
 
@@ -19,7 +20,7 @@ interface ReadOnlyIntArrayND: ReadOnlyNumericArrayND<Int> {
 
     override fun copy(): ReadOnlyIntArrayND
 
-    override fun getValue(indexArray: ReadOnlyIntArrayND) = getInt(indexArray)
+    override fun getValue(indexArray: ReadOnlyIntArray1D) = getInt(indexArray)
 
     override fun getView(vararg indices: Any): ReadOnlyIntArrayND
 
@@ -27,9 +28,9 @@ interface ReadOnlyIntArrayND: ReadOnlyNumericArrayND<Int> {
 
     override fun getInt(vararg indices:Int): Int
 
-    override fun getInt(indexArray: ReadOnlyIntArrayND): Int
+    override fun getInt(indexArray: ReadOnlyIntArray1D): Int
 
-    override fun getDouble(indexArray: ReadOnlyIntArrayND) = getInt(indexArray).toDouble()
+    override fun getDouble(indexArray: ReadOnlyIntArray1D) = getInt(indexArray).toDouble()
 
     override fun getDouble(vararg indices: Int) = getInt(*indices).toDouble()
 
@@ -40,15 +41,5 @@ interface ReadOnlyIntArrayND: ReadOnlyNumericArrayND<Int> {
     infix fun equals(other: Int): Boolean {
         return rank == 0 && getInt() == other
     }
-
-    operator fun component1(): Int = getInt(0)
-
-    operator fun component2(): Int = getInt(1)
-
-    operator fun component3(): Int = getInt(2)
-
-    operator fun component4(): Int = getInt(3)
-
-    operator fun component5(): Int = getInt(4)
 
 }

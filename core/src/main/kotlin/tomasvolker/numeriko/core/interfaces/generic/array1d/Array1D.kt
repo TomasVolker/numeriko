@@ -2,10 +2,12 @@ package tomasvolker.numeriko.core.interfaces.generic.array1d
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayND
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDCursor
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDLinearCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayND
 
-interface Array1D<T>: ReadOnlyArray1D<T> {
+interface Array1D<T>: ReadOnlyArray1D<T>, ArrayND<T> {
 
     fun setValue(value: T, i0: Int)
 
@@ -15,16 +17,8 @@ interface Array1D<T>: ReadOnlyArray1D<T> {
 
     fun setValue(value: ReadOnlyArray1D<T>, indices: IndexProgression)
 
-    fun setAll(setter: (indexArray: Int) -> T)
+    fun setAll(setter: (i0: Int) -> T)
 
-    override fun getDataAsArray(): Array<T>
-
-    override fun unsafeGetDataAsArray(): Array<T>
-
-    override fun iterator() = linearCursor()
-
-    override fun linearCursor(): ArrayNDLinearCursor<T>
-
-    override fun cursor(): ArrayNDCursor<T>
+    override fun getView(vararg indices: Any): Array1D<T>
 
 }

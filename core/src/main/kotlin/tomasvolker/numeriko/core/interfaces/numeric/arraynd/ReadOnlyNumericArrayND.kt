@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.numeric.arraynd
 
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayND
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayNDViewer
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 
 interface ReadOnlyNumericArrayNDViewer<out T: Number>: ReadOnlyArrayNDViewer<T> {
@@ -22,19 +23,15 @@ interface ReadOnlyNumericArrayND<out T: Number>: ReadOnlyArrayND<T> {
 
     override fun copy(): ReadOnlyNumericArrayND<T>
 
-    override fun getValue(indexArray: ReadOnlyIntArrayND): T
-
     override fun getView(vararg indices: Any): ReadOnlyNumericArrayND<T>
-
-    override fun getValue(vararg indices: Int): T
 
     fun getInt(vararg indices:Int): Int
 
-    fun getInt(indexArray: ReadOnlyIntArrayND): Int
+    fun getInt(indexArray: ReadOnlyIntArray1D): Int
 
     fun getDouble(vararg indices:Int): Double
 
-    fun getDouble(indexArray: ReadOnlyIntArrayND): Double
+    fun getDouble(indexArray: ReadOnlyIntArray1D): Double
 
 }
 

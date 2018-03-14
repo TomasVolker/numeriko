@@ -14,6 +14,9 @@ fun intZeros(s0: Int): IntArray1D =
 fun intArray1D(s0: Int, value: (i0: Int) -> Int = { 0 }): IntArray1D =
         currentFactory.intArray1D(s0, value)
 
+fun intArray1DOf(vararg values: Int): IntArray1D =
+        currentFactory.intArray1DOf(*values)
+
 fun intZeros(vararg shape: Int) =
         currentFactory.intZeros(*shape)
 
@@ -42,6 +45,8 @@ interface ArrayNDFactory {
     fun intZeros(shape: ReadOnlyIntArrayND): IntArrayND
 
     fun intArray1D(s0: Int, value: (i0: Int) -> Int = { 0 }): IntArray1D
+
+    fun intArray1DOf(vararg values: Int): IntArray1D
 
     fun intArrayND(vararg shape: Int, value: (index: ReadOnlyIntArrayND) -> Int = { 0 }): IntArrayND
 

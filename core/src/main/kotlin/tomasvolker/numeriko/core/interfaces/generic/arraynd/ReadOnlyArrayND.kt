@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 
@@ -32,7 +33,7 @@ interface ReadOnlyArrayND<out T>: Collection<T> {
      * an ArrayND of rank 0, which is equivalent to a scalar. The jvm contains the lengths
      * of the different dimensions, which are always non-negative (may be zero).
      */
-    val shape: ReadOnlyIntArrayND
+    val shape: ReadOnlyIntArray1D
 
     /**
      * Shape of an index of the jvm
@@ -40,7 +41,7 @@ interface ReadOnlyArrayND<out T>: Collection<T> {
      * Shape of an index for this ArrayND. This is equal to the shape of the shape. This is a rank one jvm with one
      * element containing the amount of indices of a valid index.
      */
-    val indexShape: ReadOnlyIntArrayND get() = shape.shape
+    val indexShape: ReadOnlyIntArray1D get() = shape.shape
 
     val view: ReadOnlyArrayNDViewer<T> get() = DefaultReadOnlyArrayNDViewer(this)
 
@@ -67,7 +68,8 @@ interface ReadOnlyArrayND<out T>: Collection<T> {
      *
      * @return true if the jvm is empty, which is equivalent to having size zero.
      */
-    override fun isEmpty(): Boolean = size == 0
+    override fun isEmpty(): Boolean =
+            size == 0
 
     /**
      * Indicates if the jvm contains the given element.
@@ -124,7 +126,7 @@ interface ReadOnlyArrayND<out T>: Collection<T> {
      * @return the element in the given indices
      * @throws IllegalArgumentException when the shape of [indexArray] is not equal to [indexShape].
      */
-    fun getValue(indexArray: ReadOnlyIntArrayND): T
+    fun getValue(indexArray: ReadOnlyIntArray1D): T
 
     /**
      * Get a view of the given indeces and index ranges.
@@ -220,13 +222,16 @@ fun <T> ReadOnlyArrayND<T>.defaultEquals(other: Any?): Boolean {
     when(other) {
         is ArrayND<*> -> {
 
-            if (other.rank == 1 && this.rank == 1) {
+            if (this.rank != other.rank)
+                return false
 
-                if (other.shape[0] != this.shape[0]) {
+            if (rank == 0)
+                return this.getValue() == other.getValue()
+
+            if (rank == 1) {
+                if (this.shape.getInt(0) != other.shape.getInt(0))
                     return false
-                }
-
-            } else if (other.shape != this.shape) {
+            } else if (this.shape != other.shape) {
                 return false
             }
 

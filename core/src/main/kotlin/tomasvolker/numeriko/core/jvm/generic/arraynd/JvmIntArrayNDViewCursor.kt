@@ -1,8 +1,11 @@
 package tomasvolker.numeriko.core.jvm.generic.arraynd
 
+import tomasvolker.numeriko.core.interfaces.factory.intZeros
 import tomasvolker.numeriko.core.jvm.int.arraynd.setAllInline
 import tomasvolker.numeriko.core.jvm.factory.jvmArrayNDFactory
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.setAllInline
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.interfaces.int.arraynd.get
 import tomasvolker.numeriko.core.interfaces.int.arraynd.set
@@ -12,7 +15,7 @@ import tomasvolker.numeriko.core.util.viewIndexArrayToLinearIndex
 
 class JvmArrayNDViewCursor<T>(override val array: JvmArrayNDView<T>): ArrayNDCursor<T> {
 
-    override val currentIndexes = jvmArrayNDFactory.intZeros(shape = array.indexShape)
+    override val currentIndexes = intZeros(array.rank)
 
     private val data = array.data
 
@@ -89,7 +92,7 @@ class JvmArrayNDViewCursor<T>(override val array: JvmArrayNDView<T>): ArrayNDCur
         currentIndexes.setAllInline { index ->  indexArray[index[0]] }
     }
 
-    override fun setPosition(indexArray: ReadOnlyIntArrayND) {
+    override fun setPosition(indexArray: ReadOnlyIntArray1D) {
         linearIndex = viewIndexArrayToLinearIndex(
                 shapeArray = array.shapeArray,
                 offset = array.offset,

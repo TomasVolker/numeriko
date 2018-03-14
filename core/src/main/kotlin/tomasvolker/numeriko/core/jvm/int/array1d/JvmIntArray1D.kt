@@ -6,6 +6,8 @@ import tomasvolker.numeriko.core.interfaces.generic.array1d.ReadOnlyArray1D
 import tomasvolker.numeriko.core.interfaces.generic.array1d.defaultToString
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDCursor
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDLinearCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayND
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultEquals
 import tomasvolker.numeriko.core.interfaces.int.array1d.IntArray1D
 import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 
@@ -70,5 +72,7 @@ class JvmIntArray1D(val data: IntArray): IntArray1D {
     }
 
     override fun toString(): String = defaultToString()
+
+    override fun equals(other: Any?) = defaultEquals(other)
 
 }

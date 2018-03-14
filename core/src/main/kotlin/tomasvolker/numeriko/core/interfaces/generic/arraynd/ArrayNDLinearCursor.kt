@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 
 interface ReadOnlyArrayNDLinearCursor<out T>: Iterator<T> {
 
@@ -56,7 +56,7 @@ interface ArrayNDLinearCursor<T>: ReadOnlyArrayNDLinearCursor<T> {
 
 interface ReadOnlyArrayNDCursor<out T>: ReadOnlyArrayNDLinearCursor<T> {
 
-    val currentIndexes: ReadOnlyIntArrayND
+    val currentIndexes: ReadOnlyIntArray1D
 
     fun next(dimension: Int): T {
         val value = read()
@@ -72,7 +72,7 @@ interface ReadOnlyArrayNDCursor<out T>: ReadOnlyArrayNDLinearCursor<T> {
 
     fun setPosition(vararg indexArray: Int)
 
-    fun setPosition(indexArray: ReadOnlyIntArrayND)
+    fun setPosition(indexArray: ReadOnlyIntArray1D)
 
     fun increment(dimension: Int)
 

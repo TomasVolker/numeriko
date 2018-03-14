@@ -4,6 +4,7 @@ import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDCursor
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDLinearCursor
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayNDCursor
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayNDLinearCursor
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 
 interface ReadOnlyIntArrayNDLinearCursor: ReadOnlyArrayNDLinearCursor<Int> {
 
@@ -59,7 +60,7 @@ interface IntArrayNDLinearCursor: ReadOnlyIntArrayNDLinearCursor, ArrayNDLinearC
 
 interface ReadOnlyIntArrayNDCursor: ReadOnlyIntArrayNDLinearCursor, ReadOnlyArrayNDCursor<Int> {
 
-    override val currentIndexes: ReadOnlyIntArrayND
+    override val currentIndexes: ReadOnlyIntArray1D
 
     fun nextInt(dimension: Int): Int {
         val value = readInt()

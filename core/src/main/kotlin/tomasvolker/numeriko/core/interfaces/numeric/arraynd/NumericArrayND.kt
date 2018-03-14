@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.numeric.arraynd
 
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayND
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDViewer
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 
 
@@ -26,13 +27,13 @@ interface NumericArrayND<T: Number>: ReadOnlyNumericArrayND<T>, ArrayND<T> {
 
     override fun getView(vararg indices: Any): NumericArrayND<T>
 
-    fun setInt(value: Int, indexArray: ReadOnlyIntArrayND)
+    fun setInt(value: Int, indexArray: ReadOnlyIntArray1D)
 
     fun setInt(value: Int, vararg indices: Int)
 
     fun setInt(value: ReadOnlyIntArrayND, vararg indices: Any)
 
-    fun setDouble(value: Double, indexArray: ReadOnlyIntArrayND)
+    fun setDouble(value: Double, indexArray: ReadOnlyIntArray1D)
 
     fun setDouble(value: Double, vararg indices: Int)
 /*

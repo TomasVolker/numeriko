@@ -5,7 +5,6 @@ import tomasvolker.numeriko.core.jvm.generic.arraynd.setAllInline
 import tomasvolker.numeriko.core.jvm.int.arraynd.JvmIntArrayND
 import tomasvolker.numeriko.core.jvm.int.arraynd.setAllInline
 import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
-import tomasvolker.numeriko.core.interfaces.int.array1d.IntArray1D
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.jvm.int.array1d.JvmIntArray1D
 import tomasvolker.numeriko.core.util.computeSizeFromShape
@@ -14,10 +13,14 @@ val jvmArrayNDFactory = JvmArrayNDFactory()
 
 class JvmArrayNDFactory: ArrayNDFactory {
 
-    override fun intZeros(s0: Int): IntArray1D = JvmIntArray1D(IntArray(s0))
+    override fun intZeros(s0: Int) =
+            JvmIntArray1D(IntArray(s0))
 
-    override fun intArray1D(s0: Int, value: (i0: Int) -> Int): IntArray1D =
+    override fun intArray1D(s0: Int, value: (i0: Int) -> Int) =
             JvmIntArray1D(IntArray(s0, value))
+
+    override fun intArray1DOf(vararg values: Int) =
+            JvmIntArray1D(values)
 
     override fun <T> arrayND(vararg shape: Int, value: (index: ReadOnlyIntArrayND) -> T): JvmArrayND<T> {
         val result = JvmArrayND(

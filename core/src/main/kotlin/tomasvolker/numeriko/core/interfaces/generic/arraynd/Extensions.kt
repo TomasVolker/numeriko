@@ -1,32 +1,33 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 
 operator fun <T> ReadOnlyArrayND<T>.get(vararg indeces: Int) =
         getValue(*indeces)
 
-operator fun <T> ReadOnlyArrayND<T>.get(indexArray: ReadOnlyIntArrayND) =
+operator fun <T> ReadOnlyArrayND<T>.get(indexArray: ReadOnlyIntArray1D) =
         getValue(indexArray)
 
 operator fun <T> ArrayND<T>.get(vararg indeces: Int) =
         getValue(*indeces)
 
-operator fun <T> ArrayND<T>.get(indexArray: ReadOnlyIntArrayND) =
+operator fun <T> ArrayND<T>.get(indexArray: ReadOnlyIntArray1D) =
         getValue(indexArray)
 
 operator fun <T> ArrayND<T>.set(vararg indeces: Int, value: T) =
         setValue(value, *indeces)
 
-operator fun <T> ArrayND<T>.set(indexArray: ReadOnlyIntArrayND, value: T) =
+operator fun <T> ArrayND<T>.set(indexArray: ReadOnlyIntArray1D, value: T) =
         setValue(value, indexArray)
 
 
 
-/*inline*/ fun <T> ArrayND<T>.forEachIndexed(action: (indexArray: ReadOnlyIntArrayND, value: T) -> Unit) {
+/*inline*/ fun <T> ArrayND<T>.forEachIndexed(action: (indexArray: ReadOnlyIntArray1D, value: T) -> Unit) {
 
     val iterator = cursor()
 
-    var indeces: ReadOnlyIntArrayND
+    var indeces: ReadOnlyIntArray1D
     var value: T
     while (iterator.hasNext()) {
         indeces = iterator.currentIndexes
@@ -36,7 +37,7 @@ operator fun <T> ArrayND<T>.set(indexArray: ReadOnlyIntArrayND, value: T) =
 
 }
 
-/*inline*/ fun <T> ArrayND<T>.setAllInline(setter: (indexArray: ReadOnlyIntArrayND) -> T) {
+/*inline*/ fun <T> ArrayND<T>.setAllInline(setter: (indexArray: ReadOnlyIntArray1D) -> T) {
 
     with(cursor()) {
 

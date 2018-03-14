@@ -1,5 +1,7 @@
 package tomasvolker.numeriko.core.util
 
+import tomasvolker.numeriko.core.interfaces.int.array1d.IntArray1D
+import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayND
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.interfaces.int.arraynd.get
@@ -22,7 +24,7 @@ fun computeSizeFromShape(shape: IntArray): Int {
 }
 
 internal fun dimensionWidthArray(
-        shapeArray: ReadOnlyIntArrayND,
+        shapeArray: ReadOnlyIntArray1D,
         strideArray: IntArray = IntArray(shapeArray.size) { 1 }
 ): IntArray {
 
@@ -93,7 +95,7 @@ internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: ReadOnlyI
     )
 }
 
-internal fun linearIndexToIndexArray(shapeArray: ReadOnlyIntArrayND, linearIndex: Int): IntArray {
+internal fun linearIndexToIndexArray(shapeArray: ReadOnlyIntArray1D, linearIndex: Int): IntArray {
 
     require(shapeArray.rank == 1) { "shapeArray rank must be 1" }
 
@@ -127,7 +129,7 @@ inline fun <T> setAll(shape: ReadOnlyIntArrayND, data: Array<Any?>, setter: (ind
 */
 fun incrementIndexArray(
         shape: IntArray,
-        indexArray: IntArrayND,
+        indexArray: IntArray1D,
         dimension: Int = indexArray.lastIndex(0),
         amount: Int = 1) {
 
@@ -189,7 +191,7 @@ internal fun viewIndexArrayToLinearIndex(
         shapeArray: IntArray,
         offset: Int,
         strideArray: IntArray,
-        indexArray: ReadOnlyIntArrayND,
+        indexArray: ReadOnlyIntArray1D,
         checkRange: Boolean = true
 ): Int {
 

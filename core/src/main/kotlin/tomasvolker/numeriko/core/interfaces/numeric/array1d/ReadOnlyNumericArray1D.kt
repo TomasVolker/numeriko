@@ -3,8 +3,9 @@ package tomasvolker.numeriko.core.interfaces.numeric.array1d
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.generic.array1d.ReadOnlyArray1D
+import tomasvolker.numeriko.core.interfaces.numeric.arraynd.ReadOnlyNumericArrayND
 
-interface ReadOnlyNumericArray1D<T: Number>: ReadOnlyArray1D<T> {
+interface ReadOnlyNumericArray1D<T: Number>: ReadOnlyArray1D<T>, ReadOnlyNumericArrayND<T> {
 
     override fun copy(): ReadOnlyNumericArray1D<T>
 
@@ -19,6 +20,8 @@ interface ReadOnlyNumericArray1D<T: Number>: ReadOnlyArray1D<T> {
     fun getDouble(i0: Int): Double
 
     fun getDouble(i0: Index): Double
+
+    override fun getView(vararg indices: Any): ReadOnlyNumericArray1D<T>
 
 }
 
