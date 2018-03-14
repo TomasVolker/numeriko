@@ -4,12 +4,10 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.generic.array1d.ReadOnlyArray1D
 import tomasvolker.numeriko.core.interfaces.generic.array1d.defaultToString
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArrayCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArrayLinearCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyNDArrayLinearCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDLinearCursor
 import tomasvolker.numeriko.core.interfaces.int.array1d.IntArray1D
 import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
-import tomasvolker.numeriko.core.jvm.int.arraynd.wrapNDArray
 
 class JvmIntArray1DView internal constructor(
         val data: IntArray,
@@ -69,11 +67,11 @@ class JvmIntArray1DView internal constructor(
 
     override fun copy() = TODO()
 
-    override fun linearCursor(): NDArrayLinearCursor<Int> {
+    override fun linearCursor(): ArrayNDLinearCursor<Int> {
         TODO("not implemented")
     }
 
-    override fun cursor(): NDArrayCursor<Int> {
+    override fun cursor(): ArrayNDCursor<Int> {
         TODO("not implemented")
     }
 

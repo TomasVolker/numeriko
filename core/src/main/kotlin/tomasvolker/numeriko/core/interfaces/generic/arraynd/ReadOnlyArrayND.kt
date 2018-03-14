@@ -1,53 +1,53 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 
-interface ReadOnlyNDArrayViewer<out T> {
+interface ReadOnlyArrayNDViewer<out T> {
 
-    val array: ReadOnlyNDArray<T>
+    val array: ReadOnlyArrayND<T>
 
-    operator fun get(vararg indices: Any): ReadOnlyNDArray<T> = array.getView(*indices)
+    operator fun get(vararg indices: Any): ReadOnlyArrayND<T> = array.getView(*indices)
 
 }
 
-class DefaultReadOnlyNDArrayViewer<out T>(override val array: ReadOnlyNDArray<T>): ReadOnlyNDArrayViewer<T>
+class DefaultReadOnlyArrayNDViewer<out T>(override val array: ReadOnlyArrayND<T>): ReadOnlyArrayNDViewer<T>
 
 /**
  * Interface for generic read only N dimensional arrays
  *
  * Basic interface for a read-only N dimensional generic jvm. Note that read-only does not
- * imply immutability (the mutable NDArray interface inherits from this one). This
+ * imply immutability (the mutable ArrayND interface inherits from this one). This
  * follows Kotlin's Collection and MutableCollection design pattern.
  *
  * @param T the type of elements of this jvm
- * @see NDArray
+ * @see ArrayND
  */
-interface ReadOnlyNDArray<out T>: Collection<T> {
+interface ReadOnlyArrayND<out T>: Collection<T> {
 
     /**
      * Shape of the jvm
      *
-     * Shape of the NDArray as a rank one ReadOnlyNDArray. An empty shape indicates
-     * an NDArray of rank 0, which is equivalent to a scalar. The jvm contains the lengths
+     * Shape of the ArrayND as a rank one ReadOnlyArrayND. An empty shape indicates
+     * an ArrayND of rank 0, which is equivalent to a scalar. The jvm contains the lengths
      * of the different dimensions, which are always non-negative (may be zero).
      */
-    val shape: ReadOnlyIntNDArray
+    val shape: ReadOnlyIntArrayND
 
     /**
      * Shape of an index of the jvm
      *
-     * Shape of an index for this NDArray. This is equal to the shape of the shape. This is a rank one jvm with one
+     * Shape of an index for this ArrayND. This is equal to the shape of the shape. This is a rank one jvm with one
      * element containing the amount of indices of a valid index.
      */
-    val indexShape: ReadOnlyIntNDArray get() = shape.shape
+    val indexShape: ReadOnlyIntArrayND get() = shape.shape
 
-    val view: ReadOnlyNDArrayViewer<T> get() = DefaultReadOnlyNDArrayViewer(this)
+    val view: ReadOnlyArrayNDViewer<T> get() = DefaultReadOnlyArrayNDViewer(this)
 
     /**
      * Rank of the jvm.
      *
-     * Rank of the NDArray, which is the size of the shape. The rank may be zero, making the jvm equivalent to a
+     * Rank of the ArrayND, which is the size of the shape. The rank may be zero, making the jvm equivalent to a
      * scalar.
      */
     val rank: Int
@@ -56,7 +56,7 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
     /**
      * Size of the jvm.
      *
-     * Size of the NDArray. Indicates the amount of elements it stores. It is the product
+     * Size of the ArrayND. Indicates the amount of elements it stores. It is the product
      * of the length in all dimensions. For a rank zero jvm the size is 1.
      */
     override val size: Int
@@ -107,7 +107,7 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
      *
      * Getter function of the item on the given indices. If a [rank] amount of indices must be provided or
      * [IllegalArgumentException] will be thrown. This the generic getter, to avoid boxing on primitive types the
-     * corresponding getter should be used (e.g. [ReadOnlyIntNDArray.getInt])
+     * corresponding getter should be used (e.g. [ReadOnlyIntArrayND.getInt])
      *
      * @return the element in the given indices
      * @throws IllegalArgumentException when the amount of indices provided is not equal to [rank].
@@ -119,12 +119,12 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
      *
      * Getter function of the item on the given indices. If the indexArray has not the shape of [indexShape] an
      * [IllegalArgumentException] will be thrown. This the generic getter, to about boxing on primitive types the
-     * corresponding getter should be used (e.g. [ReadOnlyIntNDArray.getInt])
+     * corresponding getter should be used (e.g. [ReadOnlyIntArrayND.getInt])
      *
      * @return the element in the given indices
      * @throws IllegalArgumentException when the shape of [indexArray] is not equal to [indexShape].
      */
-    fun getValue(indexArray: ReadOnlyIntNDArray): T
+    fun getValue(indexArray: ReadOnlyIntArrayND): T
 
     /**
      * Get a view of the given indeces and index ranges.
@@ -133,18 +133,18 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
      * Index or IndexProgression, or an [IllegalArgumentException] will be thrown. Both this jvm and the view
      * returned by this function work over the same backing jvm.
      *
-     * @return a [ReadOnlyNDArray] which is a view of this jvm.
+     * @return a [ReadOnlyArrayND] which is a view of this jvm.
      * @throws IllegalArgumentException if an object which is not a Int, IntRange, Index or IndexProgression is
      * passed.
      */
-    fun getView(vararg indices:Any): ReadOnlyNDArray<T>
+    fun getView(vararg indices:Any): ReadOnlyArrayND<T>
 
     /**
      * Copies the jvm.
      *
      * @return a copy of this jvm
      */
-    fun copy(): ReadOnlyNDArray<T>
+    fun copy(): ReadOnlyArrayND<T>
 
     /**
      * Get a copy of the data as an [Array] in row mayor order.
@@ -200,25 +200,25 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
      * different dimensions.
      *
      */
-    override fun iterator(): ReadOnlyNDArrayLinearCursor<T> = linearCursor()
+    override fun iterator(): ReadOnlyArrayNDLinearCursor<T> = linearCursor()
 
     /**
      * Returns a linear iterator which traverses the jvm in row mayor order.
      */
-    fun linearCursor(): ReadOnlyNDArrayLinearCursor<T>
+    fun linearCursor(): ReadOnlyArrayNDLinearCursor<T>
 
     /**
      * Returns a cursor which traverses the jvm in row mayor order, also providing functionality to move on
      * different dimensions.
      */
-    fun cursor(): ReadOnlyNDArrayCursor<T>
+    fun cursor(): ReadOnlyArrayNDCursor<T>
 
 }
 
-fun <T> ReadOnlyNDArray<T>.defaultEquals(other: Any?): Boolean {
+fun <T> ReadOnlyArrayND<T>.defaultEquals(other: Any?): Boolean {
 
     when(other) {
-        is NDArray<*> -> {
+        is ArrayND<*> -> {
 
             if (other.rank == 1 && this.rank == 1) {
 
@@ -245,7 +245,7 @@ fun <T> ReadOnlyNDArray<T>.defaultEquals(other: Any?): Boolean {
 
 }
 
-fun <T> ReadOnlyNDArray<T>.defaultHashCode(): Int {
+fun <T> ReadOnlyArrayND<T>.defaultHashCode(): Int {
 
     val shapeHash = shape.reduce { acc, value->  31 * acc + value.hashCode()}
 
@@ -258,11 +258,11 @@ fun <T> ReadOnlyNDArray<T>.defaultHashCode(): Int {
     return 31 * shapeHash + dataHash
 }
 
-fun <T> ReadOnlyNDArray<T>.defaultToString(): String =
+fun <T> ReadOnlyArrayND<T>.defaultToString(): String =
         buildString { appendArray(this@defaultToString) }
 
 
-fun <T> StringBuilder.appendArray(array: ReadOnlyNDArray<T>) {
+fun <T> StringBuilder.appendArray(array: ReadOnlyArrayND<T>) {
 
     when (array.rank) {
 

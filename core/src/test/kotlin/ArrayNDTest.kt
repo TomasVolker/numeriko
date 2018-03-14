@@ -2,17 +2,17 @@ import org.junit.Test
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.index.rangeTo
-import tomasvolker.numeriko.core.interfaces.factory.intNDArray
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.factory.intArrayND
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.interfaces.int.arraynd.get
 import tomasvolker.numeriko.core.interfaces.int.arraynd.set
 
-class NDArrayTest {
+class ArrayNDTest {
 
     @Test
-    fun printIntNDArray() {
+    fun printIntArrayND() {
 
-        val array: ReadOnlyIntNDArray = intNDArray(2, 2, 2) {
+        val array: ReadOnlyIntArrayND = intArrayND(2, 2, 2) {
             it[0] + it[1] + it[2]
         }
 
@@ -27,7 +27,7 @@ class NDArrayTest {
 
         var aux = 0
 
-        val array = intNDArray(4, 3, 5) { aux++ }
+        val array = intArrayND(4, 3, 5) { aux++ }
 
         val view = array.view[1..2, All, 2..Last]
 

@@ -1,32 +1,32 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 
-operator fun <T> ReadOnlyNDArray<T>.get(vararg indeces: Int) =
+operator fun <T> ReadOnlyArrayND<T>.get(vararg indeces: Int) =
         getValue(*indeces)
 
-operator fun <T> ReadOnlyNDArray<T>.get(indexArray: ReadOnlyIntNDArray) =
+operator fun <T> ReadOnlyArrayND<T>.get(indexArray: ReadOnlyIntArrayND) =
         getValue(indexArray)
 
-operator fun <T> NDArray<T>.get(vararg indeces: Int) =
+operator fun <T> ArrayND<T>.get(vararg indeces: Int) =
         getValue(*indeces)
 
-operator fun <T> NDArray<T>.get(indexArray: ReadOnlyIntNDArray) =
+operator fun <T> ArrayND<T>.get(indexArray: ReadOnlyIntArrayND) =
         getValue(indexArray)
 
-operator fun <T> NDArray<T>.set(vararg indeces: Int, value: T) =
+operator fun <T> ArrayND<T>.set(vararg indeces: Int, value: T) =
         setValue(value, *indeces)
 
-operator fun <T> NDArray<T>.set(indexArray: ReadOnlyIntNDArray, value: T) =
+operator fun <T> ArrayND<T>.set(indexArray: ReadOnlyIntArrayND, value: T) =
         setValue(value, indexArray)
 
 
 
-/*inline*/ fun <T> NDArray<T>.forEachIndexed(action: (indexArray: ReadOnlyIntNDArray, value: T) -> Unit) {
+/*inline*/ fun <T> ArrayND<T>.forEachIndexed(action: (indexArray: ReadOnlyIntArrayND, value: T) -> Unit) {
 
     val iterator = cursor()
 
-    var indeces: ReadOnlyIntNDArray
+    var indeces: ReadOnlyIntArrayND
     var value: T
     while (iterator.hasNext()) {
         indeces = iterator.currentIndexes
@@ -36,11 +36,11 @@ operator fun <T> NDArray<T>.set(indexArray: ReadOnlyIntNDArray, value: T) =
 
 }
 
-/*inline*/ fun <T> NDArray<T>.setAllInline(setter: (indexArray: ReadOnlyIntNDArray) -> T) {
+/*inline*/ fun <T> ArrayND<T>.setAllInline(setter: (indexArray: ReadOnlyIntArrayND) -> T) {
 
     with(cursor()) {
 
-        var indeces: ReadOnlyIntNDArray
+        var indeces: ReadOnlyIntArrayND
 
         while (hasNext()) {
             indeces = currentIndexes
@@ -51,7 +51,7 @@ operator fun <T> NDArray<T>.set(indexArray: ReadOnlyIntNDArray, value: T) =
 
 }
 
-/*inline*/ fun <T> NDArray<T>.applyElementWiseInline(funtion: (value: T) -> T) {
+/*inline*/ fun <T> ArrayND<T>.applyElementWiseInline(funtion: (value: T) -> T) {
 
     with(linearCursor()) {
 
@@ -63,7 +63,7 @@ operator fun <T> NDArray<T>.set(indexArray: ReadOnlyIntNDArray, value: T) =
 
 }
 
-/*inline*/ fun <I, O> NDArray<O>.setElementWiseInline(other: NDArray<I>, function: (value: I) -> O) {
+/*inline*/ fun <I, O> ArrayND<O>.setElementWiseInline(other: ArrayND<I>, function: (value: I) -> O) {
 
     require(this.shape !=  other.shape) { "this shape must be equal to other shape" }
 
@@ -76,7 +76,7 @@ operator fun <T> NDArray<T>.set(indexArray: ReadOnlyIntNDArray, value: T) =
 
 }
 
-/*inline*/ fun <I, O> NDArray<O>.setElementWiseInline(first: NDArray<I>, second: NDArray<I>, function: (first: I, seconds: I) -> O) {
+/*inline*/ fun <I, O> ArrayND<O>.setElementWiseInline(first: ArrayND<I>, second: ArrayND<I>, function: (first: I, seconds: I) -> O) {
 
     require(this.shape !=  first.shape || this.shape !=  second.shape) { "this shape must be equal to other shape" }
 

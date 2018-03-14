@@ -1,13 +1,13 @@
 package tomasvolker.numeriko.core.interfaces.int.arraynd
 
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArrayCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArrayLinearCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyNDArrayCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyNDArrayLinearCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDLinearCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayNDCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayNDLinearCursor
 
-interface ReadOnlyIntNDArrayLinearCursor: ReadOnlyNDArrayLinearCursor<Int> {
+interface ReadOnlyIntArrayNDLinearCursor: ReadOnlyArrayNDLinearCursor<Int> {
 
-    override val array: ReadOnlyIntNDArray
+    override val array: ReadOnlyIntArrayND
 
     override fun hasNext() = cursorInBounds()
 
@@ -33,9 +33,9 @@ interface ReadOnlyIntNDArrayLinearCursor: ReadOnlyNDArrayLinearCursor<Int> {
 
 }
 
-interface IntNDArrayLinearCursor: ReadOnlyIntNDArrayLinearCursor, NDArrayLinearCursor<Int> {
+interface IntArrayNDLinearCursor: ReadOnlyIntArrayNDLinearCursor, ArrayNDLinearCursor<Int> {
 
-    override val array: IntNDArray
+    override val array: IntArrayND
 
     fun setNextInt(value :Int) {
         writeInt(value)
@@ -57,9 +57,9 @@ interface IntNDArrayLinearCursor: ReadOnlyIntNDArrayLinearCursor, NDArrayLinearC
 
 }
 
-interface ReadOnlyIntNDArrayCursor: ReadOnlyIntNDArrayLinearCursor, ReadOnlyNDArrayCursor<Int> {
+interface ReadOnlyIntArrayNDCursor: ReadOnlyIntArrayNDLinearCursor, ReadOnlyArrayNDCursor<Int> {
 
-    override val currentIndexes: ReadOnlyIntNDArray
+    override val currentIndexes: ReadOnlyIntArrayND
 
     fun nextInt(dimension: Int): Int {
         val value = readInt()
@@ -80,9 +80,9 @@ interface ReadOnlyIntNDArrayCursor: ReadOnlyIntNDArrayLinearCursor, ReadOnlyNDAr
 }
 
 
-interface IntNDArrayCursor: IntNDArrayLinearCursor, ReadOnlyIntNDArrayCursor, NDArrayCursor<Int> {
+interface IntArrayNDCursor: IntArrayNDLinearCursor, ReadOnlyIntArrayNDCursor, ArrayNDCursor<Int> {
 
-    override val array: IntNDArray
+    override val array: IntArrayND
 
     fun setNextInt(value: Int, dimension: Int) {
         writeInt(value)

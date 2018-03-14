@@ -1,13 +1,13 @@
 package tomasvolker.numeriko.core.jvm.int.arraynd
 
-import tomasvolker.numeriko.core.jvm.factory.jvmNDArrayFactory
+import tomasvolker.numeriko.core.jvm.factory.jvmArrayNDFactory
 import tomasvolker.numeriko.core.interfaces.int.arraynd.*
 
 import tomasvolker.numeriko.core.util.dimensionWidthArray
 import tomasvolker.numeriko.core.util.incrementIndexArray
 import tomasvolker.numeriko.core.util.indexArrayToLinearIndex
 
-class JvmIntNDArrayLinearCursor(override val array: JvmIntNDArray): IntNDArrayLinearCursor {
+class JvmIntArrayNDLinearCursor(override val array: JvmIntArrayND): IntArrayNDLinearCursor {
     private val data = array.data
 
     private var linearIndex: Int = 0
@@ -56,9 +56,9 @@ class JvmIntNDArrayLinearCursor(override val array: JvmIntNDArray): IntNDArrayLi
 
 }
 
-class JvmIntNDArrayCursor(override val array: JvmIntNDArray): IntNDArrayCursor {
+class JvmIntArrayNDCursor(override val array: JvmIntArrayND): IntArrayNDCursor {
 
-    override val currentIndexes = jvmNDArrayFactory.intZeros(array.indexShape)
+    override val currentIndexes = jvmArrayNDFactory.intZeros(array.indexShape)
 
     private val data = array.data
 
@@ -123,7 +123,7 @@ class JvmIntNDArrayCursor(override val array: JvmIntNDArray): IntNDArrayCursor {
         currentIndexes.setAllInline { index ->  indexArray[index[0]] }
     }
 
-    override fun setPosition(indexArray: ReadOnlyIntNDArray) {
+    override fun setPosition(indexArray: ReadOnlyIntArrayND) {
         linearIndex = indexArrayToLinearIndex(array.shapeArray, indexArray)
         currentIndexes.setAllInline { index ->  indexArray[index[0]] }
     }

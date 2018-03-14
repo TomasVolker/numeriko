@@ -1,8 +1,5 @@
 package tomasvolker.numeriko.core.index
 
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
-import tomasvolker.numeriko.core.interfaces.int.arraynd.get
-
 interface Index {
 
     fun computeValue(size: Int): Int

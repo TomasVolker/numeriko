@@ -2,10 +2,8 @@ package tomasvolker.numeriko.core.interfaces.generic.array1d
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyNDArray
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyNDArrayCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyNDArrayLinearCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.get
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayNDCursor
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayNDLinearCursor
 import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
 
 interface ReadOnlyArray1D<out T>: Collection<T> {
@@ -63,11 +61,11 @@ interface ReadOnlyArray1D<out T>: Collection<T> {
 
     fun lastIndex() = size - 1
 
-    override fun iterator(): ReadOnlyNDArrayLinearCursor<T> = linearCursor()
+    override fun iterator(): ReadOnlyArrayNDLinearCursor<T> = linearCursor()
 
-    fun linearCursor(): ReadOnlyNDArrayLinearCursor<T>
+    fun linearCursor(): ReadOnlyArrayNDLinearCursor<T>
 
-    fun cursor(): ReadOnlyNDArrayCursor<T>
+    fun cursor(): ReadOnlyArrayNDCursor<T>
 
 }
 

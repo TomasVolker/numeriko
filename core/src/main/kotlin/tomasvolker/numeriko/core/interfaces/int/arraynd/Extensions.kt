@@ -1,23 +1,23 @@
 package tomasvolker.numeriko.core.interfaces.int.arraynd
 
-fun ReadOnlyIntNDArray.get(): Int = getInt()
+fun ReadOnlyIntArrayND.get(): Int = getInt()
 
-operator fun ReadOnlyIntNDArray.get(vararg indexes: Int): Int =
+operator fun ReadOnlyIntArrayND.get(vararg indexes: Int): Int =
         getInt(*indexes)
 
-operator fun ReadOnlyIntNDArray.get(indexArray: ReadOnlyIntNDArray): Int =
+operator fun ReadOnlyIntArrayND.get(indexArray: ReadOnlyIntArrayND): Int =
         getInt(indexArray)
 
-operator fun IntNDArray.get(vararg indexes: Int): Int =
+operator fun IntArrayND.get(vararg indexes: Int): Int =
         getInt(*indexes)
 
-operator fun IntNDArray.get(indexArray: ReadOnlyIntNDArray): Int =
+operator fun IntArrayND.get(indexArray: ReadOnlyIntArrayND): Int =
         getInt(indexArray)
 
-fun IntNDArray.get(): Int = getInt()
+fun IntArrayND.get(): Int = getInt()
 
-operator fun IntNDArray.set(vararg indexes: Int, value: Int) =
+operator fun IntArrayND.set(vararg indexes: Int, value: Int) =
         setInt(value, *indexes)
 
-operator fun IntNDArray.set(indexArray: ReadOnlyIntNDArray, value: Int) =
+operator fun IntArrayND.set(indexArray: ReadOnlyIntArrayND, value: Int) =
         setInt(value, indexArray)

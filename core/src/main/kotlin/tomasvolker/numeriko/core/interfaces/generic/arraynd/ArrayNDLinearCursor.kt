@@ -1,10 +1,10 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 
-interface ReadOnlyNDArrayLinearCursor<out T>: Iterator<T> {
+interface ReadOnlyArrayNDLinearCursor<out T>: Iterator<T> {
 
-    val array: ReadOnlyNDArray<T>
+    val array: ReadOnlyArrayND<T>
 
     override fun hasNext() = cursorInBounds()
 
@@ -36,9 +36,9 @@ interface ReadOnlyNDArrayLinearCursor<out T>: Iterator<T> {
 
 }
 
-interface NDArrayLinearCursor<T>: ReadOnlyNDArrayLinearCursor<T> {
+interface ArrayNDLinearCursor<T>: ReadOnlyArrayNDLinearCursor<T> {
 
-    override val array: NDArray<T>
+    override val array: ArrayND<T>
 
     fun setNext(value: T) {
         write(value)
@@ -54,9 +54,9 @@ interface NDArrayLinearCursor<T>: ReadOnlyNDArrayLinearCursor<T> {
 
 }
 
-interface ReadOnlyNDArrayCursor<out T>: ReadOnlyNDArrayLinearCursor<T> {
+interface ReadOnlyArrayNDCursor<out T>: ReadOnlyArrayNDLinearCursor<T> {
 
-    val currentIndexes: ReadOnlyIntNDArray
+    val currentIndexes: ReadOnlyIntArrayND
 
     fun next(dimension: Int): T {
         val value = read()
@@ -72,7 +72,7 @@ interface ReadOnlyNDArrayCursor<out T>: ReadOnlyNDArrayLinearCursor<T> {
 
     fun setPosition(vararg indexArray: Int)
 
-    fun setPosition(indexArray: ReadOnlyIntNDArray)
+    fun setPosition(indexArray: ReadOnlyIntArrayND)
 
     fun increment(dimension: Int)
 
@@ -85,9 +85,9 @@ interface ReadOnlyNDArrayCursor<out T>: ReadOnlyNDArrayLinearCursor<T> {
 }
 
 
-interface NDArrayCursor<T>: NDArrayLinearCursor<T>, ReadOnlyNDArrayCursor<T> {
+interface ArrayNDCursor<T>: ArrayNDLinearCursor<T>, ReadOnlyArrayNDCursor<T> {
 
-    override val array: NDArray<T>
+    override val array: ArrayND<T>
 
     fun setNext(value: T, dimension: Int) {
         write(value)

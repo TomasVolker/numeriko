@@ -1,22 +1,22 @@
 package tomasvolker.numeriko.core.jvm.generic.arraynd
 
-import tomasvolker.numeriko.core.jvm.int.arraynd.JvmIntNDArray
+import tomasvolker.numeriko.core.jvm.int.arraynd.JvmIntArrayND
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArray
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyNDArray
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayND
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayND
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultEquals
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultToString
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 import tomasvolker.numeriko.core.util.dimensionWidthArray
 import tomasvolker.numeriko.core.util.indexArrayToLinearIndex
 
-class JvmNDArray<T>(
+class JvmArrayND<T>(
         val data: Array<T>,
         internal var shapeArray: IntArray
-) : NDArray<T> {
+) : ArrayND<T> {
 
     init {
 
@@ -28,8 +28,8 @@ class JvmNDArray<T>(
 
     }
 
-    override val shape: ReadOnlyIntNDArray
-        get() = JvmIntNDArray(
+    override val shape: ReadOnlyIntArrayND
+        get() = JvmIntArrayND(
                 data = shapeArray,
                 shapeArray = intArrayOf(rank)
         )
@@ -43,22 +43,22 @@ class JvmNDArray<T>(
     override fun getValue(vararg indices: Int) =
             data[indexArrayToLinearIndex(shapeArray, indices)]
 
-    override fun getValue(indexArray: ReadOnlyIntNDArray) =
+    override fun getValue(indexArray: ReadOnlyIntArrayND) =
             data[indexArrayToLinearIndex(shapeArray, indexArray)]
 
     override fun setValue(value: T, vararg indices: Int) {
         data[indexArrayToLinearIndex(shapeArray, indices)] = value
     }
 
-    override fun setValue(value: T, indexArray: ReadOnlyIntNDArray) {
+    override fun setValue(value: T, indexArray: ReadOnlyIntArrayND) {
         data[indexArrayToLinearIndex(shapeArray, indexArray)] = value
     }
 
     // TODO Setting on itself
-    override fun setValue(value: ReadOnlyNDArray<T>, vararg indices: Any) =
+    override fun setValue(value: ReadOnlyArrayND<T>, vararg indices: Any) =
             getView(*indices).setAll { value.getValue(it) }
 
-    override fun getView(vararg indices: Any): JvmNDArrayView<T> {
+    override fun getView(vararg indices: Any): JvmArrayNDView<T> {
 
         require(indices.size <= rank) {
             "Too many indices (${indices.size}, must be less or equal than ${rank})"
@@ -113,7 +113,7 @@ class JvmNDArray<T>(
 
         }
 
-        return JvmNDArrayView(
+        return JvmArrayNDView(
                 data = data,
                 offset = offset,
                 shapeArray = shapeList.toIntArray(),
@@ -121,7 +121,7 @@ class JvmNDArray<T>(
         )
     }
 
-    override fun copy() = JvmNDArray(data.copyOf(), shapeArray.copyOf())
+    override fun copy() = JvmArrayND(data.copyOf(), shapeArray.copyOf())
 
     override fun unsafeGetDataAsArray() = data
 
@@ -133,7 +133,7 @@ class JvmNDArray<T>(
 
     override fun equals(other: Any?): Boolean {
         when(other) {
-            is JvmNDArray<*> -> {
+            is JvmArrayND<*> -> {
                 return other.data.contentEquals(this.data) &&
                         other.shapeArray.contentEquals(other.shapeArray)
             }
@@ -141,9 +141,9 @@ class JvmNDArray<T>(
         }
     }
 
-    override fun linearCursor() = JvmNDArrayLinearCursor(this)
+    override fun linearCursor() = JvmArrayNDLinearCursor(this)
 
-    override fun cursor() = JvmNDArrayCursor(this)
+    override fun cursor() = JvmArrayNDCursor(this)
 
     override fun hashCode() =
            31 * shapeArray.reduce { acc, i ->  31 * acc + i.hashCode()} +

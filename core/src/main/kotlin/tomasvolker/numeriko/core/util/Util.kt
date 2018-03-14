@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.core.util
 
-import tomasvolker.numeriko.core.interfaces.int.arraynd.IntNDArray
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayND
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.interfaces.int.arraynd.get
 import tomasvolker.numeriko.core.interfaces.int.arraynd.set
 
@@ -22,7 +22,7 @@ fun computeSizeFromShape(shape: IntArray): Int {
 }
 
 internal fun dimensionWidthArray(
-        shapeArray: ReadOnlyIntNDArray,
+        shapeArray: ReadOnlyIntArrayND,
         strideArray: IntArray = IntArray(shapeArray.size) { 1 }
 ): IntArray {
 
@@ -77,7 +77,7 @@ internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: IntArray)
     )
 }
 
-internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: ReadOnlyIntNDArray): Int {
+internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: ReadOnlyIntArrayND): Int {
 
     require(indexArray.rank == 1) {
         "indexArray rank (${indexArray.rank}) must be 1"
@@ -93,7 +93,7 @@ internal fun indexArrayToLinearIndex(shapeArray: IntArray, indexArray: ReadOnlyI
     )
 }
 
-internal fun linearIndexToIndexArray(shapeArray: ReadOnlyIntNDArray, linearIndex: Int): IntArray {
+internal fun linearIndexToIndexArray(shapeArray: ReadOnlyIntArrayND, linearIndex: Int): IntArray {
 
     require(shapeArray.rank == 1) { "shapeArray rank must be 1" }
 
@@ -111,9 +111,9 @@ internal fun linearIndexToIndexArray(shapeArray: ReadOnlyIntNDArray, linearIndex
     return result
 }
 /*
-inline fun <T> setAll(shape: ReadOnlyIntNDArray, data: Array<Any?>, setter: (indexArray: ReadOnlyIntNDArray) -> T) {
+inline fun <T> setAll(shape: ReadOnlyIntArrayND, data: Array<Any?>, setter: (indexArray: ReadOnlyIntArrayND) -> T) {
 
-    val indexArray = jvmNDArrayFactory.intArray(shape.shape)
+    val indexArray = jvmArrayNDFactory.intArray(shape.shape)
 
     for (i in data.indices) {
 
@@ -127,7 +127,7 @@ inline fun <T> setAll(shape: ReadOnlyIntNDArray, data: Array<Any?>, setter: (ind
 */
 fun incrementIndexArray(
         shape: IntArray,
-        indexArray: IntNDArray,
+        indexArray: IntArrayND,
         dimension: Int = indexArray.lastIndex(0),
         amount: Int = 1) {
 
@@ -189,7 +189,7 @@ internal fun viewIndexArrayToLinearIndex(
         shapeArray: IntArray,
         offset: Int,
         strideArray: IntArray,
-        indexArray: ReadOnlyIntNDArray,
+        indexArray: ReadOnlyIntArrayND,
         checkRange: Boolean = true
 ): Int {
 

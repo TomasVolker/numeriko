@@ -2,20 +2,20 @@ package tomasvolker.numeriko.core.jvm.int.arraynd
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyNDArray
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayND
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultEquals
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultToString
-import tomasvolker.numeriko.core.interfaces.int.arraynd.IntNDArray
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayND
+import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 import tomasvolker.numeriko.core.util.dimensionWidthArray
 import tomasvolker.numeriko.core.util.indexArrayToLinearIndex
 
-class JvmIntNDArray(
+class JvmIntArrayND(
         val data: IntArray,
         internal var shapeArray: IntArray
-) : IntNDArray {
+) : IntArrayND {
 
     init {
 
@@ -27,8 +27,8 @@ class JvmIntNDArray(
 
     }
 
-    override val shape: ReadOnlyIntNDArray
-        get() = JvmIntNDArray(
+    override val shape: ReadOnlyIntArrayND
+        get() = JvmIntArrayND(
                 data = shapeArray,
                 shapeArray = intArrayOf(rank)
         )
@@ -42,26 +42,26 @@ class JvmIntNDArray(
     override fun getInt(vararg indices: Int) =
             data[indexArrayToLinearIndex(shapeArray, indices)]
 
-    override fun getInt(indexArray: ReadOnlyIntNDArray) =
+    override fun getInt(indexArray: ReadOnlyIntArrayND) =
             data[indexArrayToLinearIndex(shapeArray, indexArray)]
 
     override fun setInt(value: Int, vararg indices: Int) {
         data[indexArrayToLinearIndex(shapeArray, indices)] = value
     }
 
-    override fun setInt(value: Int, indexArray: ReadOnlyIntNDArray) {
+    override fun setInt(value: Int, indexArray: ReadOnlyIntArrayND) {
         data[indexArrayToLinearIndex(shapeArray, indexArray)] = value
     }
 
     // TODO Setting on itself
-    override fun setInt(value: ReadOnlyIntNDArray, vararg indices: Any) =
+    override fun setInt(value: ReadOnlyIntArrayND, vararg indices: Any) =
             getView(*indices).setAll { value.getInt(it) }
 
     // TODO Setting on itself
-    override fun setValue(value: ReadOnlyNDArray<Int>, vararg indices: Any) =
+    override fun setValue(value: ReadOnlyArrayND<Int>, vararg indices: Any) =
             getView(*indices).setAll { value.getValue(it) }
 
-    override fun getView(vararg indices: Any): JvmIntNDArrayView {
+    override fun getView(vararg indices: Any): JvmIntArrayNDView {
 
         require(indices.size <= rank) {
             "Too many indices (${indices.size}, must be less or equal than ${rank})"
@@ -116,7 +116,7 @@ class JvmIntNDArray(
 
         }
 
-        return JvmIntNDArrayView(
+        return JvmIntArrayNDView(
                 data = data,
                 offset = offset,
                 shapeArray = shapeList.toIntArray(),
@@ -124,7 +124,7 @@ class JvmIntNDArray(
         )
     }
 
-    override fun copy() = JvmIntNDArray(data.copyOf(), shapeArray.copyOf())
+    override fun copy() = JvmIntArrayND(data.copyOf(), shapeArray.copyOf())
 
     override fun unsafeGetDataAsArray() = getDataAsArray()
 
@@ -138,7 +138,7 @@ class JvmIntNDArray(
 
     override fun equals(other: Any?): Boolean {
         when(other) {
-            is JvmIntNDArray -> {
+            is JvmIntArrayND -> {
                 return other.data.contentEquals(this.data) &&
                         other.shapeArray.contentEquals(other.shapeArray)
             }
@@ -146,9 +146,9 @@ class JvmIntNDArray(
         }
     }
 
-    override fun linearCursor() = JvmIntNDArrayLinearCursor(this)
+    override fun linearCursor() = JvmIntArrayNDLinearCursor(this)
 
-    override fun cursor() = JvmIntNDArrayCursor(this)
+    override fun cursor() = JvmIntArrayNDCursor(this)
 
     override fun hashCode() =
            31 * shapeArray.reduce { acc, i ->  31 * acc + i.hashCode()} +
