@@ -55,7 +55,7 @@ interface IntNDArray: ReadOnlyIntNDArray, NumericNDArray<Int> {
 
     operator fun minus(other: DoubleNDArray): DoubleNDArray
 
-    //times array
+    //times jvm
 
     operator fun times(other: IntNDArray): IntNDArray
 
@@ -67,7 +67,7 @@ interface IntNDArray: ReadOnlyIntNDArray, NumericNDArray<Int> {
 
     operator fun times(other: Double): DoubleNDArray
 
-    //div array
+    //div jvm
 
     operator fun div(other: IntNDArray): IntNDArray
 

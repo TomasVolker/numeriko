@@ -1,6 +1,6 @@
-package tomasvolker.numeriko.core.array.generic
+package tomasvolker.numeriko.core.jvm.generic.arraynd
 
-import tomasvolker.numeriko.core.array.integer.JvmIntNDArray
+import tomasvolker.numeriko.core.jvm.int.arraynd.JvmIntNDArray
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArray
@@ -76,10 +76,10 @@ class JvmNDArray<T>(
 
             when (index) {
                 is Index -> {
-                    index = index.computeValue(shape, dimension)
+                    index = index.computeValue(shape.getInt(dimension))
                 }
                 is IndexProgression -> {
-                    index = index.computeProgression(shape, dimension)
+                    index = index.computeProgression(shape.getInt(dimension))
                 }
             }
 

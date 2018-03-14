@@ -5,7 +5,7 @@ import tomasvolker.numeriko.core.interfaces.int.arraynd.get
 
 interface Index {
 
-    fun computeValue(shape: ReadOnlyIntNDArray, dimension: Int): Int
+    fun computeValue(size: Int): Int
 
     operator fun plus(other: Int): Index =
             IndexFunction(this) { it + other }
@@ -47,7 +47,7 @@ interface Index {
 
 open class LiteralIndex(val value: Int): Index {
 
-    override fun computeValue(shape: ReadOnlyIntNDArray, dimension: Int) = value
+    override fun computeValue(size: Int) = value
 
     override operator fun plus(other: Int) = LiteralIndex(value + other)
 
@@ -70,18 +70,18 @@ open class LiteralIndex(val value: Int): Index {
 object First: LiteralIndex(0)
 
 object Last: Index {
-    override fun computeValue(shape: ReadOnlyIntNDArray, dimension: Int): Int =
-            shape[dimension] - 1
+    override fun computeValue(size: Int): Int =
+            size - 1
 }
 
 class IndexFunction(val index: Index, val function: (index: Int) -> Int): Index {
-    override fun computeValue(shape: ReadOnlyIntNDArray, dimension: Int): Int =
-            function(index.computeValue(shape, dimension))
+    override fun computeValue(size: Int): Int =
+            function(index.computeValue(size))
 }
 
 class IndexFunction2(val lhs: Index, val rhs: Index, val function: (lhs: Int, rhs: Int) -> Int): Index {
-    override fun computeValue(shape: ReadOnlyIntNDArray, dimension: Int): Int =
-            function(lhs.computeValue(shape, dimension), rhs.computeValue(shape, dimension))
+    override fun computeValue(size: Int): Int =
+            function(lhs.computeValue(size), rhs.computeValue(size))
 }
 
 fun Index.map(function: (index: Int) -> Int) = IndexFunction(this, function)

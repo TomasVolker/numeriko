@@ -1,6 +1,6 @@
-package tomasvolker.numeriko.core.array.generic
+package tomasvolker.numeriko.core.jvm.generic.arraynd
 
-import tomasvolker.numeriko.core.array.jvmNDArrayFactory
+import tomasvolker.numeriko.core.jvm.factory.jvmNDArrayFactory
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
 import tomasvolker.numeriko.core.interfaces.int.arraynd.get
 import tomasvolker.numeriko.core.interfaces.int.arraynd.set

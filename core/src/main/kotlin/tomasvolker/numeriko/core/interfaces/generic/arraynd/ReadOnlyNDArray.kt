@@ -16,28 +16,28 @@ class DefaultReadOnlyNDArrayViewer<out T>(override val array: ReadOnlyNDArray<T>
 /**
  * Interface for generic read only N dimensional arrays
  *
- * Basic interface for a read-only N dimensional generic array. Note that read-only does not
+ * Basic interface for a read-only N dimensional generic jvm. Note that read-only does not
  * imply immutability (the mutable NDArray interface inherits from this one). This
  * follows Kotlin's Collection and MutableCollection design pattern.
  *
- * @param T the type of elements of this array
+ * @param T the type of elements of this jvm
  * @see NDArray
  */
 interface ReadOnlyNDArray<out T>: Collection<T> {
 
     /**
-     * Shape of the array
+     * Shape of the jvm
      *
      * Shape of the NDArray as a rank one ReadOnlyNDArray. An empty shape indicates
-     * an NDArray of rank 0, which is equivalent to a scalar. The array contains the lengths
+     * an NDArray of rank 0, which is equivalent to a scalar. The jvm contains the lengths
      * of the different dimensions, which are always non-negative (may be zero).
      */
     val shape: ReadOnlyIntNDArray
 
     /**
-     * Shape of an index of the array
+     * Shape of an index of the jvm
      *
-     * Shape of an index for this NDArray. This is equal to the shape of the shape. This is a rank one array with one
+     * Shape of an index for this NDArray. This is equal to the shape of the shape. This is a rank one jvm with one
      * element containing the amount of indices of a valid index.
      */
     val indexShape: ReadOnlyIntNDArray get() = shape.shape
@@ -45,34 +45,34 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
     val view: ReadOnlyNDArrayViewer<T> get() = DefaultReadOnlyNDArrayViewer(this)
 
     /**
-     * Rank of the array.
+     * Rank of the jvm.
      *
-     * Rank of the NDArray, which is the size of the shape. The rank may be zero, making the array equivalent to a
+     * Rank of the NDArray, which is the size of the shape. The rank may be zero, making the jvm equivalent to a
      * scalar.
      */
     val rank: Int
         get() = shape.size
 
     /**
-     * Size of the array.
+     * Size of the jvm.
      *
      * Size of the NDArray. Indicates the amount of elements it stores. It is the product
-     * of the length in all dimensions. For a rank zero array the size is 1.
+     * of the length in all dimensions. For a rank zero jvm the size is 1.
      */
     override val size: Int
         get() = computeSizeFromShape(unsafeGetShapeAsArray())
 
     /**
-     * Indicates if the array is empty.
+     * Indicates if the jvm is empty.
      *
-     * @return true if the array is empty, which is equivalent to having size zero.
+     * @return true if the jvm is empty, which is equivalent to having size zero.
      */
     override fun isEmpty(): Boolean = size == 0
 
     /**
-     * Indicates if the array contains the given element.
+     * Indicates if the jvm contains the given element.
      *
-     * @return true if an element is equal to any element in the array according to [equals].
+     * @return true if an element is equal to any element in the jvm according to [equals].
      */
     override fun contains(element:@UnsafeVariance T): Boolean {
 
@@ -86,9 +86,9 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
     }
 
     /**
-     * Indicates if the array contains all the given elements.
+     * Indicates if the jvm contains all the given elements.
      *
-     * @return true if all elements in [elements] are contained in the array according to [contains].
+     * @return true if all elements in [elements] are contained in the jvm according to [contains].
      */
     override fun containsAll(elements: Collection<@UnsafeVariance T>): Boolean {
 
@@ -129,62 +129,62 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
     /**
      * Get a view of the given indeces and index ranges.
      *
-     * Getter function for a view on the given indices. The indices array must contain objects of class Int, IntRange,
-     * Index or IndexProgression, or an [IllegalArgumentException] will be thrown. Both this array and the view
-     * returned by this function work over the same backing array.
+     * Getter function for a view on the given indices. The indices jvm must contain objects of class Int, IntRange,
+     * Index or IndexProgression, or an [IllegalArgumentException] will be thrown. Both this jvm and the view
+     * returned by this function work over the same backing jvm.
      *
-     * @return a [ReadOnlyNDArray] which is a view of this array.
+     * @return a [ReadOnlyNDArray] which is a view of this jvm.
      * @throws IllegalArgumentException if an object which is not a Int, IntRange, Index or IndexProgression is
      * passed.
      */
     fun getView(vararg indices:Any): ReadOnlyNDArray<T>
 
     /**
-     * Copies the array.
+     * Copies the jvm.
      *
-     * @return a copy of this array
+     * @return a copy of this jvm
      */
     fun copy(): ReadOnlyNDArray<T>
 
     /**
      * Get a copy of the data as an [Array] in row mayor order.
      *
-     * Returns a copy of the data as a JVM array on row mayor order. To access the backing JVM array if the
+     * Returns a copy of the data as a JVM jvm on row mayor order. To access the backing JVM jvm if the
      * implementation uses one use [unsafeGetDataAsArray]
      *
-     * @return a copy of the data as a JVM array on row mayor order.
+     * @return a copy of the data as a JVM jvm on row mayor order.
      */
     fun getDataAsArray(): Array<out T>
 
     /**
      * Get the backing data as an [Array] if possible or a copy, in row mayor order.
      *
-     * Returns the backing JVM array data in row mayor order if the implementation uses one, or a copy of not. This
-     * method should not be used in general, only when there is a significant performance advantage. The returned array
+     * Returns the backing JVM jvm data in row mayor order if the implementation uses one, or a copy of not. This
+     * method should not be used in general, only when there is a significant performance advantage. The returned jvm
      * MUST only be read from, not written.
      *
-     * @return the backing data JVM array if the implementation uses one or a copy containing the elements in row mayor order.
+     * @return the backing data JVM jvm if the implementation uses one or a copy containing the elements in row mayor order.
      */
     fun unsafeGetDataAsArray(): Array<out T>
 
     /**
      * Get a copy of the shape as an [Array].
      *
-     * Returns a copy of the shape as a JVM array. To access the backing JVM array if the
+     * Returns a copy of the shape as a JVM jvm. To access the backing JVM jvm if the
      * implementation uses one use [unsafeGetShapeAsArray]
      *
-     * @return a copy of the shape as a JVM array on row mayor order.
+     * @return a copy of the shape as a JVM jvm on row mayor order.
      */
     fun getShapeAsArray(): IntArray
 
     /**
      * Get the backing shape as an [Array] if possible or a copy.
      *
-     * Returns the backing JVM array shape if the implementation uses one, or a copy of not. This method should not be
-     * used in general, only when there is a significant performance advantage. The returned array MUST only be read
+     * Returns the backing JVM jvm shape if the implementation uses one, or a copy of not. This method should not be
+     * used in general, only when there is a significant performance advantage. The returned jvm MUST only be read
      * from, not written.
      *
-     * @return the backing shape JVM array if the implementation uses one or a copy.
+     * @return the backing shape JVM jvm if the implementation uses one or a copy.
      */
     fun unsafeGetShapeAsArray(): IntArray
 
@@ -196,19 +196,19 @@ interface ReadOnlyNDArray<out T>: Collection<T> {
     fun lastIndex(dimension: Int) = shape[dimension] - 1
 
     /**
-     * Returns an iterator which traverses the array in row mayor order, also providing functionality to move on
+     * Returns an iterator which traverses the jvm in row mayor order, also providing functionality to move on
      * different dimensions.
      *
      */
     override fun iterator(): ReadOnlyNDArrayLinearCursor<T> = linearCursor()
 
     /**
-     * Returns a linear iterator which traverses the array in row mayor order.
+     * Returns a linear iterator which traverses the jvm in row mayor order.
      */
     fun linearCursor(): ReadOnlyNDArrayLinearCursor<T>
 
     /**
-     * Returns a cursor which traverses the array in row mayor order, also providing functionality to move on
+     * Returns a cursor which traverses the jvm in row mayor order, also providing functionality to move on
      * different dimensions.
      */
     fun cursor(): ReadOnlyNDArrayCursor<T>

@@ -1,16 +1,23 @@
-package tomasvolker.numeriko.core.array
+package tomasvolker.numeriko.core.jvm.factory
 
-import tomasvolker.numeriko.core.array.generic.JvmNDArray
-import tomasvolker.numeriko.core.array.generic.setAllInline
-import tomasvolker.numeriko.core.array.integer.JvmIntNDArray
-import tomasvolker.numeriko.core.array.integer.setAllInline
+import tomasvolker.numeriko.core.jvm.generic.arraynd.JvmNDArray
+import tomasvolker.numeriko.core.jvm.generic.arraynd.setAllInline
+import tomasvolker.numeriko.core.jvm.int.arraynd.JvmIntNDArray
+import tomasvolker.numeriko.core.jvm.int.arraynd.setAllInline
 import tomasvolker.numeriko.core.interfaces.factory.NDArrayFactory
+import tomasvolker.numeriko.core.interfaces.int.array1d.IntArray1D
 import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
+import tomasvolker.numeriko.core.jvm.int.array1d.JvmIntArray1D
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 
 val jvmNDArrayFactory = JvmNDArrayFactory()
 
 class JvmNDArrayFactory: NDArrayFactory {
+
+    override fun intZeros(s0: Int): IntArray1D = JvmIntArray1D(IntArray(s0))
+
+    override fun intArray1D(s0: Int, value: (i0: Int) -> Int): IntArray1D =
+            JvmIntArray1D(IntArray(s0, value))
 
     override fun <T> ndArray(vararg shape: Int, value: (index: ReadOnlyIntNDArray) -> T): JvmNDArray<T> {
         val result = JvmNDArray(

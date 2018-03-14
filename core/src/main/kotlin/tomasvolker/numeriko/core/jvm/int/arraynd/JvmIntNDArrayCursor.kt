@@ -1,40 +1,34 @@
-package tomasvolker.numeriko.core.array.generic
+package tomasvolker.numeriko.core.jvm.int.arraynd
 
-import tomasvolker.numeriko.core.array.integer.setAllInline
-import tomasvolker.numeriko.core.array.jvmNDArrayFactory
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArrayCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.NDArrayLinearCursor
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
-import tomasvolker.numeriko.core.interfaces.int.arraynd.get
-import tomasvolker.numeriko.core.interfaces.int.arraynd.set
+import tomasvolker.numeriko.core.jvm.factory.jvmNDArrayFactory
+import tomasvolker.numeriko.core.interfaces.int.arraynd.*
 
 import tomasvolker.numeriko.core.util.dimensionWidthArray
 import tomasvolker.numeriko.core.util.incrementIndexArray
 import tomasvolker.numeriko.core.util.indexArrayToLinearIndex
 
-class JvmNDArrayLinearCursor<T>(override val array: JvmNDArray<T>): NDArrayLinearCursor<T> {
-
+class JvmIntNDArrayLinearCursor(override val array: JvmIntNDArray): IntNDArrayLinearCursor {
     private val data = array.data
 
     private var linearIndex: Int = 0
 
-    override fun next() = data[linearIndex++]
+    override fun nextInt() = data[linearIndex++]
 
-    override fun previous() = data[linearIndex--]
+    override fun previousInt() = data[linearIndex--]
 
-    override fun setNext(value: T) {
+    override fun setNextInt(value: Int) {
         data[linearIndex] = value
         linearIndex++
     }
 
-    override fun setPrevious(value: T) {
+    override fun setPreviousInt(value: Int) {
         data[linearIndex] = value
         linearIndex--
     }
 
-    override fun read() = data[linearIndex]
+    override fun readInt() = data[linearIndex]
 
-    override fun write(value: T) {
+    override fun writeInt(value: Int) {
         data[linearIndex] = value
     }
 
@@ -62,7 +56,7 @@ class JvmNDArrayLinearCursor<T>(override val array: JvmNDArray<T>): NDArrayLinea
 
 }
 
-class JvmNDArrayCursor<T>(override val array: JvmNDArray<T>): NDArrayCursor<T> {
+class JvmIntNDArrayCursor(override val array: JvmIntNDArray): IntNDArrayCursor {
 
     override val currentIndexes = jvmNDArrayFactory.intZeros(array.indexShape)
 
@@ -76,49 +70,49 @@ class JvmNDArrayCursor<T>(override val array: JvmNDArray<T>): NDArrayCursor<T> {
 
     override fun hasNext() = 0 <= linearIndex && linearIndex < data.size
 
-    override fun next(): T {
+    override fun nextInt(): Int {
         val result = data[linearIndex++]
         incrementIndexArray(shape, currentIndexes)
         return result
     }
 
-    override fun next(dimension: Int): T {
+    override fun nextInt(dimension: Int): Int {
         val result = data[linearIndex]
         linearIndex += widthArray[dimension]
         currentIndexes[dimension] += 1
         return result
     }
 
-    override fun previous(): T {
+    override fun previousInt(): Int {
         val result = data[linearIndex--]
         incrementIndexArray(shape, currentIndexes, amount = -1)
         return result
     }
 
-    override fun previous(dimension: Int): T {
+    override fun previousInt(dimension: Int): Int {
         val result = data[linearIndex]
         linearIndex -= widthArray[dimension]
         currentIndexes[dimension] -= 1
         return result
     }
 
-    override fun setNext(value: T) {
+    override fun setNextInt(value: Int) {
         data[linearIndex++] = value
         incrementIndexArray(shape, currentIndexes)
     }
 
-    override fun setNext(value: T, dimension: Int) {
+    override fun setNextInt(value: Int, dimension: Int) {
         data[linearIndex] = value
         linearIndex += widthArray[dimension]
         currentIndexes[dimension] += 1
     }
 
-    override fun setPrevious(value: T) {
+    override fun setPreviousInt(value: Int) {
         data[linearIndex--] = value
         incrementIndexArray(shape, currentIndexes, amount = -1)
     }
 
-    override fun setPrevious(value: T, dimension: Int) {
+    override fun setPreviousInt(value: Int, dimension: Int) {
         data[linearIndex] = value
         linearIndex -= widthArray[dimension]
         currentIndexes[dimension] -= 1
@@ -134,9 +128,9 @@ class JvmNDArrayCursor<T>(override val array: JvmNDArray<T>): NDArrayCursor<T> {
         currentIndexes.setAllInline { index ->  indexArray[index[0]] }
     }
 
-    override fun read() = data[linearIndex]
+    override fun readInt() = data[linearIndex]
 
-    override fun write(value: T) {
+    override fun writeInt(value: Int) {
         data[linearIndex] = value
     }
 

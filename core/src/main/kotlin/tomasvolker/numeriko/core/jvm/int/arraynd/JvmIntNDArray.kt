@@ -1,4 +1,4 @@
-package tomasvolker.numeriko.core.array.integer
+package tomasvolker.numeriko.core.jvm.int.arraynd
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
@@ -79,10 +79,10 @@ class JvmIntNDArray(
 
             when (index) {
                 is Index -> {
-                    index = index.computeValue(shape, dimension)
+                    index = index.computeValue(shape.getInt(dimension))
                 }
                 is IndexProgression -> {
-                    index = index.computeProgression(shape, dimension)
+                    index = index.computeProgression(shape.getInt(dimension))
                 }
             }
 

@@ -60,7 +60,7 @@ fun cooleyTukeyAlgorithm(
 
     if (size % 2 != 0) {
         throw IllegalArgumentException(
-                "The Cooley Tukey Algorithm can only operate on an array with length of a power of two"
+                "The Cooley Tukey Algorithm can only operate on an jvm with length of a power of two"
         )
     }
 

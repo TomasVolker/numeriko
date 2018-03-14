@@ -1,13 +1,11 @@
 package tomasvolker.numeriko.core.index
 
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntNDArray
-
 open class IndexProgression(val first: Index, val last: Index, val stride: Int = 1) {
 
-    fun computeProgression(shape: ReadOnlyIntNDArray, dimension: Int) =
+    fun computeProgression(size: Int) =
             IntProgression.fromClosedRange(
-                    first.computeValue(shape, dimension),
-                    last.computeValue(shape, dimension),
+                    first.computeValue(size),
+                    last.computeValue(size),
                     stride
             )
 

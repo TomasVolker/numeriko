@@ -40,7 +40,7 @@ class NDArrayTest {
         array[1, 2, 3] = -1
 
         assert(view != viewCopy) {
-            "View of modified array is equal to a copy of it before being modified"
+            "View of modified jvm is equal to a copy of it before being modified"
         }
 
     }
