@@ -4,12 +4,12 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.generic.array1d.ReadOnlyArray1D
 import tomasvolker.numeriko.core.interfaces.generic.array1d.defaultToString
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDLinearCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayND
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultEquals
+import tomasvolker.numeriko.core.interfaces.generic.arraynd.*
 import tomasvolker.numeriko.core.interfaces.int.array1d.IntArray1D
 import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayNDCursor
+import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayNDLinearCursor
+import java.util.*
 
 class JvmIntArray1D(val data: IntArray): IntArray1D {
 
@@ -63,16 +63,14 @@ class JvmIntArray1D(val data: IntArray): IntArray1D {
 
     override fun unsafeGetShapeAsArray() = getShapeAsArray()
 
-    override fun linearCursor(): ArrayNDLinearCursor<Int> {
-        TODO("not implemented")
-    }
+    override fun linearCursor(): IntArrayNDLinearCursor = JvmIntArrayNDLinearCursor(this)
 
-    override fun cursor(): ArrayNDCursor<Int> {
-        TODO("not implemented")
-    }
+    override fun cursor(): IntArrayNDCursor = JvmIntArray1DCursor(this)
 
     override fun toString(): String = defaultToString()
 
     override fun equals(other: Any?) = defaultEquals(other)
+
+    override fun hashCode() = defaultHashCode()
 
 }

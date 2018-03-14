@@ -1,8 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
-import tomasvolker.numeriko.core.interfaces.generic.array1d.ReadOnlyArray1D
 import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
 
 interface ArrayNDViewer<T>: ReadOnlyArrayNDViewer<T> {
 

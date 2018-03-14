@@ -8,6 +8,8 @@ import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDCursor
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDLinearCursor
 import tomasvolker.numeriko.core.interfaces.int.array1d.IntArray1D
 import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayNDCursor
+import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayNDLinearCursor
 
 class JvmIntArray1DView internal constructor(
         val data: IntArray,
@@ -67,11 +69,11 @@ class JvmIntArray1DView internal constructor(
 
     override fun copy() = TODO()
 
-    override fun linearCursor(): ArrayNDLinearCursor<Int> {
+    override fun linearCursor(): IntArrayNDLinearCursor {
         TODO("not implemented")
     }
 
-    override fun cursor(): ArrayNDCursor<Int> {
+    override fun cursor(): IntArrayNDCursor {
         TODO("not implemented")
     }
 
