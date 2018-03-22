@@ -1,5 +1,7 @@
 import org.junit.Test
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
+import tomasvolker.numeriko.core.jvm.int.array1d.asArray1D
 
 class Array1DTest {
 
@@ -8,7 +10,11 @@ class Array1DTest {
 
         val array = intArray1D(5) { i -> 2*i }
 
-        println(array)
+        val a = intArray1DOf(3, 2, 1)
+
+        val b = intArrayOf(1, 2, 3).asArray1D()
+
+
 
     }
 

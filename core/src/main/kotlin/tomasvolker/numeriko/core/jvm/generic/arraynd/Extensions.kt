@@ -1,9 +1,7 @@
 package tomasvolker.numeriko.core.jvm.generic.arraynd
 
-import tomasvolker.numeriko.core.jvm.factory.jvmArrayNDFactory
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
-import tomasvolker.numeriko.core.interfaces.int.arraynd.get
-import tomasvolker.numeriko.core.interfaces.int.arraynd.set
+import tomasvolker.numeriko.core.interfaces.factory.intZeros
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
 
 fun <T> Array<T>.wrapArrayND(vararg shape: Int = intArrayOf(this.size)) = JvmArrayND(
         data = this,
@@ -15,20 +13,20 @@ fun <T> Array<T>.toArrayND(vararg shape: Int = intArrayOf(this.size)) = JvmArray
         shapeArray = shape
 )
 
-fun <T> Array<T>.wrapArrayND(shape: ReadOnlyIntArrayND) = JvmArrayND(
+fun <T> Array<T>.wrapArrayND(shape: ReadOnlyIntArray1D) = JvmArrayND(
         data = this,
         shapeArray = shape.getDataAsIntArray()
 )
 
-fun <T> Array<T>.toArrayND(shape: ReadOnlyIntArrayND) = JvmArrayND(
+fun <T> Array<T>.toArrayND(shape: ReadOnlyIntArray1D) = JvmArrayND(
         data = this.copyOf(),
         shapeArray = shape.getDataAsIntArray()
 )
 
 
-/*inline*/ fun <T> JvmArrayND<T>.setAllInline(setter: (indexArray: ReadOnlyIntArrayND) -> T) {
+/*inline*/ fun <T> JvmArrayND<T>.setAllInline(setter: (indexArray: ReadOnlyIntArray1D) -> T) {
 
-    val indexArray = jvmArrayNDFactory.intZeros(this.indexShape)
+    val indexArray = intZeros(rank)
 
     var dimensionIndex: Int
 

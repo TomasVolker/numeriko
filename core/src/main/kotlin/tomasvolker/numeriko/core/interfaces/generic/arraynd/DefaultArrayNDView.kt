@@ -1,4 +1,4 @@
-package tomasvolker.numeriko.core.jvm.generic.arraynd
+package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
@@ -9,63 +9,27 @@ import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 import tomasvolker.numeriko.core.util.viewIndexArrayToLinearIndex
 
-class JvmArrayNDView<T> internal constructor(
-        internal val data: Array<T>,
-        internal val offset: Int,
-        internal val shapeArray: IntArray,
-        internal val strideArray: IntArray
+class DefaultArrayNDView<T> internal constructor(
+        val array: ArrayND<T>,
+        offset: ReadOnlyIntArray1D,
+        shape: ReadOnlyIntArray1D,
+        stride: ReadOnlyIntArray1D
 ) : ArrayND<T> {
 
     init {
 
-        require(data.size >= computeSizeFromShape(shapeArray)) {
-            "data size (${data.size}) is not greater or equal than shape computed size (${computeSizeFromShape(shapeArray)})"
-        }
-
-        require(offset <= data.size) {
-            "offset (${offset}) is not lower or equal than match shape size (${shapeArray.size})"
-        }
-
-        require(strideArray.size == shapeArray.size) {
-            "strideArray size (${strideArray.size}) does not match shape size (${shapeArray.size})"
-        }
-
-        for (i in shapeArray.indices) {
-
-            require(0 <= shapeArray[i]) {
-                "shape in rank $i must be non negative (${shapeArray[i]})"
-            }
-
-            require(0 < strideArray[i]) {
-                "stride in rank $i must be positive (${strideArray[i]})"
-            }
-
-        }
+        //TODO prerequisites
 
     }
 
-    override val rank: Int = shapeArray.size
+    private val offset: ReadOnlyIntArray1D = offset.copy()
 
-    override val size: Int = computeSizeFromShape(shapeArray)
+    override val shape: ReadOnlyIntArray1D = shape.copy()
 
-    override val shape: ReadOnlyIntArray1D
-        get() = intArray1DOf(*shapeArray)
-
-    override fun getValue(vararg indices: Int) =
-            data[viewIndexArrayToLinearIndex(
-                    shapeArray = shapeArray,
-                    offset = offset,
-                    strideArray = strideArray,
-                    indexArray = indices
-            )]
+    private val stride: ReadOnlyIntArray1D = stride.copy()
 
     override fun getValue(indexArray: ReadOnlyIntArray1D) =
-            data[viewIndexArrayToLinearIndex(
-                    shapeArray = shapeArray,
-                    offset = offset,
-                    strideArray = strideArray,
-                    indexArray = indexArray
-            )]
+            array[indexArray.setValue {  }]
 
     override fun setValue(value: T, vararg indices: Int) {
         data[viewIndexArrayToLinearIndex(
@@ -89,7 +53,7 @@ class JvmArrayNDView<T> internal constructor(
         )] = value
     }
 
-    override fun getView(vararg indices: Any): JvmArrayNDView<T> {
+    override fun getView(vararg indices: Any): DefaultArrayNDView<T> {
 
         require(indices.size <= rank) {
             "Wrong amount of indices (${indices.size} expected ${rank})"
@@ -143,7 +107,7 @@ class JvmArrayNDView<T> internal constructor(
 
         }
 
-        return JvmArrayNDView(
+        return DefaultArrayNDView(
                 data = data,
                 offset = offset,
                 shapeArray = shapeList.toIntArray(),
@@ -152,30 +116,7 @@ class JvmArrayNDView<T> internal constructor(
 
     }
 
-    override fun copy() = JvmArrayND(
-            data = getDataAsArray(),
-            shapeArray = shapeArray.copyOf()
-    )
-
-    override fun unsafeGetDataAsArray(): Array<T> = getDataAsArray()
-
-    override fun getDataAsArray(): Array<T> {
-        val result = Array<Any?>(size) { null }
-
-        for ((i, x) in this.withIndex()) {
-            result[i] = x
-        }
-
-        return result as Array<T>
-    }
-
-    override fun unsafeGetShapeAsArray() = shapeArray
-
-    override fun getShapeAsArray() = shapeArray.copyOf()
-
-    override fun iterator() = JvmArrayNDViewIterator(this)
-
-    override fun cursor() = JvmArrayNDViewCursor(this)
+    override fun copy()
 
     override fun toString() = defaultToString()
 

@@ -7,9 +7,10 @@ import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayND
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultEquals
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.defaultToString
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.setAllInline
-import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
-import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayND
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.IntArrayND
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.ReadOnlyIntArrayND
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.DefaultIntArrayNDCursor
 import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 import tomasvolker.numeriko.core.util.dimensionWidthArray
@@ -146,9 +147,9 @@ class JvmIntArrayND(
         }
     }
 
-    override fun linearCursor() = JvmIntArrayNDLinearCursor(this)
+    override fun linearCursor() = JvmIntArrayNDIterator(this)
 
-    override fun cursor() = JvmIntArrayNDCursor(this)
+    override fun cursor() = DefaultIntArrayNDCursor(this)
 
     override fun hashCode() =
            31 * shapeArray.reduce { acc, i ->  31 * acc + i.hashCode()} +

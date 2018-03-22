@@ -3,9 +3,8 @@ import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.index.rangeTo
 import tomasvolker.numeriko.core.interfaces.factory.intArrayND
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
-import tomasvolker.numeriko.core.interfaces.int.arraynd.get
-import tomasvolker.numeriko.core.interfaces.int.arraynd.set
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.ReadOnlyIntArrayND
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.set
 
 class ArrayNDTest {
 
@@ -13,8 +12,10 @@ class ArrayNDTest {
     fun printIntArrayND() {
 
         val array: ReadOnlyIntArrayND = intArrayND(2, 2, 2) {
-            it[0] + it[1] + it[2]
+            (i0, i1, i2) -> i0 + i1 + i2
         }
+
+        println(array)
 
         assert(array.toString() == "[ [ [ 0, 1] , [ 1, 2] ] , [ [ 1, 2] , [ 2, 3] ] ] ") {
             "Array of shape [2, 2, 2] of added indexes is not printed correctly"
@@ -40,7 +41,7 @@ class ArrayNDTest {
         array[1, 2, 3] = -1
 
         assert(view != viewCopy) {
-            "View of modified jvm is equal to a copy of it before being modified"
+            "View of modified jvm array is equal to a copy of it before being modified"
         }
 
     }

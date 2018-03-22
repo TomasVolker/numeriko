@@ -1,9 +1,9 @@
-package tomasvolker.numeriko.core.interfaces.int.array1d
+package tomasvolker.numeriko.core.interfaces.integer.array1d
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayND
-import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayND
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.IntArrayND
 import tomasvolker.numeriko.core.interfaces.numeric.array1d.NumericArray1D
 
 interface IntArray1D: ReadOnlyIntArray1D, NumericArray1D<Int>, IntArrayND {
@@ -34,5 +34,17 @@ interface IntArray1D: ReadOnlyIntArray1D, NumericArray1D<Int>, IntArrayND {
     //TODO see if inherit this
     override fun setDouble(value: Double, i0: Index) =
             setInt(value.toInt(), i0)
+
+    override operator fun get(i0: IntProgression): IntArray1D = getView(i0)
+
+    override operator fun get(i0: IndexProgression): IntArray1D = getView(i0)
+
+    operator fun set(value: Int, i0: Int) = setValue(value, i0)
+
+    operator fun set(value: Int, i0: Index) = setValue(value, i0)
+
+    operator fun set(value: ReadOnlyIntArray1D, i0: IntProgression) = setValue(value, i0)
+
+    operator fun set(value: ReadOnlyIntArray1D, i0: IndexProgression) = setValue(value, i0)
 
 }

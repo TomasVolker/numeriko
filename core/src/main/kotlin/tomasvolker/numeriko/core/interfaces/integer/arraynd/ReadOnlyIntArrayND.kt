@@ -1,6 +1,6 @@
-package tomasvolker.numeriko.core.interfaces.int.arraynd
+package tomasvolker.numeriko.core.interfaces.integer.arraynd
 
-import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.numeric.arraynd.ReadOnlyNumericArrayND
 import tomasvolker.numeriko.core.interfaces.numeric.arraynd.ReadOnlyNumericArrayNDViewer
 

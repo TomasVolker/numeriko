@@ -5,13 +5,17 @@ import tomasvolker.numeriko.core.jvm.generic.arraynd.setAllInline
 import tomasvolker.numeriko.core.jvm.int.arraynd.JvmIntArrayND
 import tomasvolker.numeriko.core.jvm.int.arraynd.setAllInline
 import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.jvm.int.array0d.JvmIntArray0D
 import tomasvolker.numeriko.core.jvm.int.array1d.JvmIntArray1D
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 
 val jvmArrayNDFactory = JvmArrayNDFactory()
 
 class JvmArrayNDFactory: ArrayNDFactory {
+
+    override fun intArray0DOf(value: Int) =
+            JvmIntArray0D(value)
 
     override fun intZeros(s0: Int) =
             JvmIntArray1D(IntArray(s0))
@@ -22,7 +26,7 @@ class JvmArrayNDFactory: ArrayNDFactory {
     override fun intArray1DOf(vararg values: Int) =
             JvmIntArray1D(values)
 
-    override fun <T> arrayND(vararg shape: Int, value: (index: ReadOnlyIntArrayND) -> T): JvmArrayND<T> {
+    override fun <T> arrayND(vararg shape: Int, value: (index: ReadOnlyIntArray1D) -> T): JvmArrayND<T> {
         val result = JvmArrayND(
                 data = allocateData(shape) as Array<T?>,
                 shapeArray = shape
@@ -31,7 +35,7 @@ class JvmArrayNDFactory: ArrayNDFactory {
         return result as JvmArrayND<T>
     }
 
-    override fun <T> arrayND(shape: ReadOnlyIntArrayND, value: (index: ReadOnlyIntArrayND) -> T): JvmArrayND<T> {
+    override fun <T> arrayND(shape: ReadOnlyIntArray1D, value: (index: ReadOnlyIntArray1D) -> T): JvmArrayND<T> {
         val shapeArray = shape.getDataAsIntArray()
         val result = JvmArrayND(
                 data = allocateData(shapeArray) as Array<T?>,
@@ -41,7 +45,7 @@ class JvmArrayNDFactory: ArrayNDFactory {
         return result as JvmArrayND<T>
     }
 
-    override fun intArrayND(vararg shape: Int, value: (index: ReadOnlyIntArrayND) -> Int): JvmIntArrayND {
+    override fun intArrayND(vararg shape: Int, value: (index: ReadOnlyIntArray1D) -> Int): JvmIntArrayND {
         val result = JvmIntArrayND(
                 data = allocateIntData(shape),
                 shapeArray = shape
@@ -50,7 +54,7 @@ class JvmArrayNDFactory: ArrayNDFactory {
         return result
     }
 
-    override fun intArrayND(shape: ReadOnlyIntArrayND, value: (index: ReadOnlyIntArrayND) -> Int): JvmIntArrayND {
+    override fun intArrayND(shape: ReadOnlyIntArray1D, value: (index: ReadOnlyIntArray1D) -> Int): JvmIntArrayND {
         val shapeArray = shape.getDataAsIntArray()
         val result = JvmIntArrayND(
                 data = allocateIntData(shapeArray),
@@ -66,7 +70,7 @@ class JvmArrayNDFactory: ArrayNDFactory {
                     shapeArray = shape
             )
 
-    override fun intZeros(shape: ReadOnlyIntArrayND): JvmIntArrayND =
+    override fun intZeros(shape: ReadOnlyIntArray1D): JvmIntArrayND =
             intZeros(*shape.getDataAsIntArray())
 
     private fun allocateIntData(shapeArray: IntArray) = IntArray(computeSizeFromShape(shapeArray))

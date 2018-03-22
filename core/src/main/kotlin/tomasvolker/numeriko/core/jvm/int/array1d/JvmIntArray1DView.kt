@@ -4,12 +4,10 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.generic.array1d.ReadOnlyArray1D
 import tomasvolker.numeriko.core.interfaces.generic.array1d.defaultToString
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDLinearCursor
-import tomasvolker.numeriko.core.interfaces.int.array1d.IntArray1D
-import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
-import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayNDCursor
-import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayNDLinearCursor
+import tomasvolker.numeriko.core.interfaces.integer.array1d.IntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.IntArrayNDCursor
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.IntArrayNDIterator
 
 class JvmIntArray1DView internal constructor(
         val data: IntArray,
@@ -69,7 +67,7 @@ class JvmIntArray1DView internal constructor(
 
     override fun copy() = TODO()
 
-    override fun linearCursor(): IntArrayNDLinearCursor {
+    override fun linearCursor(): IntArrayNDIterator {
         TODO("not implemented")
     }
 

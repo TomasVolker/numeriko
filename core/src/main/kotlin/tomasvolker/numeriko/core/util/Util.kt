@@ -1,13 +1,11 @@
 package tomasvolker.numeriko.core.util
 
-import tomasvolker.numeriko.core.interfaces.int.array1d.IntArray1D
-import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
-import tomasvolker.numeriko.core.interfaces.int.arraynd.IntArrayND
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
-import tomasvolker.numeriko.core.interfaces.int.arraynd.get
-import tomasvolker.numeriko.core.interfaces.int.arraynd.set
+import tomasvolker.numeriko.core.interfaces.integer.array1d.IntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.ReadOnlyIntArrayND
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.get
 
-fun computeSizeFromShape(shape: IntArray): Int {
+fun computeSizeFromShape(shape: ReadOnlyIntArray1D): Int {
 
     var result = 1
 
@@ -21,6 +19,45 @@ fun computeSizeFromShape(shape: IntArray): Int {
     }
 
     return result
+}
+
+fun incrementIndexArray(
+        shape: ReadOnlyIntArray1D,
+        indexArray: IntArray1D,
+        dimension: Int = indexArray.lastIndex(0),
+        amount: Int = 1) {
+
+    var dimensionIndex = dimension
+    var size: Int
+    var carry = amount
+    var aux: Int
+
+    while (dimensionIndex >= 0) {
+
+        size = shape[dimensionIndex]
+
+        aux = indexArray[dimensionIndex] + carry
+
+        if (aux >= 0) {
+            carry = aux / size
+            indexArray[dimensionIndex] = aux % size
+        } else {
+            carry = aux / size - 1
+            indexArray[dimensionIndex] = size + aux % size
+        }
+
+        if (carry == 0) {
+            break
+        } else {
+            dimensionIndex--
+        }
+    }
+
+    // Overflow
+    if (carry != 0) {
+        indexArray[0] += carry * shape[0]
+    }
+
 }
 
 internal fun dimensionWidthArray(
@@ -127,44 +164,6 @@ inline fun <T> setAll(shape: ReadOnlyIntArrayND, data: Array<Any?>, setter: (ind
 
 }
 */
-fun incrementIndexArray(
-        shape: IntArray,
-        indexArray: IntArray1D,
-        dimension: Int = indexArray.lastIndex(0),
-        amount: Int = 1) {
-
-    var dimensionIndex = dimension
-    var size: Int
-    var carry = amount
-    var aux: Int
-
-    while (dimensionIndex >= 0) {
-
-        size = shape[dimensionIndex]
-
-        aux = indexArray[dimensionIndex] + carry
-
-        if (aux >= 0) {
-            carry = aux / size
-            indexArray[dimensionIndex] = aux % size
-        } else {
-            carry = aux / size - 1
-            indexArray[dimensionIndex] = size + aux % size
-        }
-
-        if (carry == 0) {
-            break
-        } else {
-            dimensionIndex--
-        }
-    }
-
-    // Overflow
-    if (carry != 0) {
-        indexArray[0] += carry * shape[0]
-    }
-
-}
 
 internal fun viewIndexArrayToLinearIndex(
         shapeArray: IntArray,

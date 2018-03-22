@@ -2,12 +2,9 @@ package tomasvolker.numeriko.core.interfaces.generic.array1d
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayND
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayNDCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ReadOnlyArrayNDLinearCursor
-import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
 
 interface ReadOnlyArray1D<out T>: ReadOnlyArrayND<T> {
 

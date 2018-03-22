@@ -1,13 +1,10 @@
 package tomasvolker.numeriko.core.jvm.int.arraynd
 
 import tomasvolker.numeriko.core.interfaces.factory.intZeros
-import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.jvm.factory.jvmArrayNDFactory
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
-import tomasvolker.numeriko.core.interfaces.int.arraynd.get
-import tomasvolker.numeriko.core.interfaces.int.arraynd.set
 
-fun IntArray.wrapArrayND(vararg shape: Int = intArrayOf(this.size)) = JvmIntArrayND(
+fun IntArray.asArrayND(vararg shape: Int = intArrayOf(this.size)) = JvmIntArrayND(
         data = this,
         shapeArray = shape
 )
@@ -17,7 +14,7 @@ fun IntArray.toArrayND(vararg shape: Int = intArrayOf(this.size)) = JvmIntArrayN
         shapeArray = shape
 )
 
-fun IntArray.wrapArrayND(shape: ReadOnlyIntArray1D) = JvmIntArrayND(
+fun IntArray.asArrayND(shape: ReadOnlyIntArray1D) = JvmIntArrayND(
         data = this,
         shapeArray = shape.getDataAsIntArray()
 )

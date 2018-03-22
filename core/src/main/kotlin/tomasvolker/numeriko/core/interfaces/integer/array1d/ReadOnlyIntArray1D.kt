@@ -1,8 +1,8 @@
-package tomasvolker.numeriko.core.interfaces.int.array1d
+package tomasvolker.numeriko.core.interfaces.integer.array1d
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.interfaces.numeric.array1d.ReadOnlyNumericArray1D
 
 interface ReadOnlyIntArray1D: ReadOnlyNumericArray1D<Int>, ReadOnlyIntArrayND {
@@ -46,6 +46,14 @@ interface ReadOnlyIntArray1D: ReadOnlyNumericArray1D<Int>, ReadOnlyIntArrayND {
         require(indices.size == 1) { "${indices.size} indices provided, expected 1" }
         return getInt(indices[0])
     }
+
+    operator fun get(i0: Int): Int = getInt(i0)
+
+    operator fun get(i0: Index): Int = getInt(i0)
+
+    operator fun get(i0: IntProgression): ReadOnlyIntArray1D = getView(i0)
+
+    operator fun get(i0: IndexProgression): ReadOnlyIntArray1D = getView(i0)
 
 }
 

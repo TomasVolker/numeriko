@@ -2,15 +2,12 @@ package tomasvolker.numeriko.core.jvm.int.array1d
 
 import tomasvolker.numeriko.core.interfaces.factory.intZeros
 import tomasvolker.numeriko.core.interfaces.generic.arraynd.setAllInline
-import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
-import tomasvolker.numeriko.core.jvm.factory.jvmArrayNDFactory
-import tomasvolker.numeriko.core.interfaces.int.arraynd.*
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.*
 
-import tomasvolker.numeriko.core.util.dimensionWidthArray
-import tomasvolker.numeriko.core.util.incrementIndexArray
 import tomasvolker.numeriko.core.util.indexArrayToLinearIndex
 
-class JvmIntArrayNDLinearCursor(override val array: JvmIntArray1D): IntArrayNDLinearCursor {
+class JvmIntArrayNDIterator(override val array: JvmIntArray1D): IntArrayNDIterator {
 
     private val data = array.data
 
@@ -62,7 +59,7 @@ class JvmIntArrayNDLinearCursor(override val array: JvmIntArray1D): IntArrayNDLi
 
 class JvmIntArray1DCursor(override val array: JvmIntArray1D): IntArrayNDCursor {
 
-    override val currentIndexes = intZeros(1)
+    override val currentIndices = intZeros(1)
 
     private val data = array.data
 
@@ -72,7 +69,7 @@ class JvmIntArray1DCursor(override val array: JvmIntArray1D): IntArrayNDCursor {
 
     override fun nextInt(): Int {
         val result = data[linearIndex++]
-        currentIndexes[0] += 1
+        currentIndices[0] += 1
         return result
     }
 
@@ -86,7 +83,7 @@ class JvmIntArray1DCursor(override val array: JvmIntArray1D): IntArrayNDCursor {
 
     override fun previousInt(): Int {
         val result = data[linearIndex--]
-        currentIndexes[0] -= 1
+        currentIndices[0] -= 1
         return result
     }
 
@@ -98,14 +95,14 @@ class JvmIntArray1DCursor(override val array: JvmIntArray1D): IntArrayNDCursor {
         return previousInt()
     }
 
-    override fun setPosition(vararg indexArray: Int) {
-        linearIndex = indexArrayToLinearIndex(array.getShapeAsArray(), indexArray)
-        currentIndexes.setAllInline { index ->  indexArray[index[0]] }
+    override fun setPosition(vararg indices: Int) {
+        linearIndex = indexArrayToLinearIndex(array.getShapeAsArray(), indices)
+        currentIndices.setAllInline { index ->  indices[index[0]] }
     }
 
     override fun setPosition(indexArray: ReadOnlyIntArray1D) {
         linearIndex = indexArrayToLinearIndex(array.getShapeAsArray(), indexArray)
-        currentIndexes.setAllInline { index ->  indexArray[index[0]] }
+        currentIndices.setAllInline { index ->  indexArray[index[0]] }
     }
 
     override fun readInt() = data[linearIndex]
@@ -116,47 +113,47 @@ class JvmIntArray1DCursor(override val array: JvmIntArray1D): IntArrayNDCursor {
 
     override fun increment() {
         linearIndex++
-        currentIndexes[0] += 1
+        currentIndices[0] += 1
     }
 
     override fun decrement() {
         linearIndex--
-        currentIndexes[0] -= 1
+        currentIndices[0] -= 1
     }
 
     override fun increment(dimension: Int) {
         linearIndex += 1
-        currentIndexes[dimension] += 1
+        currentIndices[dimension] += 1
     }
 
     override fun decrement(dimension: Int) {
         linearIndex -= 1
-        currentIndexes[dimension] -= 1
+        currentIndices[dimension] -= 1
     }
 
     override fun incrementBy(amount: Int) {
         linearIndex += amount
-        currentIndexes[0] += amount
+        currentIndices[0] += amount
     }
 
     override fun decrementBy(amount: Int) {
         linearIndex -= amount
-        currentIndexes[0] += amount
+        currentIndices[0] += amount
     }
 
     override fun moveToLast() {
         linearIndex = data.lastIndex
-        currentIndexes[0] = data.lastIndex
+        currentIndices[0] = data.lastIndex
     }
 
     override fun incrementBy(dimension: Int, amount: Int) {
         linearIndex += amount
-        currentIndexes[dimension] += amount
+        currentIndices[dimension] += amount
     }
 
     override fun decrementBy(dimension: Int, amount: Int) {
         linearIndex -= amount
-        currentIndexes[dimension] -= amount
+        currentIndices[dimension] -= amount
     }
 
     override fun cursorInBounds() = linearIndex in data.indices

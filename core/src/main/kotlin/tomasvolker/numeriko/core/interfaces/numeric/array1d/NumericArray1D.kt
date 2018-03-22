@@ -3,10 +3,9 @@ package tomasvolker.numeriko.core.interfaces.numeric.array1d
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.generic.array1d.Array1D
-import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
-import tomasvolker.numeriko.core.interfaces.int.arraynd.ReadOnlyIntArrayND
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.interfaces.numeric.arraynd.NumericArrayND
-import tomasvolker.numeriko.core.interfaces.numeric.arraynd.ReadOnlyNumericArrayND
 
 interface NumericArray1D<T: Number>: ReadOnlyNumericArray1D<T>, Array1D<T>, NumericArrayND<T> {
 

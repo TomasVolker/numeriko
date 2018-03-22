@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
-import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.jvm.int.array1d.asArray1D
 
 interface ArrayNDViewer<T>: ReadOnlyArrayNDViewer<T> {
 
@@ -19,22 +20,38 @@ interface ArrayND<T>: ReadOnlyArrayND<T> {
 
     override val view: ArrayNDViewer<T> get() = DefaultArrayNDViewer(this)
 
-    override fun linearCursor(): ArrayNDLinearCursor<T>
-
-    override fun cursor(): ArrayNDCursor<T>
-
     override fun getView(vararg indices:Any): ArrayND<T>
 
-    fun setValue(value: T, vararg indices: Int)
+    fun setValue(value: T, vararg indices: Int) = setValue(value, indices.asArray1D())
 
     fun setValue(value: T, indexArray: ReadOnlyIntArray1D)
 
-    fun setValue(value: ReadOnlyArrayND<T>, vararg indices: Any)
+    fun setValue(value: ReadOnlyArrayND<T>, vararg indices: Any): Unit =
+            getView(*indices).setValue(value)
 
-    fun setWithIndex(setter: (indexArray: ReadOnlyIntArray1D) -> T) = setAllInline(setter)
+    fun setValue(value: ReadOnlyArrayND<T>) {
 
-    override fun getDataAsArray(): Array<T>
+        if (shape != value.shape)
+            throw IllegalArgumentException("Expected shape ${shape} got ${value.shape}")
 
-    override fun unsafeGetDataAsArray(): Array<T>
+        setValue { indices -> value.getValue(indices) }
+    }
+
+
+    fun setValue(setter: (indexArray: ReadOnlyIntArray1D) -> T) {
+
+        with(cursor()) {
+
+            while (hasNext()) {
+                setNext(setter(currentIndices))
+            }
+
+        }
+
+    }
+
+    override fun iterator(): ArrayNDIterator<T> = cursor()
+
+    override fun cursor(): ArrayNDCursor<T> = DefaultArrayNDCursor(this)
 
 }

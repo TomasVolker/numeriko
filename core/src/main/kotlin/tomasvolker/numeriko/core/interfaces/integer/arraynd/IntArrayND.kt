@@ -1,8 +1,6 @@
-package tomasvolker.numeriko.core.interfaces.int.arraynd
+package tomasvolker.numeriko.core.interfaces.integer.arraynd
 
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDCursor
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayNDLinearCursor
-import tomasvolker.numeriko.core.interfaces.int.array1d.ReadOnlyIntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.numeric.arraynd.NumericArrayND
 import tomasvolker.numeriko.core.interfaces.numeric.arraynd.NumericArrayNDViewer
 
@@ -31,7 +29,7 @@ interface IntArrayND: ReadOnlyIntArrayND, NumericArrayND<Int> {
 
     override fun setValue(value: Int, vararg indices: Int) = setInt(value, *indices)
 
-    override fun linearCursor(): IntArrayNDLinearCursor
+    override fun linearCursor(): IntArrayNDIterator
 
     override fun cursor(): IntArrayNDCursor
 
