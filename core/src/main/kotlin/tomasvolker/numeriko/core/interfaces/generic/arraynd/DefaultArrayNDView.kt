@@ -1,127 +1,91 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
-import tomasvolker.numeriko.core.index.Index
-import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.*
+import tomasvolker.numeriko.core.interfaces.factory.intZeros
 import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
-import tomasvolker.numeriko.core.util.checkRange
-import tomasvolker.numeriko.core.util.computeSizeFromShape
-import tomasvolker.numeriko.core.util.viewIndexArrayToLinearIndex
 
-class DefaultArrayNDView<T> internal constructor(
-        val array: ArrayND<T>,
+open class DefaultReadOnlyArrayNDView<T> internal constructor(
+        array: ReadOnlyArrayND<T>,
         offset: ReadOnlyIntArray1D,
         shape: ReadOnlyIntArray1D,
         stride: ReadOnlyIntArray1D
-) : ArrayND<T> {
+) : ReadOnlyArrayND<T> {
+
+    open val array: ReadOnlyArrayND<T> = array
 
     init {
 
         //TODO prerequisites
 
+        require(offset.size == array.rank) {
+            ""
+        }
+
+        require(shape.size <= array.rank) {
+            ""
+        }
+
+        require(stride.size == array.rank) {
+            ""
+        }
+
     }
 
-    private val offset: ReadOnlyIntArray1D = offset.copy()
+    protected val offset: ReadOnlyIntArray1D = offset.copy()
 
     override val shape: ReadOnlyIntArray1D = shape.copy()
 
-    private val stride: ReadOnlyIntArray1D = stride.copy()
+    protected val stride: ReadOnlyIntArray1D = stride.copy()
+
+    protected fun getBackingArrayIndex(indexArray: ReadOnlyIntArray1D): ReadOnlyIntArray1D {
+
+        require(indexArray.size == shape.size) {
+            TODO("Error message")
+        }
+
+        val result = intZeros(array.rank)
+
+        var viewIndex = 0
+
+        for (backingIndex in 0 until array.rank) {
+            result[backingIndex] = offset[backingIndex]
+
+            if (stride[backingIndex] != 0) {
+
+                val currentIndex = indexArray[viewIndex]
+                val currentSize = shape[viewIndex]
+
+                if (currentIndex !in -currentSize until currentSize) {
+                    throw IndexOutOfBoundsException(currentIndex)
+                }
+
+                result[backingIndex] += stride[backingIndex] * ((currentIndex + currentSize) % currentSize)
+                viewIndex++
+            }
+        }
+
+        return result
+    }
 
     override fun getValue(indexArray: ReadOnlyIntArray1D) =
-            array[indexArray.setValue {  }]
-
-    override fun setValue(value: T, vararg indices: Int) {
-        data[viewIndexArrayToLinearIndex(
-                shapeArray = shapeArray,
-                offset = offset,
-                strideArray = strideArray,
-                indexArray = indices
-        )] = value
-    }
-
-    //TODO set on itself
-    override fun setValue(value: ReadOnlyArrayND<T>, vararg indices: Any) =
-            getView(*indices).setAllInline { value.getValue(it) }
-
-    override fun setValue(value: T, indexArray: ReadOnlyIntArray1D) {
-        data[viewIndexArrayToLinearIndex(
-                shapeArray = shapeArray,
-                offset = offset,
-                strideArray = strideArray,
-                indexArray = indexArray
-        )] = value
-    }
-
-    override fun getView(vararg indices: Any): DefaultArrayNDView<T> {
-
-        require(indices.size <= rank) {
-            "Wrong amount of indices (${indices.size} expected ${rank})"
-        }
-
-        var offset = this.offset
-        val shapeList = mutableListOf<Int>()
-        val strideList = mutableListOf<Int>()
-
-        var currentSize: Int
-        var currentStride: Int
-
-        for (dimension in indices.indices) {
-
-            var index: Any = indices[dimension]
-
-            when (index) {
-                is Index -> {
-                    index = index.computeValue(shape.getInt(dimension))
-                }
-                is IndexProgression -> {
-                    index = index.computeProgression(shape.getInt(dimension))
-                }
-            }
-
-            currentSize = this.shapeArray[dimension]
-            currentStride = this.strideArray[dimension]
-
-            when (index) {
-                is Int -> {
-                    checkRange(dimension, currentSize, index)
-                    offset += ((index + currentSize) % currentSize) * currentStride
-                }
-                is IntProgression -> {
-
-                    //TODO check out of range
-
-                    offset += index.first * currentStride
-                    shapeList.add(index.count())
-                    strideList.add(index.step * currentStride)
-                }
-                else -> throw IllegalArgumentException("LiteralIndex $index is not an Int, IntRange, Index or IndexProgression")
-            }
-
-        }
-
-        for (dimension in indices.size until rank) {
-
-            shapeList.add(this.shapeArray[dimension])
-            strideList.add(this.strideArray[dimension])
-
-        }
-
-        return DefaultArrayNDView(
-                data = data,
-                offset = offset,
-                shapeArray = shapeList.toIntArray(),
-                strideArray = strideList.toIntArray()
-        )
-
-    }
-
-    override fun copy()
+            array.getValue(getBackingArrayIndex(indexArray))
 
     override fun toString() = defaultToString()
 
     override fun equals(other: Any?) = defaultEquals(other)
 
     override fun hashCode() = defaultHashCode()
+
+}
+
+open class DefaultArrayNDView<T> internal constructor(
+        override val array: ArrayND<T>,
+        offset: ReadOnlyIntArray1D,
+        shape: ReadOnlyIntArray1D,
+        stride: ReadOnlyIntArray1D
+) : DefaultReadOnlyArrayNDView<T>(array, offset, shape, stride), ArrayND<T> {
+
+    override fun setValue(value: T, indexArray: ReadOnlyIntArray1D) {
+        array.setValue(value, getBackingArrayIndex(indexArray))
+    }
 
 }

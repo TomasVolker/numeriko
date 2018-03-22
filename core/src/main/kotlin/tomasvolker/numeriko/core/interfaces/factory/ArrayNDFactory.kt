@@ -41,7 +41,7 @@ interface ArrayNDFactory {
 
     fun intZeros(): IntArray0D = intArray0DOf(0)
 
-    fun intZeros(s0: Int): IntArray1D = intArray1DOf(0)
+    fun intZeros(s0: Int): IntArray1D = intArray1D(s0) { 0 }
 
     fun intZeros(vararg shape: Int): IntArrayND =
             when(shape.size) {

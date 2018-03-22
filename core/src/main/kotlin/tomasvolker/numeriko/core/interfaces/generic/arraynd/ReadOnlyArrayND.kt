@@ -1,8 +1,13 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
+import tomasvolker.numeriko.core.index.Index
+import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.factory.arrayND
+import tomasvolker.numeriko.core.interfaces.factory.intZeros
 import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.interfaces.integer.arraynd.ReadOnlyIntArrayND
 import tomasvolker.numeriko.core.jvm.int.array1d.asArray1D
+import tomasvolker.numeriko.core.util.checkRange
 import tomasvolker.numeriko.core.util.computeSizeFromShape
 
 interface ReadOnlyArrayNDViewer<out T> {
@@ -120,6 +125,8 @@ interface ReadOnlyArrayND<out T>: Collection<T> {
      */
     fun getValue(indexArray: ReadOnlyIntArray1D): T
 
+    operator fun get(indexArray: ReadOnlyIntArray1D): T = getValue(indexArray)
+
     /**
      * Get a view of the given indeces and index ranges.
      *
@@ -131,14 +138,22 @@ interface ReadOnlyArrayND<out T>: Collection<T> {
      * @throws IllegalArgumentException if an object which is not a Int, IntRange, Index or IndexProgression is
      * passed.
      */
-    fun getView(vararg indices: Any): ReadOnlyArrayND<T>
+    fun getView(vararg indices: Any): ReadOnlyArrayND<T> {
+        val (offset, shape, stride) = defaultGetView(this, indices)
+        return DefaultReadOnlyArrayNDView(
+                array = this,
+                offset = offset,
+                shape = shape,
+                stride = stride
+        )
+    }
 
     /**
      * Copies the array.
      *
      * @return a copy of this array
      */
-    fun copy(): ReadOnlyArrayND<T>
+    fun copy(): ReadOnlyArrayND<T> = arrayND(shape) { getValue(it) }
 
     /**
      * Computes the last index on the given dimension. If the size of the dimension is zero, this returns -1.
@@ -191,6 +206,71 @@ fun <T> ReadOnlyArrayND<T>.defaultEquals(other: Any?): Boolean {
         else -> return false
     }
 
+}
+
+data class ArrayViewIndices(
+        val offset: ReadOnlyIntArray1D,
+        val shape: ReadOnlyIntArray1D,
+        val stride: ReadOnlyIntArray1D
+)
+
+fun <T> defaultGetView(array: ReadOnlyArrayND<T>, indices: Array<out Any>): ArrayViewIndices {
+
+    require(indices.size <= array.rank) {
+        "Wrong amount of indices (${indices.size} expected ${array.rank})"
+    }
+
+    val offset = intZeros(array.rank)
+    val shapeList = mutableListOf<Int>()
+    val stride = intZeros(array.rank)
+
+    for (dimension in indices.indices) {
+
+        var index: Any = indices[dimension]
+
+        when (index) {
+            is Index -> {
+                index = index.computeValue(array.shape.getInt(dimension))
+            }
+            is IndexProgression -> {
+                index = index.computeProgression(array.shape.getInt(dimension))
+            }
+        }
+
+        val currentSize = array.shape[dimension]
+
+        when (index) {
+            is Int -> {
+                checkRange(dimension, currentSize, index)
+                offset[dimension] = ((index + currentSize) % currentSize)
+                stride[dimension] = 0
+            }
+            is IntProgression -> {
+
+                //TODO check out of range
+
+                offset[dimension] = index.first
+                shapeList.add(index.count())
+                stride[dimension] = index.step
+
+            }
+            else -> throw IllegalArgumentException("Index $index is not an Int, IntProgression, Index or IndexProgression")
+        }
+
+    }
+
+    for (dimension in indices.size until array.rank) {
+
+        shapeList.add(array.shape[dimension])
+        stride[dimension] = 1
+
+    }
+
+    return ArrayViewIndices(
+            offset = offset,
+            shape = shapeList.toIntArray().asArray1D(),
+            stride = stride
+    )
 }
 
 fun <T> ReadOnlyArrayND<T>.defaultHashCode(): Int {

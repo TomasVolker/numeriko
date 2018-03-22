@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
+import tomasvolker.numeriko.core.interfaces.factory.arrayND
 import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
 import tomasvolker.numeriko.core.jvm.int.array1d.asArray1D
 
@@ -20,11 +21,21 @@ interface ArrayND<T>: ReadOnlyArrayND<T> {
 
     override val view: ArrayNDViewer<T> get() = DefaultArrayNDViewer(this)
 
-    override fun getView(vararg indices:Any): ArrayND<T>
+    override fun getView(vararg indices:Any): ArrayND<T> {
+        val (offset, shape, stride) = defaultGetView(this, indices)
+        return DefaultArrayNDView(
+                array = this,
+                offset = offset,
+                shape = shape,
+                stride = stride
+        )
+    }
 
     fun setValue(value: T, vararg indices: Int) = setValue(value, indices.asArray1D())
 
     fun setValue(value: T, indexArray: ReadOnlyIntArray1D)
+
+    operator fun set(value: T, indexArray: ReadOnlyIntArray1D) = setValue(value, indexArray)
 
     fun setValue(value: ReadOnlyArrayND<T>, vararg indices: Any): Unit =
             getView(*indices).setValue(value)
@@ -53,5 +64,7 @@ interface ArrayND<T>: ReadOnlyArrayND<T> {
     override fun iterator(): ArrayNDIterator<T> = cursor()
 
     override fun cursor(): ArrayNDCursor<T> = DefaultArrayNDCursor(this)
+
+    override fun copy(): ArrayND<T> = arrayND(shape) { getValue(it) }
 
 }

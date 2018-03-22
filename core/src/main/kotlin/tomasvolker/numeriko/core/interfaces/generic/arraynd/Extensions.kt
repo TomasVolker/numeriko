@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.generic.arraynd
 
+import tomasvolker.numeriko.core.interfaces.factory.arrayND
 import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
 
 operator fun <T> ReadOnlyArrayND<T>.get(vararg indeces: Int) =
@@ -20,6 +21,8 @@ operator fun <T> ArrayND<T>.set(vararg indeces: Int, value: T) =
 operator fun <T> ArrayND<T>.set(indexArray: ReadOnlyIntArray1D, value: T) =
         setValue(value, indexArray)
 
+fun <T> ReadOnlyArrayND<T>.mutableCopy() =
+        arrayND(shape) { this.getValue(it) }
 
 
 fun <T> ArrayND<T>.forEachIndexed(action: (indexArray: ReadOnlyIntArray1D, value: T) -> Unit) {
