@@ -1,69 +1,50 @@
 package tomasvolker.numeriko.core.interfaces.factory
 
+import tomasvolker.numeriko.core.interfaces.generic.array1d.Array1D
+import tomasvolker.numeriko.core.interfaces.generic.array1d.MutableArray1D
 import tomasvolker.numeriko.core.jvm.factory.JvmArrayNDFactory
-import tomasvolker.numeriko.core.interfaces.generic.arraynd.ArrayND
-import tomasvolker.numeriko.core.interfaces.integer.array0d.IntArray0D
-import tomasvolker.numeriko.core.interfaces.integer.array1d.IntArray1D
-import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
-import tomasvolker.numeriko.core.interfaces.integer.arraynd.IntArrayND
 
-val currentFactory: ArrayNDFactory = JvmArrayNDFactory()
+var defaultFactory: ArrayNDFactory = JvmArrayNDFactory()
 
-fun intZeros(s0: Int): IntArray1D =
-        currentFactory.intZeros(s0)
+fun <T> Array<T>.asArray1D(): Array1D<T> = array1D(this)
 
-fun intArray1D(s0: Int, value: (i0: Int) -> Int = { 0 }): IntArray1D =
-        currentFactory.intArray1D(s0, value)
+fun <T> Array<T>.asMutableArray1D(): Array1D<T> = mutableArray1D(this)
 
-fun intArray1DOf(vararg values: Int): IntArray1D =
-        currentFactory.intArray1DOf(*values)
+fun <T> array1D(data: Array<T>): Array1D<T> = mutableArray1D(data)
 
-fun intZeros(vararg shape: Int) =
-        currentFactory.intZeros(*shape)
+inline fun <reified T> array1D(size: Int, init: (index: Int)->T): Array1D<T> =
+        mutableArray1D(size, init)
 
-fun intZeros(shape: ReadOnlyIntArray1D) =
-        currentFactory.intZeros(shape)
+fun <T> mutableArray1D(data: Array<T>): MutableArray1D<T> =
+        defaultFactory.mutableArray1D(data)
 
-fun intArrayND(vararg shape: Int, value: (index: ReadOnlyIntArray1D)->Int = { 0 }) =
-        currentFactory.intArrayND(*shape) { value(it) }
+inline fun <reified T> mutableArray1D(size: Int, init: (index: Int)->T): MutableArray1D<T> =
+        mutableArray1D(Array<T?>(size) {i -> init(i) } as Array<T>)
 
-fun intArrayND(shape: ReadOnlyIntArray1D, value: (index: ReadOnlyIntArray1D)->Int = { 0 }) =
-        currentFactory.intArrayND(shape, value)
+fun <T> array1DOf(vararg values: T) = array1D(values)
 
-fun <T> arrayND(vararg shape: Int, value: (index: ReadOnlyIntArray1D)->T) =
-        currentFactory.arrayND(*shape) { value(it) }
+fun <T> mutableArray1DOf(vararg values: T) = mutableArray1D(values)
 
-fun <T> arrayND(shape: ReadOnlyIntArray1D, value: (index: ReadOnlyIntArray1D)->T) =
-        currentFactory.arrayND(shape, value)
+fun <T> copy(array: Array1D<T>): Array1D<T> =
+        defaultFactory.copy(array)
 
+fun <T> mutableCopy(array: Array1D<T>): MutableArray1D<T> =
+        defaultFactory.mutableCopy(array)
 
 interface ArrayNDFactory {
 
-    fun intZeros(): IntArray0D = intArray0DOf(0)
+    fun <T> mutableArray1D(data: Array<T>): MutableArray1D<T>
 
-    fun intZeros(s0: Int): IntArray1D = intArray1D(s0) { 0 }
+    fun <T> copy(array: Array1D<T>): Array1D<T> =
+            mutableCopy(array)
 
-    fun intZeros(vararg shape: Int): IntArrayND =
-            when(shape.size) {
-                0 -> intZeros()
-                1 -> intZeros(shape[0])
-                else -> intArrayND(*shape) { 0 }
-            }
+    fun <T> mutableCopy(array: Array1D<T>): MutableArray1D<T>
 
-    fun intZeros(shape: ReadOnlyIntArray1D): IntArrayND
 
-    fun intArray0DOf(value: Int): IntArray0D
+    fun <T> array1DOfNulls(size: Int): Array1D<T?> =
+            mutableArray1DOfNulls(size)
 
-    fun intArray1D(s0: Int, value: (i0: Int) -> Int = { 0 }): IntArray1D
-
-    fun intArray1DOf(vararg values: Int): IntArray1D
-
-    fun intArrayND(vararg shape: Int, value: (index: ReadOnlyIntArray1D) -> Int = { 0 }): IntArrayND
-
-    fun intArrayND(shape: ReadOnlyIntArray1D, value: (index: ReadOnlyIntArray1D) -> Int = { 0 }): IntArrayND
-
-    fun <T> arrayND(vararg shape: Int, value: (index: ReadOnlyIntArray1D)->T): ArrayND<T>
-
-    fun <T> arrayND(shape: ReadOnlyIntArray1D, value: (index: ReadOnlyIntArray1D)->T): ArrayND<T>
+    fun <T> mutableArray1DOfNulls(size: Int): MutableArray1D<T?> =
+            mutableArray1D(arrayOfNulls<Any?>(size) as Array<T?>)
 
 }

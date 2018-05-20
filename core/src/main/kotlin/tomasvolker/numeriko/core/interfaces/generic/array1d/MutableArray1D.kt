@@ -2,51 +2,47 @@ package tomasvolker.numeriko.core.interfaces.generic.array1d
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
 import tomasvolker.numeriko.core.interfaces.generic.util.defaultEquals
 import tomasvolker.numeriko.core.interfaces.generic.util.defaultHashCode
 import tomasvolker.numeriko.core.interfaces.generic.util.defaultToString
 
-interface Array1D<out T>: Collection<T> {
+interface MutableArray1D<T>: Array1D<T> {
 
-    val rank: Int get() = 1
+    fun setValue(value: T, index: Int)
 
-    fun getValue(index: Int): T
+    fun setValue(value: T, index: Index) =
+            setValue(value, index.computeValue(size))
 
-    fun getValue(index: Index): T =
-            getValue(index.computeValue(size))
-
-    fun getView(indexRange: IntProgression): Array1D<T> =
-            DefaultArray1DView(
+    override fun getView(indexRange: IntProgression): MutableArray1D<T> =
+            DefaultMutableArray1DView(
                     array = this,
                     offset = indexRange.first,
                     size = indexRange.count(),
                     stride = indexRange.step
             )
 
-    fun getView(indexRange: IndexProgression): Array1D<T> =
+    override fun getView(indexRange: IndexProgression): MutableArray1D<T> =
             getView(indexRange.computeProgression(size))
 
-    fun copy(): Array1D<T> = copy(this)
-
-    override fun contains(element:@UnsafeVariance T): Boolean =
-            any { it == element }
-
-    override fun containsAll(elements: Collection<@UnsafeVariance T>): Boolean =
-            elements.all { this.contains(it) }
-
-    override fun isEmpty(): Boolean = size == 0
-
-    override fun iterator(): Iterator<T> = DefaultArray1DIterator(this)
+    override fun copy(): MutableArray1D<T> = mutableCopy(this)
 
 }
 
-open class DefaultArray1DView<out T>(
-        open val array: Array1D<T>,
+open class DefaultMutableArray1DView<T>(
+        open val array: MutableArray1D<T>,
         val offset: Int,
         override val size: Int,
         val stride: Int
-) : Array1D<T> {
+) : MutableArray1D<T> {
+
+    override fun setValue(value: T, index: Int) {
+        if (index !in 0 until size) {
+            throw IndexOutOfBoundsException(index)
+        }
+
+        array.setValue(value, offset + stride * index)
+    }
 
     override fun getValue(index: Int): T {
         if (index !in 0 until size) {

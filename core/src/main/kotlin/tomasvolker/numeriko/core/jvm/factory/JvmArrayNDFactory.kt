@@ -1,81 +1,20 @@
 package tomasvolker.numeriko.core.jvm.factory
 
-import tomasvolker.numeriko.core.jvm.generic.arraynd.JvmArrayND
-import tomasvolker.numeriko.core.jvm.generic.arraynd.setAllInline
-import tomasvolker.numeriko.core.jvm.int.arraynd.JvmIntArrayND
-import tomasvolker.numeriko.core.jvm.int.arraynd.setAllInline
 import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
-import tomasvolker.numeriko.core.interfaces.integer.array1d.ReadOnlyIntArray1D
-import tomasvolker.numeriko.core.jvm.int.array0d.JvmIntArray0D
-import tomasvolker.numeriko.core.jvm.int.array1d.JvmIntArray1D
-import tomasvolker.numeriko.core.util.computeSizeFromShape
-
-val jvmArrayNDFactory = JvmArrayNDFactory()
+import tomasvolker.numeriko.core.interfaces.generic.array1d.Array1D
+import tomasvolker.numeriko.core.interfaces.generic.array1d.MutableArray1D
+import tomasvolker.numeriko.core.jvm.array1d.JvmMutableArray1D
 
 class JvmArrayNDFactory: ArrayNDFactory {
 
-    override fun intArray0DOf(value: Int) =
-            JvmIntArray0D(value)
+    override fun <T> mutableArray1D(data: Array<T>): MutableArray1D<T> =
+            JvmMutableArray1D(data)
 
-    override fun intZeros(s0: Int) =
-            JvmIntArray1D(IntArray(s0))
-
-    override fun intArray1D(s0: Int, value: (i0: Int) -> Int) =
-            JvmIntArray1D(IntArray(s0, value))
-
-    override fun intArray1DOf(vararg values: Int) =
-            JvmIntArray1D(values)
-
-    override fun <T> arrayND(vararg shape: Int, value: (index: ReadOnlyIntArray1D) -> T): JvmArrayND<T> {
-        val result = JvmArrayND(
-                data = allocateData(shape) as Array<T?>,
-                shapeArray = shape
-        )
-        result.setAllInline(value)
-        return result as JvmArrayND<T>
-    }
-
-    override fun <T> arrayND(shape: ReadOnlyIntArray1D, value: (index: ReadOnlyIntArray1D) -> T): JvmArrayND<T> {
-        val shapeArray = shape.getDataAsIntArray()
-        val result = JvmArrayND(
-                data = allocateData(shapeArray) as Array<T?>,
-                shapeArray = shapeArray
-        )
-        result.setAllInline(value)
-        return result as JvmArrayND<T>
-    }
-
-    override fun intArrayND(vararg shape: Int, value: (index: ReadOnlyIntArray1D) -> Int): JvmIntArrayND {
-        val result = JvmIntArrayND(
-                data = allocateIntData(shape),
-                shapeArray = shape
-        )
-        result.setAllInline(value)
-        return result
-    }
-
-    override fun intArrayND(shape: ReadOnlyIntArray1D, value: (index: ReadOnlyIntArray1D) -> Int): JvmIntArrayND {
-        val shapeArray = shape.getDataAsIntArray()
-        val result = JvmIntArrayND(
-                data = allocateIntData(shapeArray),
-                shapeArray = shapeArray
-        )
-        result.setAllInline(value)
-        return result
-    }
-
-    override fun intZeros(vararg shape: Int): JvmIntArrayND =
-            JvmIntArrayND(
-                    data = allocateIntData(shape),
-                    shapeArray = shape
-            )
-
-    override fun intZeros(shape: ReadOnlyIntArray1D): JvmIntArrayND =
-            intZeros(*shape.getDataAsIntArray())
-
-    private fun allocateIntData(shapeArray: IntArray) = IntArray(computeSizeFromShape(shapeArray))
-
-    private fun allocateData(shapeArray: IntArray) = Array<Any?>(computeSizeFromShape(shapeArray)) { null }
+    override fun <T> mutableCopy(array: Array1D<T>): MutableArray1D<T> =
+            mutableArray1DOfNulls<T>(array.size).apply {
+                for (i in array.indices) {
+                    setValue(array.getValue(i), i)
+                }
+            } as MutableArray1D<T>
 
 }
-

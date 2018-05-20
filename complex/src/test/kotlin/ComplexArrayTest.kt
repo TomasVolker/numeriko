@@ -1,7 +1,7 @@
 import org.junit.Test
 import tomasvolker.numeriko.complex.j
 import tomasvolker.numeriko.complex.plus
-import tomasvolker.numeriko.core.interfaces.factory.arrayND
+import tomasvolker.numeriko.legacy.core.interfaces.factory.arrayND
 
 class ComplexArrayTest {
 
