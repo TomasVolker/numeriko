@@ -26,6 +26,14 @@ interface MutableArray1D<T>: Array1D<T> {
 
     }
 
+    fun setValue(value: T) {
+
+        for (i in indices) {
+            setValue(value, i)
+        }
+
+    }
+
     override fun getView(indexRange: IntProgression): MutableArray1D<T> =
             DefaultMutableArray1DView(
                     array = this,
@@ -41,6 +49,12 @@ interface MutableArray1D<T>: Array1D<T> {
             getView(indexRange).setValue(value)
 
     fun setView(value: Array1D<T>, indexRange: IntProgression) =
+            getView(indexRange).setValue(value)
+
+    fun setView(value: T, indexRange: IndexProgression) =
+            getView(indexRange).setValue(value)
+
+    fun setView(value: T, indexRange: IntProgression) =
             getView(indexRange).setValue(value)
 
     override fun copy(): MutableArray1D<T> = mutableCopy(this)

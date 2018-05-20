@@ -3,7 +3,10 @@ package tomasvolker.numeriko.core.jvm.factory
 import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
 import tomasvolker.numeriko.core.interfaces.generic.array1d.Array1D
 import tomasvolker.numeriko.core.interfaces.generic.array1d.MutableArray1D
-import tomasvolker.numeriko.core.jvm.array1d.JvmMutableArray1D
+import tomasvolker.numeriko.core.interfaces.integer.array1d.IntArray1D
+import tomasvolker.numeriko.core.interfaces.integer.array1d.MutableIntArray1D
+import tomasvolker.numeriko.core.jvm.array1d.generic.JvmMutableArray1D
+import tomasvolker.numeriko.core.jvm.array1d.integer.JvmMutableIntArray1D
 
 class JvmArrayNDFactory: ArrayNDFactory {
 
@@ -16,5 +19,15 @@ class JvmArrayNDFactory: ArrayNDFactory {
                     setValue(array.getValue(i), i)
                 }
             } as MutableArray1D<T>
+
+    override fun mutableIntArray1D(data: IntArray): MutableIntArray1D =
+            JvmMutableIntArray1D(data)
+
+    override fun mutableCopy(array: IntArray1D): MutableIntArray1D =
+            mutableIntZeros(array.size).apply {
+                for (i in array.indices) {
+                    setInt(array.getInt(i), i)
+                }
+            }
 
 }

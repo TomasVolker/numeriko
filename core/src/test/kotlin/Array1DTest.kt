@@ -10,9 +10,9 @@ import kotlin.test.assertNotEquals
 class Array1DTest {
 
     operator fun <T> Array1D<T>.get(index: Int) = getValue(index)
-    operator fun <T> Array1D<T>.get(index: IntProgression) = getView(index)
-
     operator fun <T> Array1D<T>.get(index: Index) = getValue(index)
+
+    operator fun <T> Array1D<T>.get(index: IntProgression) = getView(index)
     operator fun <T> Array1D<T>.get(index: IndexProgression) = getView(index)
 
     operator fun <T> MutableArray1D<T>.set(index: Int, value: T) = setValue(value, index)
@@ -20,6 +20,9 @@ class Array1DTest {
 
     operator fun <T> MutableArray1D<T>.set(index: IntProgression, value: Array1D<T>) = setView(value, index)
     operator fun <T> MutableArray1D<T>.set(index: IndexProgression, value: Array1D<T>) = setView(value, index)
+
+    operator fun <T> MutableArray1D<T>.set(index: IntProgression, value: T) = setView(value, index)
+    operator fun <T> MutableArray1D<T>.set(index: IndexProgression, value: T) = setView(value, index)
 
     @Test
     fun createArray() {
@@ -92,7 +95,7 @@ class Array1DTest {
         a1[1..3] = array1DOf(-2, -4, -6)
         assertEquals(a1[2..4], arrayOf(-4, -6, 8).asArray1D())
 
-        a1[All] = array1D(100) { 0 }
+        a1[All] = 0
         assertEquals(a1[56], 0)
 
     }

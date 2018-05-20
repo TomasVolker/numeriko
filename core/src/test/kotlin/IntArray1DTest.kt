@@ -1,0 +1,88 @@
+import org.junit.Test
+import tomasvolker.numeriko.core.index.*
+import tomasvolker.numeriko.core.interfaces.factory.*
+import tomasvolker.numeriko.core.interfaces.generic.array1d.Array1D
+import tomasvolker.numeriko.core.interfaces.generic.array1d.MutableArray1D
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
+
+
+class IntArray1DTest {
+
+    @Test
+    fun createArray() {
+
+        val a1 = intArray1D(5) { i -> 2*i }
+        val a2 = intArrayOf(0, 2, 4, 6, 8).asIntArray1D()
+        val a3 = intArray1DOf(0, 2, 4, 6, 8)
+
+        assertEquals(a1, a2)
+        assertEquals(a1, a3)
+        assertEquals(a2, a3)
+
+    }
+
+    @Test
+    fun accessArray() {
+
+        val a1 = intArray1D(5) { i -> 2*i }
+        val a2 = intArrayOf(0, 2, 4, 6, 8).asIntArray1D()
+        val a3 = intArray1DOf(0, 2, 4, 6, 8)
+
+        assertEquals(a1[2], a2[2])
+        assertEquals(a1[4], a3[4])
+        assertNotEquals(a2[First], a3[1])
+        assertEquals(a2[Last], a3[4])
+        assertEquals(a1[All], a3)
+
+    }
+
+    @Test
+    fun viewArray() {
+
+        val a1 = intArray1D(100) { i -> 2*i}
+
+        assertEquals(a1[2..4], intArray1DOf(4, 6, 8))
+        assertEquals(a1[8..Last].size, 92)
+
+    }
+
+    @Test
+    fun viewInstance() {
+
+        val a1 = intArray1D(100) { i -> 2*i }
+
+        val view = a1[10 until 20]
+
+        val viewCopy = view.copy()
+
+        assert(view !== viewCopy)
+        assert(view == viewCopy)
+
+
+    }
+
+    @Test
+    fun modifyArray() {
+
+        val a1 = mutableIntArray1D(100) { i -> 2*i }
+
+        val a2 = a1.copy()
+
+        assertEquals(a1, a2)
+
+        a1[99] = -1
+        assertNotEquals(a1, a2)
+
+        a1[Last] = 198
+        assertEquals(a1, a2)
+
+        a1[1..3] = intArray1DOf(-2, -4, -6)
+        assertEquals(a1[2..4], arrayOf(-4, -6, 8).asArray1D())
+
+        a1[All] = 0
+        assertEquals(a1[56], 0)
+
+    }
+
+}

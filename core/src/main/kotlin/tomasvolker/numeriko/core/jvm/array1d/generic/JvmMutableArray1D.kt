@@ -1,4 +1,4 @@
-package tomasvolker.numeriko.core.jvm.array1d
+package tomasvolker.numeriko.core.jvm.array1d.generic
 
 import tomasvolker.numeriko.core.interfaces.generic.array1d.Array1D
 import tomasvolker.numeriko.core.interfaces.generic.array1d.MutableArray1D
