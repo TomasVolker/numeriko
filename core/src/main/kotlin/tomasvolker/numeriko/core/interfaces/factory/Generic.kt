@@ -27,3 +27,6 @@ fun <T> copy(array: Array1D<T>): Array1D<T> =
 
 fun <T> mutableCopy(array: Array1D<T>): MutableArray1D<T> =
         defaultFactory.mutableCopy(array)
+
+fun <T> mutableArray1DOfNulls(size: Int): MutableArray1D<T?> =
+        defaultFactory.mutableArray1DOfNulls(size)

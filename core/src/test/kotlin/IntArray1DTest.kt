@@ -3,6 +3,7 @@ import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.generic.array1d.Array1D
 import tomasvolker.numeriko.core.interfaces.generic.array1d.MutableArray1D
+import tomasvolker.numeriko.core.interfaces.integer.array1d.times
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -82,6 +83,21 @@ class IntArray1DTest {
 
         a1[All] = 0
         assertEquals(a1[56], 0)
+
+    }
+
+    @Test
+    fun algebra() {
+
+        val a1 = mutableIntArray1D(100) { i -> i }
+
+        val a2 = mutableIntArray1D(100) { i -> 2*i }
+
+        val a3 = mutableIntArray1D(100) { i -> 3*i }
+
+        assertEquals(a1 + a2, a3)
+
+        assertEquals(a1 * 3, 2 * a2 - a3 / 3)
 
     }
 

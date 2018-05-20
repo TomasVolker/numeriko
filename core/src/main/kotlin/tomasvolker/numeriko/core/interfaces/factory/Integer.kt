@@ -22,10 +22,17 @@ inline fun mutableIntArray1D(size: Int, init: (index: Int)->Int): MutableIntArra
 
 fun intArray1DOf(vararg values: Int) = intArray1D(values)
 
-fun mutableIntArray1DOf(vararg values: Int) = mutableIntArray1D(values)
+fun mutableIntArray1DOf(vararg values: Int) =
+        mutableIntArray1D(values)
 
 fun copy(array: IntArray1D): IntArray1D =
         defaultFactory.copy(array)
 
 fun mutableCopy(array: IntArray1D): MutableIntArray1D =
         defaultFactory.mutableCopy(array)
+
+fun intZeros(size: Int): IntArray1D =
+        defaultFactory.intZeros(size)
+
+fun mutableIntZeros(size: Int): MutableIntArray1D =
+        defaultFactory.mutableIntZeros(size)
