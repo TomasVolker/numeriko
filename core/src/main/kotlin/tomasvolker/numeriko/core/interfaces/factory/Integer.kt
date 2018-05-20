@@ -7,7 +7,7 @@ import tomasvolker.numeriko.core.interfaces.integer.array1d.MutableIntArray1D
 
 fun IntArray.asIntArray1D(): IntArray1D = intArray1D(this)
 
-fun IntArray.asMutableArray1D(): IntArray1D = mutableIntArray1D(this)
+fun IntArray.asMutableIntArray1D(): IntArray1D = mutableIntArray1D(this)
 
 fun intArray1D(data: IntArray): IntArray1D = mutableIntArray1D(data)
 
