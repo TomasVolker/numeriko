@@ -1,8 +1,5 @@
 import org.junit.Test
-import tomasvolker.numeriko.core.index.Index
-import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.index.Last
-import tomasvolker.numeriko.core.index.rangeTo
+import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.generic.array1d.Array1D
 import tomasvolker.numeriko.core.interfaces.generic.array1d.MutableArray1D
@@ -20,6 +17,9 @@ class Array1DTest {
 
     operator fun <T> MutableArray1D<T>.set(index: Int, value: T) = setValue(value, index)
     operator fun <T> MutableArray1D<T>.set(index: Index, value: T) = setValue(value, index)
+
+    operator fun <T> MutableArray1D<T>.set(index: IntProgression, value: Array1D<T>) = setView(value, index)
+    operator fun <T> MutableArray1D<T>.set(index: IndexProgression, value: Array1D<T>) = setView(value, index)
 
     @Test
     fun createArray() {
@@ -43,7 +43,9 @@ class Array1DTest {
 
         assertEquals(a1[2], a2[2])
         assertEquals(a1[4], a3[4])
-        assertNotEquals(a2[0], a3[1])
+        assertNotEquals(a2[First], a3[1])
+        assertEquals(a2[Last], a3[4])
+        assertEquals(a1[All], a3)
 
     }
 
@@ -81,9 +83,17 @@ class Array1DTest {
 
         assertEquals(a1, a2)
 
-        a1[5] = -1
-
+        a1[99] = -1
         assertNotEquals(a1, a2)
+
+        a1[Last] = 198
+        assertEquals(a1, a2)
+
+        a1[1..3] = array1DOf(-2, -4, -6)
+        assertEquals(a1[2..4], arrayOf(-4, -6, 8).asArray1D())
+
+        a1[All] = array1D(100) { 0 }
+        assertEquals(a1[56], 0)
 
     }
 

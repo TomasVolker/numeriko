@@ -14,6 +14,18 @@ interface MutableArray1D<T>: Array1D<T> {
     fun setValue(value: T, index: Index) =
             setValue(value, index.computeValue(size))
 
+    fun setValue(other: Array1D<T>) {
+
+        require(other.size == this.size) {
+            "Sizes must much"
+        }
+
+        for (i in indices) {
+            setValue(other.getValue(i), i)
+        }
+
+    }
+
     override fun getView(indexRange: IntProgression): MutableArray1D<T> =
             DefaultMutableArray1DView(
                     array = this,
@@ -24,6 +36,12 @@ interface MutableArray1D<T>: Array1D<T> {
 
     override fun getView(indexRange: IndexProgression): MutableArray1D<T> =
             getView(indexRange.computeProgression(size))
+
+    fun setView(value: Array1D<T>, indexRange: IndexProgression) =
+            getView(indexRange).setValue(value)
+
+    fun setView(value: Array1D<T>, indexRange: IntProgression) =
+            getView(indexRange).setValue(value)
 
     override fun copy(): MutableArray1D<T> = mutableCopy(this)
 
