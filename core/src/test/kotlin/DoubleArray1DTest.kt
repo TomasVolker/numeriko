@@ -2,6 +2,10 @@ import org.junit.Test
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.double.array1d.times
 import tomasvolker.numeriko.core.interfaces.factory.*
+import tomasvolker.numeriko.core.linearalgebra.cos
+import tomasvolker.numeriko.core.linearalgebra.invoke
+import tomasvolker.numeriko.core.linearalgebra.linearSpace
+import kotlin.math.PI
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -96,6 +100,17 @@ class DoubleArray1DTest {
 
         assertEquals(a1 * 3.0, 2.0 * a2 - a3 / 3.0)
 
+        val x = linearSpace(start = 0.0, stop = 2*PI, count = 11)
+        val y = cos(x)
+
+        //val op = {input: Double -> 2*input}
+
+        val function = fun(x: Double) = 2 * x
+
+        function(x)
+
     }
 
 }
+
+

@@ -2,16 +2,15 @@ package tomasvolker.numeriko.core.interfaces.double.array1d
 
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
 
-inline fun DoubleArray1D.elementWise(operation: (Double) -> Double): DoubleArray1D {
+inline fun DoubleArray1D.elementWise(operation: (Double) -> Double): MutableDoubleArray1D {
     val result = mutableDoubleZeros(size)
     for (i in indices) {
         result[i] = operation(this[i])
     }
     return result
-
 }
 
-inline fun elementWise(array1: DoubleArray1D, array2: DoubleArray1D, operation: (Double, Double) -> Double): DoubleArray1D {
+inline fun elementWise(array1: DoubleArray1D, array2: DoubleArray1D, operation: (Double, Double) -> Double): MutableDoubleArray1D {
     require(array1.size == array2.size) {
         "Arrays are not of the same size"
     }
@@ -22,4 +21,15 @@ inline fun elementWise(array1: DoubleArray1D, array2: DoubleArray1D, operation: 
     }
     return result
 
+}
+
+inline fun DoubleArray1D.sumBy(operation: (Double) -> Double): Double {
+    require(size > 0) {
+        "Size cannot be empty"
+    }
+    var result = 0.0
+    for (i in indices) {
+        result += operation(this[i])
+    }
+    return result
 }

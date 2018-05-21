@@ -150,8 +150,8 @@ class JvmIntArrayND(
     override fun cursor() = DefaultIntArrayNDCursor(this)
 
     override fun hashCode() =
-           31 * shapeArray.reduce { acc, i ->  31 * acc + i.hashCode()} +
-                   data.reduce { acc, i -> 31 * acc + i.hashCode() }
+           31 * shapeArray.sumBy { acc, i ->  31 * acc + i.hashCode()} +
+                   data.sumBy { acc, i -> 31 * acc + i.hashCode() }
 
     override fun toString() = defaultToString()
 

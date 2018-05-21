@@ -2,6 +2,8 @@ package tomasvolker.numeriko.core.interfaces.generic.util
 
 import tomasvolker.numeriko.core.interfaces.generic.array1d.Array1D
 
+val Array1D<*>.lastIndex: Int get() = size -1
+
 fun defaultEquals(array1: Array1D<*>, array2: Array1D<*>): Boolean {
 
     if (array1.size != array2.size)
