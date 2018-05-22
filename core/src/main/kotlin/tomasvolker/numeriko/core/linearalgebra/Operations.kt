@@ -19,11 +19,11 @@ infix fun DoubleArray1D.inner(other: DoubleArray1D): Double {
     return result
 }
 
-fun linearSpace(start: Double, stop: Double, count: Int = 10): MutableDoubleArray1D {
-    require(count > 0) {
-        "count cannot be non positive"
+fun linearSpace(start: Double, stop: Double, amount: Int = 10): MutableDoubleArray1D {
+    require(amount > 0) {
+        "amount cannot be non positive"
     }
-    return mutableDoubleArray1D(count) { i -> start + (stop - start) * (i / (count - 1.0)) }
+    return mutableDoubleArray1D(amount) { i -> start + (stop - start) * (i / (amount - 1.0)) }
 }
 
 fun DoubleArray1D.norm1(): Double = sumBy { abs(it) }

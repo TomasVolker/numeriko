@@ -100,7 +100,7 @@ class DoubleArray1DTest {
 
         assertEquals(a1 * 3.0, 2.0 * a2 - a3 / 3.0)
 
-        val x = linearSpace(start = 0.0, stop = 2*PI, count = 11)
+        val x = linearSpace(start = 0.0, stop = 2*PI, amount = 11)
         val y = cos(x)
 
         //val op = {input: Double -> 2*input}

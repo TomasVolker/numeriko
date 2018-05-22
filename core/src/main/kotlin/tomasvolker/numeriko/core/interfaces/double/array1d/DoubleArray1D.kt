@@ -70,6 +70,18 @@ interface DoubleArray1D: Array1D<Double> {
     operator fun div(other: Double): MutableDoubleArray1D =
             elementWise { it / other }
 
+    operator fun plus(other: Int): MutableDoubleArray1D =
+            plus(other.toDouble())
+
+    operator fun minus(other: Int): MutableDoubleArray1D =
+            minus(other.toDouble())
+
+    operator fun times(other: Int): MutableDoubleArray1D =
+            times(other.toDouble())
+
+    operator fun div(other: Int): MutableDoubleArray1D =
+            div(other.toDouble())
+
     fun sum(): Double = sumBy { it }
 
 }

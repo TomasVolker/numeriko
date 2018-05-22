@@ -10,56 +10,65 @@ fun main(args: Array<String>) {
     val t = linearSpace(
             start = 0.0,
             stop = 1.0,
-            count = 101
+            amount = 101
     )
 
-    val x = linearSpace(start = -2 * PI, stop = 2 * PI, count = 101)
+    val x = linearSpace(start = -2 * PI, stop = 2 * PI, amount = 101)
 
-    val plot = Plot().apply {
+    val alphaRange = linearSpace(-1.0, 1.0, 5)
 
-        addLine(
-                x,
-                sin(x)
-        )
+    plot {
 
-        addLine(
-                x,
-                cos(x),
-                Color.BLUE
-        )
+        for (alpha in alphaRange) {
 
-        addLine(
-                cos(2 * PI * t),
-                sin(2 * PI * t),
-                Color.RED
-        )
+            line(x = x, y = exp(alpha * x)) {
+                color = if(alpha < 0) Color.RED else Color.BLUE
+                lineWidth = if(alpha > 0) 2.0 else 1.0
+            }
 
-        addLine(
-                x,
-                cosh(x),
-                Color.GREEN
-        )
+        }
 
-        addLine(
-                x,
-                sinh(x),
-                Color.MAGENTA
-        )
-
-        addLine(
-                x,
-                exp(x),
-                Color.CYAN
-        )
-
-        addLine(
-                x,
-                exp(-x),
-                Color.ORANGE
+        line(
+            x = cos(2 * PI * t),
+            y = sin(2 * PI * t),
+            style = style {
+                color = Color.RED
+            }
         )
 
     }
 
-    //plot.close()
+
+    plot {
+
+        line(x, sin(x))
+
+        line(x, cos(x)) {
+            color = Color.BLUE
+        }
+
+        line(
+                x = cos(2 * PI * t),
+                y = sin(2 * PI * t)
+        )
+
+        line(x, cosh(x)) {
+            color = Color.GREEN
+        }
+
+        line(x, sinh(x)) {
+            color = Color.MAGENTA
+        }
+
+        line(x, exp(x)) {
+            color = Color.CYAN
+        }
+
+        line(x, exp(-x)) {
+            color = Color.ORANGE
+        }
+
+    }
+
 
 }

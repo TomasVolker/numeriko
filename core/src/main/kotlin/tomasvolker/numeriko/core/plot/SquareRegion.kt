@@ -39,4 +39,6 @@ class SquareRegion(
             maxY = value + height / 2
         }
 
+    fun contains(x: Double, y: Double) = x in minX..maxX && y in minY..maxY
+
 }

@@ -1,14 +1,12 @@
 package tomasvolker.numeriko.core.plot
 
 import tomasvolker.numeriko.core.interfaces.double.array1d.DoubleArray1D
-import tomasvolker.numeriko.core.linearalgebra.cos
-import tomasvolker.numeriko.core.linearalgebra.linearSpace
-import tomasvolker.numeriko.core.linearalgebra.sin
 import java.awt.*
 import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.WindowConstants
-import kotlin.math.PI
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.roundToInt
 
 
@@ -24,9 +22,8 @@ class PlotFrame: JFrame() {
 
         title = "Plot"
         setSize(800, 800)
-        setLocationRelativeTo(null)
 
-        defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
+        defaultCloseOperation = WindowConstants.DISPOSE_ON_CLOSE
 
     }
 
@@ -53,6 +50,9 @@ class PlotView(
             (screenHeight * (region.maxY - y) / (region.maxY - region.minY)).roundToInt()
 
 }
+
+private fun Double.floor() = floor(this).roundToInt()
+private fun Double.ceil() = ceil(this).roundToInt()
 
 class Canvas : JPanel() {
 
@@ -102,27 +102,53 @@ class Canvas : JPanel() {
 
     }
 
-    fun Graphics2D.drawAxis() {
+    private fun Graphics2D.drawAxis() {
 
-        val axisLength = 10.0
+        val region = view.region
 
         drawLine(
-                (-axisLength).screenX(),
+                region.minX.screenX(),
                 0.0.screenY(),
-                axisLength.screenX(),
+                region.maxX.screenX(),
                 0.0.screenY()
         )
 
+        for (x in region.minX.ceil()..region.maxX.floor()) {
+
+            val xd = x.toDouble()
+
+            drawLine(
+                    xd.screenX(),
+                    (-0.05).screenY(),
+                    xd.screenX(),
+                    0.05.screenY()
+            )
+
+        }
+
         drawLine(
                 0.0.screenX(),
-                (-axisLength).screenY(),
+                region.minY.screenY(),
                 0.0.screenX(),
-                axisLength.screenY()
+                region.maxY.screenY()
         )
+
+        for (y in region.minY.ceil()..region.maxY.floor()) {
+
+            val yd = y.toDouble()
+
+            drawLine(
+                    (-0.05).screenX(),
+                    yd.screenY(),
+                    0.05.screenX(),
+                    yd.screenY()
+            )
+
+        }
 
     }
 
-    fun Graphics2D.drawLines() {
+    private fun Graphics2D.drawLines() {
 
         for (line in lineList) {
 
@@ -236,6 +262,34 @@ class PlotLine(
             val lineType: LineStyle = LineStyle.SOLID,
             val pointSize: Double = 4.0,
             val pointType: DotStyle = DotStyle.NONE
-    )
+    ) {
+
+        class Builder(
+                var color: Color = Color.BLACK,
+                var lineWidth: Double = 1.0,
+                var lineType: LineStyle = LineStyle.SOLID,
+                var pointSize: Double = 4.0,
+                var pointType: DotStyle = DotStyle.NONE
+        ) {
+
+            fun build() =
+                    Style(color, lineWidth, lineType, pointSize, pointType)
+
+        }
+
+    }
 
 }
+
+fun style(init: PlotLine.Style.Builder.()->Unit) =
+        PlotLine.Style.Builder().apply(init).build()
+
+fun plot(init: Plot.() -> Unit) = Plot().apply(init)
+
+fun Plot.line(x: DoubleArray1D, y: DoubleArray1D) = PlotLine(x, y).also { add(it) }
+
+fun Plot.line(x: DoubleArray1D, y: DoubleArray1D, style: PlotLine.Style) =
+        PlotLine(x, y, style).also { add(it) }
+
+fun Plot.line(x: DoubleArray1D, y: DoubleArray1D, styleInit: PlotLine.Style.Builder.()->Unit) =
+        line(x, y, style(styleInit))
