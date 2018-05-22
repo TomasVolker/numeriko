@@ -1,10 +1,13 @@
-# NumeriKo
+import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 
-NDArray library for Kotlin in development.
-
-Example usage:
-
-```kotlin
+import tomasvolker.numeriko.core.interfaces.factory.mutableIntArray1D
+import tomasvolker.numeriko.core.linearalgebra.convolve
+import tomasvolker.numeriko.core.linearalgebra.cumSum
+import tomasvolker.numeriko.core.linearalgebra.linearSpace
+import tomasvolker.numeriko.core.plot.line
+import tomasvolker.numeriko.core.plot.plot
+import java.awt.Color
+import java.util.*
 
 fun main(args: Array<String>) {
 
@@ -47,5 +50,3 @@ fun main(args: Array<String>) {
     }
 
 }
-
-```

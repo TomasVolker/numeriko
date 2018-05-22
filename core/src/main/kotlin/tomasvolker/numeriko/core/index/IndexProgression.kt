@@ -1,12 +1,16 @@
 package tomasvolker.numeriko.core.index
 
-open class IndexProgression(val first: Index, val last: Index, val stride: Int = 1) {
+open class IndexProgression(
+        val first: Index,
+        val last: Index,
+        val step: Int = 1
+) {
 
     fun computeProgression(size: Int) =
             IntProgression.fromClosedRange(
                     first.computeValue(size),
                     last.computeValue(size),
-                    stride
+                    step
             )
 
 }

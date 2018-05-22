@@ -1,12 +1,12 @@
 package tomasvolker.numeriko.core.interfaces.factory
 
-import tomasvolker.numeriko.core.interfaces.double.array1d.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.double.array1d.MutableDoubleArray1D
-import tomasvolker.numeriko.core.interfaces.generic.array1d.Array1D
-import tomasvolker.numeriko.core.interfaces.generic.array1d.MutableArray1D
-import tomasvolker.numeriko.core.interfaces.integer.array1d.IntArray1D
-import tomasvolker.numeriko.core.interfaces.integer.array1d.MutableIntArray1D
-import tomasvolker.numeriko.core.jvm.factory.JvmArrayNDFactory
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
+import tomasvolker.numeriko.core.implementations.jvm.factory.JvmArrayNDFactory
 
 var defaultFactory: ArrayNDFactory = JvmArrayNDFactory()
 

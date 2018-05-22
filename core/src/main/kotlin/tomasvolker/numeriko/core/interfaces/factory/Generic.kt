@@ -1,11 +1,11 @@
 package tomasvolker.numeriko.core.interfaces.factory
 
-import tomasvolker.numeriko.core.interfaces.generic.array1d.Array1D
-import tomasvolker.numeriko.core.interfaces.generic.array1d.MutableArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 
 fun <T> Array<T>.asArray1D(): Array1D<T> = array1D(this)
 
-fun <T> Array<T>.asMutableArray1D(): Array1D<T> = mutableArray1D(this)
+fun <T> Array<T>.asMutableArray1D(): MutableArray1D<T> = mutableArray1D(this)
 
 fun <T> array1D(data: Array<T>): Array1D<T> = mutableArray1D(data)
 
