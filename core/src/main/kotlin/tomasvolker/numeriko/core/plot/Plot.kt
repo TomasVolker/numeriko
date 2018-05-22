@@ -237,7 +237,7 @@ class PlotLine(
 
     init {
         require(x.size == y.size) {
-            "x and y must have same size"
+            "x.size (${x.size}) and y.size (${y.size}) must be equal"
         }
     }
 

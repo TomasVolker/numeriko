@@ -1,9 +1,11 @@
 package tomasvolker.numeriko.core.plot
 
-import tomasvolker.numeriko.core.interfaces.double.array1d.times
-import tomasvolker.numeriko.core.linearalgebra.*
+import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
+import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleArray1D
+import tomasvolker.numeriko.core.linearalgebra.convolve
+import tomasvolker.numeriko.core.linearalgebra.cumSum
+import tomasvolker.numeriko.core.linearalgebra.linearSpace
 import java.awt.Color
-import kotlin.math.PI
 
 fun main(args: Array<String>) {
 
@@ -13,10 +15,42 @@ fun main(args: Array<String>) {
             amount = 101
     )
 
-    val x = linearSpace(start = -2 * PI, stop = 2 * PI, amount = 101)
+    val x = linearSpace(start = -5.0, stop = 5.0, amount = 10000)
+
+    val avg = 1000
+
+    var lowPass = mutableDoubleArray1D(x.size) { i ->
+        if(i < avg)
+            1.0/avg
+        else
+            0.0
+    }
+
+    lowPass = lowPass convolve lowPass convolve lowPass
+
+    val random = doubleArray1D(x.size) { 0.1 * (Math.random() - 0.5) } convolve lowPass
+    val walk = random.cumSum() / 2
+
+    plot {
+
+        line(x = x, y = lowPass * avg) {
+            color = Color.RED
+        }
+
+        line(x = x, y = random * 1000) {
+            color = Color.BLUE
+        }
+
+        line(x = x, y = walk) {
+            color = Color.GREEN
+        }
+
+    }
+
 
     val alphaRange = linearSpace(-1.0, 1.0, 5)
 
+/*
     plot {
 
         for (alpha in alphaRange) {
@@ -70,5 +104,5 @@ fun main(args: Array<String>) {
 
     }
 
-
+*/
 }

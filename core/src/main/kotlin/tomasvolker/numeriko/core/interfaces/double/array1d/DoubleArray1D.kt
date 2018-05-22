@@ -40,8 +40,8 @@ interface DoubleArray1D: Array1D<Double> {
     operator fun get(index: IntProgression): DoubleArray1D = getView(index)
     operator fun get(index: IndexProgression): DoubleArray1D = getView(index)
 
-    // Return copy?
-    operator fun unaryPlus(): DoubleArray1D = this
+    operator fun unaryPlus(): MutableDoubleArray1D =
+            elementWise { it }
 
     operator fun unaryMinus(): MutableDoubleArray1D =
             elementWise { -it }

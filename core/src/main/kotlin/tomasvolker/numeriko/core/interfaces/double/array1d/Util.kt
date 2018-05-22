@@ -10,6 +10,13 @@ inline fun DoubleArray1D.elementWise(operation: (Double) -> Double): MutableDoub
     return result
 }
 
+inline fun MutableDoubleArray1D.applyElementWise(operation: (Double) -> Double): MutableDoubleArray1D {
+    for (i in indices) {
+        this[i] = operation(this[i])
+    }
+    return this
+}
+
 inline fun elementWise(array1: DoubleArray1D, array2: DoubleArray1D, operation: (Double, Double) -> Double): MutableDoubleArray1D {
     require(array1.size == array2.size) {
         "Arrays are not of the same size"
@@ -20,6 +27,18 @@ inline fun elementWise(array1: DoubleArray1D, array2: DoubleArray1D, operation: 
         result[i] = operation(array1[i], array2[i])
     }
     return result
+
+}
+
+inline fun MutableDoubleArray1D.applyElementWise(other: DoubleArray1D, operation: (Double, Double) -> Double): MutableDoubleArray1D {
+    require(this.size == other.size) {
+        "Arrays are not of the same size"
+    }
+
+    for (i in this.indices) {
+        this[i] = operation(this[i], other[i])
+    }
+    return this
 
 }
 

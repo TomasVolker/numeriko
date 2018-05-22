@@ -71,6 +71,11 @@ object Last: Index {
             size - 1
 }
 
+object Size: Index {
+    override fun computeValue(size: Int): Int =
+            size
+}
+
 class IndexFunction(val index: Index, val function: (index: Int) -> Int): Index {
     override fun computeValue(size: Int): Int =
             function(index.computeValue(size))
