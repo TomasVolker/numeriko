@@ -46,13 +46,13 @@ interface MutableArray1D<T>: Array1D<T> {
             getView(indexRange.computeProgression(size))
 
     fun setView(value: Array1D<T>, indexRange: IndexProgression) =
-            getView(indexRange).setValue(value)
+            setView(value, indexRange.computeProgression(size))
 
     fun setView(value: Array1D<T>, indexRange: IntProgression) =
-            getView(indexRange).setValue(value)
+            getView(indexRange).setValue(value.copy())
 
     fun setView(value: T, indexRange: IndexProgression) =
-            getView(indexRange).setValue(value)
+            setView(value, indexRange.computeProgression(size))
 
     fun setView(value: T, indexRange: IntProgression) =
             getView(indexRange).setValue(value)

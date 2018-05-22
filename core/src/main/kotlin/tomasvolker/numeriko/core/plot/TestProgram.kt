@@ -1,13 +1,23 @@
 package tomasvolker.numeriko.core.plot
 
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
+import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.factory.mutableIntArray1D
 import tomasvolker.numeriko.core.linearalgebra.convolve
 import tomasvolker.numeriko.core.linearalgebra.cumSum
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
 import java.awt.Color
 
 fun main(args: Array<String>) {
+
+    val a = mutableIntArray1D(10) { it }
+
+    println(a)
+
+    a[3..8] = a[0..5]
+
+    println(a)
 
     val t = linearSpace(
             start = 0.0,
