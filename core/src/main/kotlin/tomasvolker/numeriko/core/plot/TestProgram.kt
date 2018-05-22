@@ -1,13 +1,13 @@
 package tomasvolker.numeriko.core.plot
 
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
-import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.mutableIntArray1D
 import tomasvolker.numeriko.core.linearalgebra.convolve
 import tomasvolker.numeriko.core.linearalgebra.cumSum
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
 import java.awt.Color
+import java.util.*
 
 fun main(args: Array<String>) {
 
@@ -27,40 +27,46 @@ fun main(args: Array<String>) {
 
     val x = linearSpace(start = -5.0, stop = 5.0, amount = 10000)
 
-    val avg = 1000
+    val random = Random()
 
-    var lowPass = mutableDoubleArray1D(x.size) { i ->
-        if(i < avg)
-            1.0/avg
+    fun Random.nextDouble(min: Double, max: Double) =
+            min + (max - min) * nextDouble()
+
+    val windowSize = 1000
+
+    val squareWindow = doubleArray1D(x.size) { i ->
+        if(i < windowSize)
+            1.0 / windowSize
         else
             0.0
     }
 
-    lowPass = lowPass convolve lowPass convolve lowPass
+    // Circular convolution
+    val lowPass = squareWindow convolve squareWindow convolve squareWindow
 
-    val random = doubleArray1D(x.size) { 0.1 * (Math.random() - 0.5) } convolve lowPass
-    val walk = random.cumSum() / 2
+    val speed = doubleArray1D(x.size) { random.nextDouble(-0.1, 0.1) } convolve lowPass
+    val position = speed.cumSum() / 2
 
     plot {
 
-        line(x = x, y = lowPass * avg) {
+        line(x = x, y = lowPass * windowSize) {
             color = Color.RED
         }
 
-        line(x = x, y = random * 1000) {
+        line(x = x, y = speed * 1000) {
             color = Color.BLUE
         }
 
-        line(x = x, y = walk) {
+        line(x = x, y = position) {
             color = Color.GREEN
         }
 
     }
 
+/*
 
     val alphaRange = linearSpace(-1.0, 1.0, 5)
 
-/*
     plot {
 
         for (alpha in alphaRange) {
