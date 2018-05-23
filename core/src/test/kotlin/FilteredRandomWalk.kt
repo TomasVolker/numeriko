@@ -1,4 +1,5 @@
-import tomasvolker.numeriko.core.functional.double.linearInterpolator
+
+import tomasvolker.numeriko.core.functional.linearInterpolator
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 
 import tomasvolker.numeriko.core.linearalgebra.convolve

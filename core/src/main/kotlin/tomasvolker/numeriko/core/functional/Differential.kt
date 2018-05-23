@@ -1,4 +1,11 @@
-package tomasvolker.numeriko.core.functional.double
+package tomasvolker.numeriko.core.functional
+
+import tomasvolker.numeriko.core.functional.affine.linear.ConstantFunction
+import tomasvolker.numeriko.core.functional.affine.linear.NegateFunction
+import tomasvolker.numeriko.core.functional.operators.DifferentiableAddition
+import tomasvolker.numeriko.core.functional.operators.DifferentiableDivision
+import tomasvolker.numeriko.core.functional.operators.DifferentiableMultiplication
+import tomasvolker.numeriko.core.functional.operators.compose
 
 interface DifferentiableFunction: Function {
 
@@ -7,6 +14,8 @@ interface DifferentiableFunction: Function {
         is DifferentiableFunction -> invoke(input)
         else -> compose(this, input)
     }
+
+    fun derivativeToLambda(): (Double)->Double = { derivativeAt(it) }
 
     operator fun invoke(input: DifferentiableFunction): DifferentiableFunction =
             composeDifferentiable(this, input)
@@ -17,7 +26,7 @@ interface DifferentiableFunction: Function {
 
     override operator fun unaryPlus(): DifferentiableFunction = this
 
-    override operator fun unaryMinus(): DifferentiableFunction = NegativeFunction(this)
+    override operator fun unaryMinus(): DifferentiableFunction = NegateFunction(this)
 
     operator fun plus(other: DifferentiableFunction): DifferentiableFunction =
             DifferentiableAddition(this, other)
@@ -32,15 +41,15 @@ interface DifferentiableFunction: Function {
             DifferentiableDivision(this, other)
 
     override operator fun plus(other: Double): DifferentiableFunction =
-            this + other.asConstantFunction()
+            this + other.asConstant()
 
     override operator fun minus(other: Double): DifferentiableFunction =
-            this - other.asConstantFunction()
+            this - other.asConstant()
 
     override operator fun times(other: Double): DifferentiableFunction =
-            this * other.asConstantFunction()
+            this * other.asConstant()
 
     override operator fun div(other: Double): DifferentiableFunction =
-            this / other.asConstantFunction()
+            this / other.asConstant()
 
 }

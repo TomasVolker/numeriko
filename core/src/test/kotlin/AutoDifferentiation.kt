@@ -1,13 +1,14 @@
-import tomasvolker.numeriko.core.functional.double.ConstantFunction
-import tomasvolker.numeriko.core.functional.double.affineFunction
-import tomasvolker.numeriko.core.functional.double.asConstantFunction
-import tomasvolker.numeriko.core.functional.double.constantFunction
+import tomasvolker.numeriko.core.functional.affine.linear.IdentityFunction
+import tomasvolker.numeriko.core.functional.Sine
+import tomasvolker.numeriko.core.functional.asConstant
 
 fun main(args: Array<String>) {
 
-    val f = affineFunction(2.0, 5.0)
+    val x = IdentityFunction
 
-    val x = 5.0.asConstantFunction()
+    (2.asConstant() * x)
+
+    val f = Sine(2.asConstant() * x)
 
     println(f)
 
