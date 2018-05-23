@@ -1,6 +1,6 @@
+import tomasvolker.numeriko.core.functional.double.linearInterpolator
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 
-import tomasvolker.numeriko.core.interfaces.factory.mutableIntArray1D
 import tomasvolker.numeriko.core.linearalgebra.convolve
 import tomasvolker.numeriko.core.linearalgebra.cumSum
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
@@ -15,8 +15,19 @@ fun main(args: Array<String>) {
 
     val random = Random()
 
+    val width = 4830.0
+    val height = 3510.0
+
+    val pixelToLong = linearInterpolator(
+            point1 = 432.0 to -5.2,
+            point2 = 4352.0 to 43.2
+    )
+
+    println("firstX : ${pixelToLong(0.0)}")
+    println("lastY  : ${pixelToLong(width)}")
+
     fun Random.nextDouble(min: Double, max: Double) =
-            min + (max - min) * nextDouble()
+            linearInterpolator(0.0 to min, 1.0 to max)(nextDouble())//min + (max - min) * nextDouble()
 
     val windowSize = 100
 
