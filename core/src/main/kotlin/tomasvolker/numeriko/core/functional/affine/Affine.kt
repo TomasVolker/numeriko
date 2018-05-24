@@ -1,34 +1,26 @@
 package tomasvolker.numeriko.core.functional.affine
 
-import tomasvolker.numeriko.core.functional.DifferentiableFunction
-import tomasvolker.numeriko.core.functional.affineFunction
+import tomasvolker.numeriko.core.functional.DifferentiableFunction1
 import tomasvolker.numeriko.core.functional.constant
-import tomasvolker.numeriko.core.functional.affine.linear.ConstantFunction
-import tomasvolker.numeriko.core.functional.operators.DifferentiableComposition
+import tomasvolker.numeriko.core.functional.Constant
 
-interface AffineFunction: DifferentiableFunction {
+interface AffineFunction: DifferentiableFunction1 {
 
     val y0 : Double
     val m  : Double
 
     override operator fun invoke(input: Double) = y0 + m * input
-
-    override operator fun invoke(input: DifferentiableFunction) = when(input) {
-        is ConstantFunction -> invoke(input)
-        is AffineFunction -> invoke(this)
-        else -> DifferentiableComposition(this, input)
-    }
-
+    /*
     operator fun invoke(input: AffineFunction): AffineFunction =
             affineFunction(
                     y0 = this.y0 + m * input.y0,
                     m = this.m * input.m
             )
-
-    override fun differentiate(): ConstantFunction =
+*/
+    override fun derivative(): Constant =
             constant(m)
 
-    override fun derivativeAt(input: Double) = m
+    //override fun derivativeAt(input: Double) = m
 
 }
 

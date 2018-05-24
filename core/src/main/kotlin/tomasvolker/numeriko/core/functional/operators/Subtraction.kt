@@ -1,31 +1,30 @@
 package tomasvolker.numeriko.core.functional.operators
 
-import tomasvolker.numeriko.core.functional.DifferentiableFunction
-import tomasvolker.numeriko.core.functional.Function
+import tomasvolker.numeriko.core.functional.*
+import tomasvolker.numeriko.core.functional.expression.*
 
-open class Subtraction<out L: Function, out R: Function>(
-        val left: L,
-        val right: R
-): Function {
+object Subtraction: DifferentiableFunction2 {
 
-    override fun invoke(input: Double) = left(input) - right(input)
+    override fun invoke(input1: Double, input2: Double) = input1 - input2
 
-    override fun toString(input: String) =
-            "(${left.toString(input)} - ${right.toString(input)})"
+    override fun derivative1() = One
 
-    override fun toString() = toString("x")
+    override fun derivative2() = MinusOne
 
-}
+    override fun toString(input1: String, input2: String) = "$input1 - ($input2)"
 
-class DifferentiableSubtraction<out L: DifferentiableFunction, out R: DifferentiableFunction>(
-        left: L,
-        right: R
-): Subtraction<L, R>(left, right), DifferentiableFunction {
-
-    override fun differentiate() =
-            left.differentiate() - right.differentiate()
-
-    override fun derivativeAt(input: Double) =
-            left.derivativeAt(input) - right.derivativeAt(input)
+    override fun toString() = defaultToString()
 
 }
+
+operator fun Function1.minus(other: Function1): Function1 =
+        function1 { this(it) - other(it) }
+
+operator fun DifferentiableFunction1.minus(other: DifferentiableFunction1): DifferentiableFunction1 =
+        differentiableFunction1 { this(it) - other(it) }
+
+operator fun Expression.minus(other: Expression) =
+        Subtraction(this, other)
+
+operator fun DifferentiableExpression.minus(other: DifferentiableExpression) =
+        Subtraction(this, other)

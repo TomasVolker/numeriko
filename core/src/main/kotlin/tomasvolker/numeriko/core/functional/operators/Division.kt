@@ -1,36 +1,32 @@
 package tomasvolker.numeriko.core.functional.operators
 
-import tomasvolker.numeriko.core.functional.DifferentiableFunction
-import tomasvolker.numeriko.core.functional.Function
+import tomasvolker.numeriko.core.functional.*
+import tomasvolker.numeriko.core.functional.expression.*
 
+object Division: DifferentiableFunction2 {
 
-open class Division<out L: Function, out R: Function>(
-        val left: L,
-        val right: R
-): Function {
+    override fun derivative1() =
+            differentiableFunction2 { x1, x2 -> 1 / x2 }
 
-    override fun invoke(input: Double) = left(input) / right(input)
+    override fun derivative2() =
+            differentiableFunction2 { x1, x2 -> -x1 / (x2 * x2) }
 
-    override fun toString(input: String) =
-            "${left.toString(input)} / ${right.toString(input)}"
+    override fun invoke(input1: Double, input2: Double) = input1 / input2
 
-    override fun toString() = toString("x")
+    override fun toString(input1: String, input2: String) = "$input1 / $input2"
 
-}
-
-class DifferentiableDivision<out L: DifferentiableFunction, out R: DifferentiableFunction>(
-        left: L,
-        right: R
-): Division<L, R>(left, right), DifferentiableFunction {
-
-    override fun differentiate(): DifferentiableFunction {
-        val rightDerivative = right.differentiate()
-        val leftDerivative = left.differentiate()
-
-        return (leftDerivative * right - left * rightDerivative) / (leftDerivative * leftDerivative)
-    }
-
-    override fun derivativeAt(input: Double) =
-            left.derivativeAt(input) * right(input) + left(input) * right.derivativeAt(input)
+    override fun toString() = defaultToString()
 
 }
+
+operator fun Function1.div(other: Function1): Function1 =
+        function1 { this(it) / other(it) }
+
+operator fun DifferentiableFunction1.div(other: DifferentiableFunction1): DifferentiableFunction1 =
+        differentiableFunction1 { this(it) / other(it) }
+
+operator fun Expression.div(other: Expression) =
+        Division(this, other)
+
+operator fun DifferentiableExpression.div(other: DifferentiableExpression) =
+        Division(this, other)

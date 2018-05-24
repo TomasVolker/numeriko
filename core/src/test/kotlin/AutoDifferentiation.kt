@@ -1,22 +1,18 @@
-import tomasvolker.numeriko.core.functional.affine.linear.IdentityFunction
-import tomasvolker.numeriko.core.functional.Sine
-import tomasvolker.numeriko.core.functional.asConstant
+import tomasvolker.numeriko.core.functional.*
 
 fun main(args: Array<String>) {
 
-    val x = IdentityFunction
+    val x = variable("x")
 
-    (2.asConstant() * x)
-
-    val f = Sine(2.asConstant() * x)
+    val f = Sine(2 * x)
 
     println(f)
 
-    val df = f.differentiate()
+    val df = f.derivative(x)
 
     println(df)
 
-    val ddf = df.differentiate()
+    val ddf = df.derivative(x)
 
     println(ddf)
 

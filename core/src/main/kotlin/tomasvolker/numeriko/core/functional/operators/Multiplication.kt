@@ -1,31 +1,30 @@
 package tomasvolker.numeriko.core.functional.operators
 
-import tomasvolker.numeriko.core.functional.DifferentiableFunction
-import tomasvolker.numeriko.core.functional.Function
+import tomasvolker.numeriko.core.functional.*
+import tomasvolker.numeriko.core.functional.expression.*
 
-open class Multiplication<out L: Function, out R: Function>(
-        val left: L,
-        val right: R
-): Function {
+object Multiplication: DifferentiableFunction2 {
 
-    override fun invoke(input: Double) = left(input) * right(input)
+    override fun derivative1() = differentiableFunction2 { x1, x2 -> x2 }
 
-    override fun toString(input: String) =
-            "${left.toString(input)} * ${right.toString(input)}"
+    override fun derivative2() = differentiableFunction2 { x1, x2 -> x1 }
 
-    override fun toString() = toString("x")
+    override fun invoke(input1: Double, input2: Double) = input1 * input2
 
-}
+    override fun toString(input1: String, input2: String) = "$input1 * $input2"
 
-class DifferentiableMultiplication<out L: DifferentiableFunction, out R: DifferentiableFunction>(
-        left: L,
-        right: R
-): Multiplication<L, R>(left, right), DifferentiableFunction {
-
-    override fun differentiate() =
-            left.differentiate() * right + left * right.differentiate()
-
-    override fun derivativeAt(input: Double) =
-            left.derivativeAt(input) * right(input) + left(input) * right.derivativeAt(input)
+    override fun toString() = defaultToString()
 
 }
+
+operator fun Function1.times(other: Function1): Function1 =
+        function1 { this(it) * other(it) }
+
+operator fun DifferentiableFunction1.times(other: DifferentiableFunction1): DifferentiableFunction1 =
+        differentiableFunction1 { this(it) * other(it) }
+
+operator fun Expression.times(other: Expression) =
+        Multiplication(this, other)
+
+operator fun DifferentiableExpression.times(other: DifferentiableExpression) =
+        Multiplication(this, other)
