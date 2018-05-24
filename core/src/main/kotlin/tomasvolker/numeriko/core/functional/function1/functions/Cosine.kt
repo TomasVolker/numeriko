@@ -1,8 +1,8 @@
 package tomasvolker.numeriko.core.functional.function1.functions
 
+import tomasvolker.numeriko.core.functional.constant.Constant
 import tomasvolker.numeriko.core.functional.function1.DifferentiableFunction1
 import tomasvolker.numeriko.core.functional.function1.Function1
-import tomasvolker.numeriko.core.functional.function1.defaultToString
 import tomasvolker.numeriko.core.functional.expression.DifferentiableExpression
 import tomasvolker.numeriko.core.functional.expression.Expression
 import kotlin.math.cos
@@ -22,6 +22,7 @@ object Cosine: DifferentiableFunction1 {
 
 }
 
+fun cos(input: Constant) = Cosine(input)
 fun cos(input: Expression) = Cosine(input)
 fun cos(input: DifferentiableExpression) = Cosine(input)
 fun cos(input: Function1) = Cosine(input)

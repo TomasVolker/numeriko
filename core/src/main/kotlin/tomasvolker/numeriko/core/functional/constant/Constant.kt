@@ -2,27 +2,44 @@ package tomasvolker.numeriko.core.functional.constant
 
 import tomasvolker.numeriko.core.functional.affine.AffineFunction
 import tomasvolker.numeriko.core.functional.constant
+import tomasvolker.numeriko.core.functional.expression.ConstantExpression
 import tomasvolker.numeriko.core.functional.expression.DifferentiableExpression
 import tomasvolker.numeriko.core.functional.expression.Expression
 import tomasvolker.numeriko.core.functional.expression.Variable
+import tomasvolker.numeriko.core.functional.function1.DifferentiableFunction1
 import tomasvolker.numeriko.core.functional.function1.Function1
+import tomasvolker.numeriko.core.functional.function1.operators.NegateFunction
 import tomasvolker.numeriko.core.functional.function2.DifferentiableFunction2
+import tomasvolker.numeriko.core.functional.function2.operators.Addition
+import tomasvolker.numeriko.core.functional.function2.operators.Division
+import tomasvolker.numeriko.core.functional.function2.operators.Multiplication
+import tomasvolker.numeriko.core.functional.function2.operators.Subtraction
 
 interface Constant: AffineFunction, DifferentiableFunction2, DifferentiableExpression {
 
-    val value: Double
+    val doubleValue: Double
 
-    override val y0 get() = value
+    override val y0 get() = doubleValue
     override val m get() = 0.0
 
-    override fun invoke(input: Double) = value
-    override fun invoke(input1: Double, input2: Double) = value
+    override fun invoke(input: Double) = doubleValue
+    override fun invoke(input1: Double, input2: Double) = doubleValue
 
-    override fun optimizeInvoke(input: Expression) = this
-    override fun optimizeInvoke(input: Function1) = this
+    override fun simplifyInvoke(input: Expression) = this
+    override fun simplifyInvoke(input: Function1) = this
 
     override fun unaryPlus() = this
-    override fun unaryMinus() = constant(-value)
+    override fun unaryMinus() = NegateFunction(this)
+
+    operator fun plus(other: Constant) = Addition(this, other)
+    operator fun minus(other: Constant) = Subtraction(this, other)
+    operator fun times(other: Constant) = Multiplication(this, other)
+    operator fun div(other: Constant) = Division(this, other)
+
+    override fun plus(other: Int) = plus(constant(other))
+    override fun minus(other: Int) = plus(constant(other))
+    override fun times(other: Int) = plus(constant(other))
+    override fun div(other: Int) = plus(constant(other))
 
     override fun derivative() = Zero
     override fun derivative1() = Zero
@@ -30,33 +47,32 @@ interface Constant: AffineFunction, DifferentiableFunction2, DifferentiableExpre
 
     override fun derivative(withRespectTo: Variable) = Zero
 
-    //override fun derivativeAt(input: Double) = 0.0
+    override fun derivativeAt(input: Double) = 0.0
 
     override fun variables() = emptySet<Variable>()
 
     override fun evaluate(variableValues: Map<Variable, Double>) =
-            value
+            doubleValue
 
+    override fun defaultToString() = doubleValue.toString()
     override fun toString(input: String) = defaultToString()
     override fun toString(input1: String, input2: String) = defaultToString()
-
     override fun toString(variableValues: Map<Variable, String>) = defaultToString()
-
-    fun defaultToString() = value.toString()
 
 }
 
-class DefaultConstant(
-        override val value: Double
+class NumericConstant(
+        override val doubleValue: Double
 ) : Constant {
 
+    override fun defaultToString() = doubleValue.toString()
     override fun toString() = defaultToString()
 
 }
 
 object Pi: Constant {
 
-    override val value: Double = Math.PI
+    override val doubleValue: Double = Math.PI
 
     override fun defaultToString() = "pi"
 
@@ -66,7 +82,7 @@ object Pi: Constant {
 
 object E: Constant {
 
-    override val value: Double = Math.E
+    override val doubleValue: Double = Math.E
 
     override fun defaultToString() = "e"
 

@@ -1,9 +1,7 @@
 package tomasvolker.numeriko.core.functional.function1.operators
 
-import tomasvolker.numeriko.core.functional.function1.Function1
 import tomasvolker.numeriko.core.functional.constant.One
 import tomasvolker.numeriko.core.functional.affine.LinearFunction
-import java.beans.Expression
 
 object Identity: LinearFunction {
 
@@ -11,8 +9,10 @@ object Identity: LinearFunction {
 
     override fun invoke(input: Double) = input
 
+    override fun unaryMinus() = NegateFunction
+
     override fun derivative() = One
-    //override fun derivativeAt(input: Double) = 1.0
+    override fun derivativeAt(input: Double) = 1.0
 
     override fun toString(input: String) = input
 

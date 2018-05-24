@@ -9,8 +9,10 @@ object NegateFunction: LinearFunction {
 
     override fun invoke(input: Double) = -input
 
+    override fun unaryMinus() = Identity
+
     override fun derivative() = MinusOne
-    //override fun derivativeAt(input: Double) = -1.0
+    override fun derivativeAt(input: Double) = -1.0
 
     override fun toString(input: String) = "(-${input})"
 

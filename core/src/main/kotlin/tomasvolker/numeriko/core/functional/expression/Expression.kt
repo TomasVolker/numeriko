@@ -1,10 +1,10 @@
 package tomasvolker.numeriko.core.functional.expression
 
+import tomasvolker.numeriko.core.functional.constant
 import tomasvolker.numeriko.core.functional.constant.One
 import tomasvolker.numeriko.core.functional.constant.Zero
 import tomasvolker.numeriko.core.functional.function1.DifferentiableExpressionFunction1
 import tomasvolker.numeriko.core.functional.function1.ExpressionFunction1
-import tomasvolker.numeriko.core.functional.function1.Function1
 import tomasvolker.numeriko.core.functional.function1.operators.NegateFunction
 import tomasvolker.numeriko.core.functional.function2.operators.Addition
 import tomasvolker.numeriko.core.functional.function2.operators.Division
@@ -37,29 +37,51 @@ interface Expression {
             NegateFunction(this)
 
     operator fun plus(other: Expression) =
-            optimizePlus(other) ?:
+            simplifyPlus(other) ?:
             Addition(this, other)
 
-    fun optimizePlus(other: Expression) = when(other) {
+    operator fun minus(other: Expression) =
+            simplifyMinus(other) ?:
+            Subtraction(this, other)
+
+    operator fun times(other: Expression) =
+            simplifyTimes(other) ?:
+            Multiplication(this, other)
+
+    operator fun div(other: Expression) =
+            simplifyDiv(other) ?:
+            Division(this, other)
+
+    operator fun plus(other: Int) = plus(constant(other))
+    operator fun minus(other: Int) = minus(constant(other))
+    operator fun times(other: Int) = times(constant(other))
+    operator fun div(other: Int) = div(constant(other))
+
+    fun defaultToString() =
+            toString(variables().map { it to it.name }.toMap())
+
+    // Simplifications
+
+    fun simplifyPlus(other: Expression) = when(other) {
         is Zero -> this
         else -> null
     }
 
-    operator fun minus(other: Expression) =
-            Subtraction(this, other)
+    fun simplifyMinus(other: Expression) = when(other) {
+        is Zero -> this
+        else -> null
+    }
 
-    operator fun times(other: Expression) =
-            optimizeTimes(other) ?:
-            Multiplication(this, other)
-
-    fun optimizeTimes(other: Expression) = when(other) {
+    fun simplifyTimes(other: Expression) = when(other) {
         is Zero -> Zero
         is One -> this
         else -> null
     }
 
-    operator fun div(other: Expression) =
-            Division(this, other)
+    fun simplifyDiv(other: Expression) = when(other) {
+        is One -> this
+        else -> null
+    }
 
 }
 
@@ -72,24 +94,28 @@ interface DifferentiableExpression: Expression {
     override operator fun unaryMinus(): DifferentiableExpression =
             NegateFunction(this)
 
-    operator fun plus(other: DifferentiableExpression) =
-            optimizePlus(other) as? DifferentiableExpression ?:
+    operator fun plus(other: DifferentiableExpression): DifferentiableExpression =
+            simplifyPlus(other) as? DifferentiableExpression ?:
             Addition(this, other)
 
-    operator fun minus(other: DifferentiableExpression) =
+    operator fun minus(other: DifferentiableExpression): DifferentiableExpression =
+            simplifyMinus(other) as? DifferentiableExpression ?:
             Subtraction(this, other)
 
-    operator fun times(other: DifferentiableExpression) =
-            optimizeTimes(other) as? DifferentiableExpression ?:
+    operator fun times(other: DifferentiableExpression): DifferentiableExpression =
+            simplifyTimes(other) as? DifferentiableExpression ?:
             Multiplication(this, other)
 
-    operator fun div(other: DifferentiableExpression) =
+    operator fun div(other: DifferentiableExpression): DifferentiableExpression =
+            simplifyMinus(other) as? DifferentiableExpression ?:
             Division(this, other)
 
-}
+    override operator fun plus(other: Int) = plus(constant(other))
+    override operator fun minus(other: Int) = minus(constant(other))
+    override operator fun times(other: Int) = times(constant(other))
+    override operator fun div(other: Int) = div(constant(other))
 
-fun Expression.defaultToString() =
-        toString(variables().map { it to it.name }.toMap())
+}
 
 
 fun Expression.functionOf(variable: Variable) =

@@ -34,4 +34,4 @@ class Variable(
 
 class NoValueForVariableException(
         val variable: Variable
-): Exception("Variable ${variable} has no value")
+): Exception("Variable ${variable} has no doubleValue")

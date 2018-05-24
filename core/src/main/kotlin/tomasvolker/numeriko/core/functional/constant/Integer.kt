@@ -7,7 +7,7 @@ import tomasvolker.numeriko.core.functional.function1.Function1
 interface IntegerConstant: Constant {
 
     val integerValue: Long
-    override val value: Double get() = integerValue.toDouble()
+    override val doubleValue: Double get() = integerValue.toDouble()
 
     override fun defaultToString() = "$integerValue"
 
@@ -35,11 +35,11 @@ object Zero: IntegerConstant, LinearFunction {
 
     override fun invoke(input: Double) = 0.0
 
-    override fun optimizePlus(other: Function1) = other
-    override fun optimizePlus(other: Expression) = other
+    override fun simplifyPlus(other: Function1) = other
+    override fun simplifyPlus(other: Expression) = other
 
-    override fun optimizeTimes(other: Function1) = Zero
-    override fun optimizeTimes(other: Expression) = Zero
+    override fun simplifyTimes(other: Function1) = Zero
+    override fun simplifyTimes(other: Expression) = Zero
 
     override fun derivative() = Zero
 
@@ -51,8 +51,8 @@ object One: IntegerConstant {
 
     override val integerValue get() = 1L
 
-    override fun optimizeTimes(other: Function1) = other
-    override fun optimizeTimes(other: Expression) = other
+    override fun simplifyTimes(other: Function1) = other
+    override fun simplifyTimes(other: Expression) = other
 
     override fun toString() = defaultToString()
 

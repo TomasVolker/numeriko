@@ -1,24 +1,24 @@
 import tomasvolker.numeriko.core.functional.*
+import tomasvolker.numeriko.core.functional.constant.One
+import tomasvolker.numeriko.core.functional.constant.Pi
+import tomasvolker.numeriko.core.functional.constant.Zero
 import tomasvolker.numeriko.core.functional.function1.functions.cos
+import tomasvolker.numeriko.core.functional.function1.functions.exp
 import tomasvolker.numeriko.core.functional.function1.functions.sin
 
 fun main(args: Array<String>) {
 
     val x = variable("x")
-    val y = variable("y")
 
-    val f = sin(2 * x) + cos(3 * y)
+    val f = 2 * exp(2 * x)
 
     println(f)
 
-    val df = f.derivative(x)
+    val dfdx = f.derivative(x)
 
-    println(df)
+    println(dfdx)
 
-    val ddf = df.derivative(x)
 
-    println(ddf)
-
-    println(ddf.variables())
+    println(dfdx.derivative(x))
 
 }

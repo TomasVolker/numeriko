@@ -7,10 +7,9 @@ import tomasvolker.numeriko.core.functional.constant.*
 import tomasvolker.numeriko.core.functional.expression.*
 import tomasvolker.numeriko.core.functional.function1.DifferentiableFunction1
 import tomasvolker.numeriko.core.functional.function1.Function1
-import tomasvolker.numeriko.core.functional.function2.operators.*
 
 
-fun constant(value: Double): Constant = DefaultConstant(value)
+fun constant(value: Double): Constant = NumericConstant(value)
 fun constant(value: Int) = constant(value.toLong())
 fun constant(value: Long): IntegerConstant = when(value) {
     0L -> Zero
@@ -44,6 +43,13 @@ operator fun Int.plus(expression: DifferentiableExpression) = asConstant() + exp
 operator fun Int.minus(expression: DifferentiableExpression) = asConstant() - expression
 operator fun Int.times(expression: DifferentiableExpression) = asConstant() * expression
 operator fun Int.div(expression: DifferentiableExpression) = asConstant() / expression
+
+operator fun Int.times(value: Constant) = when(value) {
+    is Zero -> Zero
+    is One -> value
+    is IntegerConstant -> constant(this * value.integerValue)
+    else -> constant(this).times(value)
+}
 
 
 fun affineFunction(y0: Double, m: Double) = DefaultAffineFunction(y0, m)

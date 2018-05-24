@@ -1,9 +1,7 @@
 package tomasvolker.numeriko.core.functional.function2
 
-import tomasvolker.numeriko.core.functional.expression.DifferentiableExpression
-import tomasvolker.numeriko.core.functional.expression.DifferentiableFunction2Application
-import tomasvolker.numeriko.core.functional.expression.Expression
-import tomasvolker.numeriko.core.functional.expression.Function2Application
+import tomasvolker.numeriko.core.functional.constant.Constant
+import tomasvolker.numeriko.core.functional.expression.*
 
 interface Function2 {
 
@@ -12,7 +10,16 @@ interface Function2 {
     fun toString(input1: String, input2: String): String
 
     operator fun invoke(input1: Expression, input2: Expression): Expression =
+            simplifyInvoke(input1, input2) ?:
             Function2Application(this, input1, input2)
+
+    operator fun invoke(input1: Constant, input2: Constant): Constant =
+            ConstantExpression(this(input1 as Expression, input2 as Expression))
+
+    fun simplifyInvoke(input1: Expression, input2: Expression): Expression? = when {
+        input1 is Constant && input2 is Constant -> invoke(input1, input2)
+        else -> null
+    }
 
 }
 
@@ -30,6 +37,7 @@ interface DifferentiableFunction2: Function2 {
             input1: DifferentiableExpression,
             input2: DifferentiableExpression
     ): DifferentiableExpression =
+            simplifyInvoke(input1, input2) as? DifferentiableExpression ?:
             DifferentiableFunction2Application(this, input1, input2)
 
 }
