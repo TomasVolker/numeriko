@@ -18,5 +18,3 @@ object Identity: LinearFunction {
 
 }
 
-operator fun <T: Function1> T.unaryPlus(): T = this
-operator fun <T: Expression> T.unaryPlus(): T = this

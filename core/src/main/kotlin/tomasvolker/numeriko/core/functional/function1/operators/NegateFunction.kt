@@ -2,8 +2,6 @@ package tomasvolker.numeriko.core.functional.function1.operators
 
 import tomasvolker.numeriko.core.functional.affine.LinearFunction
 import tomasvolker.numeriko.core.functional.constant.MinusOne
-import tomasvolker.numeriko.core.functional.expression.*
-import tomasvolker.numeriko.core.functional.function1.*
 
 object NegateFunction: LinearFunction {
 
@@ -17,15 +15,3 @@ object NegateFunction: LinearFunction {
     override fun toString(input: String) = "(-${input})"
 
 }
-
-operator fun Expression.unaryMinus(): Expression =
-        NegateFunction(this)
-
-operator fun Function1.unaryMinus(): Function1 =
-        function1 { -it }
-
-operator fun DifferentiableExpression.unaryMinus(): DifferentiableExpression =
-        NegateFunction(this)
-
-operator fun DifferentiableFunction1.unaryMinus(): DifferentiableFunction1 =
-        differentiableFunction1 { -it }

@@ -11,6 +11,9 @@ interface Function2 {
 
     fun toString(input1: String, input2: String): String
 
+    operator fun invoke(input1: Expression, input2: Expression): Expression =
+            Function2Application(this, input1, input2)
+
 }
 
 interface DifferentiableFunction2: Function2 {
@@ -19,18 +22,19 @@ interface DifferentiableFunction2: Function2 {
 
     fun derivative2(): DifferentiableFunction2
 
-    //fun derivativeAt(input: Double): Double = derivative()(input)
+    fun derivative1At(input1: Double, input2: Double): Double = derivative1()(input1, input2)
+
+    fun derivative2At(input1: Double, input2: Double): Double = derivative2()(input1, input2)
+
+    operator fun invoke(
+            input1: DifferentiableExpression,
+            input2: DifferentiableExpression
+    ): DifferentiableExpression =
+            DifferentiableFunction2Application(this, input1, input2)
 
 }
 
 
 fun Function2.defaultToString() = "x1, x2 -> ${toString("x1", "x2")}"
 
-operator fun Function2.invoke(input1: Expression, input2: Expression): Expression =
-        Function2Application(this, input1, input2)
 
-operator fun DifferentiableFunction2.invoke(
-        input1: DifferentiableExpression,
-        input2: DifferentiableExpression
-): DifferentiableExpression =
-        DifferentiableFunction2Application(this, input1, input2)

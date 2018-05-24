@@ -19,14 +19,3 @@ object Addition: DifferentiableFunction2 {
 
 }
 
-operator fun Function1.plus(other: Function1): Function1 =
-        function1 { this(it) + other(it) }
-
-operator fun DifferentiableFunction1.plus(other: DifferentiableFunction1): DifferentiableFunction1 =
-        differentiableFunction1 { this(it) + other(it) }
-
-operator fun Expression.plus(other: Expression) =
-        Addition(this, other)
-
-operator fun DifferentiableExpression.plus(other: DifferentiableExpression) =
-        Addition(this, other)

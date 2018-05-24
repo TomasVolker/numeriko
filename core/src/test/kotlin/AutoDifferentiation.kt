@@ -1,7 +1,6 @@
 import tomasvolker.numeriko.core.functional.*
 import tomasvolker.numeriko.core.functional.function1.functions.cos
 import tomasvolker.numeriko.core.functional.function1.functions.sin
-import tomasvolker.numeriko.core.functional.function2.operators.plus
 
 fun main(args: Array<String>) {
 

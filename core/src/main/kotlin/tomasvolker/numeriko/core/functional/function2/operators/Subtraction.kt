@@ -2,8 +2,6 @@ package tomasvolker.numeriko.core.functional.function2.operators
 
 import tomasvolker.numeriko.core.functional.constant.MinusOne
 import tomasvolker.numeriko.core.functional.constant.One
-import tomasvolker.numeriko.core.functional.expression.*
-import tomasvolker.numeriko.core.functional.function1.*
 import tomasvolker.numeriko.core.functional.function2.*
 
 object Subtraction: DifferentiableFunction2 {
@@ -19,15 +17,3 @@ object Subtraction: DifferentiableFunction2 {
     override fun toString() = defaultToString()
 
 }
-
-operator fun Function1.minus(other: Function1): Function1 =
-        function1 { this(it) - other(it) }
-
-operator fun DifferentiableFunction1.minus(other: DifferentiableFunction1): DifferentiableFunction1 =
-        differentiableFunction1 { this(it) - other(it) }
-
-operator fun Expression.minus(other: Expression) =
-        Subtraction(this, other)
-
-operator fun DifferentiableExpression.minus(other: DifferentiableExpression) =
-        Subtraction(this, other)

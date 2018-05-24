@@ -17,15 +17,3 @@ object Multiplication: DifferentiableFunction2 {
     override fun toString() = defaultToString()
 
 }
-
-operator fun Function1.times(other: Function1): Function1 =
-        function1 { this(it) * other(it) }
-
-operator fun DifferentiableFunction1.times(other: DifferentiableFunction1): DifferentiableFunction1 =
-        differentiableFunction1 { this(it) * other(it) }
-
-operator fun Expression.times(other: Expression) =
-        Multiplication(this, other)
-
-operator fun DifferentiableExpression.times(other: DifferentiableExpression) =
-        Multiplication(this, other)

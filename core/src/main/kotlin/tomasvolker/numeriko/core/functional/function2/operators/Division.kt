@@ -1,9 +1,6 @@
 package tomasvolker.numeriko.core.functional.function2.operators
 
 import tomasvolker.numeriko.core.functional.*
-import tomasvolker.numeriko.core.functional.expression.*
-import tomasvolker.numeriko.core.functional.function1.*
-import tomasvolker.numeriko.core.functional.function1.operators.unaryMinus
 import tomasvolker.numeriko.core.functional.function2.*
 
 object Division: DifferentiableFunction2 {
@@ -22,14 +19,3 @@ object Division: DifferentiableFunction2 {
 
 }
 
-operator fun Function1.div(other: Function1): Function1 =
-        function1 { this(it) / other(it) }
-
-operator fun DifferentiableFunction1.div(other: DifferentiableFunction1): DifferentiableFunction1 =
-        differentiableFunction1 { this(it) / other(it) }
-
-operator fun Expression.div(other: Expression) =
-        Division(this, other)
-
-operator fun DifferentiableExpression.div(other: DifferentiableExpression) =
-        Division(this, other)
