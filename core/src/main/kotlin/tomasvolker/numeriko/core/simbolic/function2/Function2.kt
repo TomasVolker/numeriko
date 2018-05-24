@@ -5,7 +5,10 @@ import tomasvolker.numeriko.core.simbolic.expression.*
 
 interface Function2 {
 
-    operator fun invoke(input1: Double, input2: Double): Double
+    operator fun invoke(input1: Double, input2: Double): Double =
+            compute(input1, input2)
+
+    fun compute(input1: Double, input2: Double) : Double
 
     fun toString(input1: String, input2: String): String
 

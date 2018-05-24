@@ -20,8 +20,12 @@ interface Constant: AffineFunction, DifferentiableFunction2, DifferentiableExpre
     override val y0 get() = doubleValue
     override val m get() = 0.0
 
-    override fun invoke(input: Double) = doubleValue
-    override fun invoke(input1: Double, input2: Double) = doubleValue
+    override fun compute(input: Double) = doubleValue
+    override fun compute(input1: Double, input2: Double) = doubleValue
+
+
+    override fun compute(variableValues: Map<Variable, Double>) = doubleValue
+    override fun evaluate(variableValues: Map<Variable, Expression>) = this
 
     override fun simplifyInvoke(input: Expression) = this
     override fun simplifyInvoke(input: Function1) = this
@@ -48,9 +52,6 @@ interface Constant: AffineFunction, DifferentiableFunction2, DifferentiableExpre
     override fun derivativeAt(input: Double) = 0.0
 
     override fun variables() = emptySet<Variable>()
-
-    override fun evaluate(variableValues: Map<Variable, Double>) =
-            doubleValue
 
     override fun defaultToString() = doubleValue.toString()
     override fun toString(input: String) = defaultToString()

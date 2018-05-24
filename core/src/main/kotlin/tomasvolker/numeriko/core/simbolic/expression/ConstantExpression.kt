@@ -15,8 +15,11 @@ class ConstantExpression(
         }
     }
 
+    override fun evaluate(variableValues: Map<Variable, Expression>) =
+            this
+
     override val doubleValue: Double
-        get() = expression.evaluate()
+        get() = expression.compute()
 
     override fun defaultToString() =
             expression.toString(emptyMap())

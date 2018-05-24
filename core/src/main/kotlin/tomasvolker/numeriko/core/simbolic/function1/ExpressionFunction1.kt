@@ -26,7 +26,7 @@ open class ExpressionFunction1(
         get() =
         _expression
 
-    override fun invoke(input: Double) =
+    override fun compute(input: Double) =
             expression(variable to input)
 
     override fun toString(input: String) =

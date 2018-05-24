@@ -15,17 +15,28 @@ import tomasvolker.numeriko.core.simbolic.function2.operators.Subtraction
 
 interface Expression {
 
-    fun evaluate(vararg values: Pair<Variable, Double>): Double =
+    fun compute(vararg values: Pair<Variable, Double>): Double =
+            compute(values.toMap())
+
+    fun evaluate(vararg values: Pair<Variable, Expression>): Expression =
             evaluate(values.toMap())
 
-    fun evaluate(variableValues: Map<Variable, Double>): Double
+    fun compute(variableValues: Map<Variable, Double>): Double
+
+    fun evaluate(variableValues: Map<Variable, Expression>): Expression
 
     fun variables(): Set<Variable>
 
     operator fun invoke(vararg values: Pair<Variable, Double>) =
+            compute(*values)
+
+    operator fun invoke(vararg values: Pair<Variable, Expression>) =
             evaluate(*values)
 
     operator fun invoke(variableValues: Map<Variable, Double>) =
+            compute(variableValues)
+
+    operator fun invoke(variableValues: Map<Variable, Expression>) =
             evaluate(variableValues)
 
     fun toString(vararg values: Pair<Variable, String>): String =
@@ -88,8 +99,16 @@ interface Expression {
 }
 
 interface DifferentiableExpression: Expression {
+/*
+    fun evaluate(vararg values: Pair<Variable, DifferentiableExpression>): DifferentiableExpression =
+            evaluate(values.toMap())
 
+    fun evaluate(variableValues: Map<Variable, DifferentiableExpression>): DifferentiableExpression
+    */
     fun derivative(withRespectTo: Variable): DifferentiableExpression
+
+    fun derivative(withRespectTo: List<Variable>): List<DifferentiableExpression> =
+            withRespectTo.map { derivative(it) }
 
     override operator fun unaryPlus() = this
 

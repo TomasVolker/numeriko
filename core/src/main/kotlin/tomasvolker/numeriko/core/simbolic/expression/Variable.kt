@@ -7,10 +7,13 @@ class Variable(
         val name: String
 ): DifferentiableExpression {
 
-    override fun evaluate(variableValues: Map<Variable, Double>) =
+    override fun compute(variableValues: Map<Variable, Double>) =
             variableValues.getOrElse(this) {
                 throw NoValueForVariableException(this)
             }
+
+    override fun evaluate(variableValues: Map<Variable, Expression>) =
+            variableValues.getOrElse(this) { this }
 
     override fun derivative(withRespectTo: Variable) =
             if (this == withRespectTo) One else Zero

@@ -9,7 +9,7 @@ interface AffineFunction: DifferentiableFunction1 {
     val y0 : Double
     val m  : Double
 
-    override operator fun invoke(input: Double) = y0 + m * input
+    override fun compute(input: Double) = y0 + m * input
     /*
     operator fun invoke(input: AffineFunction): AffineFunction =
             affineFunction(

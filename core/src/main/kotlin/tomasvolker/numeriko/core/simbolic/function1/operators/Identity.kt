@@ -7,7 +7,7 @@ object Identity: LinearFunction {
 
     override val m: Double get() = 1.0
 
-    override fun invoke(input: Double) = input
+    override fun compute(input: Double) = input
 
     override fun unaryMinus() = NegateFunction
 

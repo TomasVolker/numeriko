@@ -24,7 +24,7 @@ open class ExpressionFunction2(
 
     open val expression: Expression get() = _expression
 
-    override fun invoke(input1: Double, input2: Double) =
+    override fun compute(input1: Double, input2: Double) =
             expression(
                     variable1 to input1,
                     variable2 to input2

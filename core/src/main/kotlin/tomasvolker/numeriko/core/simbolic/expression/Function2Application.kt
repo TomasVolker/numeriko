@@ -10,7 +10,10 @@ class Function2Application(
 
     override fun variables() = input1.variables() + input2.variables()
 
-    override fun evaluate(variableValues: Map<Variable, Double>) =
+    override fun compute(variableValues: Map<Variable, Double>) =
+            function(input1(variableValues), input2(variableValues))
+
+    override fun evaluate(variableValues: Map<Variable, Expression>) =
             function(input1(variableValues), input2(variableValues))
 
     override fun toString(variableValues: Map<Variable, String>) =
@@ -18,5 +21,7 @@ class Function2Application(
                     input1.toString(variableValues),
                     input2.toString(variableValues)
             )
+
+    override fun toString() = defaultToString()
 
 }

@@ -10,7 +10,7 @@ import kotlin.math.sin
 
 object Cosine: DifferentiableFunction1 {
 
-    override fun invoke(input: Double) = cos(input)
+    override fun compute(input: Double) = cos(input)
 
     override fun derivative() = -Sine
 

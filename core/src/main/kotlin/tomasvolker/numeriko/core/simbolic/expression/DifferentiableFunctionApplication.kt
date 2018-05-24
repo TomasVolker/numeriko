@@ -9,7 +9,10 @@ class DifferentiableFunction1Application(
 
     override fun variables() = input.variables()
 
-    override fun evaluate(variableValues: Map<Variable, Double>) =
+    override fun compute(variableValues: Map<Variable, Double>) =
+            function(input(variableValues))
+
+    override fun evaluate(variableValues: Map<Variable, Expression>) =
             function(input(variableValues))
 
     override fun derivative(withRespectTo: Variable): DifferentiableExpression =

@@ -11,7 +11,7 @@ import kotlin.math.exp
 
 object Exponential: DifferentiableFunction1 {
 
-    override fun invoke(input: Double) = exp(input)
+    override fun compute(input: Double) = exp(input)
 
     override fun derivative() = Exponential
 

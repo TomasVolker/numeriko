@@ -9,11 +9,16 @@ class Function1Application(
 
     override fun variables() = input.variables()
 
-    override fun evaluate(variableValues: Map<Variable, Double>) =
+    override fun compute(variableValues: Map<Variable, Double>) =
+            function(input(variableValues))
+
+    override fun evaluate(variableValues: Map<Variable, Expression>) =
             function(input(variableValues))
 
     override fun toString(variableValues: Map<Variable, String>) =
             function.toString(input.toString(variableValues))
+
+    override fun toString() = defaultToString()
 
 }
 
