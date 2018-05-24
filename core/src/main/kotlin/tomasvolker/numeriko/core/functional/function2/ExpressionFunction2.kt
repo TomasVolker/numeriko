@@ -1,8 +1,8 @@
-package tomasvolker.numeriko.core.functional.expression
+package tomasvolker.numeriko.core.functional.function2
 
-import tomasvolker.numeriko.core.functional.Function2
-import tomasvolker.numeriko.core.functional.asVariable
-import tomasvolker.numeriko.core.functional.defaultToString
+import tomasvolker.numeriko.core.functional.*
+import tomasvolker.numeriko.core.functional.expression.Expression
+import tomasvolker.numeriko.core.functional.expression.Variable
 
 open class ExpressionFunction2(
         val variable1: Variable,
@@ -14,7 +14,7 @@ open class ExpressionFunction2(
 
     init {
 
-        val undefinedVariables = expression.dependsOn() - setOf(variable1, variable2)
+        val undefinedVariables = expression.variables() - setOf(variable1, variable2)
 
         require(undefinedVariables.isEmpty()) {
             "Expression depends on other than $variable1 and $variable2: $undefinedVariables"
@@ -41,7 +41,7 @@ open class ExpressionFunction2(
 }
 
 
-fun function2(expression: (x1: Variable, x2: Variable)->Expression): Function2 {
+fun function2(expression: (x1: Variable, x2: Variable)-> Expression): Function2 {
     val x1 = "x1".asVariable()
     val x2 = "x2".asVariable()
     return ExpressionFunction2(

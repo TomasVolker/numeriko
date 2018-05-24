@@ -1,5 +1,8 @@
 package tomasvolker.numeriko.core.functional.expression
 
+import tomasvolker.numeriko.core.functional.function1.DifferentiableExpressionFunction1
+import tomasvolker.numeriko.core.functional.function1.ExpressionFunction1
+
 interface Expression {
 
     fun evaluate(vararg values: Pair<Variable, Double>): Double =
@@ -7,7 +10,7 @@ interface Expression {
 
     fun evaluate(variableValues: Map<Variable, Double>): Double
 
-    fun dependsOn(): Set<Variable>
+    fun variables(): Set<Variable>
 
     operator fun invoke(vararg values: Pair<Variable, Double>) =
             evaluate(*values)
@@ -29,5 +32,17 @@ interface DifferentiableExpression: Expression {
 }
 
 fun Expression.defaultToString() =
-        toString(dependsOn().map { it to it.name }.toMap())
+        toString(variables().map { it to it.name }.toMap())
 
+
+fun Expression.functionOf(variable: Variable) =
+        ExpressionFunction1(
+                variable = variable,
+                expression = this
+        )
+
+fun DifferentiableExpression.functionOf(variable: Variable) =
+        DifferentiableExpressionFunction1(
+                variable = variable,
+                expression = this
+        )

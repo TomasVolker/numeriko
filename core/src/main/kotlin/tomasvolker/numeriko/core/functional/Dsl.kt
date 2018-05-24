@@ -1,12 +1,17 @@
 package tomasvolker.numeriko.core.functional
 
 import tomasvolker.numeriko.core.functional.affine.DefaultAffineFunction
-import tomasvolker.numeriko.core.functional.affine.linear.*
+import tomasvolker.numeriko.core.functional.affine.DefaultLinearFunction
+import tomasvolker.numeriko.core.functional.affine.LinearFunction
+import tomasvolker.numeriko.core.functional.constant.*
 import tomasvolker.numeriko.core.functional.expression.*
-import tomasvolker.numeriko.core.functional.operators.*
+import tomasvolker.numeriko.core.functional.function1.DifferentiableFunction1
+import tomasvolker.numeriko.core.functional.function1.Function1
+import tomasvolker.numeriko.core.functional.function2.operators.*
 
 
 fun constant(value: Double): Constant = DefaultConstant(value)
+fun constant(value: Int) = constant(value.toLong())
 fun constant(value: Long): IntegerConstant = when(value) {
     0L -> Zero
     1L -> One

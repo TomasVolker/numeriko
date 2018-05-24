@@ -1,8 +1,8 @@
-package tomasvolker.numeriko.core.functional.operators
+package tomasvolker.numeriko.core.functional.function1.operators
 
-import tomasvolker.numeriko.core.functional.Function1
-import tomasvolker.numeriko.core.functional.One
-import tomasvolker.numeriko.core.functional.affine.linear.LinearFunction
+import tomasvolker.numeriko.core.functional.function1.Function1
+import tomasvolker.numeriko.core.functional.constant.One
+import tomasvolker.numeriko.core.functional.affine.LinearFunction
 import java.beans.Expression
 
 object Identity: LinearFunction {

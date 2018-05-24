@@ -1,4 +1,4 @@
-package tomasvolker.numeriko.core.functional
+package tomasvolker.numeriko.core.functional.function2
 
 import tomasvolker.numeriko.core.functional.expression.DifferentiableExpression
 import tomasvolker.numeriko.core.functional.expression.DifferentiableFunction2Application

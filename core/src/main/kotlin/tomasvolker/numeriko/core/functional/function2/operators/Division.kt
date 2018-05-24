@@ -1,7 +1,10 @@
-package tomasvolker.numeriko.core.functional.operators
+package tomasvolker.numeriko.core.functional.function2.operators
 
 import tomasvolker.numeriko.core.functional.*
 import tomasvolker.numeriko.core.functional.expression.*
+import tomasvolker.numeriko.core.functional.function1.*
+import tomasvolker.numeriko.core.functional.function1.operators.unaryMinus
+import tomasvolker.numeriko.core.functional.function2.*
 
 object Division: DifferentiableFunction2 {
 

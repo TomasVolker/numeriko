@@ -1,14 +1,14 @@
-package tomasvolker.numeriko.core.functional.affine.linear
+package tomasvolker.numeriko.core.functional.affine
 
-import tomasvolker.numeriko.core.functional.affine.AffineFunction
-import tomasvolker.numeriko.core.functional.asConstant
+
+import tomasvolker.numeriko.core.functional.constant
 
 interface LinearFunction: AffineFunction {
 
     override val y0 get() = 0.0
 
     override fun invoke(input: Double) = m * input
-    override fun derivative() = m.asConstant()
+    override fun derivative() = constant(m)
 
 }
 

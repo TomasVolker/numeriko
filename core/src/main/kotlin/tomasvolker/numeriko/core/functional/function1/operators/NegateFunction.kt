@@ -1,14 +1,9 @@
-package tomasvolker.numeriko.core.functional.operators
+package tomasvolker.numeriko.core.functional.function1.operators
 
-import tomasvolker.numeriko.core.functional.DifferentiableFunction1
-import tomasvolker.numeriko.core.functional.Function1
-import tomasvolker.numeriko.core.functional.MinusOne
-import tomasvolker.numeriko.core.functional.affine.linear.LinearFunction
-import tomasvolker.numeriko.core.functional.expression.DifferentiableExpression
-import tomasvolker.numeriko.core.functional.expression.Expression
-import tomasvolker.numeriko.core.functional.expression.differentiableFunction1
-import tomasvolker.numeriko.core.functional.expression.function1
-import tomasvolker.numeriko.core.functional.invoke
+import tomasvolker.numeriko.core.functional.affine.LinearFunction
+import tomasvolker.numeriko.core.functional.constant.MinusOne
+import tomasvolker.numeriko.core.functional.expression.*
+import tomasvolker.numeriko.core.functional.function1.*
 
 object NegateFunction: LinearFunction {
 

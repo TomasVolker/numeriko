@@ -1,7 +1,8 @@
-package tomasvolker.numeriko.core.functional.expression
+package tomasvolker.numeriko.core.functional.function2
 
-import tomasvolker.numeriko.core.functional.DifferentiableFunction2
 import tomasvolker.numeriko.core.functional.asVariable
+import tomasvolker.numeriko.core.functional.expression.DifferentiableExpression
+import tomasvolker.numeriko.core.functional.expression.Variable
 
 class DifferentiableExpressionFunction2(
         variable1: Variable,
@@ -26,7 +27,7 @@ class DifferentiableExpressionFunction2(
 
 }
 
-fun differentiableFunction2(expression: (Variable, Variable)->DifferentiableExpression): DifferentiableFunction2 {
+fun differentiableFunction2(expression: (Variable, Variable)-> DifferentiableExpression): DifferentiableFunction2 {
     val x1 = "x1".asVariable()
     val x2 = "x2".asVariable()
     return DifferentiableExpressionFunction2(

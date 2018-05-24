@@ -1,9 +1,9 @@
-package tomasvolker.numeriko.core.functional
+package tomasvolker.numeriko.core.functional.constant
 
 import tomasvolker.numeriko.core.functional.affine.AffineFunction
-import tomasvolker.numeriko.core.functional.affine.linear.LinearFunction
 import tomasvolker.numeriko.core.functional.expression.DifferentiableExpression
 import tomasvolker.numeriko.core.functional.expression.Variable
+import tomasvolker.numeriko.core.functional.function2.DifferentiableFunction2
 
 interface Constant: AffineFunction, DifferentiableFunction2, DifferentiableExpression {
 
@@ -23,7 +23,7 @@ interface Constant: AffineFunction, DifferentiableFunction2, DifferentiableExpre
 
     //override fun derivativeAt(input: Double) = 0.0
 
-    override fun dependsOn() = emptySet<Variable>()
+    override fun variables() = emptySet<Variable>()
 
     override fun evaluate(variableValues: Map<Variable, Double>) =
             value
@@ -45,60 +45,21 @@ class DefaultConstant(
 
 }
 
-interface IntegerConstant: Constant {
+object Pi: Constant {
 
-    val integerValue: Long
-    override val value: Double get() = integerValue.toDouble()
+    override val value: Double = Math.PI
 
-    override fun defaultToString() = "$integerValue"
-
-}
-
-class DefaultIntegerConstant(
-        override val integerValue: Long
-) : IntegerConstant {
-
-    override fun equals(other: Any?) = when(other) {
-        is IntegerConstant -> this.integerValue == other.integerValue
-        else -> false
-    }
-
-    override fun hashCode() = integerValue.hashCode()
+    override fun defaultToString() = "pi"
 
     override fun toString() = defaultToString()
 
 }
 
-object Zero: IntegerConstant, LinearFunction {
+object E: Constant {
 
-    override val y0: Double get() = 0.0
-    override val integerValue get() = 0L
+    override val value: Double = Math.E
 
-    override fun invoke(input: Double) = 0.0
-
-    override fun derivative() = Zero
-
-    override fun toString(input: String) = "0"
-
-    override fun toString() = defaultToString()
-
-}
-
-object One: IntegerConstant {
-
-    override val integerValue get() = 1L
-
-    override fun toString(input: String) = "1"
-
-    override fun toString() = defaultToString()
-
-}
-
-object MinusOne: IntegerConstant {
-
-    override val integerValue get() = -1L
-
-    override fun toString(input: String) = "(-1)"
+    override fun defaultToString() = "e"
 
     override fun toString() = defaultToString()
 

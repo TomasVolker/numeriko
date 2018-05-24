@@ -1,8 +1,8 @@
 package tomasvolker.numeriko.core.functional.affine
 
-import tomasvolker.numeriko.core.functional.DifferentiableFunction1
+import tomasvolker.numeriko.core.functional.function1.DifferentiableFunction1
 import tomasvolker.numeriko.core.functional.constant
-import tomasvolker.numeriko.core.functional.Constant
+import tomasvolker.numeriko.core.functional.constant.Constant
 
 interface AffineFunction: DifferentiableFunction1 {
 
