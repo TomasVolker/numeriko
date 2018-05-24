@@ -3,9 +3,6 @@ package tomasvolker.numeriko.core.plot
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.plot.swing.PlotFrame
 import java.awt.*
-import kotlin.math.ceil
-import kotlin.math.floor
-import kotlin.math.roundToInt
 
 class Plot {
 

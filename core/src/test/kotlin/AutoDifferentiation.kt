@@ -1,24 +1,44 @@
-import tomasvolker.numeriko.core.functional.*
-import tomasvolker.numeriko.core.functional.constant.One
-import tomasvolker.numeriko.core.functional.constant.Pi
-import tomasvolker.numeriko.core.functional.constant.Zero
-import tomasvolker.numeriko.core.functional.function1.functions.cos
-import tomasvolker.numeriko.core.functional.function1.functions.exp
-import tomasvolker.numeriko.core.functional.function1.functions.sin
+import tomasvolker.numeriko.core.simbolic.*
+import tomasvolker.numeriko.core.simbolic.function1.Function1
+import tomasvolker.numeriko.core.simbolic.function1.differentiableFunction1
+import tomasvolker.numeriko.core.simbolic.function1.functions.*
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
+import tomasvolker.numeriko.core.linearalgebra.linearSpace
+import tomasvolker.numeriko.core.plot.line
+import tomasvolker.numeriko.core.plot.plot
+import java.awt.Color
+
+operator fun Function1.invoke(array: DoubleArray1D) =
+        array.elementWise { this(it) }
 
 fun main(args: Array<String>) {
 
-    val x = variable("x")
+    val f = differentiableFunction1 { exp(cos(2 * it) / (2 + sin(it))) }
+    val df = f.derivative()
+    val ddf = df.derivative()
 
-    val f = 2 * exp(2 * x)
+    val x = linearSpace(
+            start = -10.0,
+            stop = 10.0,
+            amount = 301
+    )
 
-    println(f)
+    plot {
 
-    val dfdx = f.derivative(x)
+        line(x, f(x)) {
+            color = Color.RED
+            lineWidth = 2.0
+        }
 
-    println(dfdx)
+        line(x, df(x)) {
+            color = Color.GREEN
+        }
 
+        line(x, ddf(x)) {
+            color = Color.BLUE
+        }
 
-    println(dfdx.derivative(x))
+    }
 
 }
