@@ -5,9 +5,8 @@ import tomasvolker.numeriko.core.functional.function1.Function1
 import tomasvolker.numeriko.core.functional.function1.defaultToString
 import tomasvolker.numeriko.core.functional.expression.DifferentiableExpression
 import tomasvolker.numeriko.core.functional.expression.Expression
-import tomasvolker.numeriko.core.functional.function1.invoke
-import tomasvolker.numeriko.core.functional.function1.operators.unaryMinus
 import kotlin.math.cos
+import kotlin.math.sin
 
 object Cosine: DifferentiableFunction1 {
 
@@ -15,7 +14,7 @@ object Cosine: DifferentiableFunction1 {
 
     override fun derivative() = -Sine
 
-    //override fun derivativeAt(input: Double) = -sin(input)
+    override fun derivativeAt(input: Double) = -sin(input)
 
     override fun toString(input: String) = "cos(${input})"
 

@@ -1,6 +1,8 @@
 package tomasvolker.numeriko.core.functional.constant
 
 import tomasvolker.numeriko.core.functional.affine.LinearFunction
+import tomasvolker.numeriko.core.functional.expression.Expression
+import tomasvolker.numeriko.core.functional.function1.Function1
 
 interface IntegerConstant: Constant {
 
@@ -33,6 +35,12 @@ object Zero: IntegerConstant, LinearFunction {
 
     override fun invoke(input: Double) = 0.0
 
+    override fun optimizePlus(other: Function1) = other
+    override fun optimizePlus(other: Expression) = other
+
+    override fun optimizeTimes(other: Function1) = Zero
+    override fun optimizeTimes(other: Expression) = Zero
+
     override fun derivative() = Zero
 
     override fun toString() = defaultToString()
@@ -42,6 +50,9 @@ object Zero: IntegerConstant, LinearFunction {
 object One: IntegerConstant {
 
     override val integerValue get() = 1L
+
+    override fun optimizeTimes(other: Function1) = other
+    override fun optimizeTimes(other: Expression) = other
 
     override fun toString() = defaultToString()
 

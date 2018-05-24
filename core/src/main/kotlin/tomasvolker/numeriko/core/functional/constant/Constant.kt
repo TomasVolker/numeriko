@@ -1,8 +1,11 @@
 package tomasvolker.numeriko.core.functional.constant
 
 import tomasvolker.numeriko.core.functional.affine.AffineFunction
+import tomasvolker.numeriko.core.functional.constant
 import tomasvolker.numeriko.core.functional.expression.DifferentiableExpression
+import tomasvolker.numeriko.core.functional.expression.Expression
 import tomasvolker.numeriko.core.functional.expression.Variable
+import tomasvolker.numeriko.core.functional.function1.Function1
 import tomasvolker.numeriko.core.functional.function2.DifferentiableFunction2
 
 interface Constant: AffineFunction, DifferentiableFunction2, DifferentiableExpression {
@@ -14,6 +17,12 @@ interface Constant: AffineFunction, DifferentiableFunction2, DifferentiableExpre
 
     override fun invoke(input: Double) = value
     override fun invoke(input1: Double, input2: Double) = value
+
+    override fun optimizeInvoke(input: Expression) = this
+    override fun optimizeInvoke(input: Function1) = this
+
+    override fun unaryPlus() = this
+    override fun unaryMinus() = constant(-value)
 
     override fun derivative() = Zero
     override fun derivative1() = Zero

@@ -5,7 +5,6 @@ import tomasvolker.numeriko.core.functional.function1.Function1
 import tomasvolker.numeriko.core.functional.function1.defaultToString
 import tomasvolker.numeriko.core.functional.expression.DifferentiableExpression
 import tomasvolker.numeriko.core.functional.expression.Expression
-import tomasvolker.numeriko.core.functional.function1.invoke
 import kotlin.math.exp
 
 object Exponential: DifferentiableFunction1 {
@@ -14,7 +13,7 @@ object Exponential: DifferentiableFunction1 {
 
     override fun derivative() = Exponential
 
-    //override fun derivativeAt(input: Double) = exp(input)
+    override fun derivativeAt(input: Double) = exp(input)
 
     override fun toString(input: String) = "exp(${input})"
 
