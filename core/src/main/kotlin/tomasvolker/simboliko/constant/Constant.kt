@@ -2,10 +2,11 @@ package tomasvolker.simboliko.constant
 
 import tomasvolker.simboliko.affine.AffineFunction
 import tomasvolker.simboliko.constant
-import tomasvolker.simboliko.expression.DifferentiableExpression
-import tomasvolker.simboliko.expression.Expression
-import tomasvolker.simboliko.expression.Variable
-import tomasvolker.simboliko.function1.Function1
+import tomasvolker.simboliko.expression.RealExpression
+import tomasvolker.simboliko.expression.variable.RealVariable
+import tomasvolker.simboliko.expression.variable.Variable
+import tomasvolker.simboliko.expression.variable.VariableContext
+import tomasvolker.simboliko.function1.RealFunction1
 import tomasvolker.simboliko.function1.operators.NegateFunction
 import tomasvolker.simboliko.function2.DifferentiableFunction2
 import tomasvolker.simboliko.function2.operators.Addition
@@ -13,7 +14,7 @@ import tomasvolker.simboliko.function2.operators.Division
 import tomasvolker.simboliko.function2.operators.Multiplication
 import tomasvolker.simboliko.function2.operators.Subtraction
 
-interface Constant: AffineFunction, DifferentiableFunction2, DifferentiableExpression {
+interface Constant: AffineFunction, DifferentiableFunction2, RealExpression {
 
     val doubleValue: Double
 
@@ -23,12 +24,11 @@ interface Constant: AffineFunction, DifferentiableFunction2, DifferentiableExpre
     override fun compute(input: Double) = doubleValue
     override fun compute(input1: Double, input2: Double) = doubleValue
 
+    override fun compute(variableValues: Map<Variable<*>, Double>) = doubleValue
+    override fun evaluate(context: VariableContext) = this
 
-    override fun compute(variableValues: Map<Variable, Double>) = doubleValue
-    override fun evaluate(variableValues: Map<Variable, Expression>) = this
-
-    override fun simplifyInvoke(input: Expression) = this
-    override fun simplifyInvoke(input: Function1) = this
+    override fun simplifyInvoke(input: RealExpression) = this
+    override fun simplifyInvoke(input: RealFunction1) = this
 
     override fun unaryPlus() = this
     override fun unaryMinus() = NegateFunction(this)
@@ -47,16 +47,14 @@ interface Constant: AffineFunction, DifferentiableFunction2, DifferentiableExpre
     override fun derivative1() = Zero
     override fun derivative2() = Zero
 
-    override fun derivative(withRespectTo: Variable) = Zero
-
     override fun derivativeAt(input: Double) = 0.0
 
-    override fun variables() = emptySet<Variable>()
+    override fun variables() = emptySet<RealVariable>()
 
     override fun defaultToString() = doubleValue.toString()
     override fun toString(input: String) = defaultToString()
     override fun toString(input1: String, input2: String) = defaultToString()
-    override fun toString(variableValues: Map<Variable, String>) = defaultToString()
+    override fun toString(variableValues: Map<Variable<*>, String>) = defaultToString()
 
 }
 

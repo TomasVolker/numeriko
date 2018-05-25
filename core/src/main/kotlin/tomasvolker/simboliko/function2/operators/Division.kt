@@ -1,7 +1,7 @@
 package tomasvolker.simboliko.function2.operators
 
 import tomasvolker.simboliko.constant.One
-import tomasvolker.simboliko.expression.Expression
+import tomasvolker.simboliko.expression.RealExpression
 import tomasvolker.simboliko.div
 import tomasvolker.simboliko.function2.DifferentiableFunction2
 import tomasvolker.simboliko.function2.defaultToString
@@ -21,7 +21,7 @@ object Division: DifferentiableFunction2 {
 
     override fun toString() = defaultToString()
 
-    override fun simplifyInvoke(input1: Expression, input2: Expression) =
+    override fun simplifyInvoke(input1: RealExpression, input2: RealExpression) =
             super.simplifyInvoke(input1, input2) ?:
             when {
                 input2 is One -> input1

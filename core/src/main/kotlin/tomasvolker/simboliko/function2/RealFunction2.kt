@@ -3,7 +3,7 @@ package tomasvolker.simboliko.function2
 import tomasvolker.simboliko.constant.Constant
 import tomasvolker.simboliko.expression.*
 
-interface Function2 {
+interface RealFunction2 {
 
     operator fun invoke(input1: Double, input2: Double): Double =
             compute(input1, input2)
@@ -12,10 +12,10 @@ interface Function2 {
 
     fun toString(input1: String, input2: String): String
 
-    operator fun invoke(input1: Expression, input2: Expression): Expression =
+    operator fun invoke(input1: RealExpression, input2: RealExpression): RealExpression =
             simplifyInvoke(input1, input2) ?: Function2Application(this, input1, input2)
 
-    fun simplifyInvoke(input1: Expression, input2: Expression): Expression? = when {
+    fun simplifyInvoke(input1: RealExpression, input2: RealExpression): RealExpression? = when {
         input1 is Constant && input2 is Constant -> invoke(input1, input2)
         else -> null
     }
@@ -25,7 +25,7 @@ interface Function2 {
 
 }
 
-interface DifferentiableFunction2: Function2 {
+interface DifferentiableFunction2: RealFunction2 {
 
     fun derivative1(): DifferentiableFunction2
 
@@ -35,16 +35,9 @@ interface DifferentiableFunction2: Function2 {
 
     fun derivative2At(input1: Double, input2: Double): Double = derivative2()(input1, input2)
 
-    operator fun invoke(
-            input1: DifferentiableExpression,
-            input2: DifferentiableExpression
-    ): DifferentiableExpression =
-            simplifyInvoke(input1, input2) as? DifferentiableExpression
-                    ?: DifferentiableFunction2Application(this, input1, input2)
-
 }
 
 
-fun Function2.defaultToString() = "x1, x2 -> ${toString("x1", "x2")}"
+fun RealFunction2.defaultToString() = "x1, x2 -> ${toString("x1", "x2")}"
 
 

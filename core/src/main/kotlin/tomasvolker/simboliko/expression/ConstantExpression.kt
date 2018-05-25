@@ -1,9 +1,10 @@
 package tomasvolker.simboliko.expression
 
 import tomasvolker.simboliko.constant.Constant
+import tomasvolker.simboliko.expression.variable.VariableContext
 
 class ConstantExpression(
-        val expression: Expression
+        val expression: RealExpression
 ): Constant {
 
     init {
@@ -11,11 +12,11 @@ class ConstantExpression(
         val variables = expression.variables()
 
         require(variables.isEmpty()) {
-            "Expression depends on variables: $variables"
+            "RealExpression depends on variables: $variables"
         }
     }
 
-    override fun evaluate(variableValues: Map<Variable, Expression>) =
+    override fun evaluate(context: VariableContext) =
             this
 
     override val doubleValue: Double

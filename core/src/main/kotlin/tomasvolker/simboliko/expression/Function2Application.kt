@@ -1,22 +1,27 @@
 package tomasvolker.simboliko.expression
 
-import tomasvolker.simboliko.function2.Function2
+import tomasvolker.simboliko.expression.variable.Variable
+import tomasvolker.simboliko.expression.variable.VariableContext
+import tomasvolker.simboliko.function2.RealFunction2
 
 class Function2Application(
-        val function: Function2,
-        val input1: Expression,
-        val input2: Expression
-): Expression {
+        val function: RealFunction2,
+        val input1: RealExpression,
+        val input2: RealExpression
+): RealExpression {
 
     override fun variables() = input1.variables() + input2.variables()
 
-    override fun compute(variableValues: Map<Variable, Double>) =
+    override fun dependsOn(variable: Variable<*>) =
+            input1.dependsOn(variable) || input2.dependsOn(variable)
+
+    override fun compute(variableValues: Map<Variable<*>, Double>) =
             function(input1(variableValues), input2(variableValues))
 
-    override fun evaluate(variableValues: Map<Variable, Expression>) =
-            function(input1(variableValues), input2(variableValues))
+    override fun evaluate(context: VariableContext) =
+            function(input1(context), input2(context))
 
-    override fun toString(variableValues: Map<Variable, String>) =
+    override fun toString(variableValues: Map<Variable<*>, String>) =
             function.toString(
                     input1.toString(variableValues),
                     input2.toString(variableValues)

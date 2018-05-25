@@ -1,8 +1,8 @@
 package tomasvolker.simboliko.constant
 
 import tomasvolker.simboliko.affine.LinearFunction
-import tomasvolker.simboliko.expression.Expression
-import tomasvolker.simboliko.function1.Function1
+import tomasvolker.simboliko.expression.RealExpression
+import tomasvolker.simboliko.function1.RealFunction1
 import tomasvolker.simboliko.function1.operators.NegateFunction
 
 interface IntegerConstant: Constant {
@@ -36,11 +36,11 @@ object Zero: IntegerConstant, LinearFunction {
 
     override fun invoke(input: Double) = 0.0
 
-    override fun simplifyPlus(other: Function1) = other
-    override fun simplifyPlus(other: Expression) = other
+    override fun simplifyPlus(other: RealFunction1) = other
+    override fun simplifyPlus(other: RealExpression) = other
 
-    override fun simplifyTimes(other: Function1) = Zero
-    override fun simplifyTimes(other: Expression) = Zero
+    override fun simplifyTimes(other: RealFunction1) = Zero
+    override fun simplifyTimes(other: RealExpression) = Zero
 
     override fun derivative() = Zero
 
@@ -52,8 +52,8 @@ object One: IntegerConstant {
 
     override val integerValue get() = 1L
 
-    override fun simplifyTimes(other: Function1) = other
-    override fun simplifyTimes(other: Expression) = other
+    override fun simplifyTimes(other: RealFunction1) = other
+    override fun simplifyTimes(other: RealExpression) = other
 
     override fun toString() = defaultToString()
 
@@ -63,8 +63,8 @@ object MinusOne: IntegerConstant {
 
     override val integerValue get() = -1L
 
-    override fun simplifyTimes(other: Function1) = NegateFunction(other)
-    override fun simplifyTimes(other: Expression) = NegateFunction(other)
+    override fun simplifyTimes(other: RealFunction1) = NegateFunction(other)
+    override fun simplifyTimes(other: RealExpression) = NegateFunction(other)
 
     override fun defaultToString() = "(-1)"
 

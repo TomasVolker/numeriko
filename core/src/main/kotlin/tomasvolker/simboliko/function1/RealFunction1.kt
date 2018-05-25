@@ -7,7 +7,13 @@ import tomasvolker.simboliko.constant.Zero
 import tomasvolker.simboliko.expression.*
 
 
-interface Function1 {
+interface Function1<in I, out O> {
+
+    operator fun invoke(input: I): O
+
+}
+
+interface RealFunction1 {
 
     operator fun invoke(input: Double) =
             compute(input)
@@ -16,10 +22,10 @@ interface Function1 {
 
     fun toString(input: String): String
 
-    operator fun invoke(input: Expression) =
+    operator fun invoke(input: RealExpression) =
             simplifyInvoke(input) ?: Function1Application(this, input)
 
-    operator fun invoke(input: Function1) =
+    operator fun invoke(input: RealFunction1) =
             simplifyInvoke(input) ?: function1 { this(input(it)) }
 
     operator fun invoke(input: Constant): Constant =
@@ -27,27 +33,27 @@ interface Function1 {
 
     operator fun unaryPlus() = this
 
-    operator fun unaryMinus(): Function1 =
+    operator fun unaryMinus(): RealFunction1 =
             function1 { -it }
 
-    operator fun plus(other: Function1) =
+    operator fun plus(other: RealFunction1) =
             simplifyPlus(other) ?: function1 { this(it) + other(it) }
 
     operator fun plus(other: Zero) = this
 
-    operator fun minus(other: Function1) =
+    operator fun minus(other: RealFunction1) =
         simplifyMinus(other) ?: function1 { this(it) - other(it) }
 
     operator fun minus(other: Zero) = this
 
-    operator fun times(other: Function1) =
+    operator fun times(other: RealFunction1) =
             simplifyTimes(other) ?: function1 { this(it) * other(it) }
 
     operator fun times(other: One) = this
 
     operator fun times(other: Zero) = Zero
 
-    operator fun div(other: Function1): Function1 =
+    operator fun div(other: RealFunction1): RealFunction1 =
             simplifyDiv(other) ?: function1 { this(it) / other(it) }
 
     operator fun div(other: One) = this
@@ -61,48 +67,44 @@ interface Function1 {
 
     // Simplifications
 
-    fun simplifyInvoke(input: Expression): Expression? = when(input) {
+    fun simplifyInvoke(input: RealExpression): RealExpression? = when(input) {
         is Constant -> this(input)
         else -> null
     }
 
-    fun simplifyInvoke(input: Function1): Function1? = when(input) {
+    fun simplifyInvoke(input: RealFunction1): RealFunction1? = when(input) {
         is Constant -> this(input)
         else -> null
     }
 
-    fun simplifyPlus(other: Function1): Function1? = when(other) {
+    fun simplifyPlus(other: RealFunction1): RealFunction1? = when(other) {
         is Zero -> this
         else -> null
     }
 
-    fun simplifyMinus(other: Function1): Function1? = when(other) {
+    fun simplifyMinus(other: RealFunction1): RealFunction1? = when(other) {
         is Zero -> this
         else -> null
     }
 
-    fun simplifyTimes(other: Function1): Function1? = when(other) {
+    fun simplifyTimes(other: RealFunction1): RealFunction1? = when(other) {
         is Zero -> Zero
         is One -> this
         else -> null
     }
 
-    fun simplifyDiv(other: Function1): Function1? = when(other) {
+    fun simplifyDiv(other: RealFunction1): RealFunction1? = when(other) {
         is One -> this
         else -> null
     }
 
 }
 
-interface DifferentiableFunction1: Function1 {
+interface DifferentiableFunction1: RealFunction1 {
 
     fun derivative(): DifferentiableFunction1
 
     fun derivativeAt(input: Double): Double = derivative()(input)
-
-    operator fun invoke(input: DifferentiableExpression): DifferentiableExpression =
-            simplifyInvoke(input) as DifferentiableExpression? ?:
-            DifferentiableFunction1Application(this, input)
 
     operator fun invoke(input: DifferentiableFunction1): DifferentiableFunction1 =
             simplifyInvoke(input) as DifferentiableFunction1? ?:
@@ -114,19 +116,19 @@ interface DifferentiableFunction1: Function1 {
             differentiableFunction1 { -this(it) }
 
     operator fun plus(other: DifferentiableFunction1): DifferentiableFunction1 =
-            simplifyPlus(other) as? DifferentiableFunction1
-                    ?: differentiableFunction1 { this(it) + other(it) }
+            simplifyPlus(other) as? DifferentiableFunction1 ?:
+            differentiableFunction1 { this(it) + other(it) }
 
     operator fun minus(other: DifferentiableFunction1): DifferentiableFunction1 =
             differentiableFunction1 { this(it) - other(it) }
 
     operator fun times(other: DifferentiableFunction1): DifferentiableFunction1 =
-            simplifyTimes(other) as? DifferentiableFunction1
-                    ?: differentiableFunction1 { this(it) * other(it) }
+            simplifyTimes(other) as? DifferentiableFunction1 ?:
+            differentiableFunction1 { this(it) * other(it) }
 
     operator fun div(other: DifferentiableFunction1): DifferentiableFunction1 =
-            simplifyDiv(other) as? DifferentiableFunction1
-                    ?: differentiableFunction1 { this(it) / other(it) }
+            simplifyDiv(other) as? DifferentiableFunction1 ?:
+            differentiableFunction1 { this(it) / other(it) }
 
     override operator fun plus(other: Int) = plus(constant(other))
     override operator fun minus(other: Int) = minus(constant(other))

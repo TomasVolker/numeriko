@@ -1,9 +1,10 @@
-import tomasvolker.simboliko.function1.Function1
+import tomasvolker.simboliko.function1.RealFunction1
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
 import tomasvolker.numeriko.core.plot.line
 import tomasvolker.numeriko.core.plot.plot
+import tomasvolker.simboliko.expression.derivative
 import tomasvolker.simboliko.function1.DifferentiableFunction1
 import tomasvolker.simboliko.function1.functions.cos
 import tomasvolker.simboliko.function1.functions.exp
@@ -14,7 +15,7 @@ import tomasvolker.simboliko.times
 import tomasvolker.simboliko.variable
 import java.awt.Color
 
-operator fun Function1.invoke(array: DoubleArray1D) =
+operator fun RealFunction1.invoke(array: DoubleArray1D) =
         array.elementWise { this(it) }
 
 class GradientDescentOptimizer(
