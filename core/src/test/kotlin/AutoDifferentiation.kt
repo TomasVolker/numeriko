@@ -1,16 +1,17 @@
-import tomasvolker.numeriko.core.simbolic.*
-import tomasvolker.numeriko.core.simbolic.function1.Function1
-import tomasvolker.numeriko.core.simbolic.function1.differentiableFunction1
-import tomasvolker.numeriko.core.simbolic.function1.functions.*
+import tomasvolker.simboliko.function1.Function1
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
 import tomasvolker.numeriko.core.plot.line
 import tomasvolker.numeriko.core.plot.plot
-import tomasvolker.numeriko.core.simbolic.constant.One
-import tomasvolker.numeriko.core.simbolic.expression.DifferentiableExpression
-import tomasvolker.numeriko.core.simbolic.function1.DifferentiableFunction1
-import tomasvolker.numeriko.core.simbolic.function1.operators.Identity
+import tomasvolker.simboliko.function1.DifferentiableFunction1
+import tomasvolker.simboliko.function1.functions.cos
+import tomasvolker.simboliko.function1.functions.exp
+import tomasvolker.simboliko.function1.functions.sin
+import tomasvolker.simboliko.function1.operators.Identity
+import tomasvolker.simboliko.plus
+import tomasvolker.simboliko.times
+import tomasvolker.simboliko.variable
 import java.awt.Color
 
 operator fun Function1.invoke(array: DoubleArray1D) =
@@ -67,15 +68,17 @@ fun main(args: Array<String>) {
 
     }
 
-    val cost = differentiableFunction1 { 2 * (it -1)  * it }
+
 
     val x1 = variable("x1")
     val x2 = variable("x2")
 
-    val expr = x1 * x2
+    val expr = cos(x1 - x2)
 
-    println(expr(x1 to x2))
+    println(expr.derivative(x1))
 
+/*
+    val cost = differentiableFunction1 { 2 * (it -1)  * it }
 
     val optimizer = GradientDescentOptimizer(
             cost = cost,
@@ -89,5 +92,5 @@ fun main(args: Array<String>) {
         optimizer.step()
 
     }
-
+*/
 }
