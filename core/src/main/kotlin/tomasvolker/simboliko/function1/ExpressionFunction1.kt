@@ -3,6 +3,7 @@ package tomasvolker.simboliko.function1
 import tomasvolker.simboliko.constant.Constant
 import tomasvolker.simboliko.expression.Expression
 import tomasvolker.simboliko.expression.Variable
+import tomasvolker.simboliko.expression.asFunctionOf
 import tomasvolker.simboliko.variable
 
 open class ExpressionFunction1(
@@ -25,6 +26,12 @@ open class ExpressionFunction1(
     open val expression: Expression
         get() =
         _expression
+
+    override fun invoke(input: Expression) =
+            expression(variable to input)
+
+    override fun simplifyInvoke(input: Function1) =
+            expression(variable to input(variable)).asFunctionOf(variable)
 
     override fun compute(input: Double) =
             expression(variable to input)

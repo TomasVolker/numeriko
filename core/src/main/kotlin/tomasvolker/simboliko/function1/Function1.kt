@@ -61,33 +61,33 @@ interface Function1 {
 
     // Simplifications
 
-    fun simplifyInvoke(input: Expression) = when(input) {
+    fun simplifyInvoke(input: Expression): Expression? = when(input) {
         is Constant -> this(input)
         else -> null
     }
 
-    fun simplifyInvoke(input: Function1) = when(input) {
+    fun simplifyInvoke(input: Function1): Function1? = when(input) {
         is Constant -> this(input)
         else -> null
     }
 
-    fun simplifyPlus(other: Function1) = when(other) {
+    fun simplifyPlus(other: Function1): Function1? = when(other) {
         is Zero -> this
         else -> null
     }
 
-    fun simplifyMinus(other: Function1) = when(other) {
+    fun simplifyMinus(other: Function1): Function1? = when(other) {
         is Zero -> this
         else -> null
     }
 
-    fun simplifyTimes(other: Function1) = when(other) {
+    fun simplifyTimes(other: Function1): Function1? = when(other) {
         is Zero -> Zero
         is One -> this
         else -> null
     }
 
-    fun simplifyDiv(other: Function1) = when(other) {
+    fun simplifyDiv(other: Function1): Function1? = when(other) {
         is One -> this
         else -> null
     }
@@ -101,10 +101,12 @@ interface DifferentiableFunction1: Function1 {
     fun derivativeAt(input: Double): Double = derivative()(input)
 
     operator fun invoke(input: DifferentiableExpression): DifferentiableExpression =
-            simplifyInvoke(input) ?: DifferentiableFunction1Application(this, input)
+            simplifyInvoke(input) as DifferentiableExpression? ?:
+            DifferentiableFunction1Application(this, input)
 
     operator fun invoke(input: DifferentiableFunction1): DifferentiableFunction1 =
-            simplifyInvoke(input) ?: differentiableFunction1 { this(input(it)) }
+            simplifyInvoke(input) as DifferentiableFunction1? ?:
+            differentiableFunction1 { this(input(it)) }
 
     override operator fun unaryPlus() = this
 
