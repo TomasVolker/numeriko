@@ -1,28 +1,29 @@
 package tomasvolker.simboliko.expression
 
-import tomasvolker.simboliko.constant
-import tomasvolker.simboliko.constant.One
-import tomasvolker.simboliko.constant.Zero
+import tomasvolker.simboliko.asConstant
 import tomasvolker.simboliko.expression.variable.*
 import tomasvolker.simboliko.function1.ExpressionDifferentiableFunction1
 import tomasvolker.simboliko.function1.ExpressionFunction1
-import tomasvolker.simboliko.function1.operators.*
-import tomasvolker.simboliko.function2.ExpressionFunction2
-import tomasvolker.simboliko.function2.operators.*
 import tomasvolker.simboliko.number.*
 
+
 interface Expression<out T> {
-
-    fun evaluate(vararg values: VariableAssignment<*>): Expression<T> =
-            evaluate(values.toVariableContext())
-
-    fun evaluate(context: VariableContext): Expression<T>
 
     operator fun invoke(vararg values: VariableAssignment<*>) =
             evaluate(*values)
 
-    operator fun invoke(context: VariableContext) =
+    operator fun invoke(context: VariableAssignmentContext): T =
             evaluate(context)
+
+    fun evaluate(vararg values: VariableAssignment<*>) =
+            evaluate(values.toVariableContext())
+
+    fun evaluate(context: VariableAssignmentContext): T
+
+    fun replace(vararg values: VariableReplacement<*>) =
+            replace(values.toVariableContext())
+
+    fun replace(context: VariableReplacementContext): Expression<T>
 
     fun toString(vararg values: Pair<Variable<*>, String>): String =
             toString(values.toMap())
@@ -39,90 +40,35 @@ interface Expression<out T> {
 
 }
 
-interface RealExpression: Expression<RealNumber> {
+class ConstantExpression<out T>(
+        val value: T
+): Expression<T> {
 
-    fun compute(vararg values: Pair<Variable<*>, Double>): Double =
-            compute(values.toMap())
+    override fun evaluate(context: VariableAssignmentContext) = value
 
-    override fun evaluate(vararg values: VariableAssignment<*>): RealExpression =
-            evaluate(values.toVariableContext())
+    override fun replace(context: VariableReplacementContext): Expression<T> = this
 
-    fun compute(variableValues: Map<Variable<*>, Double>): Double
+    override fun toString(variableValues: Map<Variable<*>, String>): String = value.toString()
 
-    override fun evaluate(context: VariableContext): RealExpression
-
-    override fun variables(): Set<Variable<*>>
-
-    operator fun invoke(vararg values: Pair<Variable<*>, Double>) =
-            compute(*values)
-
-    operator fun invoke(variableValues: Map<Variable<*>, Double>) =
-            compute(variableValues)
-
-    override operator fun invoke(vararg values: VariableAssignment<*>): RealExpression =
-            evaluate(*values)
-
-    override operator fun invoke(context: VariableContext) =
-            evaluate(context)
-
-    override fun toString(vararg values: Pair<Variable<*>, String>): String =
-            toString(values.toMap())
-
-    override fun toString(variableValues: Map<Variable<*>, String>): String
-
-    operator fun unaryPlus() = this
-
-    operator fun unaryMinus(): RealExpression =
-            NegateFunction(this)
-
-    operator fun plus(other: RealExpression) =
-            simplifyPlus(other) ?:
-            Addition(this, other)
-
-    operator fun minus(other: RealExpression) =
-            simplifyMinus(other) ?:
-            Subtraction(this, other)
-
-    operator fun times(other: RealExpression) =
-            simplifyTimes(other) ?:
-            Multiplication(this, other)
-
-    operator fun div(other: RealExpression) =
-            simplifyDiv(other) ?:
-            Division(this, other)
-
-    operator fun plus(other: Int) = plus(constant(other))
-    operator fun minus(other: Int) = minus(constant(other))
-    operator fun times(other: Int) = times(constant(other))
-    operator fun div(other: Int) = div(constant(other))
-
-    // Simplifications
-
-    fun simplifyPlus(other: RealExpression) = when(other) {
-        is Zero -> this
-        else -> null
-    }
-
-    fun simplifyMinus(other: RealExpression) = when(other) {
-        is Zero -> this
-        else -> null
-    }
-
-    fun simplifyTimes(other: RealExpression) = when(other) {
-        is Zero -> Zero
-        is One -> this
-        else -> null
-    }
-
-    fun simplifyDiv(other: RealExpression) = when(other) {
-        is One -> this
-        else -> null
-    }
+    override fun variables(): Set<Variable<*>> = emptySet()
 
 }
 
+fun Expression<RealNumber>.compute(vararg values: Pair<Variable<*>, Double>): Double =
+        compute(values.toMap())
 
-fun RealExpression.asFunctionOf(variable: RealVariable) = when {
+fun Expression<RealNumber>.compute(variableValues: Map<Variable<*>, Double>): Double =
+        when(this) {
+            is RealNumber -> getDouble()
+            is Literal<RealNumber> -> value.getDouble()
+            else ->
+                evaluate(
+                        variableValues.map { it.key assignTo it.value.asConstant() }.toVariableContext()
+                ).getDouble()
+        }
+
+
+fun Expression<RealNumber>.asFunctionOf(variable: Variable<RealNumber>) = when {
     this.isDifferentiable(variable) ->
         ExpressionDifferentiableFunction1(
                 variable = variable,

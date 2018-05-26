@@ -1,9 +1,21 @@
 package tomasvolker.simboliko.function2
 
-import tomasvolker.simboliko.constant.Constant
+import tomasvolker.simboliko.asLiteral
 import tomasvolker.simboliko.expression.*
+import tomasvolker.simboliko.number.RealNumber
 
-interface RealFunction2 {
+interface Function2<in I1, in I2, out O> {
+
+    operator fun invoke(input1: I1, input2: I2): O = TODO()
+
+    operator fun invoke(input1: Expression<I1>, input2: Expression<I2>): Expression<O>
+
+}
+
+interface RealFunction2: Function2<RealNumber, RealNumber, RealNumber> {
+
+    override fun invoke(input1: RealNumber, input2: RealNumber) =
+            ConstantRealExpression(this(input1.asLiteral(), input2.asLiteral()))
 
     operator fun invoke(input1: Double, input2: Double): Double =
             compute(input1, input2)
@@ -12,16 +24,8 @@ interface RealFunction2 {
 
     fun toString(input1: String, input2: String): String
 
-    operator fun invoke(input1: RealExpression, input2: RealExpression): RealExpression =
-            simplifyInvoke(input1, input2) ?: Function2Application(this, input1, input2)
-
-    fun simplifyInvoke(input1: RealExpression, input2: RealExpression): RealExpression? = when {
-        input1 is Constant && input2 is Constant -> invoke(input1, input2)
-        else -> null
-    }
-
-    operator fun invoke(input1: Constant, input2: Constant): Constant =
-            ConstantExpression(Function2Application(this, input1, input2))
+    override operator fun invoke(input1: Expression<RealNumber>, input2: Expression<RealNumber>): Expression<RealNumber> =
+            Function2Application(this, input1, input2)
 
 }
 

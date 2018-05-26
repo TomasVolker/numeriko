@@ -1,11 +1,11 @@
 package tomasvolker.simboliko.function1.operators
 
 import tomasvolker.simboliko.constant.One
-import tomasvolker.simboliko.affine.LinearFunction
+import tomasvolker.simboliko.expression.Expression
+import tomasvolker.simboliko.function1.DifferentiableFunction1
+import tomasvolker.simboliko.number.RealNumber
 
-object Identity: LinearFunction {
-
-    override val m: Double get() = 1.0
+object Identity: DifferentiableFunction1 {
 
     override fun compute(input: Double) = input
 
@@ -18,3 +18,4 @@ object Identity: LinearFunction {
 
 }
 
+operator fun Expression<RealNumber>.unaryPlus() = Identity(this)

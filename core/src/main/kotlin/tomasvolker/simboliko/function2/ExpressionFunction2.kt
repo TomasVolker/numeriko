@@ -1,13 +1,15 @@
 package tomasvolker.simboliko.function2
 
-import tomasvolker.simboliko.asVariable
-import tomasvolker.simboliko.expression.RealExpression
-import tomasvolker.simboliko.expression.variable.RealVariable
+import tomasvolker.simboliko.asVariableOf
+import tomasvolker.simboliko.expression.Expression
+import tomasvolker.simboliko.expression.compute
+import tomasvolker.simboliko.expression.variable.Variable
+import tomasvolker.simboliko.number.RealNumber
 
 open class ExpressionFunction2(
-        val variable1: RealVariable,
-        val variable2: RealVariable,
-        expression: RealExpression
+        val variable1: Variable<RealNumber>,
+        val variable2: Variable<RealNumber>,
+        expression: Expression<RealNumber>
 ): RealFunction2 {
 
     private val _expression = expression
@@ -22,10 +24,10 @@ open class ExpressionFunction2(
 
     }
 
-    open val expression: RealExpression get() = _expression
+    open val expression: Expression<RealNumber> get() = _expression
 
     override fun compute(input1: Double, input2: Double) =
-            expression(
+            expression.compute(
                     variable1 to input1,
                     variable2 to input2
             )
@@ -41,9 +43,9 @@ open class ExpressionFunction2(
 }
 
 
-fun function2(expression: (x1: RealVariable, x2: RealVariable)-> RealExpression): RealFunction2 {
-    val x1 = "x1".asVariable()
-    val x2 = "x2".asVariable()
+fun function2(expression: (x1: Variable<RealNumber>, x2: Variable<RealNumber>)-> Expression<RealNumber>): RealFunction2 {
+    val x1 = "x1".asVariableOf<RealNumber>()
+    val x2 = "x2".asVariableOf<RealNumber>()
     return ExpressionFunction2(
             variable1 = x1,
             variable2 = x2,

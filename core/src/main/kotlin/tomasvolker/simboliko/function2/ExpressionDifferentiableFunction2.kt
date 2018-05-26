@@ -1,15 +1,16 @@
 package tomasvolker.simboliko.function2
 
-import tomasvolker.simboliko.asVariable
-import tomasvolker.simboliko.expression.RealExpression
+import tomasvolker.simboliko.asVariableOf
+import tomasvolker.simboliko.expression.Expression
 import tomasvolker.simboliko.expression.derivative
 import tomasvolker.simboliko.expression.isDifferentiable
-import tomasvolker.simboliko.expression.variable.RealVariable
+import tomasvolker.simboliko.expression.variable.Variable
+import tomasvolker.simboliko.number.RealNumber
 
 class ExpressionDifferentiableFunction2(
-        variable1: RealVariable,
-        variable2: RealVariable,
-        override val expression: RealExpression
+        variable1: Variable<RealNumber>,
+        variable2: Variable<RealNumber>,
+        override val expression: Expression<RealNumber>
 ): ExpressionFunction2(variable1, variable2, expression),
         DifferentiableFunction2 {
 
@@ -41,9 +42,9 @@ class ExpressionDifferentiableFunction2(
 
 }
 
-fun differentiableFunction2(expression: (RealVariable, RealVariable)-> RealExpression): DifferentiableFunction2 {
-    val x1 = "x1".asVariable()
-    val x2 = "x2".asVariable()
+fun differentiableFunction2(expression: (Variable<RealNumber>, Variable<RealNumber>)-> Expression<RealNumber>): DifferentiableFunction2 {
+    val x1 = "x1".asVariableOf<RealNumber>()
+    val x2 = "x2".asVariableOf<RealNumber>()
     return ExpressionDifferentiableFunction2(
             variable1 = x1,
             variable2 = x2,
@@ -51,7 +52,7 @@ fun differentiableFunction2(expression: (RealVariable, RealVariable)-> RealExpre
     )
 }
 
-fun RealExpression.asFunctionOf(variable1: RealVariable, variable2: RealVariable) = when {
+fun Expression<RealNumber>.asFunctionOf(variable1: Variable<RealNumber>, variable2: Variable<RealNumber>) = when {
     this.isDifferentiable(variable1, variable2) ->
         ExpressionDifferentiableFunction2(
                 variable1 = variable1,

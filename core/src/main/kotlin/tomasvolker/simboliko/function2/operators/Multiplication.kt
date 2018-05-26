@@ -1,11 +1,10 @@
 package tomasvolker.simboliko.function2.operators
 
-import tomasvolker.simboliko.constant.One
-import tomasvolker.simboliko.constant.Zero
-import tomasvolker.simboliko.expression.RealExpression
+import tomasvolker.simboliko.expression.Expression
 import tomasvolker.simboliko.function2.DifferentiableFunction2
 import tomasvolker.simboliko.function2.defaultToString
 import tomasvolker.simboliko.function2.differentiableFunction2
+import tomasvolker.simboliko.number.RealNumber
 
 object Multiplication: DifferentiableFunction2 {
 
@@ -19,13 +18,7 @@ object Multiplication: DifferentiableFunction2 {
 
     override fun toString() = defaultToString()
 
-    override fun simplifyInvoke(input1: RealExpression, input2: RealExpression) =
-            super.simplifyInvoke(input1, input2) ?:
-            when {
-                input1 is Zero || input2 is Zero -> Zero
-                input1 is One -> input2
-                input2 is One -> input1
-                else -> null
-            }
-
 }
+
+operator fun Expression<RealNumber>.times(other: Expression<RealNumber>) =
+        Multiplication(this, other)

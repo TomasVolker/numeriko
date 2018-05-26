@@ -1,14 +1,14 @@
 package tomasvolker.simboliko.constant
 
-import tomasvolker.simboliko.affine.LinearFunction
-import tomasvolker.simboliko.expression.RealExpression
+import tomasvolker.simboliko.expression.Expression
 import tomasvolker.simboliko.function1.RealFunction1
 import tomasvolker.simboliko.function1.operators.NegateFunction
+import tomasvolker.simboliko.number.RealNumber
 
-interface IntegerConstant: Constant {
+interface IntegerConstant: RealConstant {
 
     val integerValue: Long
-    override val doubleValue: Double get() = integerValue.toDouble()
+    override fun getDouble() = integerValue.toDouble()
 
     override fun defaultToString() = "$integerValue"
 
@@ -29,19 +29,18 @@ class DefaultIntegerConstant(
 
 }
 
-object Zero: IntegerConstant, LinearFunction {
+object Zero: IntegerConstant {
 
-    override val y0: Double get() = 0.0
     override val integerValue get() = 0L
 
     override fun invoke(input: Double) = 0.0
-
+/*
     override fun simplifyPlus(other: RealFunction1) = other
-    override fun simplifyPlus(other: RealExpression) = other
+    override fun simplifyPlus(other: Expression<RealNumber>) = other
 
     override fun simplifyTimes(other: RealFunction1) = Zero
-    override fun simplifyTimes(other: RealExpression) = Zero
-
+    override fun simplifyTimes(other: Expression<RealNumber>) = Zero
+*/
     override fun derivative() = Zero
 
     override fun toString() = defaultToString()
@@ -51,10 +50,10 @@ object Zero: IntegerConstant, LinearFunction {
 object One: IntegerConstant {
 
     override val integerValue get() = 1L
-
+/*
     override fun simplifyTimes(other: RealFunction1) = other
-    override fun simplifyTimes(other: RealExpression) = other
-
+    override fun simplifyTimes(other: Expression<RealNumber>) = other
+*/
     override fun toString() = defaultToString()
 
 }
@@ -62,10 +61,10 @@ object One: IntegerConstant {
 object MinusOne: IntegerConstant {
 
     override val integerValue get() = -1L
-
+/*
     override fun simplifyTimes(other: RealFunction1) = NegateFunction(other)
-    override fun simplifyTimes(other: RealExpression) = NegateFunction(other)
-
+    override fun simplifyTimes(other: Expression<RealNumber>) = NegateFunction(other)
+*/
     override fun defaultToString() = "(-1)"
 
     override fun toString() = defaultToString()

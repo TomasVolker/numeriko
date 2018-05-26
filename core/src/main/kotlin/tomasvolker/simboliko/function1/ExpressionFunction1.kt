@@ -1,18 +1,21 @@
 package tomasvolker.simboliko.function1
 
-import tomasvolker.numeriko.core.functions.exp
-import tomasvolker.simboliko.constant.Constant
-import tomasvolker.simboliko.expression.RealExpression
-import tomasvolker.simboliko.expression.variable.RealVariable
-import tomasvolker.simboliko.expression.asFunctionOf
+import tomasvolker.simboliko.constant.RealConstant
+import tomasvolker.simboliko.expression.Expression
+import tomasvolker.simboliko.expression.compute
 import tomasvolker.simboliko.expression.isDifferentiable
+import tomasvolker.simboliko.expression.variable.Variable
 import tomasvolker.simboliko.expression.variable.assignTo
+import tomasvolker.simboliko.number.RealNumber
 import tomasvolker.simboliko.variable
 
 open class ExpressionFunction1(
-        val variable: RealVariable,
-        expression: RealExpression
+        val variable: Variable<RealNumber>,
+        expression: Expression<RealNumber>
 ): RealFunction1 {
+
+    override fun invoke(input: RealNumber) =
+            expression.evaluate(variable assignTo input)
 
     private val _expression = expression
 
@@ -26,18 +29,18 @@ open class ExpressionFunction1(
 
     }
 
-    open val expression: RealExpression
+    open val expression: Expression<RealNumber>
         get() =
         _expression
 
-    override fun invoke(input: RealExpression) =
+    fun invoke(input: Variable<RealNumber>) =
             expression(variable assignTo  input)
-
+/*
     override fun simplifyInvoke(input: RealFunction1) =
             expression(variable assignTo input(variable)).asFunctionOf(variable)
-
+*/
     override fun compute(input: Double) =
-            expression(variable to input)
+            expression.compute(variable to input)
 
     override fun toString(input: String) =
             expression.toString(variable to input)
@@ -46,13 +49,13 @@ open class ExpressionFunction1(
 
 }
 
-inline fun function1(lambda: (RealVariable)-> RealExpression): RealFunction1 {
+inline fun function1(lambda: (Variable<RealNumber>)-> Expression<RealNumber>): RealFunction1 {
 
-    val x = variable("x")
+    val x = variable<RealNumber>("x")
     val expression = lambda(x)
 
     return when {
-        expression is Constant -> expression
+        expression is RealConstant -> expression
         expression.isDifferentiable(x) ->
                 ExpressionDifferentiableFunction1(
                         variable = x,

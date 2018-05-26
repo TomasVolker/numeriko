@@ -1,19 +1,57 @@
 package tomasvolker.simboliko.function1
 
+import tomasvolker.simboliko.asLiteral
 import tomasvolker.simboliko.constant
-import tomasvolker.simboliko.constant.Constant
+import tomasvolker.simboliko.constant.RealConstant
 import tomasvolker.simboliko.constant.One
 import tomasvolker.simboliko.constant.Zero
 import tomasvolker.simboliko.expression.*
+import tomasvolker.simboliko.function1.operators.*
+import tomasvolker.simboliko.function2.operators.*
+import tomasvolker.simboliko.function2.*
+import tomasvolker.simboliko.number.RealNumber
 
 
-interface Function1<in I, out O> {
+interface Function1<in I, out O>: (I)->O {
 
-    operator fun invoke(input: I): O
+    override operator fun invoke(input: I): O
+
+    operator fun invoke(input: Expression<I>): Expression<O>
+
+    operator fun <I2> invoke(other: Function1<I2, I>) =
+            compose(other)
+
+    fun <I2> compose(other: Function1<I2, I>): Function1<I2, O> = TODO()
 
 }
 
-interface RealFunction1 {
+interface ConstantFunction<out O>: Function1<Any?, O>, Function2<Any?, Any?, O> {
+
+    val value: O
+
+    override operator fun invoke(input: Any?) = value
+
+    override fun invoke(input1: Any?, input2: Any?) = value
+
+    override operator fun invoke(input: Expression<Any?>) =
+            ConstantExpression(value)
+
+    override fun invoke(input1: Expression<Any?>, input2: Expression<Any?>) =
+            ConstantExpression(value)
+
+    override fun <I2> compose(other: Function1<I2, *>): ConstantFunction<O> =
+            DefaultConstantFunction(value)
+
+}
+
+class DefaultConstantFunction<out O>(
+        override val value: O
+): ConstantFunction<O>
+
+interface RealFunction1: Function1<RealNumber, RealNumber> {
+
+    override fun invoke(input: RealNumber): RealNumber =
+            ConstantRealExpression(invoke(input.asLiteral()))
 
     operator fun invoke(input: Double) =
             compute(input)
@@ -22,14 +60,15 @@ interface RealFunction1 {
 
     fun toString(input: String): String
 
-    operator fun invoke(input: RealExpression) =
-            simplifyInvoke(input) ?: Function1Application(this, input)
+    override operator fun invoke(input: Expression<RealNumber>) =
+            simplifyInvoke(input) ?:
+            Function1Application(this, input)
 
     operator fun invoke(input: RealFunction1) =
             simplifyInvoke(input) ?: function1 { this(input(it)) }
 
-    operator fun invoke(input: Constant): Constant =
-            ConstantExpression(Function1Application(this, input))
+    operator fun invoke(input: RealConstant): RealConstant =
+            ConstantRealExpression(Function1Application(this, input))
 
     operator fun unaryPlus() = this
 
@@ -67,13 +106,13 @@ interface RealFunction1 {
 
     // Simplifications
 
-    fun simplifyInvoke(input: RealExpression): RealExpression? = when(input) {
-        is Constant -> this(input)
+    fun simplifyInvoke(input: Expression<RealNumber>): Expression<RealNumber>? = when(input) {
+        is RealConstant -> this(input)
         else -> null
     }
 
     fun simplifyInvoke(input: RealFunction1): RealFunction1? = when(input) {
-        is Constant -> this(input)
+        is RealConstant -> this(input)
         else -> null
     }
 

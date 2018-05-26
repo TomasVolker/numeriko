@@ -1,11 +1,12 @@
 package tomasvolker.simboliko.function2.operators
 
-import tomasvolker.simboliko.constant.One
-import tomasvolker.simboliko.expression.RealExpression
-import tomasvolker.simboliko.div
+import tomasvolker.simboliko.expression.Expression
+import tomasvolker.simboliko.function1.operators.unaryMinus
 import tomasvolker.simboliko.function2.DifferentiableFunction2
 import tomasvolker.simboliko.function2.defaultToString
 import tomasvolker.simboliko.function2.differentiableFunction2
+import tomasvolker.simboliko.number.RealNumber
+import tomasvolker.simboliko.*
 
 object Division: DifferentiableFunction2 {
 
@@ -21,12 +22,7 @@ object Division: DifferentiableFunction2 {
 
     override fun toString() = defaultToString()
 
-    override fun simplifyInvoke(input1: RealExpression, input2: RealExpression) =
-            super.simplifyInvoke(input1, input2) ?:
-            when {
-                input2 is One -> input1
-                else -> null
-            }
-
 }
 
+operator fun Expression<RealNumber>.div(other: Expression<RealNumber>) =
+        Division(this, other)

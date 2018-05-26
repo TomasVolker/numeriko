@@ -1,6 +1,6 @@
 package tomasvolker.simboliko.expression
 
-import tomasvolker.simboliko.constant.Constant
+import tomasvolker.simboliko.constant.RealConstant
 import tomasvolker.simboliko.constant.One
 import tomasvolker.simboliko.constant.Zero
 import tomasvolker.simboliko.expression.variable.Variable
@@ -8,11 +8,14 @@ import tomasvolker.simboliko.function1.DifferentiableFunction1
 import tomasvolker.simboliko.function1.RealFunction1
 import tomasvolker.simboliko.function2.DifferentiableFunction2
 import tomasvolker.simboliko.function2.RealFunction2
+import tomasvolker.simboliko.number.RealNumber
+import tomasvolker.simboliko.function1.operators.*
+import tomasvolker.simboliko.function2.operators.*
 
-fun RealExpression.isDifferentiable(withRespectTo: Variable<*>): Boolean {
+fun Expression<RealNumber>.isDifferentiable(withRespectTo: Variable<*>): Boolean {
     when (this) {
         is Variable<*> -> return true
-        is Constant -> return true
+        is RealConstant -> return true
         is Function1Application -> {
 
             if (this.input.dependsOn(withRespectTo)) {
@@ -50,7 +53,7 @@ fun RealExpression.isDifferentiable(withRespectTo: Variable<*>): Boolean {
     }
 }
 
-fun RealExpression.isDifferentiable(vararg withRespectTo: Variable<*>): Boolean =
+fun Expression<RealNumber>.isDifferentiable(vararg withRespectTo: Variable<*>): Boolean =
         withRespectTo.all { isDifferentiable(it) }
 
 class NonDifferentiableFunction1Exception(
@@ -65,14 +68,14 @@ class NonDifferentiableExpressionException(
         val expression: Expression<*>
 ): Exception("Expression $expression is not differentiable")
 
-fun RealExpression.derivative(withRespectTo: Variable<*>): RealExpression {
+fun Expression<RealNumber>.derivative(withRespectTo: Variable<*>): Expression<RealNumber> {
 
     if (!dependsOn(withRespectTo))
         return Zero
 
     return when(this) {
 
-        is Constant -> {
+        is RealConstant -> {
             Zero
         }
 
@@ -102,5 +105,5 @@ fun RealExpression.derivative(withRespectTo: Variable<*>): RealExpression {
 
 
 
-fun RealExpression.derivative(withRespectTo: List<Variable<*>>):  List<RealExpression> =
+fun Expression<RealNumber>.derivative(withRespectTo: List<Variable<*>>):  List<Expression<RealNumber>> =
         withRespectTo.map { derivative(it) }

@@ -1,13 +1,14 @@
 package tomasvolker.simboliko.function1
 
-import tomasvolker.simboliko.expression.RealExpression
+import tomasvolker.simboliko.expression.Expression
 import tomasvolker.simboliko.expression.derivative
-import tomasvolker.simboliko.expression.variable.RealVariable
+import tomasvolker.simboliko.expression.variable.Variable
+import tomasvolker.simboliko.number.RealNumber
 import tomasvolker.simboliko.variable
 
 class ExpressionDifferentiableFunction1(
-        variable: RealVariable,
-        override val expression: RealExpression
+        variable: Variable<RealNumber>,
+        override val expression: Expression<RealNumber>
 ): ExpressionFunction1(variable, expression),
         DifferentiableFunction1 {
 
@@ -19,8 +20,8 @@ class ExpressionDifferentiableFunction1(
 
 }
 
-fun differentiableFunction1(expression: (RealVariable)-> RealExpression): DifferentiableFunction1 {
-    val x = variable("x")
+fun differentiableFunction1(expression: (Variable<RealNumber>)-> Expression<RealNumber>): DifferentiableFunction1 {
+    val x = variable<RealNumber>("x")
     return ExpressionDifferentiableFunction1(
             variable = x,
             expression = expression(x)

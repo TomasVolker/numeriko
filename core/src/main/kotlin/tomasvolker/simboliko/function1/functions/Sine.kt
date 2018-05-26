@@ -1,9 +1,10 @@
 package tomasvolker.simboliko.function1.functions
 
-import tomasvolker.simboliko.constant.Constant
+import tomasvolker.simboliko.constant.RealConstant
+import tomasvolker.simboliko.expression.Expression
 import tomasvolker.simboliko.function1.DifferentiableFunction1
 import tomasvolker.simboliko.function1.RealFunction1
-import tomasvolker.simboliko.expression.RealExpression
+import tomasvolker.simboliko.number.RealNumber
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -21,7 +22,7 @@ object Sine: DifferentiableFunction1 {
 
 }
 
-fun sin(input: Constant) = Sine(input)
-fun sin(input: RealExpression) = Sine(input)
+fun sin(input: RealConstant) = Sine(input)
+fun sin(input: Expression<RealNumber>) = Sine(input)
 fun sin(input: RealFunction1) = Sine(input)
 fun sin(input: DifferentiableFunction1) = Sine(input)

@@ -10,7 +10,9 @@ import tomasvolker.simboliko.function1.functions.cos
 import tomasvolker.simboliko.function1.functions.exp
 import tomasvolker.simboliko.function1.functions.sin
 import tomasvolker.simboliko.function1.operators.Identity
-import tomasvolker.simboliko.plus
+import tomasvolker.simboliko.function2.operators.minus
+import tomasvolker.simboliko.number.RealNumber
+import tomasvolker.simboliko.*
 import tomasvolker.simboliko.times
 import tomasvolker.simboliko.variable
 import java.awt.Color
@@ -71,8 +73,8 @@ fun main(args: Array<String>) {
 
 
 
-    val x1 = variable("x1")
-    val x2 = variable("x2")
+    val x1 = variable<RealNumber>("x1")
+    val x2 = variable<RealNumber>("x2")
 
     val expr = cos(x1 - x2)
 
