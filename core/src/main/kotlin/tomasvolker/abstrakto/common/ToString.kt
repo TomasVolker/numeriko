@@ -66,8 +66,8 @@ fun <T> substitute(abstraction: Abstraction<T>, context: SubstitutionContext): A
                 with(abstraction as Application2<Any?, Any?, T>) {
                     Application2(
                             function,
-                            input1.substitute(context),
-                            input2.substitute(context),
+                            substitute(input1, context),
+                            substitute(input2, context),
                             functionName
                     )
                 }
