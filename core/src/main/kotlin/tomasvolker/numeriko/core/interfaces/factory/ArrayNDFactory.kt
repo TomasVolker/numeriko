@@ -7,6 +7,8 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
 import tomasvolker.numeriko.core.implementations.jvm.factory.JvmArrayNDFactory
+import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 
 var defaultFactory: ArrayNDFactory = JvmArrayNDFactory()
 
@@ -14,10 +16,19 @@ interface ArrayNDFactory {
 
     fun <T> mutableArray1D(data: Array<T>): MutableArray1D<T>
 
+    fun <T> mutableArray2D(shape0: Int, shape1: Int, data: Array<T>): MutableArray2D<T>
+
+    // Copy
+
     fun <T> copy(array: Array1D<T>): Array1D<T> =
             mutableCopy(array)
 
     fun <T> mutableCopy(array: Array1D<T>): MutableArray1D<T>
+
+    fun <T> copy(array: Array2D<T>): Array2D<T> =
+            mutableCopy(array)
+
+    fun <T> mutableCopy(array: Array2D<T>): MutableArray2D<T>
 
 
     fun <T> array1DOfNulls(size: Int): Array1D<T?> =
@@ -25,6 +36,13 @@ interface ArrayNDFactory {
 
     fun <T> mutableArray1DOfNulls(size: Int): MutableArray1D<T?> =
             mutableArray1D(arrayOfNulls<Any?>(size) as Array<T?>)
+
+    fun <T> array2DOfNulls(shape0: Int, shape1: Int): Array2D<T?> =
+            mutableArray2DOfNulls(shape0, shape1)
+
+    fun <T> mutableArray2DOfNulls(shape0: Int, shape1: Int): MutableArray2D<T?> =
+            mutableArray2D(shape0, shape1, arrayOfNulls<Any?>(shape0*shape1) as Array<T?>)
+
 
     fun mutableIntArray1D(data: IntArray): MutableIntArray1D
 

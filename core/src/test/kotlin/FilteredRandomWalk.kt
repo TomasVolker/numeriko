@@ -16,7 +16,11 @@ fun main(args: Array<String>) {
     val max = 5.0
     val delta = max / amount
 
-    val time = linearSpace(start = 0.0, stop = max, amount = amount)
+    val time = linearSpace(
+            start = 0.0,
+            stop = max,
+            amount = amount
+    )
 
     val random = Random()
 

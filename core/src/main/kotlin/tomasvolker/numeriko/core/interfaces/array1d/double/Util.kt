@@ -3,18 +3,37 @@ package tomasvolker.numeriko.core.interfaces.array1d.double
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
 
+inline fun elementWise(source: DoubleArray1D, destination: MutableDoubleArray1D, operation: (Double) -> Double) {
+    requireSameSize(source, destination)
+    for (i in source.indices) {
+        destination[i] = operation(source[i])
+    }
+}
+
+inline fun elementWise(source1: DoubleArray1D, source2: DoubleArray1D, destination: MutableDoubleArray1D, operation: (Double, Double) -> Double) {
+    requireSameSize(source1, source2)
+    requireSameSize(source1, destination)
+    for (i in source1.indices) {
+        destination[i] = operation(source1[i], source2[i])
+    }
+}
+
 inline fun DoubleArray1D.elementWise(operation: (Double) -> Double): MutableDoubleArray1D {
     val result = mutableDoubleZeros(size)
-    for (i in indices) {
-        result[i] = operation(this[i])
-    }
+    elementWise(
+            source = this,
+            destination = result,
+            operation = operation
+    )
     return result
 }
 
 inline fun MutableDoubleArray1D.applyMap(operation: (Double) -> Double): MutableDoubleArray1D {
-    for (i in indices) {
-        this[i] = operation(this[i])
-    }
+    elementWise(
+            source = this,
+            destination = this,
+            operation = operation
+    )
     return this
 }
 
@@ -22,19 +41,24 @@ inline fun elementWise(array1: DoubleArray1D, array2: DoubleArray1D, operation: 
     requireSameSize(array1, array2)
 
     val result = mutableDoubleZeros(array1.size)
-    for (i in array1.indices) {
-        result[i] = operation(array1[i], array2[i])
-    }
+    elementWise(
+            source1 = array1,
+            source2 = array2,
+            destination = result,
+            operation = operation
+    )
     return result
 
 }
 
 inline fun MutableDoubleArray1D.applyElementWise(other: DoubleArray1D, operation: (Double, Double) -> Double): MutableDoubleArray1D {
     requireSameSize(this, other)
-
-    for (i in this.indices) {
-        this[i] = operation(this[i], other[i])
-    }
+    elementWise(
+            source1 = this,
+            source2 = other,
+            destination = this,
+            operation = operation
+    )
     return this
 
 }

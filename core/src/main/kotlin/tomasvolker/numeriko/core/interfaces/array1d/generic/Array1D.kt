@@ -8,6 +8,8 @@ interface Array1D<out T>: Collection<T> {
 
     val rank: Int get() = 1
 
+    val shape0: Int get() = size
+
     fun getValue(index: Int): T
 
     fun getValue(index: Index): T =

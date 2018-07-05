@@ -10,8 +10,23 @@ import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
 import tomasvolker.numeriko.core.implementations.jvm.array1d.generic.JvmMutableArray1D
 import tomasvolker.numeriko.core.implementations.jvm.array1d.integer.JvmMutableDoubleArray1D
 import tomasvolker.numeriko.core.implementations.jvm.array1d.integer.JvmMutableIntArray1D
+import tomasvolker.numeriko.core.implementations.jvm.array2d.generic.JvmMutableArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndexed
 
 class JvmArrayNDFactory: ArrayNDFactory {
+
+    override fun <T> mutableArray2D(shape0: Int, shape1: Int, data: Array<T>): MutableArray2D<T> =
+            JvmMutableArray2D(shape0, shape1, data)
+
+    override fun <T> mutableCopy(array: Array2D<T>): MutableArray2D<T> =
+        mutableArray2DOfNulls<T>(array.shape0, array.shape1).apply {
+            forEachIndexed { i0, i1 ->
+                setValue(array.getValue(i0, i1), i0, i1)
+            }
+        } as MutableArray2D<T>
+
 
     override fun <T> mutableArray1D(data: Array<T>): MutableArray1D<T> =
             JvmMutableArray1D(data)
