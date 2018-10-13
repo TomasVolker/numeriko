@@ -7,6 +7,8 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
 import tomasvolker.numeriko.core.implementations.jvm.factory.JvmArrayNDFactory
+import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 
@@ -70,5 +72,20 @@ interface ArrayNDFactory {
 
     fun mutableDoubleZeros(size: Int): MutableDoubleArray1D =
             mutableDoubleArray1D(DoubleArray(size) { 0.0 })
+
+
+    fun mutableDoubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): MutableDoubleArray2D
+
+    fun copy(array: DoubleArray2D): DoubleArray2D =
+            mutableCopy(array)
+
+    fun mutableCopy(array: DoubleArray2D): MutableDoubleArray2D
+
+    fun doubleZeros(shape0: Int, shape1: Int): DoubleArray2D =
+            mutableDoubleZeros(shape0, shape1)
+
+    fun mutableDoubleZeros(shape0: Int, shape1: Int): MutableDoubleArray2D =
+            mutableDoubleArray2D(shape0, shape1, DoubleArray(shape0*shape1) { 0.0 })
+
 
 }

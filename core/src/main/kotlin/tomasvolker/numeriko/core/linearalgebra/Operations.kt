@@ -12,12 +12,7 @@ import tomasvolker.numeriko.core.primitives.modulo
 
 infix fun DoubleArray1D.inner(other: DoubleArray1D): Double {
     requireSameSize(this, other)
-
-    var result = 0.0
-    for (i in indices) {
-        result += this[i] * other[i]
-    }
-    return result
+    return indices.sumByDouble { i -> this[i] * other[i] }
 }
 
 fun linearSpace(start: Double, stop: Double, amount: Int = 10): MutableDoubleArray1D {

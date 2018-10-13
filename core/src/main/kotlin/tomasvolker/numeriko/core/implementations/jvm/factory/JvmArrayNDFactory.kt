@@ -11,6 +11,8 @@ import tomasvolker.numeriko.core.implementations.jvm.array1d.generic.JvmMutableA
 import tomasvolker.numeriko.core.implementations.jvm.array1d.integer.JvmMutableDoubleArray1D
 import tomasvolker.numeriko.core.implementations.jvm.array1d.integer.JvmMutableIntArray1D
 import tomasvolker.numeriko.core.implementations.jvm.array2d.generic.JvmMutableArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndexed
@@ -57,5 +59,13 @@ class JvmArrayNDFactory: ArrayNDFactory {
                     setDouble(array.getDouble(i), i)
                 }
             }
+
+    override fun mutableDoubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): MutableDoubleArray2D {
+        TODO("not implemented")
+    }
+
+    override fun mutableCopy(array: DoubleArray2D): MutableDoubleArray2D {
+        TODO("not implemented")
+    }
 
 }

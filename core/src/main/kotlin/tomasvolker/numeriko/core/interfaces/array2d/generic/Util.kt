@@ -3,6 +3,7 @@ package tomasvolker.numeriko.core.interfaces.array2d.generic
 import tomasvolker.numeriko.core.interfaces.factory.mutableArray2DOfNulls
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
+// TODO change name
 inline fun <T> Array2D<T>.forEachIndexed(operation: T.(i0: Int, i1: Int) -> Unit) {
 
     for (i0 in indices(0)) {
@@ -42,7 +43,7 @@ inline fun <T, R> Array2D<T>.elementWise(operation: (T) -> R): MutableArray2D<R>
     return result as MutableArray2D<R>
 }
 
-inline fun <T> MutableArray2D<T>.applyMap(operation: (T) -> T): MutableArray2D<T> {
+inline fun <T, A: MutableArray2D<T>> A.applyMap(operation: (T) -> T): A {
     elementWise(
             source = this,
             destination = this,
@@ -65,7 +66,7 @@ inline fun <T1, T2, R> elementWise(array1: Array2D<T1>, array2: Array2D<T2>, ope
 
 }
 
-inline fun <T> MutableArray2D<T>.applyElementWise(other: Array2D<T>, operation: (T, T) -> T): MutableArray2D<T> {
+inline fun <T, A: MutableArray2D<T>> A.applyElementWise(other: Array2D<T>, operation: (T, T) -> T): A {
     requireSameShape(this, other)
     elementWise(
             source1 = this,
@@ -74,7 +75,6 @@ inline fun <T> MutableArray2D<T>.applyElementWise(other: Array2D<T>, operation: 
             operation = operation
     )
     return this
-
 }
 
 fun <T> Array2D<T>.checkIndices(i0: Int, i1: Int) {

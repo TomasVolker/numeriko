@@ -5,6 +5,7 @@ import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.elementWise
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 

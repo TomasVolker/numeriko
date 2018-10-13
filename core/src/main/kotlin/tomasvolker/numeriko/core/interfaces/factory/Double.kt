@@ -2,6 +2,8 @@ package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 
 fun DoubleArray.asDoubleArray1D(): DoubleArray1D = doubleArray1D(this)
 
@@ -34,3 +36,28 @@ fun doubleZeros(size: Int): DoubleArray1D =
 
 fun mutableDoubleZeros(size: Int): MutableDoubleArray1D =
         defaultFactory.mutableDoubleZeros(size)
+
+
+
+fun doubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): DoubleArray2D = mutableDoubleArray2D(shape0, shape1, data)
+
+inline fun doubleArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->Double): DoubleArray2D =
+        mutableDoubleArray2D(shape0, shape1, init)
+
+fun mutableDoubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): MutableDoubleArray2D =
+        defaultFactory.mutableDoubleArray2D(shape0, shape1, data)
+
+inline fun mutableDoubleArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->Double): MutableDoubleArray2D =
+        mutableDoubleArray2D(shape0, shape1, DoubleArray(shape0 * shape1) {i -> TODO() })
+
+fun copy(array: DoubleArray2D): DoubleArray2D =
+        defaultFactory.copy(array)
+
+fun mutableCopy(array: DoubleArray2D): MutableDoubleArray2D =
+        defaultFactory.mutableCopy(array)
+
+fun doubleZeros(shape0: Int, shape1: Int): DoubleArray2D =
+        defaultFactory.doubleZeros(shape0, shape1)
+
+fun mutableDoubleZeros(shape0: Int, shape1: Int): MutableDoubleArray2D =
+        defaultFactory.mutableDoubleZeros(shape0, shape1)

@@ -16,12 +16,12 @@ class JvmMutableArray2D<T>(
 
     override fun setValue(value: T, i0: Int, i1: Int) {
         checkIndices(i0, i1)
-        data[i0 * shape0 + i1] = value
+        data[i0 * shape1 + i1] = value
     }
 
     override fun getValue(i0: Int, i1: Int): T {
         checkIndices(i0, i1)
-        return data[i0 * shape0 + i1]
+        return data[i0 * shape1 + i1]
     }
 
     override fun equals(other: Any?): Boolean {

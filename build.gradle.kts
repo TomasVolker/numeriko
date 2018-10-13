@@ -1,13 +1,13 @@
 
 plugins {
     base
-    kotlin("jvm") version "1.2.51" apply false
+    kotlin("jvm") version "1.3.0-rc-146" apply false
 }
 
 allprojects {
 
     group = "tomasvolker"
-    version = "0.1-SNAPSHOT"
+    version = "0.1"
 
     repositories {
         jcenter()
