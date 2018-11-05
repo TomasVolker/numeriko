@@ -32,7 +32,7 @@ interface IntArray1D: Array1D<Int> {
     override fun iterator(): IntIterator =
             DefaultIntArray1DIterator(this)
 
-    operator fun get(index: Int): Int = getInt(index)
+    override operator fun get(index: Int): Int = getInt(index)
     operator fun get(index: Index): Int = getInt(index)
 
     operator fun get(index: IntProgression): IntArray1D = getView(index)

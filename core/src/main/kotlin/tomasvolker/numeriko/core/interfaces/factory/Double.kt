@@ -48,7 +48,7 @@ fun mutableDoubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): MutableDo
         defaultFactory.mutableDoubleArray2D(shape0, shape1, data)
 
 inline fun mutableDoubleArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->Double): MutableDoubleArray2D =
-        mutableDoubleArray2D(shape0, shape1, DoubleArray(shape0 * shape1) {i -> TODO() })
+        mutableDoubleArray2D(shape0, shape1, DoubleArray(shape0 * shape1) { i -> init(i % shape0, i / shape0) })
 
 fun copy(array: DoubleArray2D): DoubleArray2D =
         defaultFactory.copy(array)

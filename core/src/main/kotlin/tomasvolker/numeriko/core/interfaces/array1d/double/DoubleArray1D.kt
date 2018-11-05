@@ -31,7 +31,7 @@ interface DoubleArray1D: Array1D<Double> {
     override fun iterator(): DoubleIterator =
             DefaultDoubleArray1DIterator(this)
 
-    operator fun get(index: Int): Double = getDouble(index)
+    override operator fun get(index: Int): Double = getDouble(index)
     operator fun get(index: Index): Double = getDouble(index)
 
     operator fun get(index: IntProgression): DoubleArray1D = getView(index)

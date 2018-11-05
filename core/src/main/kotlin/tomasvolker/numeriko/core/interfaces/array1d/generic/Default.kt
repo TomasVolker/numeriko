@@ -35,16 +35,29 @@ fun defaultToString(array1: Array1D<*>): String =
 
 
 class DefaultArray1DIterator<T>(
-        val array: Array1D<T>
-): Iterator<T> {
+        val array: Array1D<T>,
+        initialIndex: Int = 0
+): ListIterator<T> {
 
-    var index = 0
+    private var index = initialIndex
 
     override fun hasNext(): Boolean =
             index < array.size
 
     override fun next(): T =
             array.getValue(index).apply { index++ }
+
+    override fun hasPrevious(): Boolean =
+            0 < index
+
+    override fun nextIndex(): Int = index
+
+    override fun previous(): T {
+        index--
+        return array.getValue(index)
+    }
+
+    override fun previousIndex(): Int = index - 1
 
 }
 
@@ -107,5 +120,25 @@ open class DefaultMutableArray1DView<T>(
     override fun hashCode(): Int = defaultHashCode(this)
 
     override fun toString(): String = defaultToString(this)
+
+    override fun indexOf(element: T): Int {
+        TODO("not implemented")
+    }
+
+    override fun lastIndexOf(element: T): Int {
+        TODO("not implemented")
+    }
+
+    override fun listIterator(): ListIterator<T> {
+        TODO("not implemented")
+    }
+
+    override fun listIterator(index: Int): ListIterator<T> {
+        TODO("not implemented")
+    }
+
+    override fun subList(fromIndex: Int, toIndex: Int): List<T> {
+        TODO("not implemented")
+    }
 
 }

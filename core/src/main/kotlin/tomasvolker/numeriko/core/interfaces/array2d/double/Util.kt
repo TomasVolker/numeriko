@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double
 
+import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
 import tomasvolker.numeriko.core.preconditions.requireSameSize
@@ -8,20 +9,16 @@ import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 inline fun elementWise(source: DoubleArray2D, destination: MutableDoubleArray2D, operation: (Double) -> Double) {
     requireSameShape(source, destination)
-    for (i0 in source.indices0) {
-        for (i1 in source.indices1) {
+    source.forEachIndex { i0, i1 ->
             destination[i0, i1] = operation(source[i0, i1])
-        }
     }
 }
 
 inline fun elementWise(source1: DoubleArray2D, source2: DoubleArray2D, destination: MutableDoubleArray2D, operation: (Double, Double) -> Double) {
     requireSameShape(source1, source2)
     requireSameShape(source1, destination)
-    for (i0 in source1.indices0) {
-        for (i1 in source1.indices1) {
-            destination[i0, i1] = operation(source1[i0, i1], source2[i0, i1])
-        }
+    source1.forEachIndex { i0, i1 ->
+        destination[i0, i1] = operation(source1[i0, i1], source2[i0, i1])
     }
 }
 

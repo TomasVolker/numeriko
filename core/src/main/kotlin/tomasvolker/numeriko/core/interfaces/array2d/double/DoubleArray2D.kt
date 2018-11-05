@@ -2,10 +2,8 @@ package tomasvolker.numeriko.core.interfaces.array2d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.elementWise
-import tomasvolker.numeriko.core.interfaces.factory.copy
 
 interface DoubleArray2D: Array2D<Double> {
 
@@ -19,23 +17,42 @@ interface DoubleArray2D: Array2D<Double> {
 
     operator fun get(i0: Int, i1: Int): Double = getDouble(i0, i1)
 
-/*
-    override fun getView(indexRange: IntProgression): DoubleArray2D =
+
+    override fun getView(i0: IntProgression, i1: IntProgression): DoubleArray2D =
             DefaultDoubleArray2DView(
                     array = this,
-                    offset = indexRange.first,
-                    size = indexRange.count(),
-                    stride = indexRange.step
+                    offset0 = i0.first,
+                    offset1 = i1.first,
+                    shape0 = i0.count(),
+                    shape1 = i1.count(),
+                    stride0 = i0.step,
+                    stride1 = i1.step
             )
 
-    override fun getView(indexRange: IndexProgression): DoubleArray1D =
-            getView(indexRange.computeProgression(size))
-*/
+    override fun getView(i0: Int, i1: IntProgression): DoubleArray1D =
+            DoubleArray2D1DView(
+                    DefaultDoubleArray2DView(
+                            array = this,
+                            offset0 = i0,
+                            offset1 = i1.first,
+                            shape0 = 1,
+                            shape1 = i1.count(),
+                            stride0 = 1,
+                            stride1 = i1.step
+                    )
+            )
+
+    override fun getView(i0: IndexProgression, i1: IndexProgression): DoubleArray2D =
+            getView(i0.computeProgression(shape0), i1.computeProgression(shape1))
+
+    override fun getView(i0: Int, i1: IndexProgression): DoubleArray1D =
+            getView(i0, i1.computeProgression(shape1))
+
     override fun copy(): DoubleArray2D = /*copy(this)*/ TODO()
-/*
+
     override fun iterator(): DoubleIterator =
-            DefaultDoubleArray1DIterator(this)
-*/
+            DefaultDoubleArray2DIterator(this)
+
 
     operator fun unaryPlus(): MutableDoubleArray2D =
             elementWise { it }

@@ -11,7 +11,7 @@ fun defaultEquals(array1: Array2D<*>, array2: Array2D<*>): Boolean {
 
     requireSameShape(array1, array2)
 
-    array1.forEachIndexed { i0, i1 ->
+    array1.forEachIndex { i0, i1 ->
         if (array1.getValue(i0, i1) != array2.getValue(i0, i1))
             return false
     }
@@ -30,18 +30,18 @@ fun defaultHashCode(array1: Array2D<*>): Int {
     return result
 }
 
-fun defaultToString(array1: Array2D<*>) = buildString {
+fun defaultToString(array: Array2D<*>) = buildString {
 
     append("[")
 
-    for (i0 in array1.indices(0)) {
+    for (i0 in array.indices(0)) {
 
         if (i0 > 0) {
             append(",\n ")
         }
 
         append(
-                array1.getView(i0, All).joinToString(
+                array.getView(i0, All).joinToString(
                     separator = ", ",
                     prefix = "[ ",
                     postfix = " ]",
@@ -158,16 +158,10 @@ class Array2D1DView<out T>(
         val array: Array2D<T>
 ) : Array1D<T> {
 
-    val dim: Int
-
-    init {
-
-        dim = when {
-            array.shape0 == 1 -> 1
-            array.shape1 == 1 -> 0
-            else -> throw IllegalArgumentException("array is not flat")
-        }
-
+    val dim: Int = when {
+        array.shape0 == 1 -> 1
+        array.shape1 == 1 -> 0
+        else -> throw IllegalArgumentException("array is not flat")
     }
 
     override val size: Int get() = array.size

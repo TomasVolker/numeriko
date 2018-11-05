@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double
 
 import tomasvolker.numeriko.core.index.Index
+import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
@@ -18,10 +19,8 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double> {
 
         requireSameShape(this, other)
 
-        for (i0 in indices0) {
-            for (i1 in indices1) {
-                setDouble(other.getDouble(i0, i1), i0, i1)
-            }
+        forEachIndex { i0, i1 ->
+            setDouble(other.getDouble(i0, i1), i0, i1)
         }
 
     }
@@ -30,38 +29,44 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double> {
 
     fun setDouble(value: Double) {
 
-        for (i0 in indices0) {
-            for (i1 in indices1) {
-                setDouble(value, i0, i1)
-            }
+        forEachIndex { i0, i1 ->
+            setDouble(value, i0, i1)
         }
 
     }
-/*
-    override fun getView(indexRange: IntProgression): MutableDoubleArray2D =
+
+    override fun getView(i0: IntProgression, i1: IntProgression): MutableDoubleArray2D =
             DefaultMutableDoubleArray2DView(
                     array = this,
-                    offset = indexRange.first,
-                    size = indexRange.count(),
-                    stride = indexRange.step
+                    offset0 = i0.first,
+                    offset1 = i1.first,
+                    shape0 = i0.count(),
+                    shape1 = i1.count(),
+                    stride0 = i0.step,
+                    stride1 = i1.step
             )
 
-    override fun getView(indexRange: IndexProgression): MutableDoubleArray2D =
-            getView(indexRange.computeProgression(size))
+    override fun getView(i0: IndexProgression, i1: IndexProgression): MutableDoubleArray2D =
+            getView(
+                    i0.computeProgression(shape0),
+                    i1.computeProgression(shape1)
+            )
 
-    fun setView(value: DoubleArray1D, indexRange: IndexProgression) =
-            setView(value, indexRange.computeProgression(size))
+    fun setView(value: DoubleArray2D, i0: IndexProgression, i1: IndexProgression) =
+            setView(value,
+                    i0.computeProgression(shape0),
+                    i1.computeProgression(shape1)
+            )
 
-    // TODO Avoid copy when possible
-    fun setView(value: DoubleArray1D, indexRange: IntProgression) =
-            getView(indexRange).setValue(value.copy())
+    fun setView(value: DoubleArray2D, i0: IntProgression, i1: IntProgression) =
+            getView(i0, i1).setValue(value.copy())
 
-    override fun setView(value: Double, indexRange: IndexProgression) =
-            setView(value, indexRange.computeProgression(size))
+    override fun setView(value: Double, i0: IndexProgression, i1: IndexProgression) =
+            setView(value, i0.computeProgression(shape0), i1.computeProgression(shape1))
 
-    override fun setView(value: Double, indexRange: IntProgression) =
-            getView(indexRange).setDouble(value)
-*/
+    override fun setView(value: Double, i0: IntProgression, i1: IntProgression) =
+            getView(i0, i1).setDouble(value)
+
     override fun copy(): MutableDoubleArray2D = /*mutableCopy(this)*/ TODO()
 /*
     override operator fun get(index: IntProgression): MutableDoubleArray2D = getView(index)
