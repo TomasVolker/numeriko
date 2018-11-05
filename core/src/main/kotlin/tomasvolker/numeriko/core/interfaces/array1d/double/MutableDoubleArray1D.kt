@@ -88,16 +88,16 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double> {
             applyElementWise(other) { t, o -> t / o }
 
     fun applyPlus(other: Double): MutableDoubleArray1D =
-            applyMap { it + other }
+            applyElementWise { it + other }
 
     fun applyMinus(other: Double): MutableDoubleArray1D =
-            applyMap { it - other }
+            applyElementWise { it - other }
 
     fun applyTimes(other: Double): MutableDoubleArray1D =
-            applyMap { it * other }
+            applyElementWise { it * other }
 
     fun applyDiv(other: Double): MutableDoubleArray1D =
-            applyMap { it / other }
+            applyElementWise { it / other }
 
     fun applyPlus(other: Int): MutableDoubleArray1D =
             applyPlus(other.toDouble())

@@ -23,7 +23,7 @@ fun <T> mutableArray2D(shape0: Int, shape1: Int, data: Array<T>): MutableArray2D
         defaultFactory.mutableArray2D(shape0, shape1, data)
 
 inline fun <reified T> mutableArray1D(size: Int, init: (index: Int)->T): MutableArray1D<T> =
-        mutableArray1D(Array<T?>(size) {i -> init(i) } as Array<T>)
+        mutableArray1D(Array<T?>(size) { i -> init(i) } as Array<T>)
 
 fun <T> array1DOf(vararg values: T) = array1D(values)
 

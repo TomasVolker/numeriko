@@ -37,46 +37,46 @@ interface DoubleArray1D: Array1D<Double> {
     operator fun get(index: IntProgression): DoubleArray1D = getView(index)
     operator fun get(index: IndexProgression): DoubleArray1D = getView(index)
 
-    operator fun unaryPlus(): MutableDoubleArray1D =
+    operator fun unaryPlus(): DoubleArray1D =
             elementWise { it }
 
-    operator fun unaryMinus(): MutableDoubleArray1D =
+    operator fun unaryMinus(): DoubleArray1D =
             elementWise { -it }
 
-    operator fun plus(other: DoubleArray1D): MutableDoubleArray1D =
+    operator fun plus(other: DoubleArray1D): DoubleArray1D =
             elementWise(this, other) { t, o -> t + o }
 
-    operator fun minus(other: DoubleArray1D): MutableDoubleArray1D =
+    operator fun minus(other: DoubleArray1D): DoubleArray1D =
             elementWise(this, other) { t, o -> t - o }
 
-    operator fun times(other: DoubleArray1D): MutableDoubleArray1D =
+    operator fun times(other: DoubleArray1D): DoubleArray1D =
             elementWise(this, other) { t, o -> t * o }
 
-    operator fun div(other: DoubleArray1D): MutableDoubleArray1D =
+    operator fun div(other: DoubleArray1D): DoubleArray1D =
             elementWise(this, other) { t, o -> t / o }
 
-    operator fun plus(other: Double): MutableDoubleArray1D =
+    operator fun plus(other: Double): DoubleArray1D =
             elementWise { it + other }
 
-    operator fun minus(other: Double): MutableDoubleArray1D =
+    operator fun minus(other: Double): DoubleArray1D =
             elementWise { it - other }
 
-    operator fun times(other: Double): MutableDoubleArray1D =
+    operator fun times(other: Double): DoubleArray1D =
             elementWise { it * other }
 
-    operator fun div(other: Double): MutableDoubleArray1D =
+    operator fun div(other: Double): DoubleArray1D =
             elementWise { it / other }
 
-    operator fun plus(other: Int): MutableDoubleArray1D =
+    operator fun plus(other: Int): DoubleArray1D =
             plus(other.toDouble())
 
-    operator fun minus(other: Int): MutableDoubleArray1D =
+    operator fun minus(other: Int): DoubleArray1D =
             minus(other.toDouble())
 
-    operator fun times(other: Int): MutableDoubleArray1D =
+    operator fun times(other: Int): DoubleArray1D =
             times(other.toDouble())
 
-    operator fun div(other: Int): MutableDoubleArray1D =
+    operator fun div(other: Int): DoubleArray1D =
             div(other.toDouble())
 
     fun sum(): Double = sumBy { it }

@@ -3,6 +3,8 @@ package tomasvolker.numeriko.core.interfaces.array1d.double
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
 
+fun DoubleArray1D.asMutable(): MutableDoubleArray1D = this as MutableDoubleArray1D
+
 inline fun elementWise(source: DoubleArray1D, destination: MutableDoubleArray1D, operation: (Double) -> Double) {
     requireSameSize(source, destination)
     for (i in source.indices) {
@@ -18,7 +20,7 @@ inline fun elementWise(source1: DoubleArray1D, source2: DoubleArray1D, destinati
     }
 }
 
-inline fun DoubleArray1D.elementWise(operation: (Double) -> Double): MutableDoubleArray1D {
+inline fun DoubleArray1D.elementWise(operation: (Double) -> Double): DoubleArray1D {
     val result = mutableDoubleZeros(size)
     elementWise(
             source = this,
@@ -28,7 +30,7 @@ inline fun DoubleArray1D.elementWise(operation: (Double) -> Double): MutableDoub
     return result
 }
 
-inline fun MutableDoubleArray1D.applyMap(operation: (Double) -> Double): MutableDoubleArray1D {
+inline fun MutableDoubleArray1D.applyElementWise(operation: (Double) -> Double): MutableDoubleArray1D {
     elementWise(
             source = this,
             destination = this,
@@ -37,7 +39,7 @@ inline fun MutableDoubleArray1D.applyMap(operation: (Double) -> Double): Mutable
     return this
 }
 
-inline fun elementWise(array1: DoubleArray1D, array2: DoubleArray1D, operation: (Double, Double) -> Double): MutableDoubleArray1D {
+inline fun elementWise(array1: DoubleArray1D, array2: DoubleArray1D, operation: (Double, Double) -> Double): DoubleArray1D {
     requireSameSize(array1, array2)
 
     val result = mutableDoubleZeros(array1.size)

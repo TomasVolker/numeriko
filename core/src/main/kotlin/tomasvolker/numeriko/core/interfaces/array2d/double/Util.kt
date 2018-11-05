@@ -1,11 +1,11 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double
 
+
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
-import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
-import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
-import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
 import tomasvolker.numeriko.core.preconditions.requireSameShape
+
+fun DoubleArray2D.asMutable(): MutableDoubleArray2D = this as MutableDoubleArray2D
 
 inline fun elementWise(source: DoubleArray2D, destination: MutableDoubleArray2D, operation: (Double) -> Double) {
     requireSameShape(source, destination)
@@ -22,7 +22,7 @@ inline fun elementWise(source1: DoubleArray2D, source2: DoubleArray2D, destinati
     }
 }
 
-inline fun DoubleArray2D.elementWise(operation: (Double) -> Double): MutableDoubleArray2D {
+inline fun DoubleArray2D.elementWise(operation: (Double) -> Double): DoubleArray2D {
     val result = mutableDoubleZeros(shape0, shape1)
     elementWise(
             source = this,
@@ -32,7 +32,7 @@ inline fun DoubleArray2D.elementWise(operation: (Double) -> Double): MutableDoub
     return result
 }
 
-inline fun MutableDoubleArray2D.applyMap(operation: (Double) -> Double): MutableDoubleArray2D {
+inline fun MutableDoubleArray2D.applyElementWise(operation: (Double) -> Double): MutableDoubleArray2D {
     elementWise(
             source = this,
             destination = this,
@@ -68,10 +68,8 @@ inline fun MutableDoubleArray2D.applyElementWise(other: DoubleArray2D, operation
 
 inline fun DoubleArray2D.sumBy(operation: (Double) -> Double): Double {
     var result = 0.0
-    for (i0 in this.indices0) {
-        for (i1 in this.indices1) {
-            result += operation(this[i0, i1])
-        }
+    forEachIndex { i0, i1 ->
+        result += operation(this[i0, i1])
     }
     return result
 }
