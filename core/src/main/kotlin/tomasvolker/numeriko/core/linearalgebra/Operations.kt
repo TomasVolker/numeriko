@@ -5,10 +5,29 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
-import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleArray1D
-import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
-import tomasvolker.numeriko.core.interfaces.factory.mutableIntZeros
+import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
+import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
+import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.primitives.modulo
+
+infix fun DoubleArray2D.matMul(other: DoubleArray1D): DoubleArray1D {
+    require(this.shape1 == other.shape0) {
+        "sizes dont match"
+    }
+    return doubleArray1D(this.shape0) { i0 ->
+        this.indices1.sumByDouble { k -> this[i0, k] * other[k] }
+    }
+}
+
+infix fun DoubleArray2D.matMul(other: DoubleArray2D): DoubleArray2D {
+    require(this.shape1 == other.shape0) {
+        "sizes dont match"
+    }
+    return doubleArray2D(this.shape0, other.shape1) { i0, i1 ->
+        this.indices0.sumByDouble { k -> this[i0, k] * other[k, i1] }
+    }
+}
 
 infix fun DoubleArray1D.inner(other: DoubleArray1D): Double {
     requireSameSize(this, other)
