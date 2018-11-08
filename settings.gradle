@@ -8,3 +8,6 @@ pluginManagement {
     }
 }
 include("core", "complex")
+include 'zoo'
+include 'kyplot'
+

@@ -5,6 +5,11 @@ import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 fun <T> Array2D<T>.asMutable(): MutableArray2D<T> = this as MutableArray2D<T>
 
+fun <T> Array2D<T>.toListOfLists(): List<List<T>> =
+        List(shape0) { i0 ->
+            List(shape1) { i1 -> this.getValue(i0, i1) }
+        }
+
 inline fun <T> Array2D<T>.forEachIndex(operation: (i0: Int, i1: Int) -> Unit) {
 
     for (i0 in 0 until shape0) {
@@ -86,3 +91,5 @@ fun <T> Array2D<T>.checkIndices(i0: Int, i1: Int) {
     }
 
 }
+
+fun Array2D<*>.isSquare(): Boolean = shape0 == shape1

@@ -1,11 +1,17 @@
 package tomasvolker.numeriko.core.interfaces.array1d.generic
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.interfaces.factory.mutableArray1DOfNulls
 
 fun <T> Array1D<T>.asMutable(): MutableArray1D<T> = this as MutableArray1D<T>
+
+inline fun <T> Array1D<T>.forEachIndex(operation: (i0: Int) -> Unit) {
+
+    for (i0 in 0 until shape0) {
+        operation(i0)
+    }
+
+}
 
 inline fun <T, R> elementWise(source: Array1D<T>, destination: MutableArray1D<R>, operation: (T) -> R) {
     requireSameSize(source, destination)

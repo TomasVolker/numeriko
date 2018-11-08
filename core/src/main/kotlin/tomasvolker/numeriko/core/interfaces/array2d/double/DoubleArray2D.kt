@@ -17,7 +17,6 @@ interface DoubleArray2D: Array2D<Double> {
 
     operator fun get(i0: Int, i1: Int): Double = getDouble(i0, i1)
 
-
     override fun getView(i0: IntProgression, i1: IntProgression): DoubleArray2D =
             DefaultDoubleArray2DView(
                     array = this,
@@ -42,11 +41,27 @@ interface DoubleArray2D: Array2D<Double> {
                     )
             )
 
+    override fun getView(i0: IntProgression, i1: Int): DoubleArray1D =
+            DoubleArray2D1DView(
+                    DefaultDoubleArray2DView(
+                            array = this,
+                            offset0 = i0.first,
+                            offset1 = i1,
+                            shape0 = i0.count(),
+                            shape1 = 1,
+                            stride0 = i0.step,
+                            stride1 = 1
+                    )
+            )
+
     override fun getView(i0: IndexProgression, i1: IndexProgression): DoubleArray2D =
             getView(i0.computeProgression(shape0), i1.computeProgression(shape1))
 
     override fun getView(i0: Int, i1: IndexProgression): DoubleArray1D =
             getView(i0, i1.computeProgression(shape1))
+
+    override fun getView(i0: IndexProgression, i1: Int): DoubleArray1D =
+            getView(i0.computeProgression(shape0), i1)
 
     override fun copy(): DoubleArray2D = /*copy(this)*/ TODO()
 

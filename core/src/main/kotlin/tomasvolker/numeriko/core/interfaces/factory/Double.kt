@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.IntVector2
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 
@@ -38,6 +39,9 @@ fun mutableDoubleZeros(size: Int): MutableDoubleArray1D =
         defaultFactory.mutableDoubleZeros(size)
 
 
+
+fun doubleArray2D(shape: IntVector2, data: DoubleArray): DoubleArray2D =
+        mutableDoubleArray2D(shape.value0, shape.value1, data)
 
 fun doubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): DoubleArray2D = mutableDoubleArray2D(shape0, shape1, data)
 

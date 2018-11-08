@@ -3,31 +3,13 @@ package tomasvolker.numeriko.core.linearalgebra
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
-import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
+import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.primitives.modulo
-
-infix fun DoubleArray2D.matMul(other: DoubleArray1D): DoubleArray1D {
-    require(this.shape1 == other.shape0) {
-        "sizes dont match"
-    }
-    return doubleArray1D(this.shape0) { i0 ->
-        this.indices1.sumByDouble { k -> this[i0, k] * other[k] }
-    }
-}
-
-infix fun DoubleArray2D.matMul(other: DoubleArray2D): DoubleArray2D {
-    require(this.shape1 == other.shape0) {
-        "sizes dont match"
-    }
-    return doubleArray2D(this.shape0, other.shape1) { i0, i1 ->
-        this.indices0.sumByDouble { k -> this[i0, k] * other[k, i1] }
-    }
-}
 
 infix fun DoubleArray1D.inner(other: DoubleArray1D): Double {
     requireSameSize(this, other)
@@ -67,7 +49,7 @@ fun DoubleArray1D.diff(): MutableDoubleArray1D {
     return result
 }
 
-infix fun DoubleArray1D.convolve(other: DoubleArray1D): MutableDoubleArray1D {
+infix fun DoubleArray1D.convolve(other: DoubleArray1D): DoubleArray1D {
     requireSameSize(this, other)
 
     val result = mutableDoubleZeros(this.size)
@@ -79,13 +61,33 @@ infix fun DoubleArray1D.convolve(other: DoubleArray1D): MutableDoubleArray1D {
     return result
 }
 
-infix fun IntArray1D.convolve(other: IntArray1D): MutableIntArray1D {
+infix fun IntArray1D.convolve(other: IntArray1D): IntArray1D {
     requireSameSize(this, other)
 
     val result = mutableIntZeros(this.size)
     for (i in this.indices) {
         result[i] = (other.indices).sumBy { j ->
             this[(i - j) modulo size] * other[j]
+        }
+    }
+    return result
+}
+
+
+fun DoubleArray1D.filter1D(filter: DoubleArray1D, padding: Double = 0.0): DoubleArray1D {
+
+    val result = mutableDoubleZeros(this.size)
+
+    val filterCenter = filter.size / 2
+
+    forEachIndex { i ->
+        result[i] = (filter.indices).sumByDouble { j ->
+            val k = i - j - filterCenter
+            if (k in 0 until this.size) {
+                this[k] * filter[j]
+            } else {
+                padding
+            }
         }
     }
     return result

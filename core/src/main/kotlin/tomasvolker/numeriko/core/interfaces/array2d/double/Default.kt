@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double
 
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultEquals
 import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultHashCode
@@ -172,3 +173,62 @@ class DoubleArray2D1DView(
 
 }
 
+class MutableDoubleArray2D1DView(
+        val array: MutableDoubleArray2D
+) : MutableDoubleArray1D {
+
+    val dim: Int
+
+    init {
+
+        dim = when {
+            array.shape0 == 1 -> 1
+            array.shape1 == 1 -> 0
+            else -> throw IllegalArgumentException("array is not flat")
+        }
+
+    }
+
+    override val size: Int get() = array.size
+
+    override fun getDouble(index: Int): Double {
+        return when(dim) {
+            0 -> array.getValue(
+                    index,
+                    0
+            )
+            1 -> array.getValue(
+                    0,
+                    index
+            )
+            else -> throw IllegalStateException()
+        }
+    }
+
+    override fun setDouble(value: Double, index: Int) {
+        when(dim) {
+            0 -> array.setValue(
+                    value,
+                    index,
+                    0
+            )
+            1 -> array.setValue(
+                    value,
+                    0,
+                    index
+            )
+            else -> throw IllegalStateException()
+        }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other === this) return true
+        if (other !is Array1D<*>) return false
+        return defaultEquals(this, other)
+    }
+
+    override fun hashCode(): Int = defaultHashCode(this)
+
+    override fun toString(): String = defaultToString(this)
+
+}

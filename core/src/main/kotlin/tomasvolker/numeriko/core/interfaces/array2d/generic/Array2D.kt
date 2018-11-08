@@ -3,14 +3,15 @@ package tomasvolker.numeriko.core.interfaces.array2d.generic
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.lowdim.IntVector2
+import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.IntVector2
+import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.intVector2
 import tomasvolker.numeriko.core.interfaces.factory.copy
 
 interface Array2D<out T>: Collection<T> {
 
     val rank: Int get() = 2
 
-    val shape: IntVector2 get() = IntVector2(shape0, shape1)
+    val shape: IntVector2 get() = intVector2(shape0, shape1)
 
     val shape0: Int
     val shape1: Int
@@ -19,9 +20,6 @@ interface Array2D<out T>: Collection<T> {
         get() = shape0 * shape1
 
     fun getValue(i0: Int, i1: Int): T
-
-    fun getValue(i0: Index, i1: Index): T =
-            getValue(i0.computeValue(shape0), i1.computeValue(shape1))
 
     fun getView(i0: IntProgression, i1: IntProgression): Array2D<T> =
             DefaultArray2DView(
@@ -47,8 +45,27 @@ interface Array2D<out T>: Collection<T> {
                 )
             )
 
+    fun getView(i0: IntProgression, i1: Int): Array1D<T> =
+            Array2D1DView(
+                    DefaultArray2DView(
+                            array = this,
+                            offset0 = i0.first,
+                            offset1 = i1,
+                            shape0 = i0.count(),
+                            shape1 = i1,
+                            stride0 = i0.step,
+                            stride1 = 1
+                    )
+            )
+
+    fun getValue(i0: Index, i1: Index): T =
+            getValue(i0.computeValue(shape0), i1.computeValue(shape1))
+
     fun getView(i0: IndexProgression, i1: IndexProgression): Array2D<T> =
             getView(i0.computeProgression(shape0), i1.computeProgression(shape1))
+
+    fun getView(i0: IndexProgression, i1: Int): Array1D<T> =
+            getView(i0.computeProgression(shape0), i1)
 
     fun getView(i0: Int, i1: IndexProgression): Array1D<T> =
             getView(i0, i1.computeProgression(shape1))

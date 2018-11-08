@@ -4,19 +4,12 @@ plugins {
     kotlin("jvm")
 }
 
-repositories {
-    // KyPlot dependency
-    maven { setUrl("https://raw.github.com/aliceinnets/maven-repository/master/") }
-}
-
 dependencies {
-    compile(kotlin("stdlib"))
-    compile("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.26.1-eap13")
+    implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.26.1-eap13")
 
-    testCompile("junit:junit:4.12")
-    testCompile(kotlin("test"))
-    testCompile(files("libs/kyscript-0.1.jar"))
-    testCompile(files("libs/kyplot-0.1.jar"))
+    testImplementation("junit:junit:4.12")
+    testImplementation(kotlin("test"))
 }
 
 tasks.withType<KotlinCompile> {

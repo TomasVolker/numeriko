@@ -14,7 +14,12 @@ inline fun elementWise(source: DoubleArray2D, destination: MutableDoubleArray2D,
     }
 }
 
-inline fun elementWise(source1: DoubleArray2D, source2: DoubleArray2D, destination: MutableDoubleArray2D, operation: (Double, Double) -> Double) {
+inline fun elementWise(
+        source1: DoubleArray2D,
+        source2: DoubleArray2D,
+        destination: MutableDoubleArray2D,
+        operation: (Double, Double) -> Double
+) {
     requireSameShape(source1, source2)
     requireSameShape(source1, destination)
     source1.forEachIndex { i0, i1 ->
@@ -41,7 +46,7 @@ inline fun MutableDoubleArray2D.applyElementWise(operation: (Double) -> Double):
     return this
 }
 
-inline fun elementWise(array1: DoubleArray2D, array2: DoubleArray2D, operation: (Double, Double) -> Double): MutableDoubleArray2D {
+inline fun elementWise(array1: DoubleArray2D, array2: DoubleArray2D, operation: (Double, Double) -> Double): DoubleArray2D {
     requireSameShape(array1, array2)
 
     val result = mutableDoubleZeros(array1.shape0, array2.shape1)
@@ -55,7 +60,10 @@ inline fun elementWise(array1: DoubleArray2D, array2: DoubleArray2D, operation: 
 
 }
 
-inline fun MutableDoubleArray2D.applyElementWise(other: DoubleArray2D, operation: (Double, Double) -> Double): MutableDoubleArray2D {
+inline fun MutableDoubleArray2D.applyElementWise(
+        other: DoubleArray2D,
+        operation: (Double, Double) -> Double
+): MutableDoubleArray2D {
     requireSameShape(this, other)
     elementWise(
             source1 = this,

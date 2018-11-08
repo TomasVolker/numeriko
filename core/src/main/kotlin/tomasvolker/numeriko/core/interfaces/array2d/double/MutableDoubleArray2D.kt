@@ -2,7 +2,9 @@ package tomasvolker.numeriko.core.interfaces.array2d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
+import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double> {
@@ -46,10 +48,48 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double> {
                     stride1 = i1.step
             )
 
+    override fun getView(i0: Int, i1: IntProgression): MutableDoubleArray1D =
+            MutableDoubleArray2D1DView(
+                    DefaultMutableDoubleArray2DView(
+                            array = this,
+                            offset0 = i0,
+                            offset1 = i1.first,
+                            shape0 = 1,
+                            shape1 = i1.count(),
+                            stride0 = 1,
+                            stride1 = i1.step
+                    )
+            )
+
+    override fun getView(i0: IntProgression, i1: Int): MutableDoubleArray1D =
+            MutableDoubleArray2D1DView(
+                    DefaultMutableDoubleArray2DView(
+                            array = this,
+                            offset0 = i0.first,
+                            offset1 = i1,
+                            shape0 = i0.count(),
+                            shape1 = 1,
+                            stride0 = i0.step,
+                            stride1 = 1
+                    )
+            )
+
     override fun getView(i0: IndexProgression, i1: IndexProgression): MutableDoubleArray2D =
             getView(
                     i0.computeProgression(shape0),
                     i1.computeProgression(shape1)
+            )
+
+    override fun getView(i0: Int, i1: IndexProgression): MutableDoubleArray1D =
+            getView(
+                    i0,
+                    i1.computeProgression(shape1)
+            )
+
+    override fun getView(i0: IndexProgression, i1: Int): MutableDoubleArray1D =
+            getView(
+                    i0.computeProgression(shape0),
+                    i1
             )
 
     fun setView(value: DoubleArray2D, i0: IndexProgression, i1: IndexProgression) =
@@ -67,7 +107,7 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double> {
     override fun setView(value: Double, i0: IntProgression, i1: IntProgression) =
             getView(i0, i1).setDouble(value)
 
-    override fun copy(): MutableDoubleArray2D = /*mutableCopy(this)*/ TODO()
+    override fun copy(): MutableDoubleArray2D = mutableCopy(this)
 /*
     override operator fun get(index: IntProgression): MutableDoubleArray2D = getView(index)
     override operator fun get(index: IndexProgression): MutableDoubleArray2D = getView(index)

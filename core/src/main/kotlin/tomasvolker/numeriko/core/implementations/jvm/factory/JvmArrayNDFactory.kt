@@ -17,6 +17,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
+import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleArray2D
 
 class JvmArrayNDFactory: ArrayNDFactory {
 
@@ -68,8 +69,7 @@ class JvmArrayNDFactory: ArrayNDFactory {
                     data = data
             )
 
-    override fun mutableCopy(array: DoubleArray2D): MutableDoubleArray2D {
-        TODO("not implemented")
-    }
+    override fun mutableCopy(array: DoubleArray2D): MutableDoubleArray2D =
+           mutableDoubleArray2D(array.shape0, array.shape1) { i0, i1 -> array[i0, i1] }
 
 }

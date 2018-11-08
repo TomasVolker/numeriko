@@ -10,7 +10,8 @@ val J = I
 
 class DoubleComplex(
         val real: Double = 0.0,
-        val imag: Double = 0.0) {
+        val imag: Double = 0.0
+) {
 
     val imaginary: Double get() = imag
 
