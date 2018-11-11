@@ -2,7 +2,10 @@ package tomasvolker.numeriko.core.interfaces.array2d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DView
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2D1DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
 import tomasvolker.numeriko.core.preconditions.requireSameShape
@@ -108,19 +111,12 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double> {
             getView(i0, i1).setDouble(value)
 
     override fun copy(): MutableDoubleArray2D = mutableCopy(this)
-/*
-    override operator fun get(index: IntProgression): MutableDoubleArray2D = getView(index)
-    override operator fun get(index: IndexProgression): MutableDoubleArray2D = getView(index)
-*/
-    operator fun set(i0: Int, i1: Int, value: Double) = setValue(value, i0, i1)
-    operator fun set(i0: Index, i1: Index, value: Double) = setValue(value, i0.computeValue(shape0), i1.computeValue(shape1))
-    /*
-    operator fun set(index: IntProgression, value: Double) = setView(value, index)
-    operator fun set(index: IndexProgression, value: Double) = setView(value, index)
 
-    operator fun set(index: IntProgression, value: DoubleArray1D) = setView(value, index)
-    operator fun set(index: IndexProgression, value: DoubleArray1D) = setView(value, index)
-*/
+    operator fun set(i0: Int, i1: Int, value: Double) = setDouble(value, i0, i1)
+    operator fun set(i0: Index, i1: Index, value: Double) =
+            setValue(value, i0.computeValue(shape0), i1.computeValue(shape1))
+
+
     fun applyPlus(other: DoubleArray2D): MutableDoubleArray2D =
             applyElementWise(other) { t, o -> t + o }
 

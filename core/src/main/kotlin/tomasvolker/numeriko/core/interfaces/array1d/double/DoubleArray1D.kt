@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.array1d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.factory.copy
 
@@ -31,7 +32,7 @@ interface DoubleArray1D: Array1D<Double> {
     override fun iterator(): DoubleIterator =
             DefaultDoubleArray1DIterator(this)
 
-    override operator fun get(index: Int): Double = getDouble(index)
+    operator fun get(index: Int): Double = getDouble(index)
     operator fun get(index: Index): Double = getDouble(index)
 
     operator fun get(index: IntProgression): DoubleArray1D = getView(index)

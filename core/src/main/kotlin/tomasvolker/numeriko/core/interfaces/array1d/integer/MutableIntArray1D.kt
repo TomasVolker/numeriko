@@ -4,6 +4,8 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
+import tomasvolker.numeriko.core.interfaces.array1d.integer.view.DefaultMutableIntArray1DView
 
 interface MutableIntArray1D: IntArray1D, MutableArray1D<Int> {
 

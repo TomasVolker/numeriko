@@ -4,6 +4,8 @@ import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
+import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
+import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D

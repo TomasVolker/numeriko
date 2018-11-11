@@ -11,6 +11,9 @@ dependencies {
     implementation(project(":kyplot"))
     implementation(group = "com.kyonifer", name = "koma-core-ejml", version = "0.12")
 
+    implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-beta2")
+    implementation("org.nd4j:nd4j-native-platform:1.0.0-beta2")
+
     testImplementation("junit:junit:4.12")
     testImplementation(kotlin("test"))
 }

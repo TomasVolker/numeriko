@@ -8,6 +8,19 @@ import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 
+fun stack(vararg arrays: DoubleArray1D): DoubleArray2D {
+
+    if (arrays.isEmpty()) doubleArray2D(0, 0) { _, _-> 0.0 }
+
+    val firstSize = arrays.first().size
+    require(arrays.all { it.size == firstSize }) { "All sizes must be the same" }
+
+    return doubleArray2D(arrays.size, firstSize) { i0, i1 ->
+        arrays[i0][i1]
+    }
+
+}
+
 infix fun DoubleArray1D.concatenate(other: DoubleArray1D): DoubleArray1D =
         doubleArray1D(this.size + other.size) { i ->
             if (i < this.size)

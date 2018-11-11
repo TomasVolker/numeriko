@@ -5,6 +5,7 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.sumBy
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.interfaces.array1d.integer.view.DefaultIntArray1DView
 
 interface IntArray1D: Array1D<Int> {
 
@@ -32,7 +33,7 @@ interface IntArray1D: Array1D<Int> {
     override fun iterator(): IntIterator =
             DefaultIntArray1DIterator(this)
 
-    override operator fun get(index: Int): Int = getInt(index)
+    operator fun get(index: Int): Int = getInt(index)
     operator fun get(index: Index): Int = getInt(index)
 
     operator fun get(index: IntProgression): IntArray1D = getView(index)

@@ -4,16 +4,25 @@ import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.index.rangeTo
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.double.asMutable
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.asMutable
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
+import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
 import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
 import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex0
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
 import tomasvolker.numeriko.core.primitives.indicative
 
-fun MutableDoubleArray2D.inplaceGaussianElimination() {
+fun MutableDoubleArray2D.inplaceGaussianElimination() =
+        inplaceGaussianElimination { _, _, _ ->  }
+
+inline fun MutableDoubleArray2D.inplaceGaussianElimination(
+        updateImage: (pivotIndex: Int, i0: Int, factor: Double)->Unit
+) {
 
     require(shape0 <= shape1)
 
@@ -31,8 +40,32 @@ fun MutableDoubleArray2D.inplaceGaussianElimination() {
                 this[i0, i1] -= factor * this[pivotIndex, i1]
             }
 
+            updateImage(pivotIndex, i0, factor)
+
         }
 
+    }
+
+}
+
+fun MutableDoubleArray2D.inplaceGaussianElimination(image: MutableDoubleArray2D) {
+
+    require(this.shape0 == image.shape0)
+
+    inplaceGaussianElimination { pivotIndex, i0, factor ->
+        for (i1 in image.indices1) {
+            image[i0, i1] -= factor * image[pivotIndex, i1]
+        }
+    }
+
+}
+
+fun MutableDoubleArray2D.inplaceGaussianElimination(image: MutableDoubleArray1D) {
+
+    require(this.shape0 == image.shape0)
+
+    inplaceGaussianElimination { pivotIndex, i0, factor ->
+        image[i0] -= factor * image[pivotIndex]
     }
 
 }
@@ -42,26 +75,25 @@ fun DoubleArray2D.solve(image: DoubleArray1D): DoubleArray1D {
 
     require(this.isSquare() && this.shape0 == image.size)
 
-    val variableCount = this.shape0
-
     // Pivoting
 
-    val table = mutableDoubleArray2D(variableCount, variableCount + 1) { i0, i1 ->
-        if (i1 < this.shape1)
-            this[i0, i1]
-        else
-            image[i0]
-    }
+    val table = this.copy().asMutable()
+    val result = image.copy().asMutable()
 
-    table.inplaceGaussianElimination()
+    table.inplaceGaussianElimination(result)
 
-    val result = mutableDoubleZeros(variableCount)
-
-    for (i0 in table.indices0.reversed()) {
-        result[i0] = (table[i0, variableCount] - ((i0+1) until variableCount).sumByDouble { i1 -> table[i0, i1] * result[i1] }) / table[i0, i0]
-    }
+    table.inplaceBackSubstitution(result)
 
     return result
+}
+
+fun DoubleArray2D.inplaceBackSubstitution(image: MutableDoubleArray1D) {
+
+    for (i0 in indices0.reversed()) {
+        image[i0] = (image[i0] -
+                ((i0+1) until shape1).sumByDouble { i1 -> this[i0, i1] * image[i1] }) / this[i0, i0]
+    }
+
 }
 
 fun MutableDoubleArray2D.inplaceReducedEchelonForm() {

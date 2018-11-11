@@ -5,6 +5,8 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.IntVector2
 import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.intVector2
+import tomasvolker.numeriko.core.interfaces.array2d.generic.view.Array2D1DView
+import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DView
 import tomasvolker.numeriko.core.interfaces.factory.copy
 
 interface Array2D<out T>: Collection<T> {
@@ -83,3 +85,5 @@ interface Array2D<out T>: Collection<T> {
     override fun iterator(): Iterator<T> = DefaultArray2DIterator(this)
 
 }
+
+operator fun <T> Array2D<T>.get(i0: Int, i1: Int): T = getValue(i0, i1)

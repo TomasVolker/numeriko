@@ -3,6 +3,9 @@ package tomasvolker.numeriko.core.linearalgebra
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultDoubleArray2DTransposeView
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DTransposeView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
@@ -13,9 +16,10 @@ import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.primitives.modulo
 
 fun DoubleArray2D.transpose(): DoubleArray2D =
-        doubleArray2D(shape1, shape0) { i0, i1 ->
-            this[i1, i0]
-        }
+        DefaultDoubleArray2DTransposeView(this)
+
+fun MutableDoubleArray2D.transpose(): MutableDoubleArray2D =
+        DefaultMutableDoubleArray2DTransposeView(this)
 
 infix fun DoubleArray2D.matMul(other: DoubleArray1D): DoubleArray1D {
     require(this.shape1 == other.shape0) {

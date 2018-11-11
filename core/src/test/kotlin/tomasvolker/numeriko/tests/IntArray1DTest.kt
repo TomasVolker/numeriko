@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.tests
 
 import org.junit.Test
-import tomasvolker.numeriko.core.dsl.ar
+import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.array1d.integer.times
@@ -94,7 +94,7 @@ class IntArray1DTest {
 
         a[3..8] = a[0..5]
 
-        val expected = ar[0, 1, 2, 0, 1, 2, 3, 4, 5, 9]
+        val expected = I[0, 1, 2, 0, 1, 2, 3, 4, 5, 9]
 
         assertEquals(expected, a)
     }

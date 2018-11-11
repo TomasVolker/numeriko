@@ -2,8 +2,10 @@ package tomasvolker.numeriko.core.interfaces.array1d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1DView
 import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 
 interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double> {
 

@@ -3,6 +3,8 @@ package tomasvolker.numeriko.core.interfaces.array2d.double
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultDoubleArray2DView
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DoubleArray2D1DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 
 interface DoubleArray2D: Array2D<Double> {

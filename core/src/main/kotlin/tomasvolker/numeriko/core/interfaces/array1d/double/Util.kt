@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.array1d.double
 
+import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
 

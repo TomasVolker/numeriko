@@ -8,10 +8,11 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
 import tomasvolker.numeriko.core.implementations.jvm.array1d.generic.JvmMutableArray1D
-import tomasvolker.numeriko.core.implementations.jvm.array1d.integer.JvmMutableDoubleArray1D
+import tomasvolker.numeriko.core.implementations.jvm.array1d.double.JvmMutableDoubleArray1D
 import tomasvolker.numeriko.core.implementations.jvm.array1d.integer.JvmMutableIntArray1D
 import tomasvolker.numeriko.core.implementations.jvm.array2d.double.JvmMutableDoubleArray2D
 import tomasvolker.numeriko.core.implementations.jvm.array2d.generic.JvmMutableArray2D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D

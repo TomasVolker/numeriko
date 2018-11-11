@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.array1d.double
 
 import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultToString
+import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 
 fun defaultEquals(array1: DoubleArray1D, array2: DoubleArray1D): Boolean {
 
@@ -37,67 +38,5 @@ class DefaultDoubleArray1DIterator(
 
     override fun nextDouble(): Double =
             array.getDouble(index).apply { index++ }
-
-}
-
-class DefaultDoubleArray1DView(
-        val array: DoubleArray1D,
-        val offset: Int,
-        override val size: Int,
-        val stride: Int
-) : DoubleArray1D {
-
-    override fun getDouble(index: Int): Double {
-        if (index !in 0 until size) {
-            throw IndexOutOfBoundsException(index)
-        }
-
-        return array.getDouble(offset + stride * index)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other === this) return true
-        if (other !is DoubleArray1D) return false
-        return defaultEquals(this, other)
-    }
-
-    override fun hashCode(): Int = defaultHashCode(this)
-
-    override fun toString(): String = defaultToString(this)
-
-}
-
-open class DefaultMutableDoubleArray1DView (
-        open val array: MutableDoubleArray1D,
-        val offset: Int,
-        override val size: Int,
-        val stride: Int
-) : MutableDoubleArray1D {
-
-    override fun setDouble(value: Double, index: Int) {
-        if (index !in 0 until size) {
-            throw IndexOutOfBoundsException(index)
-        }
-
-        array.setDouble(value, offset + stride * index)
-    }
-
-    override fun getDouble(index: Int): Double {
-        if (index !in 0 until size) {
-            throw IndexOutOfBoundsException(index)
-        }
-
-        return array.getDouble(offset + stride * index)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other === this) return true
-        if (other !is DoubleArray1D) return false
-        return defaultEquals(this, other)
-    }
-
-    override fun hashCode(): Int = defaultHashCode(this)
-
-    override fun toString(): String = defaultToString(this)
 
 }

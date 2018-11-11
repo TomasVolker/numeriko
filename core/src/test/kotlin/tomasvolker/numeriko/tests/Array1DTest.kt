@@ -3,29 +3,12 @@ package tomasvolker.numeriko.tests
 import org.junit.Test
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.factory.*
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.elementWise
+import tomasvolker.numeriko.core.interfaces.array1d.generic.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
 
 class Array1DTest {
-
-    operator fun <T> Array1D<T>.get(index: Int) = getValue(index)
-    operator fun <T> Array1D<T>.get(index: Index) = getValue(index)
-
-    operator fun <T> Array1D<T>.get(index: IntProgression) = getView(index)
-    operator fun <T> Array1D<T>.get(index: IndexProgression) = getView(index)
-
-    operator fun <T> MutableArray1D<T>.set(index: Int, value: T) = setValue(value, index)
-    operator fun <T> MutableArray1D<T>.set(index: Index, value: T) = setValue(value, index)
-
-    operator fun <T> MutableArray1D<T>.set(index: IntProgression, value: Array1D<T>) = setView(value, index)
-    operator fun <T> MutableArray1D<T>.set(index: IndexProgression, value: Array1D<T>) = setView(value, index)
-
-    operator fun <T> MutableArray1D<T>.set(index: IntProgression, value: T) = setView(value, index)
-    operator fun <T> MutableArray1D<T>.set(index: IndexProgression, value: T) = setView(value, index)
 
     @Test
     fun createArray() {

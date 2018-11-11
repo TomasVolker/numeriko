@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.preconditions
 
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
 
 fun requireSameSize(array1: Array1D<*>, array2: Array1D<*>) =
         require(array1.size == array2.size) {

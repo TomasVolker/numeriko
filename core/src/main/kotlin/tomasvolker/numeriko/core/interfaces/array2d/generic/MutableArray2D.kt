@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.array2d.generic
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultMutableArray2DView
 import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
@@ -59,3 +60,5 @@ interface MutableArray2D<T>: Array2D<T> {
     override fun copy(): MutableArray2D<T> = mutableCopy(this)
 
 }
+
+operator fun <T> MutableArray2D<T>.set(i0: Int, i1: Int, value: T): Unit = setValue(value, i0, i1)

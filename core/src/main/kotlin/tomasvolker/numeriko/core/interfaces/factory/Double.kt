@@ -5,8 +5,11 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.IntVector2
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
+import kotlin.random.Random
 
 fun DoubleArray.asDoubleArray1D(): DoubleArray1D = doubleArray1D(this)
+
+fun Array<out Number>.asDoubleArray1D(): DoubleArray1D = doubleArray1D(this.map { it.toDouble() }.toDoubleArray())
 
 fun DoubleArray.asMutableDoubleArray1D(): MutableDoubleArray1D = mutableDoubleArray1D(this)
 
@@ -39,6 +42,10 @@ fun mutableDoubleZeros(size: Int): MutableDoubleArray1D =
         defaultFactory.mutableDoubleZeros(size)
 
 
+fun doubleRandom(size: Int): DoubleArray1D =
+        doubleArray1D(size) { Random.nextDouble() }
+
+
 
 fun doubleArray2D(shape: IntVector2, data: DoubleArray): DoubleArray2D =
         mutableDoubleArray2D(shape.value0, shape.value1, data)
@@ -65,3 +72,6 @@ fun doubleZeros(shape0: Int, shape1: Int): DoubleArray2D =
 
 fun mutableDoubleZeros(shape0: Int, shape1: Int): MutableDoubleArray2D =
         defaultFactory.mutableDoubleZeros(shape0, shape1)
+
+fun doubleRandom(shape0: Int, shape1: Int): DoubleArray2D =
+        doubleArray2D(shape0, shape1) { _, _ -> Random.nextDouble() }

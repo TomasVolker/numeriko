@@ -3,7 +3,7 @@ package tomasvolker.numeriko.zoo.tps
 import tomasvolker.kyplot.dsl.line
 import tomasvolker.kyplot.dsl.showLine
 import tomasvolker.kyplot.dsl.showPlot
-import tomasvolker.numeriko.core.dsl.ar
+import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
@@ -77,14 +77,14 @@ fun main() {
             transition = { prev ->
                 val time = prev.time + 1
                 val value = prev.value
-                ar[
+                D[
                         time,
                         0.5 * value + 25 * value / (1 + value * value) + 8 * cos(1.2 * time)
                 ]
             },
             observation = { state ->
                 val value = state.value
-                ar[
+                D[
                         state.time,
                         0.05 * value * value
                 ]
@@ -98,14 +98,14 @@ fun main() {
 
     val noisy = NoisyStateMachine(
             stateMachine = stateMachine,
-            processNoiseStd = ar[ar[0.0, 0.0],
-                    ar[0.0, sqrt(processSigma)]],
-            observationNoiseStd = ar[ar[0.0, 0.0],
-                    ar[0.0, 1.0]]
+            processNoiseStd = D[D[0, 0],
+                    D[0, sqrt(processSigma)]],
+            observationNoiseStd = D[D[0, 0],
+                                    D[0, 1]]
     )
 
     val simulation = noisy.simulate(
-            initial = ar[0.0, 0.0],
+            initial = D[0, 0],
             steps = 150
     )
 
@@ -122,7 +122,7 @@ fun main() {
         y = observations.map { it.value }
     }
 
-    val particleList = List(10) { ar[0.0, 0.0] }
+    val particleList = List(10) { D[0, 0] }
 
     val particelHistory = particleList.map { noisy.simulate(it, 150) }
 
