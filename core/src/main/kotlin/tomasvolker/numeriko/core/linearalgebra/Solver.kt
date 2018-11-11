@@ -10,7 +10,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
 import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
-import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleArray2D
+import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.primitives.indicative
 
 fun MutableDoubleArray2D.inplaceGaussianElimination() =
@@ -121,12 +121,12 @@ fun DoubleArray2D.inverse(): DoubleArray2D {
 
     require(isSquare())
 
-    val table = mutableDoubleArray2D(shape0, 2 * shape1) { i0, i1 ->
+    val table = doubleArray2D(shape0, 2 * shape1) { i0, i1 ->
         if (i1 < shape1)
             this[i0, i1]
         else
             (i0 == (i1-shape1)).indicative()
-    }
+    }.asMutable()
 
     table.inplaceReducedEchelonForm()
 

@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.array2d.generic
 
-import tomasvolker.numeriko.core.interfaces.factory.mutableArray2DOfNulls
+import tomasvolker.numeriko.core.interfaces.factory.array2DOfNulls
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 fun <T> Array2D<T>.asMutable(): MutableArray2D<T> = this as MutableArray2D<T>
@@ -37,7 +37,7 @@ inline fun <T1, T2, R> elementWise(source1: Array2D<T1>, source2: Array2D<T2>, d
 }
 
 inline fun <T, R> Array2D<T>.elementWise(operation: (T) -> R): Array2D<R> {
-    val result = mutableArray2DOfNulls<R>(shape0, shape1)
+    val result = array2DOfNulls<R>(shape0, shape1).asMutable()
     elementWise(
             source = this,
             destination = result,
@@ -58,7 +58,7 @@ inline fun <T, A: MutableArray2D<T>> A.applyMap(operation: (T) -> T): A {
 inline fun <T1, T2, R> elementWise(array1: Array2D<T1>, array2: Array2D<T2>, operation: (T1, T2) -> R): Array2D<R> {
     requireSameShape(array1, array2)
 
-    val result = mutableArray2DOfNulls<R>(array1.shape0, array1.shape1)
+    val result = array2DOfNulls<R>(array1.shape0, array1.shape1).asMutable()
     elementWise(
             source1 = array1,
             source2 = array2,

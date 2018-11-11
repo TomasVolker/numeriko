@@ -41,3 +41,30 @@ fun Int.isOdd(): Boolean = this % 2 == 1
 fun Long.isEven(): Boolean = this % 2 == 0L
 fun Long.isOdd(): Boolean = this % 2 == 1L
 
+inline fun sumDouble(indices: IntProgression, value: (i: Int)->Double): Double =
+        indices.sumByDouble(value)
+
+inline fun sumDouble(
+        indices0: IntProgression,
+        indices1: IntProgression,
+        value: (i0: Int, i1: Int)->Double
+): Double =
+        indices0.sumByDouble { i0 ->
+            indices1.sumByDouble { i1 ->
+                value(i0, i1)
+            }
+        }
+
+inline fun sumInt(indices: IntProgression, value: (i: Int)->Int): Int =
+        indices.sumBy(value)
+
+inline fun sumInt(
+        indices0: IntProgression,
+        indices1: IntProgression,
+        value: (i0: Int, i1: Int)->Int
+): Int =
+        indices0.sumBy { i0 ->
+            indices1.sumBy { i1 ->
+                value(i0, i1)
+            }
+        }

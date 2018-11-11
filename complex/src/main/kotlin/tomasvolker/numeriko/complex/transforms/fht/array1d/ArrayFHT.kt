@@ -3,8 +3,7 @@ package tomasvolker.numeriko.complex.transforms.fht.array1d
 import tomasvolker.numeriko.complex.DoubleComplexArray
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.applyElementWise
-import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
+import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 import tomasvolker.numeriko.core.primitives.modulo
 import tomasvolker.numeriko.core.primitives.sqrt
 import kotlin.math.PI
@@ -29,7 +28,7 @@ fun dftFromDHT(
 
 fun fht(
     array: DoubleArray1D,
-    destination: MutableDoubleArray1D = mutableDoubleZeros(array.size)
+    destination: MutableDoubleArray1D = doubleZeros(array.size).asMutable()
 ): DoubleArray1D {
 
     cooleyTukeyFht(

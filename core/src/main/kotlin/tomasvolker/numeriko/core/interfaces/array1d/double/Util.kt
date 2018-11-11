@@ -1,8 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.array1d.double
 
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
+import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 import tomasvolker.numeriko.core.preconditions.requireSameSize
-import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
 
 inline fun elementWise(source: DoubleArray1D, destination: MutableDoubleArray1D, operation: (Double) -> Double) {
     requireSameSize(source, destination)
@@ -20,7 +20,7 @@ inline fun elementWise(source1: DoubleArray1D, source2: DoubleArray1D, destinati
 }
 
 inline fun DoubleArray1D.elementWise(operation: (Double) -> Double): DoubleArray1D {
-    val result = mutableDoubleZeros(size)
+    val result = doubleZeros(size).asMutable()
     elementWise(
             source = this,
             destination = result,
@@ -41,7 +41,7 @@ inline fun MutableDoubleArray1D.applyElementWise(operation: (Double) -> Double):
 inline fun elementWise(array1: DoubleArray1D, array2: DoubleArray1D, operation: (Double, Double) -> Double): DoubleArray1D {
     requireSameSize(array1, array2)
 
-    val result = mutableDoubleZeros(array1.size)
+    val result = doubleZeros(array1.size).asMutable()
     elementWise(
             source1 = array1,
             source2 = array2,

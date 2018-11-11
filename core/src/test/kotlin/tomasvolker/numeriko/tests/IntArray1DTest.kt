@@ -67,7 +67,7 @@ class IntArray1DTest {
     @Test
     fun modifyArray() {
 
-        val a1 = mutableIntArray1D(100) { i -> 2*i }
+        val a1 = intArray1D(100) { i -> 2*i }.asMutable()
 
         val a2 = a1.copy()
 
@@ -90,7 +90,7 @@ class IntArray1DTest {
     @Test
     fun settingOnItself() {
 
-        val a = mutableIntArray1D(10) { it }
+        val a = intArray1D(10) { it }.asMutable()
 
         a[3..8] = a[0..5]
 
@@ -102,11 +102,11 @@ class IntArray1DTest {
     @Test
     fun algebra() {
 
-        val a1 = mutableIntArray1D(100) { i -> i }
+        val a1 = intArray1D(100) { i -> i }
 
-        val a2 = mutableIntArray1D(100) { i -> 2*i }
+        val a2 = intArray1D(100) { i -> 2*i }
 
-        val a3 = mutableIntArray1D(100) { i -> 3*i }
+        val a3 = intArray1D(100) { i -> 3*i }
 
         assertEquals(a1 + a2, a3)
 

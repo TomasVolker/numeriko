@@ -4,7 +4,7 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultMutableArray1DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
-import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
+import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
@@ -22,7 +22,7 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
     fun setValue(other: Array1D<T>) {
 
         require(other.size == this.size) {
-            "Sizes must much"
+            "Sizes must match"
         }
 
         for (i in indices) {
@@ -62,7 +62,7 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
     fun setView(value: T, indexRange: IntProgression) =
             getView(indexRange).setValue(value)
 
-    override fun copy(): MutableArray1D<T> = mutableCopy(this)
+    override fun copy(): MutableArray1D<T> = copy(this).asMutable()
 
 }
 

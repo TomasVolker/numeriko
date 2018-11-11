@@ -2,7 +2,7 @@ package tomasvolker.numeriko.core.interfaces.array2d.double
 
 
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
-import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
+import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 inline fun elementWise(source: DoubleArray2D, destination: MutableDoubleArray2D, operation: (Double) -> Double) {
@@ -26,7 +26,7 @@ inline fun elementWise(
 }
 
 inline fun DoubleArray2D.elementWise(operation: (Double) -> Double): DoubleArray2D {
-    val result = mutableDoubleZeros(shape0, shape1)
+    val result = doubleZeros(shape0, shape1).asMutable()
     elementWise(
             source = this,
             destination = result,
@@ -47,7 +47,7 @@ inline fun MutableDoubleArray2D.applyElementWise(operation: (Double) -> Double):
 inline fun elementWise(array1: DoubleArray2D, array2: DoubleArray2D, operation: (Double, Double) -> Double): DoubleArray2D {
     requireSameShape(array1, array2)
 
-    val result = mutableDoubleZeros(array1.shape0, array2.shape1)
+    val result = doubleZeros(array1.shape0, array2.shape1).asMutable()
     elementWise(
             source1 = array1,
             source2 = array2,

@@ -2,10 +2,10 @@ package tomasvolker.numeriko.core.interfaces.array1d.integer
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array1d.integer.view.DefaultMutableIntArray1DView
+import tomasvolker.numeriko.core.interfaces.factory.copy
 
 interface MutableIntArray1D: IntArray1D, MutableArray1D<Int> {
 
@@ -63,7 +63,7 @@ interface MutableIntArray1D: IntArray1D, MutableArray1D<Int> {
     override fun setView(value: Int, indexRange: IntProgression) =
             getView(indexRange).setInt(value)
 
-    override fun copy(): MutableIntArray1D = mutableCopy(this)
+    override fun copy(): MutableIntArray1D = copy(this).asMutable()
 
     override operator fun get(index: IntProgression): MutableIntArray1D = getView(index)
     override operator fun get(index: IndexProgression): MutableIntArray1D = getView(index)

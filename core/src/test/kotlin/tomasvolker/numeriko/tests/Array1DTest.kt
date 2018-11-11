@@ -66,7 +66,7 @@ class Array1DTest {
     @Test
     fun modifyArray() {
 
-        val a1 = mutableArray1D(100) { i -> 2*i }
+        val a1 = array1D(100) { i -> 2*i }.asMutable()
 
         val a2 = a1.copy()
 

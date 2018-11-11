@@ -3,93 +3,144 @@
 package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
 import tomasvolker.numeriko.core.implementations.jvm.factory.JvmArrayNDFactory
+import tomasvolker.numeriko.core.interfaces.array1d.generic.*
+import tomasvolker.numeriko.core.interfaces.array1d.generic.asMutable
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.asMutable
+import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.asMutable
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
+import tomasvolker.numeriko.core.reductions.product
 
 var defaultFactory: ArrayNDFactory = JvmArrayNDFactory()
 
 interface ArrayNDFactory {
 
-    fun <T> mutableArray1D(data: Array<T>): MutableArray1D<T>
+    fun <T> array1D(data: Array<T>): Array1D<T>
 
-    fun <T> mutableArray2D(shape0: Int, shape1: Int, data: Array<T>): MutableArray2D<T>
+    fun <T> array2D(shape0: Int, shape1: Int, data: Array<T>): Array2D<T>
+
+    fun <T> arrayND(shape: IntArray1D, data: Array<T>): ArrayND<T>
 
     // Copy
 
     fun <T> copy(array: Array1D<T>): Array1D<T> =
-            mutableCopy(array)
-
-    fun <T> mutableCopy(array: Array1D<T>): MutableArray1D<T>
+            array1D(array.size) { i -> array.getValue(i) }
 
     fun <T> copy(array: Array2D<T>): Array2D<T> =
-            mutableCopy(array)
+            array2D(array.shape0, array.shape1) { i0, i1 -> array.getValue(i0, i1) }
 
-    fun <T> mutableCopy(array: Array2D<T>): MutableArray2D<T>
+    fun <T> copy(array: ArrayND<T>): ArrayND<T> =
+            arrayND(array.shape) { indices -> array.getValue(indices) }
 
+    // Array Of Nulls
 
     fun <T> array1DOfNulls(size: Int): Array1D<T?> =
-            mutableArray1DOfNulls(size)
-
-    fun <T> mutableArray1DOfNulls(size: Int): MutableArray1D<T?> =
-            mutableArray1D(arrayOfNulls<Any?>(size) as Array<T?>)
+            array1D(arrayOfNulls<Any?>(size) as Array<T?>)
 
     fun <T> array2DOfNulls(shape0: Int, shape1: Int): Array2D<T?> =
-            mutableArray2DOfNulls(shape0, shape1)
+            array2D(shape0, shape1, arrayOfNulls<Any?>(shape0*shape1) as Array<T?>)
 
-    fun <T> mutableArray2DOfNulls(shape0: Int, shape1: Int): MutableArray2D<T?> =
-            mutableArray2D(shape0, shape1, arrayOfNulls<Any?>(shape0*shape1) as Array<T?>)
+    fun <T> arrayNDOfNulls(shape: IntArray1D): ArrayND<T?> =
+            arrayND(shape, arrayOfNulls<Any?>(shape.product()) as Array<T?>)
 
+    // Int
 
-
-    fun mutableIntArray1D(data: IntArray): MutableIntArray1D
+    fun intArray1D(data: IntArray): IntArray1D
 
     fun copy(array: IntArray1D): IntArray1D =
-            mutableCopy(array)
-
-    fun mutableCopy(array: IntArray1D): MutableIntArray1D
+            intArray1D(array.size) { i -> array[i] }
 
     fun intZeros(size: Int): IntArray1D =
-            mutableIntZeros(size)
+            intArray1D(IntArray(size) { 0 })
 
-    fun mutableIntZeros(size: Int): MutableIntArray1D =
-            mutableIntArray1D(IntArray(size) { 0 })
+    // Double
 
+    fun doubleArray1D(data: DoubleArray): DoubleArray1D
 
+    fun doubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): DoubleArray2D
 
-    fun mutableDoubleArray1D(data: DoubleArray): MutableDoubleArray1D
+    fun doubleArrayND(shape: IntArray1D, data: DoubleArray): DoubleArrayND
+
+    // Copy
 
     fun copy(array: DoubleArray1D): DoubleArray1D =
-            mutableCopy(array)
-
-    fun mutableCopy(array: DoubleArray1D): MutableDoubleArray1D
-
-    fun doubleZeros(size: Int): DoubleArray1D =
-            mutableDoubleZeros(size)
-
-    fun mutableDoubleZeros(size: Int): MutableDoubleArray1D =
-            mutableDoubleArray1D(DoubleArray(size) { 0.0 })
-
-
-    fun mutableDoubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): MutableDoubleArray2D
+            doubleArray1D(array.size) { i -> array[i] }
 
     fun copy(array: DoubleArray2D): DoubleArray2D =
-            mutableCopy(array)
+            doubleArray2D(array.shape0, array.shape1) { i0, i1 -> array[i0, i1] }
 
-    fun mutableCopy(array: DoubleArray2D): MutableDoubleArray2D
+    fun copy(array: DoubleArrayND): DoubleArrayND =
+            doubleArrayND(array.shape) { indices -> array[indices] }
+
+    // Zeros
+
+    fun doubleZeros(size: Int): DoubleArray1D =
+            doubleArray1D(DoubleArray(size) { 0.0 })
 
     fun doubleZeros(shape0: Int, shape1: Int): DoubleArray2D =
-            mutableDoubleZeros(shape0, shape1)
+            doubleArray2D(shape0, shape1, DoubleArray(shape0*shape1) { 0.0 })
 
-    fun mutableDoubleZeros(shape0: Int, shape1: Int): MutableDoubleArray2D =
-            mutableDoubleArray2D(shape0, shape1, DoubleArray(shape0*shape1) { 0.0 })
-
+    fun doubleZeros(shape: IntArray1D): DoubleArrayND =
+            doubleArrayND(shape, DoubleArray(shape.product()) { 0.0 })
 
 }
+
+inline fun <T> array1D(size: Int, init: (i: Int)->T): Array1D<T> =
+        defaultFactory.array1DOfNulls<T>(size).asMutable().apply {
+            forEachIndex { i0 ->
+                setValue(init(i0), i0)
+            }
+        } as Array1D<T>
+
+inline fun <T> array2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->T): Array2D<T> =
+        defaultFactory.array2DOfNulls<T>(shape0, shape1).asMutable().apply {
+            forEachIndex { i0, i1 ->
+                setValue(init(i0, i1), i0, i1)
+            }
+        } as Array2D<T>
+
+inline fun <T> arrayND(shape: IntArray1D, init: (indices: IntArray1D)->T): ArrayND<T> =
+        defaultFactory.arrayNDOfNulls<T>(shape).asMutable().apply {
+            forEachIndices { indices ->
+                setValue(init(indices), indices)
+            }
+        } as ArrayND<T>
+
+
+
+inline fun intArray1D(size: Int, init: (i: Int)->Int): IntArray1D =
+        defaultFactory.intZeros(size).asMutable().apply {
+            forEachIndex { i ->
+                this[i] = init(i)
+            }
+        }
+
+
+inline fun doubleArray1D(size: Int, init: (i: Int)->Double): DoubleArray1D =
+        defaultFactory.doubleZeros(size).asMutable().apply {
+            forEachIndex { i ->
+                this[i] = init(i)
+            }
+        }
+
+
+inline fun doubleArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->Double): DoubleArray2D =
+        defaultFactory.doubleZeros(shape0, shape1).asMutable().apply {
+            forEachIndex { i0, i1 ->
+                this[i0, i1] = init(i0, i1)
+            }
+        }
+
+
+inline fun doubleArrayND(shape: IntArray1D, init: (indices: IntArray1D)->Double): DoubleArrayND =
+        defaultFactory.doubleZeros(shape).asMutable().apply {
+            forEachIndices { indices ->
+                this[indices] = init(indices)
+            }
+        }

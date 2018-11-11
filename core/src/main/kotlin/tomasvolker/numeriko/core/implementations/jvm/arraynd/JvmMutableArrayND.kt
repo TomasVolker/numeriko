@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.implementations.jvm.arraynd
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.*
+import tomasvolker.numeriko.core.reductions.product
 
 class JvmMutableArrayND<T>(
         override val shape: IntArray1D,
@@ -9,7 +10,7 @@ class JvmMutableArrayND<T>(
 ): MutableArrayND<T> {
 
     init {
-        require(data.size == shape.fold(1) { acc, v -> acc * v }) {
+        require(data.size == shape.product()) {
             "Data size (${data.size}) does not match shape size ${shape}"
         }
     }

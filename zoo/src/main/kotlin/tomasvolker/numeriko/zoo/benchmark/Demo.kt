@@ -12,7 +12,7 @@ import kotlin.system.measureTimeMillis
 
 fun main() {
 
-    benchmarkSolve()
+    benchmarkInverse()
 
 }
 

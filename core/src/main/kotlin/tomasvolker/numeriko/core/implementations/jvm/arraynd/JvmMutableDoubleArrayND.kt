@@ -5,6 +5,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.defaultEquals
 import tomasvolker.numeriko.core.interfaces.arraynd.double.*
+import tomasvolker.numeriko.core.reductions.product
 
 class JvmMutableDoubleArrayND(
         override val shape: IntArray1D,
@@ -12,7 +13,7 @@ class JvmMutableDoubleArrayND(
 ): MutableDoubleArrayND {
 
     init {
-        require(data.size == shape.fold(1) { acc, v -> acc * v }) {
+        require(data.size == shape.product()) {
             "Data size (${data.size}) does not match shape size ${shape}"
         }
     }

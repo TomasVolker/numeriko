@@ -6,14 +6,14 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
-import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
+import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 
 fun fht(
         array: DoubleArray2D,
-        destination: MutableDoubleArray2D = mutableDoubleZeros(array.shape0, array.shape1)
+        destination: MutableDoubleArray2D = doubleZeros(array.shape0, array.shape1).asMutable()
 ): DoubleArray2D {
 
-    val horizontalFht = mutableDoubleZeros(array.shape0, array.shape1)
+    val horizontalFht = doubleZeros(array.shape0, array.shape1).asMutable()
 
     for (i0 in array.indices0) {
         fht(array.getView(0, All), horizontalFht.getView(0, All))

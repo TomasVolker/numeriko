@@ -2,17 +2,14 @@ package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.*
-import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.indices
-import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.mutableIntZeros
+import tomasvolker.numeriko.core.interfaces.factory.intZeros
 
 fun defaultEquals(array1: ArrayND<*>, array2: ArrayND<*>): Boolean {
 
     if(array1.shape != array2.shape)
         return false
 
-    array1.forEachIndex { indices ->
+    array1.forEachIndices { indices ->
         if (array1.getValue(indices) != array2.getValue(indices))
             return false
     }
@@ -56,7 +53,7 @@ class DefaultArrayNDIterator<T>(
     val array: ArrayND<T>
 ): Iterator<T> {
 
-    var currentIndex = mutableIntZeros(array.rank)
+    var currentIndex = intZeros(array.rank).asMutable()
 
     var overflow = false
 

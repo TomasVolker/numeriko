@@ -4,7 +4,7 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultMutableArray2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
-import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
+import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
@@ -63,7 +63,7 @@ interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
     fun setView(value: T, i0: IntProgression, i1: IntProgression) =
             getView(i0, i1).setValue(value)
 
-    override fun copy(): MutableArray2D<T> = mutableCopy(this)
+    override fun copy(): MutableArray2D<T> = copy(this).asMutable()
 
 }
 

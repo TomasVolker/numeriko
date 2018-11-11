@@ -5,6 +5,7 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.computeIndices
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.core.reductions.product
 
 interface ArrayND<out T>: Collection<T> {
 
@@ -12,7 +13,7 @@ interface ArrayND<out T>: Collection<T> {
 
     val shape: IntArray1D
 
-    override val size: Int get() = shape.fold(1) { acc, v -> acc * v }
+    override val size: Int get() = shape.product()
 
     override fun contains(element:@UnsafeVariance T): Boolean =
             any { it == element }

@@ -9,7 +9,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDo
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2D1DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
+import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
@@ -122,12 +122,15 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
     override fun setView(value: Double, i0: IntProgression, i1: IntProgression) =
             getView(i0, i1).setDouble(value)
 
-    override fun copy(): MutableDoubleArray2D = mutableCopy(this)
+    override fun copy(): MutableDoubleArray2D = copy(this).asMutable()
 
     operator fun set(i0: Int, i1: Int, value: Double) = setDouble(value, i0, i1)
     operator fun set(i0: Index, i1: Index, value: Double) =
             setValue(value, i0.computeValue(shape0), i1.computeValue(shape1))
 
+    /**
+     * @return a transposed view of this 2DArray
+     */
     override fun transpose(): MutableDoubleArray2D =
             DefaultMutableDoubleArray2DTransposeView(this)
 

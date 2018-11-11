@@ -22,6 +22,9 @@ interface DoubleArrayND: ArrayND<Double> {
     fun getDouble(vararg indices: Index): Double =
             getDouble(*indices.computeIndices(shape))
 
+    operator fun get(indices: IntArray1D): Double =
+            getDouble(indices)
+
     override fun getView(vararg indices: IntProgression): DoubleArrayND =
             DefaultMutableDoubleArrayNDView(
                     array = this.asMutable(),

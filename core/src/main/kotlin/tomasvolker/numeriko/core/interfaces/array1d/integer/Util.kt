@@ -1,8 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.array1d.integer
 
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
+import tomasvolker.numeriko.core.interfaces.factory.intZeros
 import tomasvolker.numeriko.core.preconditions.requireSameSize
-import tomasvolker.numeriko.core.interfaces.factory.mutableIntZeros
 
 inline fun elementWise(source: IntArray1D, destination: MutableIntArray1D, operation: (Int) -> Int) {
     requireSameSize(source, destination)
@@ -20,7 +20,7 @@ inline fun elementWise(source1: IntArray1D, source2: IntArray1D, destination: Mu
 }
 
 inline fun IntArray1D.elementWise(operation: (Int) -> Int): MutableIntArray1D {
-    val result = mutableIntZeros(size)
+    val result = intZeros(size).asMutable()
     elementWise(
             source = this,
             destination = result,
@@ -43,7 +43,7 @@ inline fun MutableIntArray1D.applyMap(operation: (Int) -> Int): MutableIntArray1
 inline fun elementWise(array1: IntArray1D, array2: IntArray1D, operation: (Int, Int) -> Int): MutableIntArray1D {
     requireSameSize(array1, array2)
 
-    val result = mutableIntZeros(array1.size)
+    val result = intZeros(array1.size).asMutable()
     elementWise(
             source1 = array1,
             source2 = array2,
