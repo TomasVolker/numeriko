@@ -4,11 +4,11 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDo
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 
 
-class MutableDoubleArray2D1DView(
+class MutableDoubleArray2DCollapseView(
         val array: MutableDoubleArray2D
 ) : DefaultMutableDoubleArray1D() {
 
-    val dim: Int = when {
+    val dimension: Int = when {
         array.shape0 == 1 -> 1
         array.shape1 == 1 -> 0
         else -> throw IllegalArgumentException("array is not flat")
@@ -17,7 +17,7 @@ class MutableDoubleArray2D1DView(
     override val size: Int get() = array.size
 
     override fun getDouble(index: Int): Double {
-        return when(dim) {
+        return when(dimension) {
             0 -> array.getValue(
                     index,
                     0
@@ -31,7 +31,7 @@ class MutableDoubleArray2D1DView(
     }
 
     override fun setDouble(value: Double, index: Int) {
-        when(dim) {
+        when(dimension) {
             0 -> array.setValue(
                     value,
                     index,

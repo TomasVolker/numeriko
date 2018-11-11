@@ -2,11 +2,10 @@ package tomasvolker.numeriko.core.interfaces.array2d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DTransposeView
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DView
-import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2D1DView
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2DCollapseView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
@@ -64,7 +63,7 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
             )
 
     override fun getView(i0: Int, i1: IntProgression): MutableDoubleArray1D =
-            MutableDoubleArray2D1DView(
+            MutableDoubleArray2DCollapseView(
                     DefaultMutableDoubleArray2DView(
                             array = this,
                             offset0 = i0,
@@ -77,7 +76,7 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
             )
 
     override fun getView(i0: IntProgression, i1: Int): MutableDoubleArray1D =
-            MutableDoubleArray2D1DView(
+            MutableDoubleArray2DCollapseView(
                     DefaultMutableDoubleArray2DView(
                             array = this,
                             offset0 = i0.first,

@@ -1,14 +1,11 @@
 package tomasvolker.numeriko.core.interfaces.array2d.generic.view
 
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultEquals
-import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultHashCode
-import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultToString
+import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 
-class Array2D1DView<out T>(
+class Array2DCollapseView<out T>(
         val array: Array2D<T>
-) : Array1D<T> {
+) : DefaultArray1D<T>() {
 
     val dim: Int = when {
         array.shape0 == 1 -> 1
@@ -32,15 +29,5 @@ class Array2D1DView<out T>(
             else -> throw IllegalStateException()
         }
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (other === this) return true
-        if (other !is Array1D<*>) return false
-        return defaultEquals(this, other)
-    }
-
-    override fun hashCode(): Int = defaultHashCode(this)
-
-    override fun toString(): String = defaultToString(this)
 
 }

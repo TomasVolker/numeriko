@@ -1,12 +1,20 @@
 package tomasvolker.numeriko.zoo.image
 
 import tomasvolker.kyplot.dsl.*
+import tomasvolker.numeriko.core.index.All
+import tomasvolker.numeriko.core.index.LiteralIndex
+import tomasvolker.numeriko.core.index.Single
 import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
+import tomasvolker.numeriko.core.interfaces.arraynd.double.as2D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.collapseView
 import kotlin.math.hypot
 
 fun main() {
 
-    val image = loadGrayScaleImage("./zoo/res/brain.png")
+    val rgbImage = loadGrayScaleImage("./zoo/res/sun.gif")
+
+    //val image = rgbImage.getView(All, All, Single(0)).collapseView(2).as2D()
+    val image = rgbImage
 
     val gradx = image.computeGradientX()
     val grady = image.computeGradientY()

@@ -13,6 +13,8 @@ interface ArrayND<out T>: Collection<T> {
 
     val shape: IntArray1D
 
+    fun getShape(dimension: Int): Int = shape[dimension]
+
     override val size: Int get() = shape.product()
 
     override fun contains(element:@UnsafeVariance T): Boolean =

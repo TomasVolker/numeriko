@@ -60,10 +60,10 @@ class MutableIntVector2(
     override fun hashCode(): Int = defaultHashCode(this)
 
     override fun toString(): String = defaultToString(this)
-
+/*
     operator fun component1(): Int = value0
     operator fun component2(): Int = value1
-
+*/
 }
 
 

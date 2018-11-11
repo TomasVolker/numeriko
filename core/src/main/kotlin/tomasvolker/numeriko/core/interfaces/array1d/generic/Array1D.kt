@@ -19,6 +19,12 @@ interface Array1D<out T>: ArrayND<T> {
 
     val shape0: Int get() = size
 
+    override fun getShape(dimension: Int): Int =
+            when(dimension) {
+                0 -> shape0
+                else -> throw IndexOutOfBoundsException(dimension)
+            }
+
     override val size: Int
 
     override fun getValue(vararg indices: Int): T {
@@ -47,6 +53,13 @@ interface Array1D<out T>: ArrayND<T> {
     override fun iterator(): Iterator<T> = DefaultArray1DIterator(this)
 
     fun asList(): List<T> = Default1DArrayListView(this)
+
+    operator fun component1(): T = getValue(0)
+    operator fun component2(): T = getValue(1)
+    operator fun component3(): T = getValue(2)
+    operator fun component4(): T = getValue(3)
+    operator fun component5(): T = getValue(4)
+
 
 }
 

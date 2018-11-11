@@ -28,8 +28,8 @@ class DoubleVector2(
 
     override fun toString(): String = defaultToString(this)
 
-    operator fun component1(): Double = value0
-    operator fun component2(): Double = value1
+    override operator fun component1(): Double = value0
+    override operator fun component2(): Double = value1
 
 }
 
@@ -60,7 +60,7 @@ class MutableDoubleVector2(
 
     override fun toString(): String = defaultToString(this)
 
-    operator fun component1(): Double = value0
-    operator fun component2(): Double = value1
+    override operator fun component1(): Double = value0
+    override operator fun component2(): Double = value1
 
 }

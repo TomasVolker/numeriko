@@ -1,6 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
+import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
@@ -87,6 +89,51 @@ class DefaultMutableDoubleArrayNDView(
                 value,
                 *IntArray(rank) { i -> offset[i] + stride[i] * indices[i] }
         )
+    }
+
+}
+
+
+class DefaultDoubleArrayND1DView(
+        val array: MutableDoubleArrayND
+) : DefaultMutableDoubleArray1D() {
+
+    init {
+        require(array.rank == 1)
+    }
+
+    override val size: Int
+        get() = array.getShape(0)
+
+    override fun getDouble(index: Int): Double =
+            array.getDouble(index)
+
+    override fun setDouble(value: Double, index: Int) {
+        array.setDouble(value, index)
+    }
+
+}
+
+
+class DefaultDoubleArrayND2DView(
+        val array: MutableDoubleArrayND
+) : DefaultMutableDoubleArray2D() {
+
+    init {
+        require(array.rank == 2)
+    }
+
+    override val shape0: Int
+        get() = array.getShape(0)
+
+    override val shape1: Int
+        get() = array.getShape(0)
+
+    override fun getDouble(i0: Int, i1: Int): Double =
+            array.getDouble(i0, i1)
+
+    override fun setDouble(value: Double, i0: Int, i1: Int) {
+        array.setDouble(value, i0, i1)
     }
 
 }

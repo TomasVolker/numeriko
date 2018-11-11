@@ -1,6 +1,10 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
+import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultMutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultMutableArray2D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
@@ -98,6 +102,52 @@ class DefaultMutableArrayNDView<T>(
                 value,
                 *IntArray(rank) { i -> offset[i] + stride[i] * indices[i] }
         )
+    }
+
+}
+
+
+class DefaultArrayND1DView<T>(
+        val array: MutableArrayND<T>
+) : DefaultMutableArray1D<T>() {
+
+    init {
+        require(array.rank == 1)
+    }
+
+    override val size: Int
+        get() = array.getShape(0)
+
+
+    override fun getValue(index: Int): T =
+            array.getValue(index)
+
+    override fun setValue(value: T, index: Int) {
+        array.setValue(value, index)
+    }
+
+}
+
+
+class DefaultArrayND2DView<T>(
+        val array: MutableArrayND<T>
+) : DefaultMutableArray2D<T>() {
+
+    init {
+        require(array.rank == 2)
+    }
+
+    override val shape0: Int
+        get() = array.getShape(0)
+
+    override val shape1: Int
+        get() = array.getShape(0)
+
+    override fun getValue(i0: Int, i1: Int): T =
+            array.getValue(i0, i1)
+
+    override fun setValue(value: T, i0: Int, i1: Int) {
+        array.setValue(value, i0, i1)
     }
 
 }

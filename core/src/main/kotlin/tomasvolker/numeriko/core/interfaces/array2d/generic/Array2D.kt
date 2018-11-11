@@ -5,7 +5,7 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.IntVector2
 import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.intVector2
-import tomasvolker.numeriko.core.interfaces.array2d.generic.view.Array2D1DView
+import tomasvolker.numeriko.core.interfaces.array2d.generic.view.Array2DCollapseView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
@@ -18,6 +18,13 @@ interface Array2D<out T>: ArrayND<T> {
 
     val shape0: Int
     val shape1: Int
+
+    override fun getShape(dimension: Int): Int =
+            when(dimension) {
+                0 -> shape0
+                1 -> shape1
+                else -> throw IndexOutOfBoundsException(dimension)
+            }
 
     override val size: Int
         get() = shape0 * shape1
@@ -41,7 +48,7 @@ interface Array2D<out T>: ArrayND<T> {
             )
 
     fun getView(i0: Int, i1: IntProgression): Array1D<T> =
-            Array2D1DView(
+            Array2DCollapseView(
                     DefaultArray2DView(
                         array = this,
                         offset0 = i0,
@@ -54,7 +61,7 @@ interface Array2D<out T>: ArrayND<T> {
             )
 
     fun getView(i0: IntProgression, i1: Int): Array1D<T> =
-            Array2D1DView(
+            Array2DCollapseView(
                     DefaultArray2DView(
                             array = this,
                             offset0 = i0.first,

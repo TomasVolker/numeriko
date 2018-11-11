@@ -29,8 +29,4 @@ class DoubleVector3(
 
     override fun toString(): String = defaultToString(this)
 
-    operator fun component1(): Double = value0
-    operator fun component2(): Double = value1
-    operator fun component3(): Double = value2
-
 }

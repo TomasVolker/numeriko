@@ -24,3 +24,5 @@ infix fun Int.until(index: Index) =
 object All: IndexProgression(0.toIndex(), Last)
 
 infix fun IndexProgression.step(step: Int) = IndexProgression(first, last, step)
+
+class Single(value: Int): IndexProgression(LiteralIndex(value), LiteralIndex(value), 1)

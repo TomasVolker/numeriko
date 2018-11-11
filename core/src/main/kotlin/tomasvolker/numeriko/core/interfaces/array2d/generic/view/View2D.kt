@@ -10,7 +10,7 @@ open class DefaultArray2DView<out T>(
         override val shape1: Int,
         val stride0: Int,
         val stride1: Int
-) : Array2D<T> {
+) : DefaultArray2D<T>() {
 
     override fun getValue(i0: Int, i1: Int): T {
         checkIndices(i0, i1)
@@ -41,7 +41,7 @@ open class DefaultMutableArray2DView<T>(
         override val shape1: Int,
         val stride0: Int,
         val stride1: Int
-) : MutableArray2D<T> {
+) : DefaultMutableArray2D<T>() {
 
     override fun setValue(value: T, i0: Int, i1: Int) {
         checkIndices(i0, i1)
