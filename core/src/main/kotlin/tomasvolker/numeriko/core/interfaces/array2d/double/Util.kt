@@ -5,8 +5,6 @@ import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
-fun DoubleArray2D.asMutable(): MutableDoubleArray2D = this as MutableDoubleArray2D
-
 inline fun elementWise(source: DoubleArray2D, destination: MutableDoubleArray2D, operation: (Double) -> Double) {
     requireSameShape(source, destination)
     source.forEachIndex { i0, i1 ->

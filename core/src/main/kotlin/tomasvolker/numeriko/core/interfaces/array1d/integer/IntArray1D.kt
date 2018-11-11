@@ -2,10 +2,9 @@ package tomasvolker.numeriko.core.interfaces.array1d.integer
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array1d.double.sumBy
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.view.DefaultIntArray1DView
+import tomasvolker.numeriko.core.interfaces.array1d.integer.view.DefaultMutableIntArray1DView
 
 interface IntArray1D: Array1D<Int> {
 
@@ -18,8 +17,8 @@ interface IntArray1D: Array1D<Int> {
             getInt(index.computeValue(size))
 
     override fun getView(indexRange: IntProgression): IntArray1D =
-            DefaultIntArray1DView(
-                    array = this,
+            DefaultMutableIntArray1DView(
+                    array = this.asMutable(),
                     offset = indexRange.first,
                     size = indexRange.count(),
                     stride = indexRange.step
@@ -70,5 +69,7 @@ interface IntArray1D: Array1D<Int> {
             elementWise { it / other }
 
     fun sum(): Int = sumBy { it }
+
+    fun asMutable(): MutableIntArray1D = this as MutableIntArray1D
 
 }

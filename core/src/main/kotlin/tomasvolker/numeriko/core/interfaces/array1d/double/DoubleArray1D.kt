@@ -2,11 +2,20 @@ package tomasvolker.numeriko.core.interfaces.array1d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleArray1DView
+import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 
-interface DoubleArray1D: Array1D<Double> {
+interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
+
+    override fun getValue(vararg indices: Int): Double =
+            getDouble(*indices)
+
+    override fun getDouble(vararg indices: Int): Double {
+        require(indices.size == 1)
+        return getDouble(indices[0])
+    }
 
     override fun getValue(index: Int): Double =
             getDouble(index)
@@ -17,8 +26,8 @@ interface DoubleArray1D: Array1D<Double> {
             getDouble(index.computeValue(size))
 
     override fun getView(indexRange: IntProgression): DoubleArray1D =
-            DefaultDoubleArray1DView(
-                    array = this,
+            DefaultMutableDoubleArray1DView(
+                    array = this.asMutable(),
                     offset = indexRange.first,
                     size = indexRange.count(),
                     stride = indexRange.step
@@ -81,5 +90,7 @@ interface DoubleArray1D: Array1D<Double> {
             div(other.toDouble())
 
     fun sum(): Double = sumBy { it }
+
+    override fun asMutable(): MutableDoubleArray1D = this as MutableDoubleArray1D
 
 }

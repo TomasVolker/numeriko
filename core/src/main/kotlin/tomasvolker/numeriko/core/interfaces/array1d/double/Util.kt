@@ -4,8 +4,6 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleZeros
 
-fun DoubleArray1D.asMutable(): MutableDoubleArray1D = this as MutableDoubleArray1D
-
 inline fun elementWise(source: DoubleArray1D, destination: MutableDoubleArray1D, operation: (Double) -> Double) {
     requireSameSize(source, destination)
     for (i in source.indices) {

@@ -19,12 +19,17 @@ open class DefaultArray1DView<out T>(
 
 }
 
-open class DefaultMutableArray1DView<T>(
-        open val array: MutableArray1D<T>,
-        val offset: Int,
-        override val size: Int,
-        val stride: Int
-) : DefaultMutableArray1D<T>() {
+class DefaultMutableArray1DView<T>(
+        override val array: MutableArray1D<T>,
+        offset: Int,
+        size: Int,
+        stride: Int
+) : DefaultArray1DView<T>(
+        array,
+        offset,
+        size,
+        stride
+), MutableArray1D<T> {
 
     override fun setValue(value: T, index: Int) {
         if (index !in 0 until size) {
@@ -32,14 +37,6 @@ open class DefaultMutableArray1DView<T>(
         }
 
         array.setValue(value, offset + stride * index)
-    }
-
-    override fun getValue(index: Int): T {
-        if (index !in 0 until size) {
-            throw IndexOutOfBoundsException(index)
-        }
-
-        return array.getValue(offset + stride * index)
     }
 
 }

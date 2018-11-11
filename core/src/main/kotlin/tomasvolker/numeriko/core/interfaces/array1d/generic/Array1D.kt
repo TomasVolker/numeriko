@@ -4,15 +4,26 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.Default1DArrayListView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultArray1DView
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 
-interface Array1D<out T>: Iterable<T> {
+interface Array1D<out T>: ArrayND<T> {
 
-    val rank: Int get() = 1
+    override val rank: Int get() = 1
+
+    override val shape: IntArray1D
+        get() = intArray1DOf(shape0)
 
     val shape0: Int get() = size
 
-    val size: Int
+    override val size: Int
+
+    override fun getValue(vararg indices: Int): T {
+        require(indices.size == 1)
+        return getValue(indices[0])
+    }
 
     fun getValue(index: Int): T
 
@@ -30,7 +41,7 @@ interface Array1D<out T>: Iterable<T> {
     fun getView(indexRange: IndexProgression): Array1D<T> =
             getView(indexRange.computeProgression(size))
 
-    fun copy(): Array1D<T> = copy(this)
+    override fun copy(): Array1D<T> = copy(this)
 
     override fun iterator(): Iterator<T> = DefaultArray1DIterator(this)
 

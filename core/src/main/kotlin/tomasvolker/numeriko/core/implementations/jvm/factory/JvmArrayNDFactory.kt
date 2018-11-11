@@ -20,6 +20,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.factory.mutableDoubleArray2D
 
+@Suppress("UNCHECKED_CAST")
 class JvmArrayNDFactory: ArrayNDFactory {
 
     override fun <T> mutableArray2D(shape0: Int, shape1: Int, data: Array<T>): MutableArray2D<T> =

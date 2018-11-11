@@ -3,8 +3,9 @@ package tomasvolker.numeriko.core.interfaces.array2d.double
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultDoubleArray2DView
-import tomasvolker.numeriko.core.interfaces.array2d.double.view.DoubleArray2D1DView
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DTransposeView
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DView
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2D1DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 
 interface DoubleArray2D: Array2D<Double> {
@@ -20,8 +21,8 @@ interface DoubleArray2D: Array2D<Double> {
     operator fun get(i0: Int, i1: Int): Double = getDouble(i0, i1)
 
     override fun getView(i0: IntProgression, i1: IntProgression): DoubleArray2D =
-            DefaultDoubleArray2DView(
-                    array = this,
+            DefaultMutableDoubleArray2DView(
+                    array = this.asMutable(),
                     offset0 = i0.first,
                     offset1 = i1.first,
                     shape0 = i0.count(),
@@ -31,9 +32,9 @@ interface DoubleArray2D: Array2D<Double> {
             )
 
     override fun getView(i0: Int, i1: IntProgression): DoubleArray1D =
-            DoubleArray2D1DView(
-                    DefaultDoubleArray2DView(
-                            array = this,
+            MutableDoubleArray2D1DView(
+                    DefaultMutableDoubleArray2DView(
+                            array = this.asMutable(),
                             offset0 = i0,
                             offset1 = i1.first,
                             shape0 = 1,
@@ -44,9 +45,9 @@ interface DoubleArray2D: Array2D<Double> {
             )
 
     override fun getView(i0: IntProgression, i1: Int): DoubleArray1D =
-            DoubleArray2D1DView(
-                    DefaultDoubleArray2DView(
-                            array = this,
+            MutableDoubleArray2D1DView(
+                    DefaultMutableDoubleArray2DView(
+                            array = this.asMutable(),
                             offset0 = i0.first,
                             offset1 = i1,
                             shape0 = i0.count(),
@@ -64,6 +65,9 @@ interface DoubleArray2D: Array2D<Double> {
 
     override fun getView(i0: IndexProgression, i1: Int): DoubleArray1D =
             getView(i0.computeProgression(shape0), i1)
+
+    fun transpose(): DoubleArray2D =
+            DefaultMutableDoubleArray2DTransposeView(this.asMutable())
 
     override fun copy(): DoubleArray2D = /*copy(this)*/ TODO()
 
@@ -114,5 +118,7 @@ interface DoubleArray2D: Array2D<Double> {
             div(other.toDouble())
 
     fun sum(): Double = sumBy { it }
+
+    fun asMutable(): MutableDoubleArray2D = this as MutableDoubleArray2D
 
 }

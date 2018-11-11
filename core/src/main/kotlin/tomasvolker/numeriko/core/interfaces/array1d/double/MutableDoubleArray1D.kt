@@ -6,8 +6,17 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDo
 import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
+import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 
-interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double> {
+interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double>, MutableDoubleArrayND {
+
+    override fun setValue(value: Double, vararg indices: Int) =
+            setDouble(value, *indices)
+
+    override fun setDouble(value: Double, vararg indices: Int) {
+        require(indices.size == 1)
+        setDouble(value, indices[0])
+    }
 
     fun setDouble(value: Double, index: Int)
 

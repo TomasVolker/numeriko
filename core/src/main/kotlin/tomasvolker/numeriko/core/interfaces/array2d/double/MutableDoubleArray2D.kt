@@ -4,6 +4,7 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DTransposeView
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DView
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2D1DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
@@ -116,6 +117,8 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double> {
     operator fun set(i0: Index, i1: Index, value: Double) =
             setValue(value, i0.computeValue(shape0), i1.computeValue(shape1))
 
+    override fun transpose(): MutableDoubleArray2D =
+            DefaultMutableDoubleArray2DTransposeView(this)
 
     fun applyPlus(other: DoubleArray2D): MutableDoubleArray2D =
             applyElementWise(other) { t, o -> t + o }

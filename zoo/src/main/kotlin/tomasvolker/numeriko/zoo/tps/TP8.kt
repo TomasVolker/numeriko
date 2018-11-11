@@ -9,7 +9,6 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.linearalgebra.matMul
-import tomasvolker.numeriko.core.linearalgebra.transpose
 import java.util.*
 import kotlin.math.PI
 import kotlin.math.cos

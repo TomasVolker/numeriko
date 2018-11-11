@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
@@ -46,6 +48,7 @@ interface ArrayNDFactory {
             mutableArray2D(shape0, shape1, arrayOfNulls<Any?>(shape0*shape1) as Array<T?>)
 
 
+
     fun mutableIntArray1D(data: IntArray): MutableIntArray1D
 
     fun copy(array: IntArray1D): IntArray1D =
@@ -58,6 +61,7 @@ interface ArrayNDFactory {
 
     fun mutableIntZeros(size: Int): MutableIntArray1D =
             mutableIntArray1D(IntArray(size) { 0 })
+
 
 
     fun mutableDoubleArray1D(data: DoubleArray): MutableDoubleArray1D
