@@ -11,7 +11,7 @@ import kotlin.system.measureTimeMillis
 
 fun main() {
 
-    benchmarkInverse()
+    benchmarkSolve()
 
 }
 
@@ -47,13 +47,13 @@ fun benchmarkInverse() {
     val iterations = 100
     val matrixSize = 500
 
-    println("Koma")
-    val komaX = logTime("Matrix generation") { randn(matrixSize, matrixSize) }
-    val komaResults = benchmark(iterations) { komaX.inv() }
-
     println("Numeriko")
     val numerikoX = logTime("Matrix generation") { doubleRandom(matrixSize, matrixSize) }
     val numerikoResults = benchmark(iterations) { numerikoX.inverse() }
+
+    println("Koma")
+    val komaX = logTime("Matrix generation") { randn(matrixSize, matrixSize) }
+    val komaResults = benchmark(iterations) { komaX.inv() }
 
     println("Nd4j")
     val nd4jX = logTime("Matrix generation") { Nd4j.rand(matrixSize, matrixSize) }
@@ -63,15 +63,15 @@ fun benchmarkInverse() {
     showPlot {
 
         line {
-            label = "Koma"
-            x = komaResults.map { it.index }
-            y = komaResults.map { it.timeMillis }
-        }
-
-        line {
             label = "Numeriko"
             x = numerikoResults.map { it.index }
             y = numerikoResults.map { it.timeMillis }
+        }
+
+        line {
+            label = "Koma"
+            x = komaResults.map { it.index }
+            y = komaResults.map { it.timeMillis }
         }
 
         line {
@@ -101,29 +101,29 @@ fun benchmarkSolve() {
     val iterations = 100
     val systemSize = 500
 
-    println("Koma")
-    val komaX = logTime("Matrix generation") { randn(systemSize, systemSize) }
-    val komab = logTime("Vector generation") { randn(systemSize, 1) }
-    val komaResults = benchmark(iterations) { komaX.solve(komab) }
-
     println("Numeriko")
     val numerikoX = logTime("Matrix generation") { doubleRandom(systemSize, systemSize) }
     val numerikob = logTime("Vector generation") { doubleRandom(systemSize) }
     val numerikoResults = benchmark(iterations) { numerikoX.solve(numerikob) }
 
+    println("Koma")
+    val komaX = logTime("Matrix generation") { randn(systemSize, systemSize) }
+    val komab = logTime("Vector generation") { randn(systemSize, 1) }
+    val komaResults = benchmark(iterations) { komaX.solve(komab) }
+
 
     showPlot {
-
-        line {
-            label = "Koma"
-            x = komaResults.map { it.index }
-            y = komaResults.map { it.timeMillis }
-        }
 
         line {
             label = "Numeriko"
             x = numerikoResults.map { it.index }
             y = numerikoResults.map { it.timeMillis }
+        }
+
+        line {
+            label = "Koma"
+            x = komaResults.map { it.index }
+            y = komaResults.map { it.timeMillis }
         }
 
         xAxis {

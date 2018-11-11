@@ -8,6 +8,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 interface Array1D<out T>: ArrayND<T> {
 
@@ -21,7 +22,7 @@ interface Array1D<out T>: ArrayND<T> {
     override val size: Int
 
     override fun getValue(vararg indices: Int): T {
-        require(indices.size == 1)
+        requireValidIndices(indices)
         return getValue(indices[0])
     }
 

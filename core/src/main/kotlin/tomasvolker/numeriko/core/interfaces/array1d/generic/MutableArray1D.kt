@@ -5,11 +5,12 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultMutableArray1DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
 
     override fun setValue(value: T, vararg indices: Int) {
-        require(indices.size == 1)
+        requireValidIndices(indices)
         return setValue(value, indices[0])
     }
 

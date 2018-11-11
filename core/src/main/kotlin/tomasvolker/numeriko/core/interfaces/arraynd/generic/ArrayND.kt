@@ -10,7 +10,7 @@ interface ArrayND<out T>: Collection<T> {
 
     val shape: IntArray1D
 
-    override val size: Int
+    override val size: Int get() = shape.fold(1) { acc, v -> acc * v }
 
     override fun contains(element:@UnsafeVariance T): Boolean =
             any { it == element }

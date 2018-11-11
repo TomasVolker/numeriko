@@ -8,10 +8,21 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDo
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DView
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2D1DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
+import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
 import tomasvolker.numeriko.core.preconditions.requireSameShape
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
-interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double> {
+interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDoubleArrayND {
+
+    override fun setValue(value: Double, vararg indices: Int) {
+        setDouble(value, *indices)
+    }
+
+    override fun setDouble(value: Double, vararg indices: Int) {
+        requireValidIndices(indices)
+        setDouble(value, indices[0], indices[1])
+    }
 
     fun setDouble(value: Double, i0: Int, i1: Int)
 

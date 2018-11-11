@@ -7,8 +7,18 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDo
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DView
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2D1DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
-interface DoubleArray2D: Array2D<Double> {
+interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
+
+    override fun getDouble(vararg indices: Int): Double {
+        requireValidIndices(indices)
+        return getDouble(indices[0], indices[1])
+    }
+
+    override fun getValue(vararg indices: Int): Double =
+            getValue(*indices)
 
     override fun getValue(i0: Int, i1: Int): Double =
             getDouble(i0, i1)
@@ -119,6 +129,6 @@ interface DoubleArray2D: Array2D<Double> {
 
     fun sum(): Double = sumBy { it }
 
-    fun asMutable(): MutableDoubleArray2D = this as MutableDoubleArray2D
+    override fun asMutable(): MutableDoubleArray2D = this as MutableDoubleArray2D
 
 }

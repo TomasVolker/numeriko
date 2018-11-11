@@ -7,19 +7,25 @@ import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.IntVector2
 import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.intVector2
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.Array2D1DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DView
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 
-interface Array2D<out T>: Collection<T> {
+interface Array2D<out T>: ArrayND<T> {
 
-    val rank: Int get() = 2
+    override val rank: Int get() = 2
 
-    val shape: IntVector2 get() = intVector2(shape0, shape1)
+    override val shape: IntVector2 get() = intVector2(shape0, shape1)
 
     val shape0: Int
     val shape1: Int
 
     override val size: Int
         get() = shape0 * shape1
+
+    override fun getValue(vararg indices: Int): T {
+        require(indices.size == 2)
+        return getValue(indices[0], indices[1])
+    }
 
     fun getValue(i0: Int, i1: Int): T
 
@@ -72,15 +78,7 @@ interface Array2D<out T>: Collection<T> {
     fun getView(i0: Int, i1: IndexProgression): Array1D<T> =
             getView(i0, i1.computeProgression(shape1))
 
-    fun copy(): Array2D<T> = copy(this)
-
-    override fun contains(element:@UnsafeVariance T): Boolean =
-            any { it == element }
-
-    override fun containsAll(elements: Collection<@UnsafeVariance T>): Boolean =
-            elements.all { this.contains(it) }
-
-    override fun isEmpty(): Boolean = size == 0
+    override fun copy(): Array2D<T> = copy(this)
 
     override fun iterator(): Iterator<T> = DefaultArray2DIterator(this)
 

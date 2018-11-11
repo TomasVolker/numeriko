@@ -6,6 +6,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDo
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
 
@@ -13,7 +14,7 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
             getDouble(*indices)
 
     override fun getDouble(vararg indices: Int): Double {
-        require(indices.size == 1)
+        requireValidIndices(indices)
         return getDouble(indices[0])
     }
 

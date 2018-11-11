@@ -7,6 +7,8 @@ import tomasvolker.numeriko.core.interfaces.factory.mutableCopy
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
+import tomasvolker.numeriko.core.preconditions.requireSameSize
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double>, MutableDoubleArrayND {
 
@@ -14,7 +16,7 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double>, MutableDo
             setDouble(value, *indices)
 
     override fun setDouble(value: Double, vararg indices: Int) {
-        require(indices.size == 1)
+        requireValidIndices(indices)
         setDouble(value, indices[0])
     }
 
@@ -28,9 +30,7 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double>, MutableDo
 
     fun setValue(other: DoubleArray1D) {
 
-        require(other.size == this.size) {
-            "Sizes must much"
-        }
+        requireSameSize(other, this)
 
         for (i in indices) {
             setDouble(other.getDouble(i), i)
