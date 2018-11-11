@@ -30,7 +30,7 @@ fun MutableIntArray1D.indexIncrement(shape: IntArray1D): Boolean {
     return false
 }
 
-fun ArrayND<*>.forEachIndex(block: (IntArray1D)->Unit) {
+inline fun ArrayND<*>.forEachIndex(block: (IntArray1D)->Unit) {
 
     val index = mutableIntZeros(rank)
 

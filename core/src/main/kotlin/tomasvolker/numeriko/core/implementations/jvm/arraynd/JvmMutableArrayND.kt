@@ -1,8 +1,7 @@
 package tomasvolker.numeriko.core.implementations.jvm.arraynd
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.*
 
 class JvmMutableArrayND<T>(
         override val shape: IntArray1D,
@@ -31,9 +30,14 @@ class JvmMutableArrayND<T>(
     }
 
     private fun checkIndices(indices: IntArray) {
-        require(indices.size == rank)
+        require(indices.size == rank) {
+            "Indices size (${indices.size}) doesnt match rank ($rank) "
+        }
         for (d in indices.indices) {
-            require(indices[d] in 0 until shape[d])
+            if(indices[d] !in 0 until shape[d])
+                throw IndexOutOfBoundsException(
+                        "Index (${indices[d]}) is out of bounds for size ${shape[d]}"
+                )
         }
     }
 
@@ -50,11 +54,11 @@ class JvmMutableArrayND<T>(
     override fun equals(other: Any?): Boolean {
         if (other === this) return true
         if (other !is ArrayND<*>) return false
-        TODO()
+        return defaultEquals(this, other)
     }
 
-    override fun hashCode(): Int = TODO()
+    override fun hashCode(): Int = defaultHashCode(this)
 
-    override fun toString(): String = TODO()
+    override fun toString(): String = defaultToString(this)
 
 }

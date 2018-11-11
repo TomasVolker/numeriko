@@ -1,43 +1,41 @@
-package tomasvolker.numeriko.core.interfaces.arraynd.generic
+package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.index.*
-import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.indices
-import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.index.LiteralIndex
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.*
 import tomasvolker.numeriko.core.interfaces.factory.mutableIntZeros
 
-fun defaultEquals(array1: ArrayND<*>, array2: ArrayND<*>): Boolean {
+fun defaultEquals(array1: DoubleArrayND, array2: DoubleArrayND): Boolean {
 
     if(array1.shape != array2.shape)
         return false
 
     array1.forEachIndex { indices ->
-        if (array1.getValue(indices) != array2.getValue(indices))
+        if (array1.getDouble(indices) != array2.getDouble(indices))
             return false
     }
 
     return true
 }
 
-fun defaultHashCode(array1: ArrayND<*>): Int {
+fun defaultHashCode(array1: DoubleArrayND): Int {
 
     var result = array1.rank.hashCode()
     result += 31 * result + array1.shape.hashCode()
     for (x in array1) {
-        result += 31 * result + (x?.hashCode() ?: 0)
+        result += 31 * result + x.hashCode()
     }
 
     return result
 }
 
-fun <T> ArrayND<T>.subArray(i: Int): ArrayND<T> =
+fun DoubleArrayND.subArray(i: Int): DoubleArrayND =
         getView(*Array(rank) { d -> if (d==0) LiteralIndex(i)..i else All })
                 .collapseView(0)
 
-fun defaultToString(array: ArrayND<*>): String =
+fun defaultToString(array: DoubleArrayND): String =
         when(array.rank) {
-            0 -> array.getValue().toString()
+            0 -> array.getDouble().toString()
             1 -> array.joinToString(
                     separator = ", ",
                     prefix = "[",
@@ -52,9 +50,9 @@ fun defaultToString(array: ArrayND<*>): String =
                     )
         }
 
-class DefaultArrayNDIterator<T>(
-    val array: ArrayND<T>
-): Iterator<T> {
+class DefaultDoubleArrayNDIterator(
+        val array: DoubleArrayND
+): DoubleIterator() {
 
     var currentIndex = mutableIntZeros(array.rank)
 
@@ -62,10 +60,9 @@ class DefaultArrayNDIterator<T>(
 
     override fun hasNext(): Boolean = !overflow
 
-    override fun next(): T =
-            array.getValue(currentIndex).also {
+    override fun nextDouble(): Double =
+            array.getDouble(currentIndex).also {
                 overflow = currentIndex.indexIncrement(array.shape)
             }
 
 }
-
