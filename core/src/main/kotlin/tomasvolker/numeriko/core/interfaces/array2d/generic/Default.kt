@@ -9,7 +9,8 @@ import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 fun defaultEquals(array1: Array2D<*>, array2: Array2D<*>): Boolean {
 
-    requireSameShape(array1, array2)
+    if(array1.shape0 != array2.shape0 || array1.shape1 != array2.shape1)
+        return false
 
     array1.forEachIndex { i0, i1 ->
         if (array1.getValue(i0, i1) != array2.getValue(i0, i1))

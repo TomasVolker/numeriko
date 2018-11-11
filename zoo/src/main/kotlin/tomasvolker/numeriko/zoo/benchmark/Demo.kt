@@ -4,6 +4,7 @@ import koma.randn
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.inverse.InvertMatrix
 import tomasvolker.kyplot.dsl.*
+import tomasvolker.numeriko.core.dsl.A
 import tomasvolker.numeriko.core.interfaces.factory.doubleRandom
 import tomasvolker.numeriko.core.linearalgebra.inverse
 import tomasvolker.numeriko.core.linearalgebra.solve

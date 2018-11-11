@@ -22,11 +22,14 @@ interface ArrayND<out T>: Collection<T> {
 
     fun getValue(vararg indices: Int): T
 
+    fun getValue(indices: IntArray1D): T =
+            getValue(*indices.toIntArray())
+
     fun getValue(vararg indices: Index): T =
             getValue(*indices.computeIndices(shape))
 
     fun copy(): ArrayND<T> = TODO()
 
-    override fun iterator(): Iterator<T> = TODO()
+    override fun iterator(): Iterator<T> = DefaultArrayNDIterator(this)
 
 }

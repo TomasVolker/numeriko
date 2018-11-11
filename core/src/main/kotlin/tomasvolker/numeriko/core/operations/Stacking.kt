@@ -1,16 +1,32 @@
 package tomasvolker.numeriko.core.operations
 
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.asMutable
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.shape
+import tomasvolker.numeriko.core.interfaces.factory.array2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 
+inline fun <reified T> stack(vararg arrays: Array1D<T>): Array2D<T> {
+
+    if (arrays.isEmpty()) return array2D<T>(0, 0) { _, _-> TODO() }
+
+    val firstSize = arrays.first().size
+    require(arrays.all { it.size == firstSize }) { "All sizes must be the same" }
+
+    return array2D(arrays.size, firstSize) { i0, i1 ->
+        arrays[i0].getValue(i1)
+    }
+
+}
+
 fun stack(vararg arrays: DoubleArray1D): DoubleArray2D {
 
-    if (arrays.isEmpty()) doubleArray2D(0, 0) { _, _-> 0.0 }
+    if (arrays.isEmpty()) return doubleArray2D(0, 0) { _, _-> 0.0 }
 
     val firstSize = arrays.first().size
     require(arrays.all { it.size == firstSize }) { "All sizes must be the same" }

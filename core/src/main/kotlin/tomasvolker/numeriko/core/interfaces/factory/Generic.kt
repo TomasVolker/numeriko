@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 
@@ -24,6 +25,12 @@ fun <T> mutableArray2D(shape0: Int, shape1: Int, data: Array<T>): MutableArray2D
 
 inline fun <reified T> mutableArray1D(size: Int, init: (index: Int)->T): MutableArray1D<T> =
         mutableArray1D(Array<T?>(size) { i -> init(i) } as Array<T>)
+
+inline fun <reified T> mutableArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->T): MutableArray2D<T> =
+        mutableArray2D(shape0, shape1, Array(shape0 * shape1) { i -> init(i / shape1, i % shape1) })
+
+inline fun <reified T> array2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->T): Array2D<T> =
+        mutableArray2D(shape0, shape1, init)
 
 fun <T> array1DOf(vararg values: T) = array1D(values)
 

@@ -1,6 +1,5 @@
 package tomasvolker.numeriko.core.interfaces.array1d.double
 
-import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultToString
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 
 fun defaultEquals(array1: DoubleArray1D, array2: DoubleArray1D): Boolean {
