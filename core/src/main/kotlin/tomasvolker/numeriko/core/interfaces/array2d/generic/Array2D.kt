@@ -23,7 +23,7 @@ interface Array2D<out T>: ArrayND<T> {
             when(dimension) {
                 0 -> shape0
                 1 -> shape1
-                else -> throw IndexOutOfBoundsException(dimension)
+                else -> throw IndexOutOfBoundsException("$dimension")
             }
 
     override val size: Int

@@ -11,7 +11,7 @@ class DefaultMutableDoubleArray1DView (
 
     override fun setDouble(value: Double, index: Int) {
         if (index !in 0 until size) {
-            throw IndexOutOfBoundsException(index)
+            throw IndexOutOfBoundsException("$index")
         }
 
         array.setDouble(value, offset + stride * index)
@@ -19,7 +19,7 @@ class DefaultMutableDoubleArray1DView (
 
     override fun getDouble(index: Int): Double {
         if (index !in 0 until size) {
-            throw IndexOutOfBoundsException(index)
+            throw IndexOutOfBoundsException("$index")
         }
 
         return array.getDouble(offset + stride * index)

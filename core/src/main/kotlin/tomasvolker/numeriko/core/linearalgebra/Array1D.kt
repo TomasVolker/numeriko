@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.linearalgebra
 
+import tomasvolker.numeriko.core.functions.norm2
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
@@ -9,6 +10,8 @@ import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.primitives.modulo
 import tomasvolker.numeriko.core.primitives.sumDouble
 import tomasvolker.numeriko.core.primitives.sumInt
+
+fun DoubleArray1D.normalized(): DoubleArray1D = this / this.norm2()
 
 infix fun DoubleArray1D.inner(other: DoubleArray1D): Double {
     requireSameSize(this, other)

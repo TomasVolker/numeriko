@@ -9,12 +9,12 @@ val Array2D<*>.indices1: IntRange get() = 0 until shape1
 val Array2D<*>.lastIndex0: Int get() = shape0 - 1
 val Array2D<*>.lastIndex1: Int get() = shape1 - 1
 
-fun Array2D<*>.shape(dim: Int): Int = when(dim) {
+fun Array2D<*>.shape(dimension: Int): Int = when(dimension) {
     0 -> shape0
     1 -> shape1
-    else -> throw IndexOutOfBoundsException(dim)
+    else -> throw IndexOutOfBoundsException("$dimension")
 }
 
-fun Array2D<*>.lastIndex(dim: Int): Int = shape(dim) - 1
+fun Array2D<*>.lastIndex(dimension: Int): Int = shape(dimension) - 1
 
-fun Array2D<*>.indices(dim: Int): IntRange = 0 until shape(dim)
+fun Array2D<*>.indices(dimension: Int): IntRange = 0 until shape(dimension)

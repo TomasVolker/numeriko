@@ -16,7 +16,7 @@ class DoubleVector3(
         0 -> value0
         1 -> value1
         2 -> value2
-        else -> throw IndexOutOfBoundsException(index)
+        else -> throw IndexOutOfBoundsException("$index")
     }
 
     override fun equals(other: Any?): Boolean {

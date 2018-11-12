@@ -15,7 +15,7 @@ class DoubleVector2(
     override fun getDouble(index: Int) = when(index) {
         0 -> value0
         1 -> value1
-        else -> throw IndexOutOfBoundsException(index)
+        else -> throw IndexOutOfBoundsException("$index")
     }
 
     override fun equals(other: Any?): Boolean {
@@ -41,13 +41,13 @@ class MutableDoubleVector2(
     override fun getDouble(index: Int) = when(index) {
         0 -> value0
         1 -> value1
-        else -> throw IndexOutOfBoundsException(index)
+        else -> throw IndexOutOfBoundsException("$index")
     }
 
     override fun setDouble(value: Double, index: Int) = when(index) {
         0 -> value0 = value
         1 -> value1 = value
-        else -> throw IndexOutOfBoundsException(index)
+        else -> throw IndexOutOfBoundsException("$index")
     }
 
     override fun equals(other: Any?): Boolean {

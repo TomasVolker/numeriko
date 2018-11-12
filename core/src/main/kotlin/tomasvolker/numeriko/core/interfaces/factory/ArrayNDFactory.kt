@@ -15,7 +15,9 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.asMutable
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
+import tomasvolker.numeriko.core.primitives.indicative
 import tomasvolker.numeriko.core.reductions.product
+import kotlin.random.Random
 
 var defaultFactory: ArrayNDFactory = JvmArrayNDFactory()
 
@@ -88,6 +90,24 @@ interface ArrayNDFactory {
 
     fun doubleZeros(shape: IntArray1D): DoubleArrayND =
             doubleArrayND(shape, DoubleArray(shape.product()) { 0.0 })
+
+    // Math
+
+    fun doubleIdentity(size: Int): DoubleArray2D = doubleArray2D(size, size) { i0, i1 ->
+        (i0 == i1).indicative()
+    }
+
+    fun doubleRandom(size: Int): DoubleArray1D =
+            doubleArray1D(size) { Random.nextDouble() }
+
+    fun doubleRandom(shape0: Int, shape1: Int): DoubleArray2D =
+            doubleArray2D(shape0, shape1) { _, _ -> Random.nextDouble() }
+
+    fun doubleRandom(shape: IntArray1D): DoubleArrayND =
+            doubleArrayND(shape) { Random.nextDouble() }
+
+    fun doubleDiagonal(diagonal: DoubleArray1D): DoubleArray2D =
+            doubleDiagonal(diagonal.size) { i -> diagonal[i] }
 
 }
 

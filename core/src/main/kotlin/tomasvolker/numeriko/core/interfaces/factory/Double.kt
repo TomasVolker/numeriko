@@ -46,12 +46,28 @@ fun doubleZeros(shape: IntArray1D): DoubleArrayND =
         defaultFactory.doubleZeros(shape)
 
 
+fun doubleIdentity(size: Int): DoubleArray2D =
+        defaultFactory.doubleIdentity(size)
+
 
 fun doubleRandom(size: Int): DoubleArray1D =
-        doubleArray1D(size) { Random.nextDouble() }
+        defaultFactory.doubleRandom(size)
 
 fun doubleRandom(shape0: Int, shape1: Int): DoubleArray2D =
-        doubleArray2D(shape0, shape1) { _, _ -> Random.nextDouble() }
+        defaultFactory.doubleRandom(shape0, shape1)
 
 fun doubleRandom(shape: IntArray1D): DoubleArrayND =
-        doubleArrayND(shape) { Random.nextDouble() }
+        defaultFactory.doubleRandom(shape)
+
+
+inline fun doubleDiagonal(size: Int, diagonal: (i: Int)->Double): DoubleArray2D =
+        doubleArray2D(size, size) { i0, i1 ->
+            if (i0 == i1)
+                diagonal(i0)
+            else
+                0.0
+        }
+
+fun doubleDiagonal(diagonal: DoubleArray1D): DoubleArray2D =
+        defaultFactory.doubleDiagonal(diagonal)
+

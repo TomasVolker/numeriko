@@ -83,11 +83,11 @@ inline fun <T, A: MutableArray2D<T>> A.applyElementWise(other: Array2D<T>, opera
 fun <T> Array2D<T>.checkIndices(i0: Int, i1: Int) {
 
     if (i0 !in 0 until shape0) {
-        throw IndexOutOfBoundsException(i0)
+        throw IndexOutOfBoundsException("$i0")
     }
 
     if (i1 !in 0 until shape1) {
-        throw IndexOutOfBoundsException(i1)
+        throw IndexOutOfBoundsException("$i0")
     }
 
 }

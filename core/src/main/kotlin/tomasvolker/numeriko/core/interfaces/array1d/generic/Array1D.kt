@@ -22,7 +22,7 @@ interface Array1D<out T>: ArrayND<T> {
     override fun getShape(dimension: Int): Int =
             when(dimension) {
                 0 -> shape0
-                else -> throw IndexOutOfBoundsException(dimension)
+                else -> throw IndexOutOfBoundsException("$dimension")
             }
 
     override val size: Int

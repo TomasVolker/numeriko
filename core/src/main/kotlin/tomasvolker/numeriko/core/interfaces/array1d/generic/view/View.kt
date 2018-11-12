@@ -11,7 +11,7 @@ open class DefaultArray1DView<out T>(
 
     override fun getValue(index: Int): T {
         if (index !in 0 until size) {
-            throw IndexOutOfBoundsException(index)
+            throw IndexOutOfBoundsException("$index")
         }
 
         return array.getValue(offset + stride * index)
@@ -33,7 +33,7 @@ class DefaultMutableArray1DView<T>(
 
     override fun setValue(value: T, index: Int) {
         if (index !in 0 until size) {
-            throw IndexOutOfBoundsException(index)
+            throw IndexOutOfBoundsException("$index")
         }
 
         array.setValue(value, offset + stride * index)

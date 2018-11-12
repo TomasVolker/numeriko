@@ -61,7 +61,7 @@ fun DoubleArray2D.stack(other: DoubleArray1D, index: Int = 0): DoubleArray2D =
         when(index) {
             0 -> stack0(other)
             1 -> stack1(other)
-            else -> throw IndexOutOfBoundsException(index)
+            else -> throw IndexOutOfBoundsException("$index")
         }
 
 fun DoubleArray2D.stack0(other: DoubleArray1D): DoubleArray2D {
@@ -95,7 +95,7 @@ fun DoubleArray2D.stack(other: DoubleArray2D, index: Int = 0): DoubleArray2D =
         when(index) {
             0 -> stack0(other)
             1 -> stack1(other)
-            else -> throw IndexOutOfBoundsException(index)
+            else -> throw IndexOutOfBoundsException("$index")
         }
 
 fun DoubleArray2D.stack0(other: DoubleArray2D): DoubleArray2D {

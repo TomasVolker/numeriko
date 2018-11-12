@@ -48,6 +48,6 @@ fun log2(array: DoubleArray1D): DoubleArray1D =
 
 fun DoubleArray1D.norm1(): Double = sumBy { abs(it) }
 
-fun DoubleArray1D.norm2(): Double = sumBy { it * it }
+fun DoubleArray1D.norm2(): Double = sqrt(sumBy { it * it })
 
-fun DoubleArray1D.norm(p: Double): Double = sumBy { abs(it).pow(p) }
+fun DoubleArray1D.norm(p: Double): Double = sumBy { abs(it).pow(p) }.pow(1.0 / p)

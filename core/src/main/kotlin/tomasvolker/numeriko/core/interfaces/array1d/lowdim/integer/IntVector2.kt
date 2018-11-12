@@ -40,13 +40,13 @@ class MutableIntVector2(
     override fun getInt(index: Int) = when(index) {
         0 -> value0
         1 -> value1
-        else -> throw IndexOutOfBoundsException(index)
+        else -> throw IndexOutOfBoundsException("$index")
     }
 
     override fun setInt(value: Int, index: Int) = when(index) {
         0 -> value0 = value
         1 -> value1 = value
-        else -> throw IndexOutOfBoundsException(index)
+        else -> throw IndexOutOfBoundsException("$index")
     }
 
     override fun copy() = MutableIntVector2(value0, value1)
