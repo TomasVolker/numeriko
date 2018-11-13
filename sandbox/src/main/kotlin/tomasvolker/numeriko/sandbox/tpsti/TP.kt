@@ -2,6 +2,10 @@ package tomasvolker.numeriko.sandbox.tpsti
 
 import tomasvolker.kyplot.dsl.*
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
+import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.operations.stack
 import tomasvolker.numeriko.core.probability.DoubleNormalDistribution
 import tomasvolker.numeriko.core.probability.UniformDistribution
@@ -18,8 +22,8 @@ fun analyseMeasurements(
     showPlot {
 
         scatter {
-            x = sources.channel[0].asList()
-            y = sources.channel[1].asList()
+            x = sources.channel[0]
+            y = sources.channel[1]
         }
 
     }
@@ -32,18 +36,16 @@ fun analyseMeasurements(
     showPlot {
 
         scatter {
-            x = measurements.channel[0].asList()
-            y = measurements.channel[1].asList()
+            x = measurements.channel[0]
+            y = measurements.channel[1]
         }
 
     }
 
 }
 
+fun firstPart() {
 
-
-fun main(args: Array<String>) {
-/*
     val uniform = UniformDistribution(
             min = -sqrt(3.0),
             max = sqrt(3.0)
@@ -71,7 +73,7 @@ fun main(args: Array<String>) {
     }
 
     analyseMeasurements(gaussianSources)
-*/
+
 
     val moreSources = generateSignals(
             sensorCount = 4,
@@ -83,33 +85,104 @@ fun main(args: Array<String>) {
         )
     }
 
-    //showPlot(moreSources)
+    showPlot(moreSources)
 
-    val order = ByteOrder.LITTLE_ENDIAN
+}
 
-    val file1 = File("./sandbox/res/tp/In_1.txt")
-    val signal1 = file1.readArray1D(order)
-
-    val file2 = File("./sandbox/res/tp/In_2.txt")
-    val signal2 = file2.readArray1D(order)
-
-    val reference1 = File("./sandbox/res/tp/Ref_1.txt").readArray1D(order)
-    val reference2 = File("./sandbox/res/tp/Ref_2.txt").readArray1D(order)
-
-    val measurements = mergeSignals(signal1, signal2)
-
-    //showPlot(measurements)
+fun independentComponentAnalysis(
+        measurements: SignalEnsemble
+): SignalEnsemble {
 
     val uncorrelated = measurements.uncorrelate()
-
-    //showPlot(uncorrelated)
 
     val basis = uncorrelated.independentComponentAnalysis()
     val ortho = basis.orthogonalize()
     println("Basis: ${ortho[0]}, ${ortho[1]}")
-    val W = stack(*ortho.toTypedArray())
+    val W = stack(ortho)
 
-    val recovered = uncorrelated.mixSignals(W)
+    return uncorrelated.mixSignals(W)
+}
+
+fun simpleSobi(
+        measurements: SignalEnsemble,
+        delay: Int = 1
+): SignalEnsemble {
+
+    val uncorrelated = measurements.uncorrelate()
+
+    val autoCorrelation = uncorrelated.estimateAutoCorrelation(delay)
+    val decomposition = autoCorrelation.eigenDecomposition(symetric = true)
+
+    return uncorrelated.mixSignals(decomposition.vectorMatrix())
+}
+
+fun main(args: Array<String>) {
+
+    val resDirectory = "./sandbox/res/tp/"
+
+    firstPart()
+
+    val order = ByteOrder.LITTLE_ENDIAN
+
+    val signal1 = File(resDirectory + "In_1.txt").readArray1D(order)
+    val signal2 = File(resDirectory + "In_2.txt").readArray1D(order)
+
+    val reference1 = File(resDirectory + "Ref_1.txt").readArray1D(order)
+    val reference2 = File(resDirectory + "Ref_2.txt").readArray1D(order)
+
+    val measurements = mergeSignals(signal1, signal2)
+    val reference = mergeSignals(reference1, reference2)
+
+    val recovered = independentComponentAnalysis(measurements)
+
+    val errorMatrix = errorMatrix(reference, recovered).elementWise { it.toDB() }
+
+    println("Error Matrix [dB]: $errorMatrix")
+
+    showRecoveryPlot(
+            reference = reference,
+            recovered = recovered
+    )
+
+
+    val maxDelay = 40
+
+    val errors = (1..maxDelay).map { t ->
+        val recovered = simpleSobi(measurements, delay = t)
+
+        errorMatrix(reference, recovered).elementWise { it.toDB().also { println(it) } }.min() ?: 0.0
+    }
+
+    showPlot {
+        title = "Autocorrelation delay used vs Error"
+        line {
+            x = (1..maxDelay).toList()
+            y = errors.toList()
+        }
+        xAxis.label = "Autocorrelation delay used [time steps]"
+        yAxis.label = "Error [dB]"
+    }
+
+/*
+    showRecoveryPlot(
+            reference = reference,
+            recovered = recovered
+    )
+*/
+}
+
+fun errorMatrix(
+        reference: SignalEnsemble,
+        recovered: SignalEnsemble
+): DoubleArray2D =
+        doubleArray2D(reference.channelCount, recovered.channelCount) { i0, i1 ->
+            normalizedQuadraticError(reference.channel[i0], recovered.channel[i1])
+        }
+
+fun showRecoveryPlot(
+        reference: SignalEnsemble,
+        recovered: SignalEnsemble
+) {
 
     showFigure {
 
@@ -120,8 +193,8 @@ fun main(args: Array<String>) {
         plot {
             title = "Recovered 1"
             line {
-                x = uncorrelated.timeArray.asList()
-                y = recovered.channel[0].asList()
+                x = recovered.timeArray
+                y = recovered.channel[0]
             }
             position.row = 0
         }
@@ -129,8 +202,8 @@ fun main(args: Array<String>) {
         plot {
             title = "Recovered 2"
             line {
-                x = uncorrelated.timeArray.asList()
-                y = recovered.channel[1].asList()
+                x = recovered.timeArray
+                y = recovered.channel[1]
             }
             position.row = 1
         }
@@ -138,8 +211,8 @@ fun main(args: Array<String>) {
         plot {
             title = "Reference 1"
             line {
-                x = uncorrelated.timeArray.asList()
-                y = reference1.asList()
+                x = recovered.timeArray
+                y = reference.channel[0]
             }
             position.row = 2
         }
@@ -147,15 +220,13 @@ fun main(args: Array<String>) {
         plot {
             title = "Reference 2"
             line {
-                x = uncorrelated.timeArray.asList()
-                y = reference2.asList()
+                x = recovered.timeArray
+                y = reference.channel[1]
             }
             position.row = 3
         }
 
     }
-
-
 
 }
 
@@ -177,8 +248,8 @@ fun showPlot(signalEnsemble: SignalEnsemble) {
             plot {
                 title = "Signal $i"
                 line {
-                    x = signalEnsemble.timeArray.asList()
-                    y = signalEnsemble.channel[i].asList()
+                    x = signalEnsemble.timeArray
+                    y = signalEnsemble.channel[i]
                 }
                 position.row = i
             }

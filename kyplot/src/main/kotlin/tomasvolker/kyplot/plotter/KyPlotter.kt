@@ -7,6 +7,7 @@ import tomasvolker.kyplot.model.MarkerType.*
 import tomasvolker.kyplot.model.MarkerFillStyle.*
 import tomasvolker.kyplot.model.Legend.Position.*
 import tomasvolker.kyscript.KyScriptWriter
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 
 class KyPlot: KyScriptWriter() {
 
@@ -76,7 +77,7 @@ class KyPlot: KyScriptWriter() {
                 is Axis.TickPositions.Explicit -> {
                     +plt.id("xticks")(
                         xAxis.tickPositions.tickList.map { it.position },
-                        xAxis.tickPositions.tickList.map { it.label.toPythonExpression() }
+                        xAxis.tickPositions.tickList.map { it.label }
                     )
                 }
             }
@@ -85,7 +86,7 @@ class KyPlot: KyScriptWriter() {
                 is Axis.TickPositions.Explicit -> {
                     +plt.id("yticks")(
                         yAxis.tickPositions.tickList.map { it.position },
-                        yAxis.tickPositions.tickList.map { it.label.toPythonExpression() }
+                        yAxis.tickPositions.tickList.map { it.label }
                     )
                 }
             }
@@ -116,8 +117,8 @@ class KyPlot: KyScriptWriter() {
 
     fun plt(functionName: String, args: List<Any?>, kwargs: Map<String, Any?>) {
         +plt.id(functionName)(
-            args.toPythonExpression().let { inject("*$it") },
-            kwargs.toPythonExpression().let { inject("**$it") }
+                inject("*${args.toPythonExpression()}"),
+                inject("**${kwargs.toPythonExpression()}")
         )
     }
 
@@ -221,6 +222,18 @@ class KyPlot: KyScriptWriter() {
                 )
             }
         }
+    }
+
+    override fun serializeToPython(value: Any?): String = when(value) {
+        is ArrayND<*> -> value.toString()
+        is Iterable<*> -> {
+            when(value) {
+                is Set<*> -> super.serializeToPython(value)
+                is Map<*, *> -> super.serializeToPython(value)
+                else -> super.serializeToPython(value.toList())
+            }
+        }
+        else -> super.serializeToPython(value)
     }
 
 }

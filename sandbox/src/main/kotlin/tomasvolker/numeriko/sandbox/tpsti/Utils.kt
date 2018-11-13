@@ -1,6 +1,8 @@
 package tomasvolker.numeriko.sandbox.tpsti
 
+import com.sun.media.sound.WaveFileWriter
 import org.ejml.data.DMatrixRMaj
+import tomasvolker.numeriko.core.functions.log10
 import tomasvolker.numeriko.core.functions.norm2
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
@@ -14,12 +16,23 @@ import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
 import tomasvolker.numeriko.core.linearalgebra.inner
+import tomasvolker.numeriko.sandbox.tps.squared
 import java.io.File
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.DoubleBuffer
 import java.util.*
 import kotlin.math.cosh
+import kotlin.math.log10
+import javax.sound.sampled.AudioFileFormat
+import javax.sound.sampled.AudioSystem
+import javax.sound.sampled.AudioInputStream
+import java.io.ByteArrayInputStream
+import org.opencv.core.CvType.channels
+import tomasvolker.numeriko.core.primitives.pow2
+import javax.sound.sampled.AudioFormat
+import kotlin.math.absoluteValue
+
 
 val javaRandom = Random()
 
@@ -103,3 +116,56 @@ fun ByteArray.toDoubleArrayND(
 
     return doubleArrayND(shape, buffer.toDoubleArray())
 }
+
+
+fun normalizedQuadraticError(array1: DoubleArray1D, array2: DoubleArray1D): Double =
+        1 - (array1 colinearityFactor array2).squared()
+
+fun Double.toDB(): Double = 10 * log10(this)
+
+
+fun DoubleArray1D.writeToWav(file: File, maxAmplitude: Double? = null) {
+
+    val normalization = 1.0 / (maxAmplitude ?: maxBy { it.absoluteValue } ?: 1.0)
+
+    val maxShort = Short.MAX_VALUE
+
+    val byteBuffer = ByteArray(this.size * 2)
+
+    for (i in 0 until byteBuffer.size step 2) {
+        val x = (this[i/2] * normalization * maxShort).toInt()
+        byteBuffer[i] = x.toByte()
+        byteBuffer[i+1] = x.ushr(8).toByte()
+    }
+
+    val format = audioFormat(
+            sampleRate = 44100.0,
+            bits = 16,
+            channels = 1,
+            signed = true,
+            bigEndian = false
+    )
+
+    byteBuffer.inputStream().audioStream(format, length = this.size.toLong()).use {
+        AudioSystem.write(it, AudioFileFormat.Type.WAVE, file)
+    }
+}
+
+fun ByteArrayInputStream.audioStream(
+        format: AudioFormat,
+        length: Long
+) = AudioInputStream(this, format, length)
+
+fun audioFormat(
+        sampleRate: Double,
+        bits: Int,
+        channels: Int,
+        signed: Boolean,
+        bigEndian: Boolean
+) = AudioFormat(
+        sampleRate.toFloat(),
+        bits,
+        channels,
+        signed,
+        bigEndian
+)

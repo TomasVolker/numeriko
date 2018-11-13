@@ -28,9 +28,7 @@ fun defaultToString(array1: Array1D<*>): String =
         array1.joinToString(
                 separator = ", ",
                 prefix = "[ ",
-                postfix = " ]",
-                limit = 20,
-                truncated = "..."
+                postfix = " ]"
         )
 
 

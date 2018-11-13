@@ -45,9 +45,7 @@ fun defaultToString(array: Array2D<*>) = buildString {
                 array.getView(i0, All).joinToString(
                     separator = ", ",
                     prefix = "[ ",
-                    postfix = " ]",
-                    limit = 20,
-                    truncated = "..."
+                    postfix = " ]"
             )
         )
 

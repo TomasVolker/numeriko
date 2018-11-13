@@ -10,6 +10,7 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
     testImplementation("junit", "junit", "4.12")
+    implementation(project(":core"))
 
     implementation(files("libs/kyscript-0.1.jar"))
     implementation(files("libs/kyscript-0.1-sources.jar"))

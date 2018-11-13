@@ -44,6 +44,20 @@ class SignalEnsemble(
     fun getSamples(timeStep: Int): DoubleArray1D =
             values.getView(All, timeStep)
 
+    fun getSampleAtChannel(channel: Int, timeStep: Int): Double =
+            values[channel, timeStep]
+
+}
+
+fun SignalEnsemble.estimateAutoCorrelation(delta: Int): DoubleArray2D {
+
+    val availableValues = duration - delta
+
+    return doubleArray2D(channelCount, channelCount) { i0, i1 ->
+        sumDouble(0 until availableValues) { t ->
+            this.getSampleAtChannel(i0, t) * this.getSampleAtChannel(i1, t + delta)
+        } / availableValues
+    }
 }
 
 inline fun SignalEnsemble.mapSamples(operation: (sample: DoubleArray1D)->DoubleArray1D): SignalEnsemble {

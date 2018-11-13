@@ -24,7 +24,7 @@ inline fun <reified T> stack(vararg arrays: Array1D<T>): Array2D<T> {
 
 }
 
-fun stack(vararg arrays: DoubleArray1D): DoubleArray2D {
+fun stack(arrays: List<DoubleArray1D>): DoubleArray2D {
 
     if (arrays.isEmpty()) return doubleArray2D(0, 0) { _, _-> 0.0 }
 
@@ -36,6 +36,9 @@ fun stack(vararg arrays: DoubleArray1D): DoubleArray2D {
     }
 
 }
+
+fun stack(vararg arrays: DoubleArray1D): DoubleArray2D =
+        stack(arrays.toList())
 
 infix fun DoubleArray1D.concatenate(other: DoubleArray1D): DoubleArray1D =
         doubleArray1D(this.size + other.size) { i ->

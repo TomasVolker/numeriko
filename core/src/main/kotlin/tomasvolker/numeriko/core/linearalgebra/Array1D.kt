@@ -6,6 +6,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.primitives.modulo
 import tomasvolker.numeriko.core.primitives.sumDouble
@@ -16,6 +17,13 @@ fun DoubleArray1D.normalized(): DoubleArray1D = this / this.norm2()
 infix fun DoubleArray1D.inner(other: DoubleArray1D): Double {
     requireSameSize(this, other)
     return sumDouble(indices) { i -> this[i] * other[i] }
+}
+
+infix fun DoubleArray1D.outer(other: DoubleArray1D): DoubleArray2D {
+    requireSameSize(this, other)
+    return doubleArray2D(this.size, other.size) { i0, i1 ->
+        this[i0] * other[i1]
+    }
 }
 
 fun linearSpace(start: Double, stop: Double, amount: Int = 10): DoubleArray1D {
