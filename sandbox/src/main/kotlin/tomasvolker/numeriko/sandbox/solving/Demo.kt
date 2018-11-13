@@ -3,6 +3,8 @@ package tomasvolker.numeriko.sandbox.solving
 import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
+import tomasvolker.numeriko.core.interfaces.factory.doubleIdentity
+import tomasvolker.numeriko.core.linearalgebra.determinant
 import tomasvolker.numeriko.core.linearalgebra.inverse
 import tomasvolker.numeriko.core.linearalgebra.matMul
 import tomasvolker.numeriko.core.linearalgebra.solve

@@ -12,6 +12,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
 import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.primitives.indicative
+import tomasvolker.numeriko.core.primitives.sumDouble
 
 fun MutableDoubleArray2D.inplaceGaussianElimination() =
         inplaceGaussianElimination { _, _, _ ->  }
@@ -87,7 +88,7 @@ fun DoubleArray2D.inplaceBackSubstitution(image: MutableDoubleArray1D) {
 
     for (i0 in indices0.reversed()) {
         image[i0] = (image[i0] -
-                ((i0+1) until shape1).sumByDouble { i1 -> this[i0, i1] * image[i1] }) / this[i0, i0]
+                sumDouble((i0+1) until shape1) { i1 -> this[i0, i1] * image[i1] }) / this[i0, i0]
     }
 
 }

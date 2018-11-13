@@ -38,7 +38,7 @@ inline fun sumVector(indices: IntProgression, value: (i: Int)-> DoubleArray1D): 
 infix fun DoubleArray1D.colinearityFactor(other: DoubleArray1D): Double =
         (this inner other) / (this.norm2() * other.norm2())
 
-fun sech(x: Double): Double = 2.0 / (cosh(2 * x) + 1)
+fun sech(x: Double): Double = 1.0 / cosh(x)
 
 operator fun MutableDoubleArray2D.set(i0: IndexProgression, i1: Int, array: DoubleArray1D) =
         getView(i0, i1).setValue(array)

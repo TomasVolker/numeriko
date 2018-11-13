@@ -3,6 +3,8 @@ package tomasvolker.numeriko.sandbox.tpsti
 import tomasvolker.kyplot.dsl.*
 import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.operations.stack
+import tomasvolker.numeriko.core.probability.DoubleNormalDistribution
+import tomasvolker.numeriko.core.probability.UniformDistribution
 import java.io.File
 import java.nio.ByteOrder
 import kotlin.math.*
@@ -42,27 +44,33 @@ fun analyseMeasurements(
 
 fun main(args: Array<String>) {
 /*
+    val uniform = UniformDistribution(
+            min = -sqrt(3.0),
+            max = sqrt(3.0)
+    )
+
     val uniformSources = generateSignals(
             sensorCount = 2,
-            duration = 1000
+            timeSteps = 1000
     ) { sensor, time ->
-        Random.nextDouble(
-                from = -sqrt(3.0),
-                until = sqrt(3.0)
-        )
+        uniform.nextSample()
     }
 
     analyseMeasurements(uniformSources)
 
+    val gaussian = DoubleNormalDistribution(
+            mean = 2.0,
+            deviation = 4.0
+    )
+
     val gaussianSources = generateSignals(
             sensorCount = 2,
-            duration = 1000
+            timeSteps = 1000
     ) { sensor, time ->
-        javaRandom.nextGaussian()
+        gaussian.nextSample()
     }
 
     analyseMeasurements(gaussianSources)
-
 */
 
     val moreSources = generateSignals(
@@ -98,9 +106,10 @@ fun main(args: Array<String>) {
 
     val basis = uncorrelated.independentComponentAnalysis()
     val ortho = basis.orthogonalize()
+    println("Basis: ${ortho[0]}, ${ortho[1]}")
     val W = stack(*ortho.toTypedArray())
 
-    val recovered = uncorrelated.mixSignals(W.transpose())
+    val recovered = uncorrelated.mixSignals(W)
 
     showFigure {
 

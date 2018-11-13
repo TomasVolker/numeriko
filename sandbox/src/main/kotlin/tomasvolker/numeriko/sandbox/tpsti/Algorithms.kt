@@ -63,22 +63,15 @@ fun DoubleArray2D.eigenDecomposition(symetric: Boolean = false): EigenDecomposit
 
 
 fun SignalEnsemble.retrieveIndependentComponent(
-        seed: DoubleArray1D = doubleArray1D(channelCount) { javaRandom.nextGaussian() }
+        seed: DoubleArray1D = doubleArray1D(channelCount) { javaRandom.nextGaussian() },
+        iterations: Int = 1000
 ): DoubleArray1D {
 
     var w = seed
 
-    var diff = 1.0
-    val limit = 1e-14
-
-    while(diff > limit) {
-
-        var next = meanVector { x -> x * tanh(w inner x) } - meanValue { x -> sech(w inner x).squared() } * w
-        next /= next.norm2()
-
-        diff = (w-next).norm2()
-
-        w = next
+    repeat(iterations) {
+        w = meanVector { x -> x * tanh(w inner x) } - meanValue { x -> sech(w inner x).squared() } * w
+        w /= w.norm2()
     }
 
     return w
@@ -89,8 +82,8 @@ fun SignalEnsemble.independentComponentAnalysis(): List<DoubleArray1D> {
     val components = mutableListOf<DoubleArray1D>()
 
     while (components.size < channelCount) {
-        val newVal = retrieveIndependentComponent()
-        println(newVal)
+        val newVal = retrieveIndependentComponent(iterations = 100)
+        println("New independent component: $newVal")
         if (components.all { abs(it colinearityFactor newVal) < 0.5 })
             components.add(newVal)
     }

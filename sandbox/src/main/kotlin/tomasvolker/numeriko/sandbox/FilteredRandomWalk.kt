@@ -31,11 +31,11 @@ fun main() {
     showPlot {
         title = "Random walk"
 
-        line(x = time, y = speed) {
+        line(x = time.asList(), y = speed.asList()) {
             label = "speed"
         }
 
-        line(x = time, y = position) {
+        line(x = time.asList(), y = position.asList()) {
             label = "position"
         }
 
