@@ -8,7 +8,7 @@ It's goal is to provide complete and efficient N-dimensional array containers
 for general purposes, in particular for numerical computing, following the 
 kotlin style and idiomatic practices.
 
-##Construction
+## Construction
 
 Generic arrays are constructed with factory functions based on kotlin standard
 library or with the DSL.
@@ -60,7 +60,7 @@ val evenMoreZeros = doubleZeros(1000, 1000).asMutable() // MutableDoubleArray2D
 
 ### Access
 
-For specialized interfaces, a get and set operator is available, for both
+For specialized rank interfaces, a get and set operator is available, for both
 indices and ranges. In the case of ranges a view of the array is returned,
 not a copy.
 
@@ -100,7 +100,7 @@ myArray / yourArray // Element wise division
 3.14 * myArray // Element wise multiplication
 ```
 
-##The ArrayND interfaces
+## The ArrayND interfaces
 
 Al the array interfaces comply with the `Collection<T>` interface and
 follow kotlin's convention for separation of the read-only and the
@@ -111,12 +111,12 @@ modified or just read from.
 The parent interface is `ArrayND<T>` which is read-only, with 
 `MutableArrayND<T>` inheriting from it and extending it with content modifying
 methods. As N-dimensional arrays tend to occupy a lot of memory, it is usually
-desired to access the array with a mutable interface. This is why `ArrayND`
+desired to access the array with a mutable interface. This is why `ArrayND<T>`
 implementations must implement `asMutable()` to provide a mutable interface
 to it.
 
 In addition to `ArrayND<T>`, specific implementations for primitives are planned
-to be developed, such `DoubleArrayND` which is currently available. This follows
+to be developed, such as `DoubleArrayND` which is currently available. This follows
 kotlin's standard library conventions for `Array` such as `DoubleArray` or `IntArray`.
 It's mutable versions are also available, for example `MutableDoubleArrayND`.
 
