@@ -4,8 +4,6 @@ import tomasvolker.kyplot.dsl.*
 import tomasvolker.kyplot.model.Legend
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 
-import tomasvolker.numeriko.core.linearalgebra.cumSum
-import tomasvolker.numeriko.core.linearalgebra.filter1D
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
 import kotlin.random.Random
 
@@ -26,7 +24,7 @@ fun main() {
     val filter = doubleArray1D(windowSize) { 1.0 }
 
     val speed = doubleArray1D(time.size) { Random.nextDouble(-0.1, 0.1) }.filter1D(filter)
-    val position = speed.cumSum() * delta
+    val position = speed.cumulativeSum() * delta
 
     showPlot {
         title = "Random walk"

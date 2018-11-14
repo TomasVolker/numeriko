@@ -4,9 +4,6 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
-import tomasvolker.numeriko.core.linearalgebra.cuadraticForm
-import tomasvolker.numeriko.core.linearalgebra.determinant
-import tomasvolker.numeriko.core.linearalgebra.inverse
 import tomasvolker.numeriko.core.primitives.squared
 import kotlin.math.*
 import kotlin.random.Random
@@ -22,7 +19,7 @@ fun normalPdf(
         covarianceDeterminant: Double = 1.0 / invCovariance.determinant()
 ): Double {
     val dimension = x.size
-    return exp(-(invCovariance.cuadraticForm(x-mean))/2.0) / (2 * PI * covarianceDeterminant).pow(dimension / 2.0)
+    return exp(-(invCovariance.quadraticForm(x-mean))/2.0) / (2 * PI * covarianceDeterminant).pow(dimension / 2.0)
 }
 
 interface DoubleProbabilityDistribution {
@@ -138,6 +135,6 @@ class ArrayNormalDistribution(
     val normalization: Double = 1.0 / (2 * PI * covarianceDeterminant).pow(dimension / 2.0)
 
     override fun pdf(x: DoubleArray1D): Double =
-            normalization * exp(-(inverseCovariance.cuadraticForm(x-mean))/2.0)
+            normalization * exp(-(inverseCovariance.quadraticForm(x-mean))/2.0)
 
 }

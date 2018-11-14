@@ -6,9 +6,13 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DTransposeView
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DView
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2DCollapseView
-import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
+import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
+import tomasvolker.numeriko.core.linearalgebra.DefaultLinearAlgebra
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
+import tomasvolker.numeriko.core.primitives.sumDouble
 
 interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
 
@@ -128,6 +132,64 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
             div(other.toDouble())
 
     fun sum(): Double = sumBy { it }
+
+    fun determinant(): Double = DefaultLinearAlgebra.determinant(this)
+
+    fun solve(image: DoubleArray1D): DoubleArray1D = DefaultLinearAlgebra.solve(this, image)
+
+    fun inverse(): DoubleArray2D = DefaultLinearAlgebra.inverse(this)
+
+    infix fun matMul(other: DoubleArray1D): DoubleArray1D {
+        require(this.shape1 == other.shape0) {
+            "sizes dont match"
+        }
+        return doubleArray1D(this.shape0) { i0 ->
+            sumDouble(this.indices1) { k -> this[i0, k] * other[k] }
+        }
+    }
+
+    fun quadraticForm(other: DoubleArray1D): Double {
+        require(this.isSquare()) {
+            "Array is not square ${this.shape}"
+        }
+        require(this.shape0 == other.size) {
+            "Sizes dont match"
+        }
+
+        var result = 0.0
+        forEachIndex { i0, i1 ->
+            result += this[i0, i1] * other[i0] * other[i1]
+        }
+        return result
+    }
+
+    infix fun matMul(other: DoubleArray2D): DoubleArray2D {
+        require(this.shape1 == other.shape0) {
+            "sizes dont match"
+        }
+        return doubleArray2D(this.shape0, other.shape1) { i0, i1 ->
+            sumDouble(this.indices0) { k -> this[i0, k] * other[k, i1] }
+        }
+    }
+
+    fun filter2D(filter: DoubleArray2D, padding: Double = 0.0): DoubleArray2D {
+
+        val filterCenter0 = filter.shape0 / 2
+        val filterCenter1 = filter.shape1 / 2
+
+        return doubleArray2D(this.shape0, this.shape1) { i0, i1 ->
+            sumDouble(filter.indices(0), filter.indices(1)) { j0, j1 ->
+                val k0 = i0 - j0 - filterCenter0
+                val k1 = i1 - j1 - filterCenter1
+                if (k0 in 0 until this.shape0 && k1 in 0 until this.shape1) {
+                    this[k0, k1] * filter[j0, j1]
+                } else {
+                    padding
+                }
+            }
+        }
+    }
+
 
     override fun asMutable(): MutableDoubleArray2D = this as MutableDoubleArray2D
 

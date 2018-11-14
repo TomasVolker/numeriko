@@ -8,8 +8,6 @@ import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleDiagonal
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
-import tomasvolker.numeriko.core.linearalgebra.inner
-import tomasvolker.numeriko.core.linearalgebra.matMul
 import tomasvolker.numeriko.core.operations.stack
 import tomasvolker.numeriko.core.primitives.sumDouble
 import kotlin.math.sqrt
@@ -18,7 +16,7 @@ interface Getter<T> {
     operator fun get(i: Int): T
 }
 
-fun <T> getter(getter: (i: Int)->T): Getter<T> =
+inline fun <T> getter(crossinline getter: (i: Int)->T): Getter<T> =
         object: Getter<T> {
             override operator fun get(i: Int) = getter(i)
         }

@@ -4,7 +4,12 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array1d.integer.view.DefaultMutableIntArray1DView
+import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.core.preconditions.requireSameSize
+import tomasvolker.numeriko.core.primitives.modulo
+import tomasvolker.numeriko.core.primitives.sumInt
 
 interface IntArray1D: Array1D<Int> {
 
@@ -69,6 +74,21 @@ interface IntArray1D: Array1D<Int> {
             elementWise { it / other }
 
     fun sum(): Int = sumBy { it }
+
+    fun average(): Double = sum().toDouble() / size
+
+    infix fun convolve(other: IntArray1D): IntArray1D {
+        requireSameSize(this, other)
+
+        return intArray1D(this.size) { i ->
+            sumInt(other.indices) { j ->
+                this[(i - j) modulo size] * other[j]
+            }
+        }
+    }
+
+
+
 
     fun asMutable(): MutableIntArray1D = this as MutableIntArray1D
 

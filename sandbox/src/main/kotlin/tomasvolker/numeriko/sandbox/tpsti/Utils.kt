@@ -1,9 +1,6 @@
 package tomasvolker.numeriko.sandbox.tpsti
 
-import com.sun.media.sound.WaveFileWriter
 import org.ejml.data.DMatrixRMaj
-import tomasvolker.numeriko.core.functions.log10
-import tomasvolker.numeriko.core.functions.norm2
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
@@ -15,7 +12,6 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
-import tomasvolker.numeriko.core.linearalgebra.inner
 import tomasvolker.numeriko.sandbox.tps.squared
 import java.io.File
 import java.nio.ByteBuffer

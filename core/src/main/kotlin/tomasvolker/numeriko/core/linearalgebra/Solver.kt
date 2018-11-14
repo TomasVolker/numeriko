@@ -1,17 +1,10 @@
 package tomasvolker.numeriko.core.linearalgebra
 
-import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.index.Last
-import tomasvolker.numeriko.core.index.rangeTo
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
-import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
-import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
-import tomasvolker.numeriko.core.primitives.indicative
 import tomasvolker.numeriko.core.primitives.sumDouble
 
 fun MutableDoubleArray2D.inplaceGaussianElimination() =
@@ -67,23 +60,6 @@ fun MutableDoubleArray2D.inplaceGaussianElimination(image: MutableDoubleArray1D)
 
 }
 
-
-fun DoubleArray2D.solve(image: DoubleArray1D): DoubleArray1D {
-
-    require(this.isSquare() && this.shape0 == image.size)
-
-    // Pivoting
-
-    val table = this.copy().asMutable()
-    val result = image.copy().asMutable()
-
-    table.inplaceGaussianElimination(result)
-
-    table.inplaceBackSubstitution(result)
-
-    return result
-}
-
 fun DoubleArray2D.inplaceBackSubstitution(image: MutableDoubleArray1D) {
 
     for (i0 in indices0.reversed()) {
@@ -118,18 +94,3 @@ fun MutableDoubleArray2D.inplaceReducedEchelonForm() {
 
 }
 
-fun DoubleArray2D.inverse(): DoubleArray2D {
-
-    require(isSquare())
-
-    val table = doubleArray2D(shape0, 2 * shape1) { i0, i1 ->
-        if (i1 < shape1)
-            this[i0, i1]
-        else
-            (i0 == (i1-shape1)).indicative()
-    }.asMutable()
-
-    table.inplaceReducedEchelonForm()
-
-    return table.getView(All, shape1..Last).copy()
-}
