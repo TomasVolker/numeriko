@@ -131,7 +131,7 @@ fun main(args: Array<String>) {
 
     val measurements = mergeSignals(signal1, signal2)
     val reference = mergeSignals(reference1, reference2)
-
+/*
     val recovered = independentComponentAnalysis(measurements)
 
     val errorMatrix = errorMatrix(reference, recovered).elementWise { it.toDB() }
@@ -142,8 +142,8 @@ fun main(args: Array<String>) {
             reference = reference,
             recovered = recovered
     )
-
-
+*/
+/*
     val maxDelay = 40
 
     val errors = (1..maxDelay).map { t ->
@@ -161,13 +161,28 @@ fun main(args: Array<String>) {
         xAxis.label = "Autocorrelation delay used [time steps]"
         yAxis.label = "Error [dB]"
     }
-
-/*
-    showRecoveryPlot(
-            reference = reference,
-            recovered = recovered
-    )
 */
+
+    val maxWindow = 20
+
+    val errors = (1..maxWindow).map { w ->
+        val recovered = measurements.sobi(
+                window = w
+        )
+
+        errorMatrix(reference, recovered).elementWise { it.toDB() }.min().also { println(it) } ?: 0.0
+    }
+
+    showPlot {
+        title = "Autocorrelation delay used vs Error"
+        line {
+            x = (1..maxWindow).toList()
+            y = errors.toList()
+        }
+        xAxis.label = "Autocorrelation delay used [time steps]"
+        yAxis.label = "Error [dB]"
+    }
+
 }
 
 fun errorMatrix(
