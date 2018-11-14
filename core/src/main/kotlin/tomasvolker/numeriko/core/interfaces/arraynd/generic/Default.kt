@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.*
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.collapseView
 import tomasvolker.numeriko.core.interfaces.factory.intZeros
 
 fun defaultEquals(array1: ArrayND<*>, array2: ArrayND<*>): Boolean {

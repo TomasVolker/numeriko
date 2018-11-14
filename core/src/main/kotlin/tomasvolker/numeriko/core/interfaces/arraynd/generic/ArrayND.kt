@@ -4,10 +4,23 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.computeIndices
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayNDView
 import tomasvolker.numeriko.core.interfaces.factory.defaultFactory
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.reductions.product
 
+/**
+ * The parent interface of all N-dimensional arrays.
+ *
+ * All N-d arrays comply to this interface directly or indirectly. It exposes a read-only interface
+ * for a generic array of `T` of any rank. It is encouraged to use more specific interfaces such as
+ * [Array1D] or [DoubleArray2D] as they provide more functionality and type safety.
+ *
+ * This interface inherits from [Collection] and has out variance. To modify the array, the method [asMutable] should
+ * provide a [MutableArrayND] view of it. Take in account that [asMutable] violates the out variance.
+ *
+ * @see MutableArrayND
+ */
 interface ArrayND<out T>: Collection<T> {
 
     /**
@@ -152,5 +165,14 @@ interface ArrayND<out T>: Collection<T> {
     fun copy(): ArrayND<T> = defaultFactory.copy(this)
 
     override fun iterator(): Iterator<T> = DefaultArrayNDIterator(this)
+
+    /**
+     * Provides a mutable view of this array.
+     *
+     * **Caution:** this method violates the out variance.
+     *
+     * The default implementation for this method is just casting to [MutableArrayND]
+     */
+    fun asMutable(): MutableArrayND<@UnsafeVariance T> = this as MutableArrayND<T>
 
 }

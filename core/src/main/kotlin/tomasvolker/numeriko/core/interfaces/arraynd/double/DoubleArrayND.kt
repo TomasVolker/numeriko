@@ -5,6 +5,7 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.computeIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.factory.defaultFactory
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 
 interface DoubleArrayND: ArrayND<Double> {
@@ -36,10 +37,10 @@ interface DoubleArrayND: ArrayND<Double> {
     override fun getView(vararg indices: IndexProgression): DoubleArrayND =
             getView(*indices.computeIndices(shape))
 
-    override fun copy(): DoubleArrayND = TODO()
+    override fun copy(): DoubleArrayND = defaultFactory.copy(this)
 
     override fun iterator(): DoubleIterator = DefaultDoubleArrayNDIterator(this)
 
-    fun asMutable(): MutableDoubleArrayND = this as MutableDoubleArrayND
+    override fun asMutable(): MutableDoubleArrayND = this as MutableDoubleArrayND
 
 }

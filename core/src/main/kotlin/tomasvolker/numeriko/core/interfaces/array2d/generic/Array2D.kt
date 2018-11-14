@@ -8,6 +8,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.intVector2
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.Array2DCollapseView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 
 interface Array2D<out T>: ArrayND<T> {
@@ -88,6 +89,8 @@ interface Array2D<out T>: ArrayND<T> {
     override fun copy(): Array2D<T> = copy(this)
 
     override fun iterator(): Iterator<T> = DefaultArray2DIterator(this)
+
+    override fun asMutable(): MutableArray2D<@UnsafeVariance T> = this as MutableArray2D<T>
 
 }
 

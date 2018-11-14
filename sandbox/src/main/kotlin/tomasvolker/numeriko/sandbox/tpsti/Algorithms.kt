@@ -10,6 +10,7 @@ import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleDiagonal
 import tomasvolker.numeriko.core.primitives.squared
 import kotlin.math.abs
+import kotlin.math.tan
 import kotlin.math.tanh
 
 
@@ -66,8 +67,11 @@ fun SignalEnsemble.retrieveIndependentComponent(
 
     var w = seed
 
+    fun g(x: Double): Double = tanh(x)
+    fun gPrime(x: Double): Double = sech(x).squared()
+
     repeat(iterations) {
-        w = meanVector { x -> x * tanh(w inner x) } - meanValue { x -> sech(w inner x).squared() } * w
+        w = meanVector { x -> x * g(w inner x) } - meanValue { x -> gPrime(w inner x) } * w
         w /= w.norm2()
     }
 

@@ -1,12 +1,11 @@
 package tomasvolker.numeriko.core.probability.scalar
 
 import tomasvolker.numeriko.core.primitives.squared
-//import java.util.*
+import java.util.Random as JavaRandom
 import kotlin.math.PI
 import kotlin.math.exp
 import kotlin.math.sqrt
 import kotlin.random.Random
-import kotlin.random.asJavaRandom
 
 class DoubleNormalDistribution(
         override val mean: Double = 0.0,
@@ -23,7 +22,7 @@ class DoubleNormalDistribution(
     override fun cdf(x: Double): Double = TODO()
 
     override fun nextSample(): Double =
-            Random.asJavaRandom().nextGaussian() * deviation + mean
+            JavaRandom().nextGaussian() * deviation + mean
 
 }
 

@@ -4,6 +4,7 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.computeIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
+import tomasvolker.numeriko.core.interfaces.factory.defaultFactory
 
 interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
 
@@ -21,6 +22,6 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
     override fun setValue(value: Double, vararg indices: Int) =
             setDouble(value, *indices)
 
-    override fun copy(): MutableDoubleArrayND = TODO()
+    override fun copy(): MutableDoubleArrayND = defaultFactory.copy(this).asMutable()
 
 }

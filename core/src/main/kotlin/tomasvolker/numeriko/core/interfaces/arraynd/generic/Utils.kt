@@ -5,12 +5,12 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.lastIndex
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayND1DView
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayND2DView
 import tomasvolker.numeriko.core.interfaces.factory.intZeros
 
 fun <T> ArrayND<T>.as1D(): Array1D<T> = DefaultArrayND1DView(this.asMutable())
 fun <T> ArrayND<T>.as2D(): Array2D<T> = DefaultArrayND2DView(this.asMutable())
-
-fun <T> ArrayND<T>.asMutable(): MutableArrayND<T> = this as MutableArrayND<T>
 
 fun MutableIntArray1D.indexIncrement(shape: IntArray1D): Boolean {
 
@@ -44,6 +44,5 @@ inline fun ArrayND<*>.forEachIndices(block: (IntArray1D)->Unit) {
     do {
         block(index)
     } while(!index.indexIncrement(shape))
-
 
 }

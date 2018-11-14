@@ -87,9 +87,6 @@ interface IntArray1D: Array1D<Int> {
         }
     }
 
-
-
-
-    fun asMutable(): MutableIntArray1D = this as MutableIntArray1D
+    override fun asMutable(): MutableIntArray1D = this as MutableIntArray1D
 
 }

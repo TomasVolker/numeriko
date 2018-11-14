@@ -6,6 +6,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.view.Default1DArrayL
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
@@ -60,6 +61,7 @@ interface Array1D<out T>: ArrayND<T> {
     operator fun component4(): T = getValue(3)
     operator fun component5(): T = getValue(4)
 
+    override fun asMutable(): MutableArray1D<@UnsafeVariance T> = this as MutableArray1D<T>
 
 }
 
