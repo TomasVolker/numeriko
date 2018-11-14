@@ -251,10 +251,10 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if `this.shape1 != other.size`
      */
     infix fun matMul(other: DoubleArray1D): DoubleArray1D {
-        require(this.shape1 == other.size) {
+        require(this.shape0 == other.size) {
             "sizes dont match"
         }
-        return doubleArray1D(this.shape0) { i0 ->
+        return doubleArray1D(this.shape1) { i0 ->
             sumDouble(this.indices1) { k -> this[i0, k] * other[k] }
         }
     }
