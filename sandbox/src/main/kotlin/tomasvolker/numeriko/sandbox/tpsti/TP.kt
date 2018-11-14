@@ -2,13 +2,12 @@ package tomasvolker.numeriko.sandbox.tpsti
 
 import tomasvolker.kyplot.dsl.*
 import tomasvolker.numeriko.core.dsl.D
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.operations.stack
-import tomasvolker.numeriko.core.probability.DoubleNormalDistribution
-import tomasvolker.numeriko.core.probability.UniformDistribution
+import tomasvolker.numeriko.core.probability.scalar.DoubleNormalDistribution
+import tomasvolker.numeriko.core.probability.scalar.UniformDistribution
 import java.io.File
 import java.nio.ByteOrder
 import kotlin.math.*
