@@ -127,11 +127,6 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
     operator fun set(i0: Index, i1: Index, value: Double) =
             setValue(value, i0.computeValue(shape0), i1.computeValue(shape1))
 
-    /**
-     * @return a transposed view of this 2DArray
-     */
-    override fun transpose(): MutableDoubleArray2D =
-            DefaultMutableDoubleArray2DTransposeView(this)
 
     fun applyPlus(other: DoubleArray2D): MutableDoubleArray2D =
             applyElementWise(other) { t, o -> t + o }

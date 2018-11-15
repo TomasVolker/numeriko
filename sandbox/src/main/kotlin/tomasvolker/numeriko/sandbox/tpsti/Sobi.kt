@@ -11,28 +11,30 @@ fun SignalEnsemble.tr(i0: Int, i1: Int): Double =
 
 fun SignalEnsemble.off(i0: Int, i1: Int, window: Int): Double {
 
+    val triangleCount = (window * (window - 1) / 2.0)
+
     val upperAverage = sumDouble(1 until window) { t ->
         (window - t) * estimateAutoCorrelation(i0, i1, t)
-    } / (window * (window - 1) / 2.0)
+    } / triangleCount
 
     if (i0 == i1) return upperAverage
 
     val lowerAverage = sumDouble(1 until window) { t ->
         (window - t) * estimateAutoCorrelation(i1, i0, t)
-    } / (window * (window - 1) / 2.0)
+    } / triangleCount
 
     return (upperAverage + lowerAverage) / 2.0
 }
 
-fun SignalEnsemble.sobi(window: Int, sigma2: Double = 0.0): SignalEnsemble {
+fun sobi(measurements: SignalEnsemble, window: Int, sigma2: Double = 0.0): SignalEnsemble {
 
-    val f1 = off(0, 0, window)
-    val f2 = off(1, 1, window)
-    val f12 = off(0, 1, window)
+    val f1 = measurements.off(0, 0, window)
+    val f2 = measurements.off(1, 1, window)
+    val f12 = measurements.off(0, 1, window)
 
-    val t1 = tr(0, 0) - sigma2
-    val t2 = tr(1, 1) - sigma2
-    val t12 = tr(0, 1)
+    val t1 = measurements.tr(0, 0) - sigma2
+    val t2 = measurements.tr(1, 1) - sigma2
+    val t12 = measurements.tr(0, 1)
 
     val alpha = 2 * f12 * t12 - (f1 * t2 + f2 * t1)
     val beta = 2 * (t12.squared() - t1 * t2)
@@ -46,5 +48,5 @@ fun SignalEnsemble.sobi(window: Int, sigma2: Double = 0.0): SignalEnsemble {
 
     val Ainv = A.inverse()
 
-    return mixSignals(Ainv)
+    return measurements.mixSignals(Ainv)
 }

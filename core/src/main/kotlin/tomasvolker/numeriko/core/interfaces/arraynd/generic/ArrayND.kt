@@ -138,9 +138,9 @@ interface ArrayND<out T>: Collection<T> {
     fun getView(vararg indices: IntProgression): ArrayND<T> =
             DefaultArrayNDView(
                     array = this,
-                    offset = intArray1D(indices.map { it.first }.toIntArray()),
-                    shape = intArray1D(indices.map { it.count() }.toIntArray()),
-                    stride = intArray1D(indices.map { it.step }.toIntArray())
+                    offset = intArray1D(indices.size) { i -> indices[i].first },
+                    shape = intArray1D(indices.size) { i -> indices[i].count() },
+                    stride = intArray1D(indices.size) { i -> indices[i].step }
             )
 
     /**

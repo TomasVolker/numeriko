@@ -4,6 +4,8 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.computeIndices
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultMutableArrayNDView
+import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 
 /**
  * The parent interface of all mutable N-dimensional arrays.
@@ -59,10 +61,17 @@ interface MutableArrayND<T>: ArrayND<T> {
             setValue(value, *indices.computeIndices(shape))
 
 
+    fun setValue(value: ArrayND<T>) {
+        forEachIndices { indices ->
+            setValue(value.getValue(indices), indices)
+        }
+    }
+
+
     fun setView(value: ArrayND<T>, vararg indices: IntProgression): Unit =
-            TODO()
+            getView(*indices).asMutable().setValue(value)
 
     fun setView(value: ArrayND<T>, vararg indices: IndexProgression): Unit =
-            TODO()
+            setView(value, *Array(indices.size) { i -> indices[i].computeProgression(shape[i]) })
 
 }

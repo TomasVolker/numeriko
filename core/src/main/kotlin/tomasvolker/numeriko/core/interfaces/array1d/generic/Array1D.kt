@@ -65,6 +65,7 @@ interface Array1D<out T>: ArrayND<T> {
 
 }
 
+// Getter functions defined as extensions to avoid boxing when using get syntax on primitive specializations
 operator fun <T> Array1D<T>.get(index: Int): T = getValue(index)
 operator fun <T> Array1D<T>.get(index: Index): T = getValue(index)
 operator fun <T> Array1D<T>.get(indexRange: IntRange): Array1D<T> = getView(indexRange)

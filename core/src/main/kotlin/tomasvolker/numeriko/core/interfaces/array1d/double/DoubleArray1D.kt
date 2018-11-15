@@ -4,9 +4,11 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
@@ -32,10 +34,9 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
     override fun getValue(index: Int): Double =
             getDouble(index)
 
-    fun getDouble(index: Int): Double
 
-    fun getDouble(index: Index): Double =
-            getDouble(index.computeValue(size))
+    fun getDouble(index: Int): Double
+    fun getDouble(index: Index): Double = getDouble(index.computeValue(size))
 
     override fun getView(indexRange: IntProgression): DoubleArray1D =
             DefaultMutableDoubleArray1DView(
@@ -48,16 +49,21 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
     override fun getView(indexRange: IndexProgression): DoubleArray1D =
             getView(indexRange.computeProgression(size))
 
-    override fun copy(): DoubleArray1D = copy(this)
-
-    override fun iterator(): DoubleIterator =
-            DefaultDoubleArray1DIterator(this)
 
     operator fun get(index: Int): Double = getDouble(index)
     operator fun get(index: Index): Double = getDouble(index)
 
     operator fun get(index: IntProgression): DoubleArray1D = getView(index)
     operator fun get(index: IndexProgression): DoubleArray1D = getView(index)
+
+
+    override fun copy(): DoubleArray1D = copy(this)
+
+    override fun asMutable(): MutableDoubleArray1D = this as MutableDoubleArray1D
+
+    override fun iterator(): DoubleIterator =
+            DefaultDoubleArray1DIterator(this)
+
 
     /**
      * Returns this array unaltered.
@@ -204,6 +210,22 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
     fun norm2(): Double = sqrt(sumBy { it * it })
 
     /**
+     * Computes the max norm, a.k.a. infinity norm.
+     *
+     * The max norm is the maximum absolute value of the array. It is also known as the
+     * infinity norm as it is equivalent to [norm(p)] when p tends to infinity.
+     */
+    fun maxNorm(): Double {
+        var result = 0.0
+        forEachIndex { i ->
+            val new = abs(this[i])
+            if (result < new)
+                result = new
+        }
+        return result
+    }
+
+    /**
      * Computes a normalized vector on norm 2.
      *
      * This consists of dividing this vector by its norm 2.
@@ -306,7 +328,5 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
             }
         }
     }
-
-    override fun asMutable(): MutableDoubleArray1D = this as MutableDoubleArray1D
 
 }

@@ -27,7 +27,7 @@ object DefaultLinearAlgebra {
 
         table.inplaceReducedEchelonForm()
 
-        return table.getView(All, matrix.shape1..Last).copy()
+        return table[All, matrix.shape1..Last].copy()
     }
 
     fun solve(matrix: DoubleArray2D, image: DoubleArray1D): DoubleArray1D {
@@ -49,14 +49,15 @@ object DefaultLinearAlgebra {
     fun determinant(array: DoubleArray2D): Double {
         require(array.isSquare())
 
-        if (array.shape0 == 1) {
-            return array[0, 0]
-        }
-
-        fun minusOnePow(int: Int): Int = if (int.isEven()) 1 else -1
-
-        return sumDouble(array.indices0) { i0 ->
-            minusOnePow(i0) * array[i0, 0] * SkipRowColumnView(array, i0, 0).determinant()
+        return when(array.shape0) {
+            1 -> array[0, 0]
+            2 -> array[0, 0] * array[1, 1] - array[0, 1] * array[1, 0]
+            else -> {
+                fun minusOnePow(int: Int): Int = if (int.isEven()) 1 else -1
+                sumDouble(array.indices0) { i0 ->
+                    minusOnePow(i0) * array[i0, 0] * SkipRowColumnView(array, i0, 0).determinant()
+                }
+            }
         }
     }
 

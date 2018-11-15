@@ -23,5 +23,7 @@ class DefaultMutableDoubleArray2DTransposeView(
         return array.setDouble(value, i1, i0)
     }
 
+    override fun transpose(): MutableDoubleArray2D = array
+
 }
 

@@ -1,10 +1,16 @@
 package tomasvolker.numeriko.sandbox.solving
 
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.index.All
+import tomasvolker.numeriko.core.index.Last
+import tomasvolker.numeriko.core.index.rangeTo
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import kotlin.math.absoluteValue
 
 fun main() {
+
+    val a = doubleArray1D(10) { it.toDouble() }
 
     val tolerance = 1e-10
 

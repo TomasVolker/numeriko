@@ -2,6 +2,8 @@ package tomasvolker.numeriko.sandbox.tpsti
 
 import tomasvolker.kyplot.dsl.*
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
@@ -12,6 +14,7 @@ import java.io.File
 import java.nio.ByteOrder
 import kotlin.math.*
 import kotlin.random.Random
+import kotlin.system.measureTimeMillis
 import java.util.Random as JavaRandom
 
 fun analyseMeasurements(
@@ -119,7 +122,7 @@ fun main(args: Array<String>) {
 
     val resDirectory = "./sandbox/res/tp/"
 
-    firstPart()
+    //firstPart()
 
     val order = ByteOrder.LITTLE_ENDIAN
 
@@ -131,18 +134,30 @@ fun main(args: Array<String>) {
 
     val measurements = mergeSignals(signal1, signal2)
     val reference = mergeSignals(reference1, reference2)
-/*
-    val recovered = independentComponentAnalysis(measurements)
 
-    val errorMatrix = errorMatrix(reference, recovered).elementWise { it.toDB() }
+    val icaResult = independentComponentAnalysis(measurements)
 
-    println("Error Matrix [dB]: $errorMatrix")
+    val icaError = errorMatrix(reference, icaResult).elementWise { it.toDB() }
+
+    println("Error Matrix [dB]: $icaError")
 
     showRecoveryPlot(
             reference = reference,
-            recovered = recovered
+            recovered = icaResult
     )
-*/
+
+    val sobiResult = sobi(measurements, window = 6)
+
+    val sobiError = errorMatrix(reference, sobiResult).elementWise { it.toDB() }
+
+    println("Error Matrix [dB]: $sobiError")
+
+    showRecoveryPlot(
+            reference = reference,
+            recovered = sobiResult
+    )
+
+
 /*
     val maxDelay = 40
 
@@ -163,9 +178,10 @@ fun main(args: Array<String>) {
     }
 */
 
+    /*
     val maxWindow = 20
 
-    val errors = (1..maxWindow).map { w ->
+    val errors = (2..maxWindow).map { w ->
         val recovered = measurements.sobi(
                 window = w
         )
@@ -176,13 +192,13 @@ fun main(args: Array<String>) {
     showPlot {
         title = "Autocorrelation delay used vs Error"
         line {
-            x = (1..maxWindow).toList()
+            x = (2..maxWindow).toList()
             y = errors.toList()
         }
         xAxis.label = "Autocorrelation delay used [time steps]"
         yAxis.label = "Error [dB]"
     }
-
+    */
 }
 
 fun errorMatrix(

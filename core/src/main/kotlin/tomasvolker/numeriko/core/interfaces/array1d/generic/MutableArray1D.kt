@@ -49,20 +49,21 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
     override fun getView(indexRange: IndexProgression): MutableArray1D<T> =
             getView(indexRange.computeProgression(size))
 
-    fun setView(value: Array1D<T>, indexRange: IndexProgression) =
+    fun setView(value: Array1D<T>, indexRange: IndexProgression): Unit =
             setView(value, indexRange.computeProgression(size))
 
-    fun setView(value: Array1D<T>, indexRange: IntProgression) =
+    fun setView(value: Array1D<T>, indexRange: IntProgression): Unit =
             getView(indexRange).setValue(value.copy())
 
-    fun setView(value: T, indexRange: IndexProgression) =
+    fun setView(value: T, indexRange: IndexProgression): Unit =
             setView(value, indexRange.computeProgression(size))
 
-    fun setView(value: T, indexRange: IntProgression) =
+    fun setView(value: T, indexRange: IntProgression): Unit =
             getView(indexRange).setValue(value)
 
 }
 
+// Setter functions defined as extensions to avoid boxing when using get syntax on primitive specializations
 operator fun <T> MutableArray1D<T>.set(index: Int, value: T) = setValue(value, index)
 operator fun <T> MutableArray1D<T>.set(index: Index, value: T) = setValue(value, index)
 

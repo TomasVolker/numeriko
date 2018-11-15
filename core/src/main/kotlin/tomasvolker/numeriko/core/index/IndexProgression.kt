@@ -13,6 +13,13 @@ open class IndexProgression(
                     step
             )
 
+    fun reversed(): IndexProgression =
+            IndexProgression(
+                    first = last,
+                    last = first,
+                    step = -step
+            )
+
 }
 
 operator fun Int.rangeTo(index: Index) =
@@ -23,6 +30,4 @@ infix fun Int.until(index: Index) =
 
 object All: IndexProgression(0.toIndex(), Last)
 
-infix fun IndexProgression.step(step: Int) = IndexProgression(first, last, step)
-
-class Single(value: Int): IndexProgression(LiteralIndex(value), LiteralIndex(value), 1)
+infix fun IndexProgression.step(step: Int) = IndexProgression(first, last, this.step * step)

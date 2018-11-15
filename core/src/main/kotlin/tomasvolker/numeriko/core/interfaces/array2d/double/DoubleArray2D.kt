@@ -13,7 +13,11 @@ import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.linearalgebra.DefaultLinearAlgebra
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
+import tomasvolker.numeriko.core.primitives.sqrt
+import tomasvolker.numeriko.core.primitives.squared
 import tomasvolker.numeriko.core.primitives.sumDouble
+import kotlin.math.abs
+import kotlin.math.sqrt
 
 interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
 
@@ -29,22 +33,10 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
             getDouble(i0, i1)
 
     fun getDouble(i0: Int, i1: Int): Double
+    fun getDouble(i0: Int, i1: Index): Double = getDouble(i0, i1.computeValue(shape1))
+    fun getDouble(i0: Index, i1: Int): Double = getDouble(i0.computeValue(shape0), i1)
+    fun getDouble(i0: Index, i1: Index): Double = getDouble(i0.computeValue(shape0), i1.computeValue(shape1))
 
-    fun getDouble(i0: Index, i1: Index): Double =
-            getDouble(i0.computeValue(shape0), i1.computeValue(shape1))
-
-    operator fun get(i0: Int, i1: Int): Double = getDouble(i0, i1)
-
-    override fun getView(i0: IntProgression, i1: IntProgression): DoubleArray2D =
-            DefaultMutableDoubleArray2DView(
-                    array = this.asMutable(),
-                    offset0 = i0.first,
-                    offset1 = i1.first,
-                    shape0 = i0.count(),
-                    shape1 = i1.count(),
-                    stride0 = i0.step,
-                    stride1 = i1.step
-            )
 
     override fun getView(i0: Int, i1: IntProgression): DoubleArray1D =
             MutableDoubleArray2DCollapseView(
@@ -59,6 +51,16 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
                     )
             )
 
+    override fun getView(i0: Int, i1: IndexProgression): DoubleArray1D =
+            getView(i0, i1.computeProgression(shape1))
+
+    override fun getView(i0: Index, i1: IntProgression): DoubleArray1D =
+            getView(i0.computeValue(shape0), i1)
+
+    override fun getView(i0: Index, i1: IndexProgression): DoubleArray1D =
+            getView(i0.computeValue(shape0), i1.computeProgression(shape1))
+
+
     override fun getView(i0: IntProgression, i1: Int): DoubleArray1D =
             MutableDoubleArray2DCollapseView(
                     DefaultMutableDoubleArray2DView(
@@ -72,23 +74,120 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
                     )
             )
 
-    override fun getView(i0: IndexProgression, i1: IndexProgression): DoubleArray2D =
-            getView(i0.computeProgression(shape0), i1.computeProgression(shape1))
-
-    override fun getView(i0: Int, i1: IndexProgression): DoubleArray1D =
-            getView(i0, i1.computeProgression(shape1))
+    override fun getView(i0: IntProgression, i1: Index): DoubleArray1D =
+            getView(i0, i1.computeValue(shape1))
 
     override fun getView(i0: IndexProgression, i1: Int): DoubleArray1D =
             getView(i0.computeProgression(shape0), i1)
 
-    fun transpose(): DoubleArray2D =
-            DefaultMutableDoubleArray2DTransposeView(this.asMutable())
+    override fun getView(i0: IndexProgression, i1: Index): DoubleArray1D =
+            getView(i0.computeProgression(shape0), i1.computeValue(shape1))
+
+
+
+    override fun getView(i0: IntProgression, i1: IntProgression): DoubleArray2D =
+            DefaultMutableDoubleArray2DView(
+                    array = this.asMutable(),
+                    offset0 = i0.first,
+                    offset1 = i1.first,
+                    shape0 = i0.count(),
+                    shape1 = i1.count(),
+                    stride0 = i0.step,
+                    stride1 = i1.step
+            )
+
+    override fun getView(i0: IntProgression, i1: IndexProgression): DoubleArray2D =
+            getView(i0, i1.computeProgression(shape1))
+
+    override fun getView(i0: IndexProgression, i1: IntProgression): DoubleArray2D =
+            getView(i0.computeProgression(shape0), i1)
+
+    override fun getView(i0: IndexProgression, i1: IndexProgression): DoubleArray2D =
+            getView(i0.computeProgression(shape0), i1.computeProgression(shape1))
+
+
+    operator fun get(i0: Int, i1: Int): Double = getDouble(i0, i1)
+    operator fun get(i0: Int, i1: Index): Double = getDouble(i0, i1)
+    operator fun get(i0: Index, i1: Int): Double = getDouble(i0, i1)
+    operator fun get(i0: Index, i1: Index): Double = getDouble(i0, i1)
+
+    operator fun get(i0: Int, i1: IntProgression): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: Index, i1: IntProgression): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: Int, i1: IndexProgression): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: Index, i1: IndexProgression): DoubleArray1D = getView(i0, i1)
+
+    operator fun get(i0: IntProgression, i1: Int): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: IntProgression, i1: Index): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: IndexProgression, i1: Int): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: IndexProgression, i1: Index): DoubleArray1D = getView(i0, i1)
+
+    operator fun get(i0: IntProgression, i1: IntProgression): DoubleArray2D = getView(i0, i1)
+    operator fun get(i0: IntProgression, i1: IndexProgression): DoubleArray2D = getView(i0, i1)
+    operator fun get(i0: IndexProgression, i1: IntProgression): DoubleArray2D = getView(i0, i1)
+    operator fun get(i0: IndexProgression, i1: IndexProgression): DoubleArray2D = getView(i0, i1)
+
 
     override fun copy(): DoubleArray2D = defaultFactory.copy(this)
+
+    override fun asMutable(): MutableDoubleArray2D = this as MutableDoubleArray2D
 
     override fun iterator(): DoubleIterator =
             DefaultDoubleArray2DIterator(this)
 
+    /**
+     * Returns a transposed view of this array.
+     *
+     * The array returned is a view, if a copy is needed call [copy] on the view
+     *
+     * @return a transposed view of this array
+     */
+    fun transpose(): DoubleArray2D =
+            DefaultMutableDoubleArray2DTransposeView(this.asMutable())
+
+    fun contract(index0: Int, index1: Int): Double =
+            if (index0 == 0 && index1 == 1 || index0 == 1 && index1 == 0)
+                trace()
+            else
+                throw IllegalArgumentException()
+
+    fun trace(): Double {
+        require(isSquare())
+        return sumDouble(indices0) { i ->
+            this[i, i]
+        }
+    }
+
+    fun diagonal(offset: Int = 0): DoubleArray1D {
+        require(isSquare())
+        // View? non square matrices?
+        return doubleArray1D(shape0 - abs(offset)) { i ->
+            this[i + offset, i + offset]
+        }
+    }
+
+    fun frobeniusNorm(): Double {
+        var normSquared = 0.0
+        forEachIndex { i0, i1 ->
+            normSquared += this[i0, i1].squared()
+        }
+        return sqrt(normSquared)
+    }
+
+    /**
+     * Computes the max norm, a.k.a. infinity norm.
+     *
+     * The max norm is the maximum absolute value of the array. It is also known as the
+     * infinity norm as it is equivalent to [norm(p)] when p tends to infinity.
+     */
+    fun maxNorm(): Double {
+        var result = 0.0
+        forEachIndex { i0, i1 ->
+            val new = abs(this[i0, i1])
+            if (result < new)
+                result = new
+        }
+        return result
+    }
 
     /**
      * Returns this array unaltered.
@@ -329,8 +428,5 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
             }
         }
     }
-
-
-    override fun asMutable(): MutableDoubleArray2D = this as MutableDoubleArray2D
 
 }

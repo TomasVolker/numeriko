@@ -6,8 +6,6 @@ import kotlin.math.hypot
 
 fun main() {
 
-
-
     val rgbImage = loadGrayScaleImage("./sandbox/res/sun.gif")
 
     //val image = rgbImage.getView(All, All, Single(0)).collapseView(2).as2D()

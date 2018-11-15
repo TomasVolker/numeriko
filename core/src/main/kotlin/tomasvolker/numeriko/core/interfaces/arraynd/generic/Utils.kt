@@ -12,6 +12,8 @@ import tomasvolker.numeriko.core.interfaces.factory.intZeros
 fun <T> ArrayND<T>.as1D(): Array1D<T> = DefaultArrayND1DView(this.asMutable())
 fun <T> ArrayND<T>.as2D(): Array2D<T> = DefaultArrayND2DView(this.asMutable())
 
+fun ArrayND<*>.indices(axis: Int): IntRange = 0 until getShape(axis)
+
 fun MutableIntArray1D.indexIncrement(shape: IntArray1D): Boolean {
 
     var currentDim = shape.lastIndex

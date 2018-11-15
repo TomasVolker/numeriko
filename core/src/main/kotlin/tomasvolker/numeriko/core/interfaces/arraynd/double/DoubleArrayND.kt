@@ -2,11 +2,15 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.index.Last
+import tomasvolker.numeriko.core.index.until
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.computeIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.defaultFactory
+import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.core.operations.concatenate
 
 interface DoubleArrayND: ArrayND<Double> {
 
@@ -43,4 +47,22 @@ interface DoubleArrayND: ArrayND<Double> {
 
     override fun asMutable(): MutableDoubleArrayND = this as MutableDoubleArrayND
 
+
+    infix fun outer(other: DoubleArrayND): DoubleArrayND =
+            doubleArrayND(this.shape concatenate other.shape) { indices ->
+                val thisIndices = indices[0 until this.rank]
+                val otherIndices = indices[this.rank until Last]
+                this[thisIndices] * other[otherIndices]
+            }
+/*
+    fun contract(index0: Int, index1: Int): DoubleArrayND {
+        require(index0 != index1 && shape[index0] == shape[index1])
+        val reductionSize = shape[index0]
+        return doubleArrayND(shape) { indices ->
+            sumDouble(0 until reductionSize) { r ->
+                this[..,r,..,r,..]
+            }
+        }
+    }
+    */
 }
