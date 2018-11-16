@@ -10,10 +10,10 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 fun fft(
-        array: Array<DoubleComplex>,
-        destination: Array<DoubleComplex> = Array(array.size) { 0.0.j },
+        array: Array<Complex>,
+        destination: Array<Complex> = Array(array.size) { 0.0.j },
         inverse: Boolean = false
-): Array<DoubleComplex> {
+): Array<Complex> {
 
     if (!array.size.isPowerOf2()) {
         throw IllegalArgumentException(
@@ -37,20 +37,20 @@ fun fft(
 }
 
 fun ifft(
-        array: Array<DoubleComplex>,
-        destination: Array<DoubleComplex> = Array(array.size) { 0.0.j }
-): Array<DoubleComplex> = fft(
+        array: Array<Complex>,
+        destination: Array<Complex> = Array(array.size) { 0.0.j }
+): Array<Complex> = fft(
         array = array,
         destination = destination,
         inverse = true
 )
 
 fun cooleyTukeyAlgorithm(
-        array: Array<DoubleComplex>,
+        array: Array<Complex>,
         offset: Int,
         stride: Int,
         size: Int,
-        destination: Array<DoubleComplex>,
+        destination: Array<Complex>,
         destOffset: Int,
         inverse: Boolean
 ) {
@@ -103,10 +103,10 @@ fun cooleyTukeyAlgorithm(
 
 
 fun fft(
-        array: DoubleComplexArray,
-        destination: DoubleComplexArray = DoubleComplexArray(array.size),
+        array: ComplexArray,
+        destination: ComplexArray = ComplexArray(array.size),
         inverse: Boolean = false
-): DoubleComplexArray {
+): ComplexArray {
 
     if (!array.size.isPowerOf2()) {
         throw IllegalArgumentException(
@@ -135,20 +135,20 @@ fun fft(
 }
 
 fun ifft(
-        array: DoubleComplexArray,
-        destination: DoubleComplexArray = DoubleComplexArray(array.size)
-): DoubleComplexArray = fft(
+        array: ComplexArray,
+        destination: ComplexArray = ComplexArray(array.size)
+): ComplexArray = fft(
         array = array,
         destination = destination,
         inverse = true
 )
 
 fun cooleyTukeyAlgorithm(
-        array: DoubleComplexArray,
+        array: ComplexArray,
         offset: Int,
         stride: Int,
         size: Int,
-        destination: DoubleComplexArray,
+        destination: ComplexArray,
         destOffset: Int,
         inverse: Boolean
 ) {

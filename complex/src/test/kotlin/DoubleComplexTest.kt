@@ -7,7 +7,7 @@ class DoubleComplexTest {
 
     private val epsilon: Double = 1e-3
 
-    private infix fun DoubleComplex.almostEqual(other: DoubleComplex): Boolean {
+    private infix fun Complex.almostEqual(other: Complex): Boolean {
 
         val realDiff = this.real - other.real
         val imagDff = this.imag - other.imag

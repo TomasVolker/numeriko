@@ -16,11 +16,11 @@ fun fht(
     val horizontalFht = doubleZeros(array.shape0, array.shape1).asMutable()
 
     for (i0 in array.indices0) {
-        fht(array.getView(0, All), horizontalFht.getView(0, All))
+        fht(array[i0, All], horizontalFht[i0, All])
     }
 
     for (i1 in array.indices1) {
-        fht(horizontalFht.getView(All, 0), destination.getView(All, 0))
+        fht(horizontalFht[All, 0], destination[All, i1])
     }
 
     return destination.applyTimes(array.size)

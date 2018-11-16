@@ -129,11 +129,18 @@ fun SignalEnsemble.uncorrelate(): SignalEnsemble {
 
     val decomposition = correlationMatrix().eigenDecomposition(true)
 
+    println("lambdas = ${decomposition.eigenValues}")
+    println("eigenvectors = ${decomposition.eigenVectorList}")
+
     val sqrtDinv = doubleDiagonal(decomposition.eigenValues.elementWise { 1.0 / sqrt(it) })
 
     val E = decomposition.vectorMatrix()
 
+    println("E = $E")
+
     val sqrtCinv = E matMul sqrtDinv matMul E.transpose()
+
+    println("sqrtCinv = ${sqrtCinv}")
 
     return mixSignals(sqrtCinv)
 }

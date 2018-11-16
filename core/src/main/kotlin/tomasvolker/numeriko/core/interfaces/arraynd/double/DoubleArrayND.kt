@@ -7,10 +7,16 @@ import tomasvolker.numeriko.core.index.until
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.computeIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
 import tomasvolker.numeriko.core.interfaces.factory.defaultFactory
 import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.operations.concatenate
+import tomasvolker.numeriko.core.operations.inject
+import tomasvolker.numeriko.core.operations.remove
+import tomasvolker.numeriko.core.primitives.sumDouble
+import kotlin.math.max
+import kotlin.math.min
 
 interface DoubleArrayND: ArrayND<Double> {
 
@@ -54,15 +60,17 @@ interface DoubleArrayND: ArrayND<Double> {
                 val otherIndices = indices[this.rank until Last]
                 this[thisIndices] * other[otherIndices]
             }
-/*
-    fun contract(index0: Int, index1: Int): DoubleArrayND {
+
+    fun contract(axis0: Int, axis1: Int): DoubleArrayND {
+        val index0 = min(axis0, axis1)
+        val index1 = max(axis0, axis1)
         require(index0 != index1 && shape[index0] == shape[index1])
-        val reductionSize = shape[index0]
-        return doubleArrayND(shape) { indices ->
-            sumDouble(0 until reductionSize) { r ->
-                this[..,r,..,r,..]
+        val newShape = shape.remove(index0).remove(index1-1)
+        return doubleArrayND(newShape) { indices ->
+            sumDouble(indices(index0)) { r ->
+                this[indices.inject(index = index0, value = r).inject(index = index1, value = r)]
             }
         }
     }
-    */
+
 }

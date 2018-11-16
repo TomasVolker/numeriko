@@ -32,4 +32,13 @@ fun main() {
 
     println(solved)
 
+    val a1 = D[1, 2, 3]
+    val a2 = D[3, 4, 5]
+
+    println((a1 outer a2).contract(0, 1))
+    println(a1 inner a2)
+
+    println((matrix outer a2).contract(1, 2))
+    println(matrix matMul a2)
+
 }

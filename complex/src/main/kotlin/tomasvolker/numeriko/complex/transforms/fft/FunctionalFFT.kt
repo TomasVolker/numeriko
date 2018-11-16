@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.complex.transforms.fft
 
-import tomasvolker.numeriko.complex.DoubleComplex
-import tomasvolker.numeriko.complex.toDoubleComplex
+import tomasvolker.numeriko.complex.Complex
+import tomasvolker.numeriko.complex.toComplex
 import tomasvolker.numeriko.complex.transforms.mapBoth
 import tomasvolker.numeriko.complex.transforms.partitionByIndex
 import tomasvolker.numeriko.complex.unaryDoubleComplex
@@ -10,10 +10,10 @@ import tomasvolker.numeriko.core.primitives.modulo
 import kotlin.math.PI
 import kotlin.math.sqrt
 
-fun List<DoubleComplex>.fft() = cooleyTukey2(inverse = false).map { it / sqrt(size.toDouble()) }
-fun List<DoubleComplex>.ifft() = cooleyTukey2(inverse = true).map { it / sqrt(size.toDouble()) }
+fun List<Complex>.fft() = cooleyTukey2(inverse = false).map { it / sqrt(size.toDouble()) }
+fun List<Complex>.ifft() = cooleyTukey2(inverse = true).map { it / sqrt(size.toDouble()) }
 
-fun List<DoubleComplex>.cooleyTukey2(inverse: Boolean = false): List<DoubleComplex> = when {
+fun List<Complex>.cooleyTukey2(inverse: Boolean = false): List<Complex> = when {
     size < 2 -> this
     size % 2 != 0 -> throw IllegalArgumentException(
         "The Cooley Tukey Algorithm can only operate with length of a power of two"
@@ -52,10 +52,10 @@ fun <T> Boolean.unfold(trueVal: T, falseVal: T) =
 fun twiddle(inverse: Boolean, size: Int, exponent: Int) =
         unaryDoubleComplex(inverse.unfold(-1.0, 1.0) * 2 * PI / size * exponent)
 
-fun List<DoubleComplex>.cooleyTukey(
+fun List<Complex>.cooleyTukey(
     inverse: Boolean = false,
     timeDecimation: Int = 2
-): List<DoubleComplex> = when(size) {
+): List<Complex> = when(size) {
     0, 1 -> this
     2 -> listOf(this[0] + this[1], this[0] - this[1])
     else -> this.chunked(timeDecimation)
@@ -70,10 +70,10 @@ fun List<DoubleComplex>.cooleyTukey(
                 .flatten()
 }
 
-inline fun <T> Iterable<T>.sumByComplex(operation: (T)->DoubleComplex) =
-        fold(0.0.toDoubleComplex()) { acc, next -> acc + operation(next) }
+inline fun <T> Iterable<T>.sumByComplex(operation: (T)->Complex) =
+        fold(0.0.toComplex()) { acc, next -> acc + operation(next) }
 
-fun List<DoubleComplex>.dft(inverse: Boolean) =
+fun List<Complex>.dft(inverse: Boolean) =
         List(size) { k ->
             (0 until size).sumByComplex { n ->
                 this[n] * twiddle(inverse, size, k * n)

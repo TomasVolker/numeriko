@@ -11,7 +11,7 @@ fun SignalEnsemble.tr(i0: Int, i1: Int): Double =
 
 fun SignalEnsemble.off(i0: Int, i1: Int, window: Int): Double {
 
-    val triangleCount = (window * (window - 1) / 2.0)
+    val triangleCount = window * (window - 1) / 2.0
 
     val upperAverage = sumDouble(1 until window) { t ->
         (window - t) * estimateAutoCorrelation(i0, i1, t)

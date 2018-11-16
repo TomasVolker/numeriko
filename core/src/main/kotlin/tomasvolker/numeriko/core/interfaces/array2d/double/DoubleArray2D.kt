@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double
 
+import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
@@ -8,9 +9,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDo
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2DCollapseView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.defaultFactory
-import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
-import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
+import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.linearalgebra.DefaultLinearAlgebra
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.primitives.sqrt
@@ -27,7 +26,7 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
     }
 
     override fun getValue(vararg indices: Int): Double =
-            getValue(*indices)
+            getDouble(*indices)
 
     override fun getValue(i0: Int, i1: Int): Double =
             getDouble(i0, i1)
@@ -144,9 +143,9 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
     fun transpose(): DoubleArray2D =
             DefaultMutableDoubleArray2DTransposeView(this.asMutable())
 
-    fun contract(index0: Int, index1: Int): Double =
-            if (index0 == 0 && index1 == 1 || index0 == 1 && index1 == 0)
-                trace()
+    override fun contract(axis0: Int, axis1: Int): DoubleArrayND =
+            if (axis0 == 0 && axis1 == 1 || axis0 == 1 && axis1 == 0)
+                doubleArrayND(intArray1DOf()) { trace() }
             else
                 throw IllegalArgumentException()
 

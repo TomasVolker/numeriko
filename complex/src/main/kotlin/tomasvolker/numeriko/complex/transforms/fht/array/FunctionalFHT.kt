@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.complex.transforms.fht.array
 
-import tomasvolker.numeriko.complex.DoubleComplex
+import tomasvolker.numeriko.complex.Complex
 import tomasvolker.numeriko.complex.*
 import tomasvolker.numeriko.complex.j
 import tomasvolker.numeriko.complex.transforms.mapBoth
@@ -36,7 +36,7 @@ fun List<Double>.recursiveFht(): List<Double> = when {
 }
 
 
-fun List<Double>.dftFromDHT(): List<DoubleComplex> =
+fun List<Double>.dftFromDHT(): List<Complex> =
     fht().let { dht ->
         List(size) { k ->
             (dht[k] + dht[(-k) modulo size]) / 2 + (dht[k] - dht[(-k) modulo size]) / 2.j

@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.array2d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DTransposeView
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DView
@@ -122,6 +123,21 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
             getView(i0, i1).setDouble(value)
 
     override fun copy(): MutableDoubleArray2D = copy(this).asMutable()
+
+    override operator fun get(i0: Int, i1: IntProgression): MutableDoubleArray1D = getView(i0, i1)
+    override operator fun get(i0: Index, i1: IntProgression): MutableDoubleArray1D = getView(i0, i1).asMutable()
+    override operator fun get(i0: Int, i1: IndexProgression): MutableDoubleArray1D = getView(i0, i1)
+    override operator fun get(i0: Index, i1: IndexProgression): MutableDoubleArray1D = getView(i0, i1).asMutable()
+
+    override operator fun get(i0: IntProgression, i1: Int): MutableDoubleArray1D = getView(i0, i1)
+    override operator fun get(i0: IntProgression, i1: Index): MutableDoubleArray1D = getView(i0, i1).asMutable()
+    override operator fun get(i0: IndexProgression, i1: Int): MutableDoubleArray1D = getView(i0, i1)
+    override operator fun get(i0: IndexProgression, i1: Index): MutableDoubleArray1D = getView(i0, i1).asMutable()
+
+    override operator fun get(i0: IntProgression, i1: IntProgression): MutableDoubleArray2D = getView(i0, i1)
+    override operator fun get(i0: IntProgression, i1: IndexProgression): MutableDoubleArray2D = getView(i0, i1).asMutable()
+    override operator fun get(i0: IndexProgression, i1: IntProgression): MutableDoubleArray2D = getView(i0, i1).asMutable()
+    override operator fun get(i0: IndexProgression, i1: IndexProgression): MutableDoubleArray2D = getView(i0, i1)
 
     operator fun set(i0: Int, i1: Int, value: Double) = setDouble(value, i0, i1)
     operator fun set(i0: Index, i1: Index, value: Double) =

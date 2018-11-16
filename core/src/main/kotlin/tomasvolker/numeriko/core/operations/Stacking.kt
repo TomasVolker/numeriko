@@ -54,7 +54,7 @@ infix fun DoubleArray1D.concatenate(other: DoubleArray1D): DoubleArray1D =
             if (i < this.size)
                 this[i]
             else
-                other[this.size + i]
+                other[i - this.size]
         }
 
 infix fun IntArray1D.concatenate(other: IntArray1D): IntArray1D =
@@ -62,7 +62,7 @@ infix fun IntArray1D.concatenate(other: IntArray1D): IntArray1D =
             if (i < this.size)
                 this[i]
             else
-                other[this.size + i]
+                other[i - this.size]
         }
 
 infix fun IntArray1D.concatenate(other: Int): IntArray1D =
@@ -117,7 +117,7 @@ fun DoubleArray2D.concatenate(other: DoubleArray2D, index: Int = 0): DoubleArray
                     if (i0 < shape0)
                         this[i0, i1]
                     else
-                        other[i0-shape0, i1]
+                        other[i0 - shape0, i1]
                 }
             }
             1 -> {
@@ -126,7 +126,7 @@ fun DoubleArray2D.concatenate(other: DoubleArray2D, index: Int = 0): DoubleArray
                     if (i1 < shape1)
                         this[i0, i1]
                     else
-                        other[i0, i1-shape1]
+                        other[i0, i1 - shape1]
                 }
             }
             else -> throw IndexOutOfBoundsException("$index")

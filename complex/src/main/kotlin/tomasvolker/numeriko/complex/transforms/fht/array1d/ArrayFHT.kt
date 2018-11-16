@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.complex.transforms.fht.array1d
 
-import tomasvolker.numeriko.complex.DoubleComplexArray
+import tomasvolker.numeriko.complex.ComplexArray
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
@@ -12,8 +12,8 @@ import kotlin.math.sin
 
 fun dftFromDHT(
         array: DoubleArray1D,
-        destination: DoubleComplexArray = DoubleComplexArray(array.size)
-): DoubleComplexArray {
+        destination: ComplexArray = ComplexArray(array.size)
+): ComplexArray {
 
     val dht = fht(array)
 
@@ -25,6 +25,7 @@ fun dftFromDHT(
     return destination
 }
 
+fun DoubleArray1D.fastHartleyTransform(): DoubleArray1D = fht(this)
 
 fun fht(
     array: DoubleArray1D,

@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.complex.transforms.fht.array
 
-import tomasvolker.numeriko.complex.DoubleComplexArray
+import tomasvolker.numeriko.complex.ComplexArray
 import tomasvolker.numeriko.core.primitives.modulo
 import tomasvolker.numeriko.core.primitives.sqrt
 import kotlin.math.PI
@@ -9,8 +9,8 @@ import kotlin.math.sin
 
 fun dftFromDHT(
     array: DoubleArray,
-    destination: DoubleComplexArray = DoubleComplexArray(array.size)
-): DoubleComplexArray {
+    destination: ComplexArray = ComplexArray(array.size)
+): ComplexArray {
 
     val dht = fht(array)
 

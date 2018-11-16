@@ -7,6 +7,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import kotlin.random.Random
 
 fun DoubleArray.asDoubleArray1D(): DoubleArray1D = doubleArray1D(this)
+fun DoubleArray.toDoubleArray1D(): DoubleArray1D = doubleArray1D(this.copyOf())
 
 fun Array<out Number>.asDoubleArray1D(): DoubleArray1D = doubleArray1D(this.map { it.toDouble() }.toDoubleArray())
 
