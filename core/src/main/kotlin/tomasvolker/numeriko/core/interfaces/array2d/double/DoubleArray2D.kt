@@ -1,6 +1,5 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double
 
-import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
@@ -12,7 +11,6 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.linearalgebra.DefaultLinearAlgebra
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
-import tomasvolker.numeriko.core.primitives.sqrt
 import tomasvolker.numeriko.core.primitives.squared
 import tomasvolker.numeriko.core.primitives.sumDouble
 import kotlin.math.abs
@@ -349,10 +347,10 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if `this.shape1 != other.size`
      */
     infix fun matMul(other: DoubleArray1D): DoubleArray1D {
-        require(this.shape0 == other.size) {
-            "sizes dont match"
+        require(this.shape1 == other.size) {
+            "sizes dont match: this.shape0 = ${this.shape1} other.size = ${other.size}"
         }
-        return doubleArray1D(this.shape1) { i0 ->
+        return doubleArray1D(this.shape0) { i0 ->
             sumDouble(this.indices1) { k -> this[i0, k] * other[k] }
         }
     }
@@ -406,7 +404,7 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
             "sizes dont match"
         }
         return doubleArray2D(this.shape0, other.shape1) { i0, i1 ->
-            sumDouble(this.indices0) { k -> this[i0, k] * other[k, i1] }
+            sumDouble(this.indices1) { k -> this[i0, k] * other[k, i1] }
         }
     }
 

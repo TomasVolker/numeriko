@@ -254,6 +254,7 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
      * Computes the cumulative sum.
      *
      * Each value of the result is equal to the sum of those with lower or equal index.
+     * It is defined in such a way that `this.cumulativeSum().differences()` is (numerically) equal to `this`.
      * The array returned has the same size.
      */
     fun cumulativeSum(): DoubleArray1D {
@@ -271,6 +272,7 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
      * Computes the differences between subsequent samples (this(i) - this(i-1)).
      *
      * The array returned has the same size, setting the first element this values first element (result(0) = this(0))
+     * It is defined in such a way that `this.cumulativeSum().differences()` is (numerically) equal to `this`.
      *
      */
     fun differences(): DoubleArray1D {

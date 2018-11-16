@@ -57,11 +57,10 @@ interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
     fun setView(value: Array2D<T>, i0: IntProgression, i1: IntProgression) =
             getView(i0, i1).setValue(value.copy())
 
-    fun setView(value: T, i0: IndexProgression, i1: IndexProgression) =
-            setView(value, i0.computeProgression(shape0), i1.computeProgression(shape1))
-
-    fun setView(value: T, i0: IntProgression, i1: IntProgression) =
-            getView(i0, i1).setValue(value)
+    fun setView(value: T, i0: IntProgression, i1: IntProgression) = getView(i0, i1).setValue(value)
+    fun setView(value: T, i0: IntProgression, i1: IndexProgression) = setView(value, i0, i1.computeProgression(shape1))
+    fun setView(value: T, i0: IndexProgression, i1: IntProgression) = setView(value, i0.computeProgression(shape0), i1)
+    fun setView(value: T, i0: IndexProgression, i1: IndexProgression) = setView(value, i0.computeProgression(shape0), i1.computeProgression(shape1))
 
     override fun copy(): MutableArray2D<T> = copy(this).asMutable()
 

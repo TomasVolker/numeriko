@@ -1,7 +1,9 @@
 package tomasvolker.numeriko.sandbox.tpsti
 
 import tomasvolker.kyplot.dsl.*
+import tomasvolker.kyplot.model.Color
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
@@ -23,6 +25,9 @@ fun analyseMeasurements(
 
     showPlot {
 
+        xAxis.label = "x"
+        yAxis.label = "y"
+
         scatter {
             x = sources.channel[0]
             y = sources.channel[1]
@@ -36,6 +41,9 @@ fun analyseMeasurements(
     val measurements = sources.mixSignals(matrix = A)
 
     showPlot {
+
+        xAxis.label = "x"
+        yAxis.label = "y"
 
         scatter {
             x = measurements.channel[0]
@@ -61,6 +69,65 @@ fun firstPart() {
     }
 
     analyseMeasurements(uniformSources)
+
+    val A = D[D[ 1, 1],
+              D[-1, 2]]
+
+    val measurements = uniformSources.mixSignals(matrix = A)
+
+    val corners = D[D[ 0.01, 5.25],
+                    D[ 3.45, 1.63],
+                    D[ 0.02,-5.22],
+                    D[-3.40,-1.72]]
+
+    val horizontal = corners[1, All] - corners[0, All]
+    val vertical = corners[0, All] - corners[3, All]
+    println(horizontal)
+    println(vertical)
+
+    val mat = (horizontal stack vertical).transpose().also { println(it) }
+
+    showPlot {
+
+        xAxis.label = "x"
+        yAxis.label = "y"
+
+        scatter {
+            x = measurements.channel[0]
+            y = measurements.channel[1]
+        }
+
+        scatter {
+            x = corners[All, 0]
+            y = corners[All, 1]
+            color = Color.RED
+        }
+
+        line {
+            x = corners[0..1, 0]
+            y = corners[0..1, 1]
+            color = Color.RED
+        }
+
+        line {
+            x = corners[1..2, 0]
+            y = corners[1..2, 1]
+            color = Color.RED
+        }
+
+        line {
+            x = corners[2..3, 0]
+            y = corners[2..3, 1]
+            color = Color.RED
+        }
+
+        line {
+            x = D[corners[3, 0], corners[0, 0]]
+            y = D[corners[3, 1], corners[0, 1]]
+            color = Color.RED
+        }
+
+    }
 
     val gaussian = DoubleNormalDistribution(
             mean = 2.0,
@@ -122,8 +189,8 @@ fun main(args: Array<String>) {
 
     val resDirectory = "./sandbox/res/tp/"
 
-    //firstPart()
-
+    firstPart()
+    return
     val order = ByteOrder.LITTLE_ENDIAN
 
     val signal1 = File(resDirectory + "In_1.txt").readArray1D(order)

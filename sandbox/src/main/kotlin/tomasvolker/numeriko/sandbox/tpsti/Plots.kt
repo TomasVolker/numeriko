@@ -1,8 +1,6 @@
 package tomasvolker.numeriko.sandbox.tpsti
 
-import tomasvolker.kyplot.dsl.line
-import tomasvolker.kyplot.dsl.showLine
-import tomasvolker.kyplot.dsl.showPlot
+import tomasvolker.kyplot.dsl.*
 import tomasvolker.numeriko.complex.*
 import tomasvolker.numeriko.complex.array.*
 import tomasvolker.numeriko.complex.transforms.fft.fft
@@ -16,6 +14,7 @@ import tomasvolker.numeriko.core.linearalgebra.linearSpace
 import tomasvolker.numeriko.core.primitives.indicative
 import tomasvolker.numeriko.core.primitives.isEven
 import tomasvolker.numeriko.core.primitives.modulo
+import tomasvolker.numeriko.core.primitives.sqrt
 import tomasvolker.numeriko.core.probability.scalar.normalPdf
 import kotlin.math.PI
 import kotlin.math.abs
@@ -37,45 +36,6 @@ fun DoubleArray1D.fft() =
 
 fun main() {
 
-    val N = 2048
-
-    val c = complexArray1D(N) { n -> normalPdf(n.toDouble() / N, 0.2, 0.001).toComplex() }
-
-    showLine {
-        x = c.indices
-        y = c.abs
-    }
-
-    val fft = c.fastFourierTransform().shiftHalf()
-
-    showPlot {
-        line {
-            x = c.indices
-            y = fft.real
-            label = "real"
-        }
-
-        line {
-            x = c.indices
-            y = fft.imag
-            label = "imag"
-        }
-
-        line {
-            x = c.indices
-            y = fft.abs
-            label = "abs"
-        }
-
-        line {
-            x = c.indices
-            y = fft.arg
-            label = "arg"
-        }
-
-        legend.visible = true
-    }
-
     val space = linearSpace(
             start = -15.0,
             stop = 15.0,
@@ -96,18 +56,40 @@ fun main() {
         )
     }
 
-    showPlot {
+    val gaussians = (1..4).map { variance ->
+        space.elementWise {
+            normalPdf(it, mean = 0.0, std = sqrt(variance).toDouble())
+        }
+    }
 
-        title = "Uniform addition distribution"
+    showFigure {
 
-        xAxis.label = "Value"
-        yAxis.label = "Probability density"
+        allPlots {
+            xAxis.label = "Valeur"
+            yAxis.label = "Densité de probabilité"
+            position.rowCount = 4
+            legend.visible = true
+        }
 
-        result.forEach {
-            line {
-                x = space
-                y = it
+        for(i in 0 until 4) {
+
+            plot {
+                line {
+                    x = space
+                    y = result[i]
+                    label = when(i) {
+                        0 -> "Uniforme"
+                        else -> "Addition de ${i+1} uniformes"
+                    }
+                }
+                line {
+                    x = space
+                    y = gaussians[i]
+                    label = "Gaussienne avec même variance"
+                }
+                position.row = i
             }
+
         }
 
     }

@@ -52,17 +52,6 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
 
     }
 
-    override fun getView(i0: IntProgression, i1: IntProgression): MutableDoubleArray2D =
-            DefaultMutableDoubleArray2DView(
-                    array = this,
-                    offset0 = i0.first,
-                    offset1 = i1.first,
-                    shape0 = i0.count(),
-                    shape1 = i1.count(),
-                    stride0 = i0.step,
-                    stride1 = i1.step
-            )
-
     override fun getView(i0: Int, i1: IntProgression): MutableDoubleArray1D =
             MutableDoubleArray2DCollapseView(
                     DefaultMutableDoubleArray2DView(
@@ -75,6 +64,12 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
                             stride1 = i1.step
                     )
             )
+
+
+
+    override fun getView(i0: Int, i1: IndexProgression): MutableDoubleArray1D = getView(i0, i1.computeProgression(shape1))
+    override fun getView(i0: Index, i1: IntProgression): MutableDoubleArray1D = getView(i0.computeValue(shape0), i1)
+    override fun getView(i0: Index, i1: IndexProgression): MutableDoubleArray1D = getView(i0.computeValue(shape0), i1.computeProgression(shape1))
 
     override fun getView(i0: IntProgression, i1: Int): MutableDoubleArray1D =
             MutableDoubleArray2DCollapseView(
@@ -89,59 +84,79 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
                     )
             )
 
-    override fun getView(i0: IndexProgression, i1: IndexProgression): MutableDoubleArray2D =
-            getView(
-                    i0.computeProgression(shape0),
-                    i1.computeProgression(shape1)
+    override fun getView(i0: IndexProgression, i1: Int): MutableDoubleArray1D = getView(i0.computeProgression(shape0), i1)
+    override fun getView(i0: IntProgression, i1: Index): MutableDoubleArray1D = getView(i0, i1.computeValue(shape1))
+    override fun getView(i0: IndexProgression, i1: Index): MutableDoubleArray1D = getView(i0.computeProgression(shape0), i1.computeValue(shape1))
+
+    override fun getView(i0: IntProgression, i1: IntProgression): MutableDoubleArray2D =
+            DefaultMutableDoubleArray2DView(
+                    array = this,
+                    offset0 = i0.first,
+                    offset1 = i1.first,
+                    shape0 = i0.count(),
+                    shape1 = i1.count(),
+                    stride0 = i0.step,
+                    stride1 = i1.step
             )
 
-    override fun getView(i0: Int, i1: IndexProgression): MutableDoubleArray1D =
-            getView(
-                    i0,
-                    i1.computeProgression(shape1)
-            )
+    override fun getView(i0: IntProgression, i1: IndexProgression): MutableDoubleArray2D = getView(i0, i1.computeProgression(shape1))
+    override fun getView(i0: IndexProgression, i1: IntProgression): MutableDoubleArray2D = getView(i0.computeProgression(shape0), i1)
+    override fun getView(i0: IndexProgression, i1: IndexProgression): MutableDoubleArray2D = getView(i0.computeProgression(shape0), i1.computeProgression(shape1))
 
-    override fun getView(i0: IndexProgression, i1: Int): MutableDoubleArray1D =
-            getView(
-                    i0.computeProgression(shape0),
-                    i1
-            )
+    fun setView(value: DoubleArray1D, i0: Int, i1: IntProgression) = getView(i0, i1).setValue(value.copy())
+    fun setView(value: DoubleArray1D, i0: Index, i1: IndexProgression) = setView(value, i0, i1.computeProgression(shape1))
+    fun setView(value: DoubleArray1D, i0: Int, i1: IndexProgression) = setView(value, i0, i1.computeProgression(shape1))
+    fun setView(value: DoubleArray1D, i0: Index, i1: IntProgression) = setView(value, i0.computeValue(shape0), i1)
 
-    fun setView(value: DoubleArray2D, i0: IndexProgression, i1: IndexProgression) =
-            setView(value,
-                    i0.computeProgression(shape0),
-                    i1.computeProgression(shape1)
-            )
+    fun setView(value: DoubleArray1D, i0: IntProgression, i1: Int) = getView(i0, i1).setValue(value.copy())
+    fun setView(value: DoubleArray1D, i0: IntProgression, i1: Index) = setView(value, i0, i1.computeValue(shape1))
+    fun setView(value: DoubleArray1D, i0: IndexProgression, i1: Int) = setView(value, i0.computeProgression(shape0), i1)
+    fun setView(value: DoubleArray1D, i0: IndexProgression, i1: Index) = setView(value, i0.computeProgression(shape0), i1)
 
-    fun setView(value: DoubleArray2D, i0: IntProgression, i1: IntProgression) =
-            getView(i0, i1).setValue(value.copy())
+    fun setView(value: DoubleArray2D, i0: IntProgression, i1: IntProgression) = getView(i0, i1).setValue(value.copy())
+    fun setView(value: DoubleArray2D, i0: IndexProgression, i1: IndexProgression) = setView(value, i0.computeProgression(shape0), i1.computeProgression(shape1))
+    fun setView(value: DoubleArray2D, i0: IntProgression, i1: IndexProgression) = setView(value, i0, i1.computeProgression(shape1))
+    fun setView(value: DoubleArray2D, i0: IndexProgression, i1: IntProgression) = setView(value, i0.computeProgression(shape0), i1)
 
-    override fun setView(value: Double, i0: IndexProgression, i1: IndexProgression) =
-            setView(value, i0.computeProgression(shape0), i1.computeProgression(shape1))
-
-    override fun setView(value: Double, i0: IntProgression, i1: IntProgression) =
-            getView(i0, i1).setDouble(value)
+    override fun setView(value: Double, i0: IntProgression, i1: IntProgression) = getView(i0, i1).setDouble(value)
+    override fun setView(value: Double, i0: IntProgression, i1: IndexProgression) = getView(i0, i1).setDouble(value)
+    override fun setView(value: Double, i0: IndexProgression, i1: IntProgression) = getView(i0, i1).setDouble(value)
+    override fun setView(value: Double, i0: IndexProgression, i1: IndexProgression) = setView(value, i0.computeProgression(shape0), i1.computeProgression(shape1))
 
     override fun copy(): MutableDoubleArray2D = copy(this).asMutable()
 
     override operator fun get(i0: Int, i1: IntProgression): MutableDoubleArray1D = getView(i0, i1)
-    override operator fun get(i0: Index, i1: IntProgression): MutableDoubleArray1D = getView(i0, i1).asMutable()
+    override operator fun get(i0: Index, i1: IntProgression): MutableDoubleArray1D = getView(i0, i1)
     override operator fun get(i0: Int, i1: IndexProgression): MutableDoubleArray1D = getView(i0, i1)
-    override operator fun get(i0: Index, i1: IndexProgression): MutableDoubleArray1D = getView(i0, i1).asMutable()
+    override operator fun get(i0: Index, i1: IndexProgression): MutableDoubleArray1D = getView(i0, i1)
 
     override operator fun get(i0: IntProgression, i1: Int): MutableDoubleArray1D = getView(i0, i1)
-    override operator fun get(i0: IntProgression, i1: Index): MutableDoubleArray1D = getView(i0, i1).asMutable()
+    override operator fun get(i0: IntProgression, i1: Index): MutableDoubleArray1D = getView(i0, i1)
     override operator fun get(i0: IndexProgression, i1: Int): MutableDoubleArray1D = getView(i0, i1)
-    override operator fun get(i0: IndexProgression, i1: Index): MutableDoubleArray1D = getView(i0, i1).asMutable()
+    override operator fun get(i0: IndexProgression, i1: Index): MutableDoubleArray1D = getView(i0, i1)
 
     override operator fun get(i0: IntProgression, i1: IntProgression): MutableDoubleArray2D = getView(i0, i1)
-    override operator fun get(i0: IntProgression, i1: IndexProgression): MutableDoubleArray2D = getView(i0, i1).asMutable()
-    override operator fun get(i0: IndexProgression, i1: IntProgression): MutableDoubleArray2D = getView(i0, i1).asMutable()
+    override operator fun get(i0: IntProgression, i1: IndexProgression): MutableDoubleArray2D = getView(i0, i1)
+    override operator fun get(i0: IndexProgression, i1: IntProgression): MutableDoubleArray2D = getView(i0, i1)
     override operator fun get(i0: IndexProgression, i1: IndexProgression): MutableDoubleArray2D = getView(i0, i1)
 
     operator fun set(i0: Int, i1: Int, value: Double) = setDouble(value, i0, i1)
-    operator fun set(i0: Index, i1: Index, value: Double) =
-            setValue(value, i0.computeValue(shape0), i1.computeValue(shape1))
+    operator fun set(i0: Index, i1: Index, value: Double) = setValue(value, i0.computeValue(shape0), i1.computeValue(shape1))
+
+    operator fun set(i0: IntProgression, i1: Int, value: DoubleArray1D) = setView(value, i0, i1)
+    operator fun set(i0: IntProgression, i1: Index, value: DoubleArray1D) = setView(value, i0, i1)
+    operator fun set(i0: IndexProgression, i1: Int, value: DoubleArray1D) = setView(value, i0, i1)
+    operator fun set(i0: IndexProgression, i1: Index, value: DoubleArray1D) = setView(value, i0, i1)
+
+    operator fun set(i0: Int, i1: IntProgression, value: DoubleArray1D) = setView(value, i0, i1)
+    operator fun set(i0: Int, i1: IndexProgression, value: DoubleArray1D) = setView(value, i0, i1)
+    operator fun set(i0: Index, i1: IntProgression, value: DoubleArray1D) = setView(value, i0, i1)
+    operator fun set(i0: Index, i1: IndexProgression, value: DoubleArray1D) = setView(value, i0, i1)
+
+    operator fun set(i0: IntProgression, i1: IntProgression, value: DoubleArray2D) = setView(value, i0, i1)
+    operator fun set(i0: IntProgression, i1: IndexProgression, value: DoubleArray2D) = setView(value, i0, i1)
+    operator fun set(i0: IndexProgression, i1: IntProgression, value: DoubleArray2D) = setView(value, i0, i1)
+    operator fun set(i0: IndexProgression, i1: IndexProgression, value: DoubleArray2D) = setView(value, i0, i1)
 
 
     fun applyPlus(other: DoubleArray2D): MutableDoubleArray2D =

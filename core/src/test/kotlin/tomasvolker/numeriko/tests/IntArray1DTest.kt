@@ -12,7 +12,7 @@ import kotlin.test.assertNotEquals
 class IntArray1DTest {
 
     @Test
-    fun createArray() {
+    fun `int 1D array constructors`() {
 
         val a1 = intArray1D(5) { i -> 2*i }
         val a2 = intArrayOf(0, 2, 4, 6, 8).asIntArray1D()
@@ -25,7 +25,7 @@ class IntArray1DTest {
     }
 
     @Test
-    fun accessArray() {
+    fun `int 1D array access`() {
 
         val a1 = intArray1D(5) { i -> 2*i }
         val a2 = intArrayOf(0, 2, 4, 6, 8).asIntArray1D()
@@ -40,7 +40,7 @@ class IntArray1DTest {
     }
 
     @Test
-    fun viewArray() {
+    fun `int 1D array view`() {
 
         val a1 = intArray1D(100) { i -> 2*i}
 
@@ -50,7 +50,7 @@ class IntArray1DTest {
     }
 
     @Test
-    fun viewInstance() {
+    fun `int 1D array copy view instance`() {
 
         val a1 = intArray1D(100) { i -> 2*i }
 
@@ -65,7 +65,7 @@ class IntArray1DTest {
     }
 
     @Test
-    fun modifyArray() {
+    fun `int 1D array modification`() {
 
         val a1 = intArray1D(100) { i -> 2*i }.asMutable()
 
@@ -88,7 +88,7 @@ class IntArray1DTest {
     }
 
     @Test
-    fun settingOnItself() {
+    fun `int 1D array aliasing`() {
 
         val a = intArray1D(10) { it }.asMutable()
 
@@ -100,7 +100,7 @@ class IntArray1DTest {
     }
 
     @Test
-    fun algebra() {
+    fun `int 1D array algebra`() {
 
         val a1 = intArray1D(100) { i -> i }
 
