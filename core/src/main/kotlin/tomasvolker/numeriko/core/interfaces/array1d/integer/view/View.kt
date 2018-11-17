@@ -20,3 +20,11 @@ open class DefaultMutableIntArray1DView (
     }
 
 }
+
+fun defaultIntArray1DView(array: MutableIntArray1D, i0: IntProgression) =
+        DefaultMutableIntArray1DView(
+                array = array,
+                offset = i0.first,
+                size = i0.count(),
+                stride = i0.step
+        )

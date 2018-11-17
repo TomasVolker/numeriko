@@ -133,7 +133,7 @@ interface ArrayND<out T>: Collection<T> {
      */
     fun getView(vararg indices: IntProgression): ArrayND<T> =
             DefaultArrayNDView(
-                    array = this,
+                    array = this.asMutable(),
                     offset = intArray1D(indices.size) { i -> indices[i].first },
                     shape = intArray1D(indices.size) { i -> indices[i].count() },
                     stride = intArray1D(indices.size) { i -> indices[i].step }
@@ -192,6 +192,16 @@ interface ArrayND<out T>: Collection<T> {
                 if (indices[axis] !in 0 until getShape(axis))
                     throw IndexOutOfBoundsException("Indices $indices are out of range for shape $shape")
             }
+
+        }
+
+    }
+
+    fun requireValidAxis(axis: Int) {
+
+        if (NumerikoConfig.checkRanges) {
+
+            if (axis !in axes) throw IndexOutOfBoundsException("Axis index $axis invalid for rank $rank")
 
         }
 

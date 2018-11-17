@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double.view
 
+import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 
 class DefaultMutableDoubleArray2DView(
@@ -30,3 +31,14 @@ class DefaultMutableDoubleArray2DView(
     }
 
 }
+
+fun defaultDoubleArray2DView(array: MutableDoubleArray2D, i0: IntProgression, i1: IntProgression) =
+        DefaultMutableDoubleArray2DView(
+                array = array,
+                offset0 = i0.first,
+                offset1 = i1.first,
+                shape0 = i0.count(),
+                shape1 = i1.count(),
+                stride0 = i0.step,
+                stride1 = i1.step
+        )

@@ -4,7 +4,7 @@ import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.Default1DArrayListView
-import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultArray1DView
+import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
@@ -19,11 +19,10 @@ interface Array1D<out T>: ArrayND<T> {
 
     val shape0: Int get() = size
 
-    override fun getShape(axis: Int): Int =
-            when(axis) {
-                0 -> shape0
-                else -> throw IndexOutOfBoundsException("$axis")
-            }
+    override fun getShape(axis: Int): Int {
+        requireValidAxis(axis)
+        return shape0
+    }
 
     override val size: Int
 
@@ -35,14 +34,8 @@ interface Array1D<out T>: ArrayND<T> {
     fun getValue(i0: Int): T
     fun getValue(i0: Index): T = getValue(i0.compute())
 
-    fun getView(indexRange: IntProgression): Array1D<T> =
-            DefaultArray1DView(
-                    array = this,
-                    offset = indexRange.first,
-                    size = indexRange.count(),
-                    stride = indexRange.step
-            )
-    fun getView(indexRange: IndexProgression): Array1D<T> = getView(indexRange.compute())
+    fun getView(i0: IntProgression): Array1D<T> = defaultArray1DView(this.asMutable(), i0)
+    fun getView(i0: IndexProgression): Array1D<T> = getView(i0.compute())
 
     fun Int.compute(): Int = this
     fun IntProgression.compute(): IntProgression = this
@@ -74,7 +67,7 @@ interface Array1D<out T>: ArrayND<T> {
 }
 
 // Getter functions defined as extensions to avoid boxing when using get syntax on primitive specializations
-operator fun <T> Array1D<T>.get(index: Int): T = getValue(index)
-operator fun <T> Array1D<T>.get(index: Index): T = getValue(index)
-operator fun <T> Array1D<T>.get(indexRange: IntRange): Array1D<T> = getView(indexRange)
-operator fun <T> Array1D<T>.get(indexRange: IndexProgression): Array1D<T> = getView(indexRange)
+operator fun <T> Array1D<T>.get(i0: Int): T = getValue(i0)
+operator fun <T> Array1D<T>.get(i0: Index): T = getValue(i0)
+operator fun <T> Array1D<T>.get(i0: IntRange): Array1D<T> = getView(i0)
+operator fun <T> Array1D<T>.get(i0: IndexProgression): Array1D<T> = getView(i0)

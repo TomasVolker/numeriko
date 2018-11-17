@@ -5,8 +5,6 @@ import tomasvolker.numeriko.complex.array.view.DefaultMutableComplexArray1DView
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.applyElementWise
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.preconditions.requireSameSize
@@ -15,16 +13,16 @@ import kotlin.math.sin
 
 interface MutableComplexArray1D: MutableArray1D<Complex>, ComplexArray1D {
 
-    override fun getView(indexRange: IntProgression): MutableComplexArray1D =
+    override fun getView(i0: IntProgression): MutableComplexArray1D =
             DefaultMutableComplexArray1DView(
                     array = this,
-                    offset = indexRange.first,
-                    size = indexRange.count(),
-                    stride = indexRange.step
+                    offset = i0.first,
+                    size = i0.count(),
+                    stride = i0.step
             )
 
-    override fun getView(indexRange: IndexProgression): MutableComplexArray1D =
-            getView(indexRange.computeProgression(size))
+    override fun getView(i0: IndexProgression): MutableComplexArray1D =
+            getView(i0.computeProgression(size))
 
     operator fun set(i: Int, value: Complex): Unit = setValue(value, i)
     operator fun set(i: Index, value: Complex): Unit = setValue(value, i)

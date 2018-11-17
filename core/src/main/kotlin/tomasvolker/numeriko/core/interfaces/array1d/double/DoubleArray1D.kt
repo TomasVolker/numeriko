@@ -2,7 +2,7 @@ package tomasvolker.numeriko.core.interfaces.array1d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1DView
+import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
@@ -34,21 +34,14 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
     fun getDouble(index: Int): Double
     fun getDouble(index: Index): Double = getDouble(index.compute())
 
-    override fun getView(indexRange: IntProgression): DoubleArray1D =
-            DefaultMutableDoubleArray1DView(
-                    array = this.asMutable(),
-                    offset = indexRange.first,
-                    size = indexRange.count(),
-                    stride = indexRange.step
-            )
-    override fun getView(indexRange: IndexProgression): DoubleArray1D = getView(indexRange.compute())
+    override fun getView(i0: IntProgression): DoubleArray1D = defaultDoubleArray1DView(this.asMutable(), i0)
+    override fun getView(i0: IndexProgression): DoubleArray1D = getView(i0.compute())
 
+    operator fun get(i0: Int): Double = getDouble(i0)
+    operator fun get(i0: Index): Double = getDouble(i0)
 
-    operator fun get(index: Int): Double = getDouble(index)
-    operator fun get(index: Index): Double = getDouble(index)
-
-    operator fun get(index: IntProgression): DoubleArray1D = getView(index)
-    operator fun get(index: IndexProgression): DoubleArray1D = getView(index)
+    operator fun get(i0: IntProgression): DoubleArray1D = getView(i0)
+    operator fun get(i0: IndexProgression): DoubleArray1D = getView(i0)
 
 
     override fun copy(): DoubleArray1D = copy(this)
@@ -67,8 +60,7 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
     /**
      * Returns a copy of this array with element wise negation.
      */
-    operator fun unaryMinus(): DoubleArray1D =
-            elementWise { -it }
+    operator fun unaryMinus(): DoubleArray1D = elementWise { -it }
 
     /**
      * Returns an array with the element wise addition with [other].
@@ -76,8 +68,7 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if this and [other] don't have the same [size]
      * @return an array containing the element wise addition with [other].
      */
-    operator fun plus(other: DoubleArray1D): DoubleArray1D =
-            elementWise(this, other) { t, o -> t + o }
+    operator fun plus(other: DoubleArray1D): DoubleArray1D = elementWise(this, other) { t, o -> t + o }
 
     /**
      * Returns an array with the element wise subtraction with [other].
@@ -85,8 +76,7 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if this and [other] don't have the same [size]
      * @return an array containing the subtraction wise addition with [other].
      */
-    operator fun minus(other: DoubleArray1D): DoubleArray1D =
-            elementWise(this, other) { t, o -> t - o }
+    operator fun minus(other: DoubleArray1D): DoubleArray1D = elementWise(this, other) { t, o -> t - o }
 
     /**
      * Returns an array with the element wise multiplication with [other].
@@ -96,8 +86,7 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if this and [other] don't have the same [size]
      * @return an array containing the subtraction wise addition with [other].
      */
-    operator fun times(other: DoubleArray1D): DoubleArray1D =
-            elementWise(this, other) { t, o -> t * o }
+    operator fun times(other: DoubleArray1D): DoubleArray1D = elementWise(this, other) { t, o -> t * o }
 
     /**
      * Returns an array with the element wise division with [other].
@@ -105,8 +94,7 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if this and [other] don't have the same [size]
      * @return an array containing the division wise addition with [other].
      */
-    operator fun div(other: DoubleArray1D): DoubleArray1D =
-            elementWise(this, other) { t, o -> t / o }
+    operator fun div(other: DoubleArray1D): DoubleArray1D = elementWise(this, other) { t, o -> t / o }
 
     /**
      * Returns an array with the element wise reversed division with [other].
@@ -116,68 +104,57 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if this and [other] don't have the same [size]
      * @return an array containing the reversed division wise addition with [other].
      */
-     fun rdiv(other: DoubleArray1D): DoubleArray1D =
-            elementWise(this, other) { t, o -> o / t }
+     fun rdiv(other: DoubleArray1D): DoubleArray1D = elementWise(this, other) { t, o -> o / t }
 
     /**
      * Returns an array with the element wise addition with [other].
      */
-    operator fun plus(other: Double): DoubleArray1D =
-            elementWise { it + other }
+    operator fun plus(other: Double): DoubleArray1D = elementWise { it + other }
 
     /**
      * Returns an array with the element wise subtraction with [other].
      */
-    operator fun minus(other: Double): DoubleArray1D =
-            elementWise { it - other }
+    operator fun minus(other: Double): DoubleArray1D = elementWise { it - other }
 
     /**
      * Returns an array with the element wise multiplication with [other].
      */
-    operator fun times(other: Double): DoubleArray1D =
-            elementWise { it * other }
+    operator fun times(other: Double): DoubleArray1D = elementWise { it * other }
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    operator fun div(other: Double): DoubleArray1D =
-            elementWise { it / other }
+    operator fun div(other: Double): DoubleArray1D = elementWise { it / other }
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    fun rdiv(other: Double): DoubleArray1D =
-            elementWise { other / it }
+    fun rdiv(other: Double): DoubleArray1D = elementWise { other / it }
 
     /**
      * Returns an array with the element wise addition with [other].
      */
-    operator fun plus(other: Int): DoubleArray1D =
-            plus(other.toDouble())
+    operator fun plus(other: Int): DoubleArray1D = plus(other.toDouble())
 
     /**
      * Returns an array with the element wise subtraction with [other].
      */
-    operator fun minus(other: Int): DoubleArray1D =
-            minus(other.toDouble())
+    operator fun minus(other: Int): DoubleArray1D = minus(other.toDouble())
 
     /**
      * Returns an array with the element wise multiplication with [other].
      */
-    operator fun times(other: Int): DoubleArray1D =
-            times(other.toDouble())
+    operator fun times(other: Int): DoubleArray1D = times(other.toDouble())
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    operator fun div(other: Int): DoubleArray1D =
-            div(other.toDouble())
+    operator fun div(other: Int): DoubleArray1D = div(other.toDouble())
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    fun rdiv(other: Int): DoubleArray1D =
-            elementWise { other / it }
+    fun rdiv(other: Int): DoubleArray1D = elementWise { other / it }
 
     /**
      * Computes the sum of all its elements

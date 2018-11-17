@@ -25,17 +25,15 @@ object A {
             values.asDoubleArray1D()
 
     operator fun get(vararg values: DoubleArray1D): DoubleArray2D =
-            stack(*values)
+            stack(*values, axis = 0)
 
 }
 
 object D {
 
-    operator fun get(vararg values: Number): DoubleArray1D =
-            values.asDoubleArray1D()
+    operator fun get(vararg values: Number): DoubleArray1D = values.asDoubleArray1D()
 
-    operator fun get(vararg values: DoubleArray1D): DoubleArray2D =
-            stack(*values)
+    operator fun get(vararg values: DoubleArray1D): DoubleArray2D = stack(*values)
 
 }
 

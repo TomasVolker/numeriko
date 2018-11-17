@@ -10,11 +10,9 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
 
     fun setDouble(value: Double, vararg indices: Int)
 
-    fun setDouble(value: Double, vararg indices: Index) =
-            setDouble(value, *indices.computeIndices())
+    fun setDouble(value: Double, vararg indices: Index) = setDouble(value, *indices.computeIndices())
 
-    fun setDouble(value: Double, indices: IntArray1D) =
-            setDouble(value, *indices.toIntArray())
+    fun setDouble(value: Double, indices: IntArray1D) = setDouble(value, *indices.toIntArray())
 
     fun setValue(value: DoubleArrayND) {
         forEachIndices { indices ->
@@ -22,11 +20,9 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
         }
     }
 
-    operator fun set(indices: IntArray1D, value: Double) =
-            setDouble(value, indices)
+    operator fun set(indices: IntArray1D, value: Double) = setDouble(value, indices)
 
-    override fun setValue(value: Double, vararg indices: Int) =
-            setDouble(value, *indices)
+    override fun setValue(value: Double, vararg indices: Int) = setDouble(value, *indices)
 
     fun setView(value: DoubleArrayND, vararg indices: IntProgression): Unit =
             getView(*indices).asMutable().setValue(value)

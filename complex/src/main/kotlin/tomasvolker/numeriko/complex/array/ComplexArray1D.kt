@@ -20,16 +20,16 @@ import kotlin.math.hypot
 
 interface ComplexArray1D: Array1D<Complex> {
 
-    override fun getView(indexRange: IntProgression): ComplexArray1D =
+    override fun getView(i0: IntProgression): ComplexArray1D =
             DefaultMutableComplexArray1DView(
                     array = this.asMutable(),
-                    offset = indexRange.first,
-                    size = indexRange.count(),
-                    stride = indexRange.step
+                    offset = i0.first,
+                    size = i0.count(),
+                    stride = i0.step
             )
 
-    override fun getView(indexRange: IndexProgression): ComplexArray1D =
-            getView(indexRange.computeProgression(size))
+    override fun getView(i0: IndexProgression): ComplexArray1D =
+            getView(i0.computeProgression(size))
 
     operator fun get(index: Int): Complex = getValue(index)
     operator fun get(index: Index): Complex = getValue(index)

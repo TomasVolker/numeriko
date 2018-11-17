@@ -20,3 +20,11 @@ class DefaultMutableDoubleArray1DView (
     }
 
 }
+
+fun defaultDoubleArray1DView(array: MutableDoubleArray1D, i0: IntProgression) =
+        DefaultMutableDoubleArray1DView(
+                array = array,
+                offset = i0.first,
+                size = i0.count(),
+                stride = i0.step
+        )

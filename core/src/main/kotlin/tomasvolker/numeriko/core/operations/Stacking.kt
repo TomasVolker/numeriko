@@ -25,16 +25,16 @@ inline fun <reified T> stack(vararg arrays: Array1D<T>): Array2D<T> {
 
 }
 
-fun stack(arrays: List<DoubleArray1D>, index: Int = 0): DoubleArray2D {
+fun stack(arrays: List<DoubleArray1D>, axis: Int = 0): DoubleArray2D {
 
-    if (index !in 0..1) throw IllegalArgumentException("Stacking index must be 0 or 1")
+    if (axis !in 0..1) throw IllegalArgumentException("Stacking axis must be 0 or 1")
 
     if (arrays.isEmpty()) return doubleArray2D(0, 0) { _, _-> 0.0 }
 
     val firstSize = arrays.first().size
     require(arrays.all { it.size == firstSize }) { "All sizes must be the same" }
 
-    return when(index) {
+    return when(axis) {
         0 -> doubleArray2D(arrays.size, firstSize) { i0, i1 ->
             arrays[i0][i1]
         }
@@ -46,8 +46,7 @@ fun stack(arrays: List<DoubleArray1D>, index: Int = 0): DoubleArray2D {
 
 }
 
-fun stack(vararg arrays: DoubleArray1D): DoubleArray2D =
-        stack(arrays.toList())
+fun stack(vararg arrays: DoubleArray1D, axis: Int = 0): DoubleArray2D = stack(arrays.toList(), axis)
 
 infix fun DoubleArray1D.concatenate(other: DoubleArray1D): DoubleArray1D =
         doubleArray1D(this.size + other.size) { i ->
@@ -85,8 +84,8 @@ infix fun DoubleArray1D.stack(other: DoubleArray1D): DoubleArray2D {
     }
 }
 
-fun DoubleArray2D.concatenate(other: DoubleArray1D, index: Int = 0): DoubleArray2D =
-        when(index) {
+fun DoubleArray2D.concatenate(other: DoubleArray1D, axis: Int = 0): DoubleArray2D =
+        when(axis) {
             0 -> {
                 require(this.shape1 == other.size)
                 doubleArray2D(shape0+1, shape1) { i0, i1 ->
@@ -105,12 +104,12 @@ fun DoubleArray2D.concatenate(other: DoubleArray1D, index: Int = 0): DoubleArray
                         other[i1]
                 }
             }
-            else -> throw IndexOutOfBoundsException("$index")
+            else -> throw IndexOutOfBoundsException("$axis")
         }
 
 
-fun DoubleArray2D.concatenate(other: DoubleArray2D, index: Int = 0): DoubleArray2D =
-        when(index) {
+fun DoubleArray2D.concatenate(other: DoubleArray2D, axis: Int = 0): DoubleArray2D =
+        when(axis) {
             0 -> {
                 require(this.shape1 == other.size)
                 doubleArray2D(shape0+1, shape1) { i0, i1 ->
@@ -129,5 +128,5 @@ fun DoubleArray2D.concatenate(other: DoubleArray2D, index: Int = 0): DoubleArray
                         other[i0, i1 - shape1]
                 }
             }
-            else -> throw IndexOutOfBoundsException("$index")
+            else -> throw IndexOutOfBoundsException("$axis")
         }

@@ -48,3 +48,29 @@ class MutableDoubleArray2DCollapseView(
     }
 
 }
+
+fun defaultDoubleArray2DView(array: MutableDoubleArray2D, i0: IntProgression, i1: Int) =
+        MutableDoubleArray2DCollapseView(
+            DefaultMutableDoubleArray2DView(
+                array = array,
+                offset0 = i0.first,
+                offset1 = i1,
+                shape0 = i0.count(),
+                shape1 = 1,
+                stride0 = i0.step,
+                stride1 = 1
+        )
+)
+
+fun defaultDoubleArray2DView(array: MutableDoubleArray2D, i0: Int, i1: IntProgression) =
+        MutableDoubleArray2DCollapseView(
+                DefaultMutableDoubleArray2DView(
+                        array = array,
+                        offset0 = i0,
+                        offset1 = i1.first,
+                        shape0 = 1,
+                        shape1 = i1.count(),
+                        stride0 = 1,
+                        stride1 = i1.step
+                )
+        )

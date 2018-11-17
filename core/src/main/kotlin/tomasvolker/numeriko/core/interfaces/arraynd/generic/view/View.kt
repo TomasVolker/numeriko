@@ -8,23 +8,23 @@ import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 
 class DefaultArrayNDCollapseView<T>(
         val array: ArrayND<T>,
-        val dimension: Int
+        val axis: Int
 ) : DefaultArrayND<T>() {
 
     init {
-        require(array.shape[dimension] == 1)
+        require(array.shape[axis] == 1)
     }
 
-    override val shape: IntArray1D = intArray1D(array.shape.filterIndexed { i, _ -> i != dimension }.toIntArray())
+    override val shape: IntArray1D = intArray1D(array.shape.filterIndexed { i, _ -> i != axis }.toIntArray())
 
     override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
         return array.getValue(
                 *IntArray(array.rank) { i ->
                     when {
-                        i < dimension -> indices[i]
-                        i == dimension -> 0
-                        i > dimension -> indices[i-1]
+                        i < axis -> indices[i]
+                        i == axis -> 0
+                        i > axis -> indices[i-1]
                         else -> throw IllegalStateException()
                     }
                 }
@@ -33,25 +33,23 @@ class DefaultArrayNDCollapseView<T>(
 
 }
 
-fun <T> ArrayND<T>.collapseView(dimension: Int): ArrayND<T> =
-        DefaultArrayNDCollapseView(this, dimension)
+fun <T> ArrayND<T>.collapseView(axis: Int): ArrayND<T> =
+        DefaultArrayNDCollapseView(this, axis)
 
-open class DefaultArrayNDView<T>(
-        array: ArrayND<T>,
+class DefaultArrayNDView<T>(
+        val array: MutableArrayND<T>,
         val offset: IntArray1D,
-        final override val shape: IntArray1D,
+        override val shape: IntArray1D,
         val stride: IntArray1D
-) : DefaultArrayND<T>() {
+) : DefaultMutableArrayND<T>() {
 
     init {
         require(array.rank == offset.size &&
-                array.rank == shape.size &&
+                array.rank == shape.size  &&
                 array.rank == stride.size
         )
 
     }
-
-    open val array: ArrayND<T> = array
 
     override fun getValue(vararg indices: Int): T {
         requireValidIndices(indices)
@@ -59,20 +57,6 @@ open class DefaultArrayNDView<T>(
                 *IntArray(rank) { i -> offset[i] + stride[i] * indices[i] }
         )
     }
-
-}
-
-class DefaultMutableArrayNDView<T>(
-        override val array: MutableArrayND<T>,
-        offset: IntArray1D,
-        shape: IntArray1D,
-        stride: IntArray1D
-) : DefaultArrayNDView<T>(
-        array,
-        offset,
-        shape,
-        stride
-), MutableArrayND<T> {
 
     override fun setValue(value: T, vararg indices: Int) {
         requireValidIndices(indices)
@@ -83,7 +67,6 @@ class DefaultMutableArrayNDView<T>(
     }
 
 }
-
 
 class DefaultArrayND1DView<T>(
         val array: MutableArrayND<T>

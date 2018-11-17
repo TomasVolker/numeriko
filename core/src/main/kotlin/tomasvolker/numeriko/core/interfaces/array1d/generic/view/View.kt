@@ -2,34 +2,17 @@ package tomasvolker.numeriko.core.interfaces.array1d.generic.view
 
 import tomasvolker.numeriko.core.interfaces.array1d.generic.*
 
-open class DefaultArray1DView<out T>(
-        open val array: Array1D<T>,
+class DefaultArray1DView<T>(
+        val array: MutableArray1D<T>,
         val offset: Int,
         override val size: Int,
         val stride: Int
-) : DefaultArray1D<T>() {
+) : DefaultMutableArray1D<T>() {
 
     override fun getValue(i0: Int): T {
-        if (i0 !in 0 until size) {
-            throw IndexOutOfBoundsException("$i0")
-        }
-
+        requireValidIndices(i0)
         return array.getValue(offset + stride * i0)
     }
-
-}
-
-class DefaultMutableArray1DView<T>(
-        override val array: MutableArray1D<T>,
-        offset: Int,
-        size: Int,
-        stride: Int
-) : DefaultArray1DView<T>(
-        array,
-        offset,
-        size,
-        stride
-), MutableArray1D<T> {
 
     override fun setValue(value: T, index: Int) {
         requireValidIndices(index)
@@ -37,3 +20,11 @@ class DefaultMutableArray1DView<T>(
     }
 
 }
+
+fun <T> defaultArray1DView(array: MutableArray1D<T>, i0: IntProgression) =
+        DefaultArray1DView(
+                array = array,
+                offset = i0.first,
+                size = i0.count(),
+                stride = i0.step
+        )

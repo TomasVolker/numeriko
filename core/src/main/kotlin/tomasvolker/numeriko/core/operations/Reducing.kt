@@ -1,7 +1,5 @@
 package tomasvolker.numeriko.core.operations
 
-import tomasvolker.numeriko.core.index.Last
-import tomasvolker.numeriko.core.index.until
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D

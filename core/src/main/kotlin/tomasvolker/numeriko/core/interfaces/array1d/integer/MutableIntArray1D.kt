@@ -39,16 +39,16 @@ interface MutableIntArray1D: IntArray1D, MutableArray1D<Int> {
 
     }
 
-    override fun getView(indexRange: IntProgression): MutableIntArray1D =
+    override fun getView(i0: IntProgression): MutableIntArray1D =
             DefaultMutableIntArray1DView(
                     array = this,
-                    offset = indexRange.first,
-                    size = indexRange.count(),
-                    stride = indexRange.step
+                    offset = i0.first,
+                    size = i0.count(),
+                    stride = i0.step
             )
 
-    override fun getView(indexRange: IndexProgression): MutableIntArray1D =
-            getView(indexRange.computeProgression(size))
+    override fun getView(i0: IndexProgression): MutableIntArray1D =
+            getView(i0.computeProgression(size))
 
     fun setView(value: IntArray1D, indexRange: IndexProgression) =
             setView(value, indexRange.computeProgression(size))

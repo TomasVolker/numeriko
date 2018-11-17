@@ -2,7 +2,7 @@ package tomasvolker.numeriko.core.interfaces.array1d.generic
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultMutableArray1DView
+import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray1DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 
 interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
@@ -37,29 +37,23 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
 
     }
 
-    override fun getView(indexRange: IntProgression): MutableArray1D<T> =
-            DefaultMutableArray1DView(
-                    array = this,
-                    offset = indexRange.first,
-                    size = indexRange.count(),
-                    stride = indexRange.step
-            )
+    override fun getView(i0: IntProgression): MutableArray1D<T> = defaultArray1DView(this, i0)
+    override fun getView(i0: IndexProgression): MutableArray1D<T> = getView(i0.compute())
 
-    override fun getView(indexRange: IndexProgression): MutableArray1D<T> = getView(indexRange.compute())
+    fun setView(value: Array1D<T>, i0: IndexProgression): Unit = setView(value, i0.compute())
+    fun setView(value: Array1D<T>, i0: IntProgression  ): Unit = getView(i0).setValue(value.copy())
 
-    fun setView(value: Array1D<T>, indexRange: IndexProgression): Unit = setView(value, indexRange.compute())
-    fun setView(value: Array1D<T>, indexRange: IntProgression  ): Unit = getView(indexRange).setValue(value.copy())
-    fun setView(value: T, indexRange: IndexProgression): Unit = setView(value, indexRange.compute())
-    fun setView(value: T, indexRange: IntProgression): Unit = getView(indexRange).setValue(value)
+    fun setView(value: T, i0: IndexProgression): Unit = setView(value, i0.compute())
+    fun setView(value: T, i0: IntProgression  ): Unit = getView(i0).setValue(value)
 
 }
 
 // Setter functions defined as extensions to avoid boxing when using get syntax on primitive specializations
-operator fun <T> MutableArray1D<T>.set(index: Int, value: T) = setValue(value, index)
-operator fun <T> MutableArray1D<T>.set(index: Index, value: T) = setValue(value, index)
+operator fun <T> MutableArray1D<T>.set(i0: Int, value: T) = setValue(value, i0)
+operator fun <T> MutableArray1D<T>.set(i0: Index, value: T) = setValue(value, i0)
 
-operator fun <T> MutableArray1D<T>.set(index: IntProgression, value: Array1D<T>) = setView(value, index)
-operator fun <T> MutableArray1D<T>.set(index: IndexProgression, value: Array1D<T>) = setView(value, index)
+operator fun <T> MutableArray1D<T>.set(i0: IntProgression, value: Array1D<T>) = setView(value, i0)
+operator fun <T> MutableArray1D<T>.set(i0: IndexProgression, value: Array1D<T>) = setView(value, i0)
 
-operator fun <T> MutableArray1D<T>.set(index: IntProgression, value: T) = setView(value, index)
-operator fun <T> MutableArray1D<T>.set(index: IndexProgression, value: T) = setView(value, index)
+operator fun <T> MutableArray1D<T>.set(i0: IntProgression, value: T) = setView(value, i0)
+operator fun <T> MutableArray1D<T>.set(i0: IndexProgression, value: T) = setView(value, i0)
