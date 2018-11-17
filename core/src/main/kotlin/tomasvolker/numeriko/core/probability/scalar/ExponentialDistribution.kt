@@ -1,14 +1,13 @@
 package tomasvolker.numeriko.core.probability.scalar
 
 import tomasvolker.numeriko.core.primitives.squared
-import tomasvolker.numeriko.core.probability.scalar.DoubleProbabilityDistribution
 import kotlin.math.exp
 import kotlin.math.ln
 import kotlin.random.Random
 
 class ExponentialDistribution(
         val lambda: Double = 1.0
-): DoubleProbabilityDistribution {
+): ProbabilityDistribution {
 
     override val variance: Double
         get() = 1.0 / lambda.squared()
@@ -28,6 +27,6 @@ class ExponentialDistribution(
             else
                 0.0
 
-    override fun nextSample(): Double = -ln(Random.nextDouble()) / lambda
+    override fun nextDouble(random: Random): Double = -ln(random.nextDouble()) / lambda
 
 }

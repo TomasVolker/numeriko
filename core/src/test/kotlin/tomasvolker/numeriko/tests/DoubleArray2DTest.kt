@@ -16,86 +16,92 @@ class DoubleArray2DTest {
     @Test
     fun `double 2D array constructors`() {
 
-        val random = Random(0)
+        with(Random(0)) {
 
-        val shape0 = 3
-        val shape1 = 2
+            val shape0 = 3
+            val shape1 = 2
 
-        val values = Array(shape0) { DoubleArray(shape0) { random.nextDouble() } }
+            val values = Array(shape0) { DoubleArray(shape0) { nextDouble() } }
 
-        val a1 = doubleArray2D(shape0, shape1) { i0, i1 -> values[i0][i1] }
-        val a2 = D[D[values[0][0], values[0][1]],
-                   D[values[1][0], values[1][1]],
-                   D[values[2][0], values[2][1]]]
+            val a1 = doubleArray2D(shape0, shape1) { i0, i1 -> values[i0][i1] }
+            val a2 = D[D[values[0][0], values[0][1]],
+                       D[values[1][0], values[1][1]],
+                       D[values[2][0], values[2][1]]]
 
-        assertNumericEquals(a1, a2)
+            assertNumericEquals(a1, a2)
+
+        }
 
     }
 
     @Test
     fun `double 2D array operators`() {
 
-        val random = Random(0)
+        with(Random(0)) {
 
-        val shape0 = 4
-        val shape1 = 3
+            val shape0 = 4
+            val shape1 = 3
 
-        val a1 = doubleArray2D(shape0, shape1) { _, _ -> random.nextDouble(from = -12.3, until = 7.5) }
-        val a2 = doubleArray2D(shape0, shape1) { _, _ -> random.nextDouble(from = -6.0, until = 8.9) }
-        val a3 = doubleArray2D(shape0, shape1) { _, _ -> random.nextDouble(from = 1.2, until = 22.8) }
-        val zero = doubleZeros(shape0, shape1)
-        val one = doubleArray2D(shape0, shape1) { _, _ -> 1.0 }
+            val a1 = nextDoubleArray2D(shape0, shape1, from = -12.3, until = 7.5)
+            val a2 = nextDoubleArray2D(shape0, shape1, from = -6.0, until = 8.9)
+            val a3 = nextDoubleArray2D(shape0, shape1, from = -12.3, until = 7.5)
+            val zero = doubleZeros(shape0, shape1)
+            val one = doubleArray2D(shape0, shape1) { _, _ -> 1.0 }
 
-        assertNumericEquals(a1 + a2, a2 + a1)
-        assertNumericEquals(a1, a1 + zero)
-        assertNumericEquals((a1 + a2) + a3, a1 + (a2 + a3))
-        assertNumericEquals(a1, a1 + a2 - a2)
-        assertNumericEquals(zero, a1 - a1)
-        assertNumericEquals(-a1, zero - a1)
+            assertNumericEquals(a1 + a2, a2 + a1)
+            assertNumericEquals(a1, a1 + zero)
+            assertNumericEquals((a1 + a2) + a3, a1 + (a2 + a3))
+            assertNumericEquals(a1, a1 + a2 - a2)
+            assertNumericEquals(zero, a1 - a1)
+            assertNumericEquals(-a1, zero - a1)
 
-        assertNumericEquals(a1 * a2, a2 * a1)
-        assertNumericEquals((a1 * a2) * a3, a1 * (a2 * a3))
-        assertNumericEquals(a1, a1 * one)
-        assertNumericEquals(zero, a1 * zero)
+            assertNumericEquals(a1 * a2, a2 * a1)
+            assertNumericEquals((a1 * a2) * a3, a1 * (a2 * a3))
+            assertNumericEquals(a1, a1 * one)
+            assertNumericEquals(zero, a1 * zero)
 
-        assertNumericEquals((a1 + a2) * a3, a1 * a3 + a2 * a3)
-        assertNumericEquals((a1 + a2) * 5.4, a1 * 5.4 + a2 * 5.4)
-        assertNumericEquals(a1, a1 * a2 / a2)
-        assertNumericEquals((a1 + a2) / a3, a1 / a3 + a2 / a3)
-        assertNumericEquals((a1 + a2) / 14.6, a1 / 14.6 + a2 / 14.6)
+            assertNumericEquals((a1 + a2) * a3, a1 * a3 + a2 * a3)
+            assertNumericEquals((a1 + a2) * 5.4, a1 * 5.4 + a2 * 5.4)
+            assertNumericEquals(a1, a1 * a2 / a2)
+            assertNumericEquals((a1 + a2) / a3, a1 / a3 + a2 / a3)
+            assertNumericEquals((a1 + a2) / 14.6, a1 / 14.6 + a2 / 14.6)
+
+        }
 
     }
 
     @Test
     fun `double 2D array functions`() {
 
-        val random = Random(0)
+        with(Random(0)) {
 
-        val shape0 = 4
-        val shape1 = 3
+            val shape0 = 4
+            val shape1 = 3
 
-        val a1 = doubleArray2D(shape0, shape1) { _, _ -> random.nextDouble(from = -12.3, until = 7.5) }
-        val a2 = doubleArray2D(shape0, shape1) { _, _ -> random.nextDouble(from = -6.0, until = 8.9) }
-        val identity = doubleIdentity(shape0)
-        val diagonal = doubleDiagonal(D[1, 2, 3, 4])
-        val zero = doubleZeros(shape0, shape1)
+            val a1 = nextDoubleArray2D(shape0, shape1, from = -12.3, until = 7.5)
+            val a2 = nextDoubleArray1D(shape0, from = -6.0, until = 8.9)
+            val identity = doubleIdentity(shape0)
+            val diagonal = doubleDiagonal(D[1, 2, 3, 4])
+            val zero = doubleZeros(shape0, shape1)
 
-        assertPositive(a1.frobeniusNorm())
-        assertPositive(a2.maxNorm())
-        assertFalse(a1.isSquare())
+            assertPositive(a1.frobeniusNorm())
+            assertPositive(a2.maxNorm())
+            assertFalse(a1.isSquare())
 
-        assertFailsWith<IllegalArgumentException> {
-            a1.inverse()
+            assertFailsWith<IllegalArgumentException> {
+                a1.inverse()
+            }
+            assertFailsWith<IllegalArgumentException> {
+                a1.trace()
+            }
+
+            assert(identity.isIdentity())
+            assert(identity.isSymmetric())
+            assert(diagonal.isSymmetric())
+            assert(zero.isZero())
+            assert(zero.isConstant(0.0))
+
         }
-        assertFailsWith<IllegalArgumentException> {
-            a1.trace()
-        }
-
-        assert(identity.isIdentity())
-        assert(identity.isSymmetric())
-        assert(diagonal.isSymmetric())
-        assert(zero.isZero())
-        assert(zero.isConstant(0.0))
 
     }
 

@@ -4,19 +4,16 @@ import tomasvolker.kyplot.dsl.*
 import tomasvolker.kyplot.model.Color
 import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.operations.stack
-import tomasvolker.numeriko.core.probability.scalar.DoubleNormalDistribution
+import tomasvolker.numeriko.core.probability.scalar.NormalDistribution
 import tomasvolker.numeriko.core.probability.scalar.UniformDistribution
 import java.io.File
 import java.nio.ByteOrder
 import kotlin.math.*
 import kotlin.random.Random
-import kotlin.system.measureTimeMillis
 import java.util.Random as JavaRandom
 
 fun analyseMeasurements(
@@ -65,7 +62,7 @@ fun firstPart() {
             sensorCount = 2,
             timeSteps = 1000
     ) { sensor, time ->
-        uniform.nextSample()
+        uniform.nextDouble()
     }
 
     analyseMeasurements(uniformSources)
@@ -129,7 +126,7 @@ fun firstPart() {
 
     }
 
-    val gaussian = DoubleNormalDistribution(
+    val gaussian = NormalDistribution(
             mean = 2.0,
             deviation = 4.0
     )
@@ -138,7 +135,7 @@ fun firstPart() {
             sensorCount = 2,
             timeSteps = 1000
     ) { sensor, time ->
-        gaussian.nextSample()
+        gaussian.nextDouble()
     }
 
     analyseMeasurements(gaussianSources)

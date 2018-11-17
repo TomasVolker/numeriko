@@ -5,6 +5,8 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.probability.scalar.NormalDistribution
+import kotlin.math.*
 import kotlin.random.Random
 
 fun DoubleArray.asDoubleArray1D(): DoubleArray1D = doubleArray1D(this)
@@ -86,3 +88,42 @@ fun Random.nextDoubleArray2D(shape0: Int, shape1: Int, from: Double, until: Doub
 fun Random.nextDoubleArrayND(shape: IntArray1D): DoubleArrayND = doubleArrayND(shape) { nextDouble() }
 fun Random.nextDoubleArrayND(shape: IntArray1D, from: Double, until: Double): DoubleArrayND =
         doubleArrayND(shape) { nextDouble(from, until) }
+
+fun Random.nextGaussian(): Double {
+
+    // Box muller
+    val angle = nextDouble(2 * PI)
+    val abs = sqrt(-2 * ln(nextDouble()))
+
+    return abs * cos(angle)
+}
+
+fun Random.nextGaussianArray1D(size: Int, mean: Double = 0.0, deviation: Double = 1.0): DoubleArray1D {
+
+    val normal = NormalDistribution(
+            mean = mean,
+            deviation = deviation
+    )
+
+    return doubleArray1D(size) { normal.nextDouble(this) }
+}
+
+fun Random.nextGaussianArray2D(shape0: Int, shape1: Int, mean: Double = 0.0, deviation: Double = 1.0): DoubleArray2D {
+
+    val normal = NormalDistribution(
+            mean = mean,
+            deviation = deviation
+    )
+
+    return doubleArray2D(shape0, shape1) { _, _ -> normal.nextDouble(this) }
+}
+
+fun Random.nextGaussianArrayND(shape: IntArray1D, mean: Double = 0.0, deviation: Double = 1.0): DoubleArrayND {
+
+    val normal = NormalDistribution(
+            mean = mean,
+            deviation = deviation
+    )
+
+    return doubleArrayND(shape) { normal.nextDouble(this) }
+}

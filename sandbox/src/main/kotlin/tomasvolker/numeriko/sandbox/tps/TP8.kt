@@ -61,8 +61,8 @@ fun NoisyStateMachine.simulate(initial: State, steps: Int): List<Pair<State, Obs
 
 fun Double.squared() = this * this
 
-fun normalPdf(x: Double, mu: Double, sigma: Double): Double =
-        exp(-((x-mu).squared()) / (2 * sigma.squared())) / (sqrt(2 * PI) * sigma)
+fun normalPdf(x: Double, mean: Double = 0.0, deviation: Double = 1.0): Double =
+        exp(-((x-mean).squared()) / (2 * deviation.squared())) / (sqrt(2 * PI) * deviation)
 
 class Particle(
         var state: State,

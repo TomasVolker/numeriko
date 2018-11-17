@@ -6,7 +6,7 @@ import kotlin.random.Random
 class UniformDistribution(
         val min: Double = 0.0,
         val max: Double = 1.0
-): DoubleProbabilityDistribution {
+): ProbabilityDistribution {
 
     override val variance: Double
         get() = (max - min).squared() / 12.0
@@ -26,6 +26,6 @@ class UniformDistribution(
             else
                 0.0
 
-    override fun nextSample(): Double = Random.nextDouble(min, max)
+    override fun nextDouble(random: Random): Double = random.nextDouble(min, max)
 
 }

@@ -179,7 +179,7 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
      * Computes the max norm, a.k.a. infinity norm.
      *
      * The max norm is the maximum absolute value of the array. It is also known as the
-     * infinity norm as it is equivalent to [norm(p)] when p tends to infinity.
+     * infinity norm as it is equivalent to `norm(p)` when `p` tends to infinity.
      */
     fun maxNorm(): Double {
         var result = 0.0
@@ -199,8 +199,7 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
     /**
      * Returns a copy of this array with element wise negation.
      */
-    operator fun unaryMinus(): DoubleArray2D =
-            elementWise { -it }
+    operator fun unaryMinus(): DoubleArray2D = elementWise { -it }
 
     /**
      * Returns an array with the element wise addition with [other].
@@ -208,8 +207,7 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if this and [other] don't have the same [size]
      * @return an array containing the element wise addition with [other].
      */
-    operator fun plus(other: DoubleArray2D): DoubleArray2D =
-            elementWise(this, other) { t, o -> t + o }
+    operator fun plus(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t + o }
 
     /**
      * Returns an array with the element wise subtraction with [other].
@@ -217,8 +215,7 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if this and [other] don't have the same [size]
      * @return an array containing the subtraction wise addition with [other].
      */
-    operator fun minus(other: DoubleArray2D): DoubleArray2D =
-            elementWise(this, other) { t, o -> t - o }
+    operator fun minus(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t - o }
 
     /**
      * Returns an array with the element wise multiplication with [other].
@@ -228,8 +225,7 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if this and [other] don't have the same [size]
      * @return an array containing the subtraction wise addition with [other].
      */
-    operator fun times(other: DoubleArray2D): DoubleArray2D =
-            elementWise(this, other) { t, o -> t * o }
+    operator fun times(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t * o }
 
     /**
      * Returns an array with the element wise division with [other].
@@ -237,8 +233,7 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if this and [other] don't have the same [size]
      * @return an array containing the division wise addition with [other].
      */
-    operator fun div(other: DoubleArray2D): DoubleArray2D =
-            elementWise(this, other) { t, o -> t / o }
+    operator fun div(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t / o }
 
     /**
      * Returns an array with the element wise reversed division with [other].
@@ -248,68 +243,57 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if this and [other] don't have the same [size]
      * @return an array containing the reversed division wise addition with [other].
      */
-    fun rdiv(other: DoubleArray2D): DoubleArray2D =
-            elementWise(this, other) { t, o -> o / t }
+    fun rdiv(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> o / t }
 
     /**
      * Returns an array with the element wise addition with [other].
      */
-    operator fun plus(other: Double): DoubleArray2D =
-            elementWise { it + other }
+    operator fun plus(other: Double): DoubleArray2D = elementWise { it + other }
 
     /**
      * Returns an array with the element wise subtraction with [other].
      */
-    operator fun minus(other: Double): DoubleArray2D =
-            elementWise { it - other }
+    operator fun minus(other: Double): DoubleArray2D = elementWise { it - other }
 
     /**
      * Returns an array with the element wise multiplication with [other].
      */
-    operator fun times(other: Double): DoubleArray2D =
-            elementWise { it * other }
+    operator fun times(other: Double): DoubleArray2D = elementWise { it * other }
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    operator fun div(other: Double): DoubleArray2D =
-            elementWise { it / other }
+    operator fun div(other: Double): DoubleArray2D = elementWise { it / other }
 
     /**
      * Returns an array with the element wise reversed division with [other].
      */
-    fun rdiv(other: Double): DoubleArray2D =
-            elementWise { other / it }
+    fun rdiv(other: Double): DoubleArray2D = elementWise { other / it }
 
     /**
      * Returns an array with the element wise addition with [other].
      */
-    operator fun plus(other: Int): DoubleArray2D =
-            plus(other.toDouble())
+    operator fun plus(other: Int): DoubleArray2D = plus(other.toDouble())
 
     /**
      * Returns an array with the element wise subtraction with [other].
      */
-    operator fun minus(other: Int): DoubleArray2D =
-            minus(other.toDouble())
+    operator fun minus(other: Int): DoubleArray2D = minus(other.toDouble())
 
     /**
      * Returns an array with the element wise multiplication with [other].
      */
-    operator fun times(other: Int): DoubleArray2D =
-            times(other.toDouble())
+    operator fun times(other: Int): DoubleArray2D = times(other.toDouble())
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    operator fun div(other: Int): DoubleArray2D =
-            div(other.toDouble())
+    operator fun div(other: Int): DoubleArray2D = div(other.toDouble())
 
     /**
      * Returns an array with the element wise reversed division with [other].
      */
-    fun rdiv(other: Int): DoubleArray2D =
-            elementWise { other / it }
+    fun rdiv(other: Int): DoubleArray2D = elementWise { other / it }
 
     /**
      * Computes the sum of all its elements.

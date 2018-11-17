@@ -1,16 +1,17 @@
 package tomasvolker.numeriko.core.probability.scalar
 
 import tomasvolker.numeriko.core.primitives.squared
+import kotlin.math.*
 import java.util.Random as JavaRandom
-import kotlin.math.PI
-import kotlin.math.exp
-import kotlin.math.sqrt
 import kotlin.random.Random
 
-class DoubleNormalDistribution(
+class NormalDistribution(
         override val mean: Double = 0.0,
         val deviation: Double = 1.0
-): DoubleProbabilityDistribution {
+): ProbabilityDistribution {
+
+    private var availableValue: Boolean = false
+    private var value: Double = 0.0
 
     override val variance: Double = deviation.squared()
 
@@ -21,8 +22,22 @@ class DoubleNormalDistribution(
 
     override fun cdf(x: Double): Double = TODO()
 
-    override fun nextSample(): Double =
-            JavaRandom().nextGaussian() * deviation + mean
+    override fun nextDouble(random: Random): Double {
+
+        if (availableValue) {
+            availableValue = false
+            return value
+        } else {
+            // Box muller
+            val angle = random.nextDouble(2 * PI)
+            val abs = sqrt(-2 * ln(random.nextDouble()))
+
+            value = abs * sin(angle) * deviation + mean
+
+            return abs * cos(angle) * deviation + mean
+        }
+
+    }
 
 }
 

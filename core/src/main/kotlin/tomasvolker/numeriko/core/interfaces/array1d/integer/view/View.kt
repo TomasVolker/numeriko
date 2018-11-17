@@ -1,13 +1,19 @@
 package tomasvolker.numeriko.core.interfaces.array1d.integer.view
 
+import tomasvolker.numeriko.core.interfaces.array1d.generic.lastIndex
 import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
 
-open class DefaultMutableIntArray1DView (
-        open val array: MutableIntArray1D,
+class DefaultMutableIntArray1DView (
+        val array: MutableIntArray1D,
         val offset: Int,
         override val size: Int,
         val stride: Int
 ) : DefaultMutableIntArray1D() {
+
+    init {
+        array.requireValidIndices(convertIndex(0))
+        array.requireValidIndices(convertIndex(lastIndex))
+    }
 
     override fun setInt(value: Int, index: Int) {
         requireValidIndices(index)
@@ -18,6 +24,8 @@ open class DefaultMutableIntArray1DView (
         requireValidIndices(index)
         return array.getInt(offset + stride * index)
     }
+
+    fun convertIndex(i0: Int): Int = offset + stride * i0
 
 }
 

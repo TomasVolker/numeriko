@@ -9,6 +9,11 @@ class DefaultArray1DView<T>(
         val stride: Int
 ) : DefaultMutableArray1D<T>() {
 
+    init {
+        array.requireValidIndices(convertIndex(0))
+        array.requireValidIndices(convertIndex(lastIndex))
+    }
+
     override fun getValue(i0: Int): T {
         requireValidIndices(i0)
         return array.getValue(offset + stride * i0)
@@ -18,6 +23,8 @@ class DefaultArray1DView<T>(
         requireValidIndices(index)
         array.setValue(value, offset + stride * index)
     }
+
+    fun convertIndex(i0: Int): Int = offset + stride * i0
 
 }
 

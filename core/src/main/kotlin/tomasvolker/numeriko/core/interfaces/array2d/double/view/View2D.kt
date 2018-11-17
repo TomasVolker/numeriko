@@ -1,7 +1,10 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double.view
 
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.lastIndex
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex
+import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex0
+import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex1
 
 class DefaultMutableDoubleArray2DView(
         val array: MutableDoubleArray2D,
@@ -13,11 +16,16 @@ class DefaultMutableDoubleArray2DView(
         val stride1: Int
 ) : DefaultMutableDoubleArray2D() {
 
+    init {
+        array.requireValidIndices(convertIndex0(0), convertIndex1(0))
+        array.requireValidIndices(convertIndex0(lastIndex0), convertIndex1(lastIndex1))
+    }
+
     override fun getDouble(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return array.getValue(
-                offset0 + stride0 * i0,
-                offset1 + stride1 * i1
+                convertIndex0(i0),
+                convertIndex1(i1)
         )
     }
 
@@ -25,10 +33,13 @@ class DefaultMutableDoubleArray2DView(
         requireValidIndices(i0, i1)
         array.setValue(
                 value,
-                offset0 + stride0 * i0,
-                offset1 + stride1 * i1
+                convertIndex0(i0),
+                convertIndex1(i1)
         )
     }
+
+    fun convertIndex0(i0: Int): Int = offset0 + stride0 * i0
+    fun convertIndex1(i1: Int): Int = offset1 + stride1 * i1
 
 }
 

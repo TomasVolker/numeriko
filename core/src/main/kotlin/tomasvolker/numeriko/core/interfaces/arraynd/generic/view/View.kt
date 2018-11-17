@@ -49,12 +49,14 @@ class DefaultArrayNDView<T>(
                 array.rank == stride.size
         )
 
+        array.requireValidIndices(convertIndices(IntArray(rank) { 0 }))
+        array.requireValidIndices(convertIndices(IntArray(rank) { i -> shape[i]-1 }))
     }
 
     override fun getValue(vararg indices: Int): T {
         requireValidIndices(indices)
         return array.getValue(
-                *IntArray(rank) { i -> offset[i] + stride[i] * indices[i] }
+                *convertIndices(indices)
         )
     }
 
@@ -62,9 +64,12 @@ class DefaultArrayNDView<T>(
         requireValidIndices(indices)
         array.setValue(
                 value,
-                *IntArray(rank) { i -> offset[i] + stride[i] * indices[i] }
+                *convertIndices(indices)
         )
     }
+
+    fun convertIndices(indices: IntArray): IntArray =
+            IntArray(rank) { i -> offset[i] + stride[i] * indices[i] }
 
 }
 
