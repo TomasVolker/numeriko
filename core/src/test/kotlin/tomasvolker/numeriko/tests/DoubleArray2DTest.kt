@@ -76,6 +76,9 @@ class DoubleArray2DTest {
 
         val a1 = doubleArray2D(shape0, shape1) { _, _ -> random.nextDouble(from = -12.3, until = 7.5) }
         val a2 = doubleArray2D(shape0, shape1) { _, _ -> random.nextDouble(from = -6.0, until = 8.9) }
+        val identity = doubleIdentity(shape0)
+        val diagonal = doubleDiagonal(D[1, 2, 3, 4])
+        val zero = doubleZeros(shape0, shape1)
 
         assertPositive(a1.frobeniusNorm())
         assertPositive(a2.maxNorm())
@@ -87,6 +90,12 @@ class DoubleArray2DTest {
         assertFailsWith<IllegalArgumentException> {
             a1.trace()
         }
+
+        assert(identity.isIdentity())
+        assert(identity.isSymmetric())
+        assert(diagonal.isSymmetric())
+        assert(zero.isZero())
+        assert(zero.isConstant(0.0))
 
     }
 
@@ -116,6 +125,7 @@ class DoubleArray2DTest {
         assertNumericEquals(vecn1 inner vecn1, identityn.quadraticForm(vecn1))
 
         assertNumericEquals(vecn1 inner vecn1, (vecn1 outer vecn1).trace())
+        assert((vecn1 outer vecn1).isSymmetric())
 
         val mutableMat = matnxn.asMutable()
 

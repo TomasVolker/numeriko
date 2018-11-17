@@ -1,15 +1,14 @@
 package tomasvolker.numeriko.core.interfaces.array1d.generic
 
+import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.Default1DArrayListView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
-import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 interface Array1D<out T>: ArrayND<T> {
 
@@ -20,10 +19,10 @@ interface Array1D<out T>: ArrayND<T> {
 
     val shape0: Int get() = size
 
-    override fun getShape(dimension: Int): Int =
-            when(dimension) {
+    override fun getShape(axis: Int): Int =
+            when(axis) {
                 0 -> shape0
-                else -> throw IndexOutOfBoundsException("$dimension")
+                else -> throw IndexOutOfBoundsException("$axis")
             }
 
     override val size: Int
@@ -33,10 +32,8 @@ interface Array1D<out T>: ArrayND<T> {
         return getValue(indices[0])
     }
 
-    fun getValue(index: Int): T
-
-    fun getValue(index: Index): T =
-            getValue(index.computeValue(size))
+    fun getValue(i0: Int): T
+    fun getValue(i0: Index): T = getValue(i0.compute())
 
     fun getView(indexRange: IntProgression): Array1D<T> =
             DefaultArray1DView(
@@ -45,9 +42,12 @@ interface Array1D<out T>: ArrayND<T> {
                     size = indexRange.count(),
                     stride = indexRange.step
             )
+    fun getView(indexRange: IndexProgression): Array1D<T> = getView(indexRange.compute())
 
-    fun getView(indexRange: IndexProgression): Array1D<T> =
-            getView(indexRange.computeProgression(size))
+    fun Int.compute(): Int = this
+    fun IntProgression.compute(): IntProgression = this
+    fun Index.compute(): Int = this.computeValue(size)
+    fun IndexProgression.compute(): IntProgression = this.computeProgression(size)
 
     override fun copy(): Array1D<T> = copy(this)
 
@@ -62,6 +62,14 @@ interface Array1D<out T>: ArrayND<T> {
     operator fun component5(): T = getValue(4)
 
     override fun asMutable(): MutableArray1D<@UnsafeVariance T> = this as MutableArray1D<T>
+
+    fun requireValidIndices(i0: Int) {
+
+        if (NumerikoConfig.checkRanges) {
+            if (i0 !in indices) throw IndexOutOfBoundsException("Index $i0 is out of size $size")
+        }
+
+    }
 
 }
 

@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double
 
+import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
@@ -10,7 +11,8 @@ import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.linearalgebra.DefaultLinearAlgebra
-import tomasvolker.numeriko.core.preconditions.requireValidIndices
+import tomasvolker.numeriko.core.primitives.indicative
+import tomasvolker.numeriko.core.primitives.numericEqualsTo
 import tomasvolker.numeriko.core.primitives.squared
 import tomasvolker.numeriko.core.primitives.sumDouble
 import kotlin.math.abs
@@ -29,11 +31,10 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
     override fun getValue(i0: Int, i1: Int): Double =
             getDouble(i0, i1)
 
-    fun getDouble(i0: Int, i1: Int): Double
-    fun getDouble(i0: Int, i1: Index): Double = getDouble(i0, i1.computeValue(shape1))
-    fun getDouble(i0: Index, i1: Int): Double = getDouble(i0.computeValue(shape0), i1)
-    fun getDouble(i0: Index, i1: Index): Double = getDouble(i0.computeValue(shape0), i1.computeValue(shape1))
-
+    fun getDouble(i0: Int  , i1: Int  ): Double
+    fun getDouble(i0: Int  , i1: Index): Double = getDouble(i0.compute(0), i1.compute(1))
+    fun getDouble(i0: Index, i1: Int  ): Double = getDouble(i0.compute(0), i1.compute(1))
+    fun getDouble(i0: Index, i1: Index): Double = getDouble(i0.compute(0), i1.compute(1))
 
     override fun getView(i0: Int, i1: IntProgression): DoubleArray1D =
             MutableDoubleArray2DCollapseView(
@@ -47,16 +48,9 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
                             stride1 = i1.step
                     )
             )
-
-    override fun getView(i0: Int, i1: IndexProgression): DoubleArray1D =
-            getView(i0, i1.computeProgression(shape1))
-
-    override fun getView(i0: Index, i1: IntProgression): DoubleArray1D =
-            getView(i0.computeValue(shape0), i1)
-
-    override fun getView(i0: Index, i1: IndexProgression): DoubleArray1D =
-            getView(i0.computeValue(shape0), i1.computeProgression(shape1))
-
+    override fun getView(i0: Int  , i1: IndexProgression): DoubleArray1D = getView(i0.compute(0), i1.compute(1))
+    override fun getView(i0: Index, i1: IntProgression  ): DoubleArray1D = getView(i0.compute(0), i1.compute(1))
+    override fun getView(i0: Index, i1: IndexProgression): DoubleArray1D = getView(i0.compute(0), i1.compute(1))
 
     override fun getView(i0: IntProgression, i1: Int): DoubleArray1D =
             MutableDoubleArray2DCollapseView(
@@ -70,16 +64,9 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
                             stride1 = 1
                     )
             )
-
-    override fun getView(i0: IntProgression, i1: Index): DoubleArray1D =
-            getView(i0, i1.computeValue(shape1))
-
-    override fun getView(i0: IndexProgression, i1: Int): DoubleArray1D =
-            getView(i0.computeProgression(shape0), i1)
-
-    override fun getView(i0: IndexProgression, i1: Index): DoubleArray1D =
-            getView(i0.computeProgression(shape0), i1.computeValue(shape1))
-
+    override fun getView(i0: IntProgression  , i1: Index): DoubleArray1D = getView(i0.compute(0), i1.compute(1))
+    override fun getView(i0: IndexProgression, i1: Int  ): DoubleArray1D = getView(i0.compute(0), i1.compute(1))
+    override fun getView(i0: IndexProgression, i1: Index): DoubleArray1D = getView(i0.compute(0), i1.compute(1))
 
 
     override fun getView(i0: IntProgression, i1: IntProgression): DoubleArray2D =
@@ -92,39 +79,33 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
                     stride0 = i0.step,
                     stride1 = i1.step
             )
-
-    override fun getView(i0: IntProgression, i1: IndexProgression): DoubleArray2D =
-            getView(i0, i1.computeProgression(shape1))
-
-    override fun getView(i0: IndexProgression, i1: IntProgression): DoubleArray2D =
-            getView(i0.computeProgression(shape0), i1)
-
-    override fun getView(i0: IndexProgression, i1: IndexProgression): DoubleArray2D =
-            getView(i0.computeProgression(shape0), i1.computeProgression(shape1))
+    override fun getView(i0: IntProgression  , i1: IndexProgression): DoubleArray2D = getView(i0.compute(0), i1.compute(1))
+    override fun getView(i0: IndexProgression, i1: IntProgression  ): DoubleArray2D = getView(i0.compute(0), i1.compute(1))
+    override fun getView(i0: IndexProgression, i1: IndexProgression): DoubleArray2D = getView(i0.compute(0), i1.compute(1))
 
 
-    operator fun get(i0: Int, i1: Int): Double = getDouble(i0, i1)
-    operator fun get(i0: Int, i1: Index): Double = getDouble(i0, i1)
-    operator fun get(i0: Index, i1: Int): Double = getDouble(i0, i1)
+    operator fun get(i0: Int  , i1: Int  ): Double = getDouble(i0, i1)
+    operator fun get(i0: Int  , i1: Index): Double = getDouble(i0, i1)
+    operator fun get(i0: Index, i1: Int  ): Double = getDouble(i0, i1)
     operator fun get(i0: Index, i1: Index): Double = getDouble(i0, i1)
 
-    operator fun get(i0: Int, i1: IntProgression): DoubleArray1D = getView(i0, i1)
-    operator fun get(i0: Index, i1: IntProgression): DoubleArray1D = getView(i0, i1)
-    operator fun get(i0: Int, i1: IndexProgression): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: Int  , i1: IntProgression  ): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: Index, i1: IntProgression  ): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: Int  , i1: IndexProgression): DoubleArray1D = getView(i0, i1)
     operator fun get(i0: Index, i1: IndexProgression): DoubleArray1D = getView(i0, i1)
 
-    operator fun get(i0: IntProgression, i1: Int): DoubleArray1D = getView(i0, i1)
-    operator fun get(i0: IntProgression, i1: Index): DoubleArray1D = getView(i0, i1)
-    operator fun get(i0: IndexProgression, i1: Int): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: IntProgression  , i1: Int  ): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: IntProgression  , i1: Index): DoubleArray1D = getView(i0, i1)
+    operator fun get(i0: IndexProgression, i1: Int  ): DoubleArray1D = getView(i0, i1)
     operator fun get(i0: IndexProgression, i1: Index): DoubleArray1D = getView(i0, i1)
 
-    operator fun get(i0: IntProgression, i1: IntProgression): DoubleArray2D = getView(i0, i1)
-    operator fun get(i0: IntProgression, i1: IndexProgression): DoubleArray2D = getView(i0, i1)
-    operator fun get(i0: IndexProgression, i1: IntProgression): DoubleArray2D = getView(i0, i1)
+    operator fun get(i0: IntProgression  , i1: IntProgression  ): DoubleArray2D = getView(i0, i1)
+    operator fun get(i0: IntProgression  , i1: IndexProgression): DoubleArray2D = getView(i0, i1)
+    operator fun get(i0: IndexProgression, i1: IntProgression  ): DoubleArray2D = getView(i0, i1)
     operator fun get(i0: IndexProgression, i1: IndexProgression): DoubleArray2D = getView(i0, i1)
 
 
-    override fun copy(): DoubleArray2D = defaultFactory.copy(this)
+    override fun copy(): DoubleArray2D = copy(this)
 
     override fun asMutable(): MutableDoubleArray2D = this as MutableDoubleArray2D
 
@@ -146,6 +127,63 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
                 doubleArrayND(intArray1DOf()) { trace() }
             else
                 throw IllegalArgumentException()
+
+    fun isIdentity(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean =
+            isSquare() && numericEquals(tolerance) { i0, i1 -> (i0 == i1).indicative() }
+
+    fun isZero(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean =
+            isConstant(0.0, tolerance)
+
+    fun isConstant(value: Double, tolerance: Double = NumerikoConfig.defaultTolerance): Boolean =
+            numericEquals(tolerance) { _, _ -> value }
+
+    fun isSymmetric(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean {
+        if (!isSquare()) return false
+
+        for (i0 in 0 until shape0-1) {
+            for (i1 in i0+1 until shape1) {
+
+                if (!this[i0, i1].numericEqualsTo(this[i1, i1], tolerance))
+                    return false
+
+            }
+        }
+
+        return true
+    }
+
+    fun isDiagonal(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean =
+            isLowerTriangular(tolerance) && isUpperTriangular(tolerance)
+
+    fun isLowerTriangular(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean {
+        if (!isSquare()) return false
+
+        for (i0 in 0 until shape0-1) {
+            for (i1 in i0+1 until shape1) {
+
+                if (!this[i0, i1].numericEqualsTo(0.0, tolerance))
+                    return false
+
+            }
+        }
+
+        return true
+    }
+
+    fun isUpperTriangular(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean {
+        if (!isSquare()) return false
+
+        for (i0 in 1 until shape0) {
+            for (i1 in 0 until i0) {
+
+                if (!this[i0, i1].numericEqualsTo(0.0, tolerance))
+                    return false
+
+            }
+        }
+
+        return true
+    }
 
     fun trace(): Double {
         require(isSquare())

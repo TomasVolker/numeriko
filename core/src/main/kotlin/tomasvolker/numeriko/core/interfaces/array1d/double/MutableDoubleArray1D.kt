@@ -7,9 +7,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.preconditions.requireSameSize
-import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double>, MutableDoubleArrayND {
 

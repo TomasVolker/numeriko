@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.factory
 
+import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
@@ -11,33 +12,33 @@ fun <T> array1DOf(vararg values: T) = array1D(values)
 
 
 fun <T> array1D(data: Array<T>): Array1D<T> =
-        defaultFactory.array1D(data)
+        NumerikoConfig.defaultFactory.array1D(data)
 
 fun <T> array2D(shape0: Int, shape1: Int, data: Array<T>): Array2D<T> =
-        defaultFactory.array2D(shape0, shape1, data)
+        NumerikoConfig.defaultFactory.array2D(shape0, shape1, data)
 
 fun <T> arrayND(shape: IntArray1D, data: Array<T>): ArrayND<T> =
-        defaultFactory.arrayND(shape, data)
+        NumerikoConfig.defaultFactory.arrayND(shape, data)
 
 
 
 fun <T> copy(array: Array1D<T>): Array1D<T> =
-        defaultFactory.copy(array)
+        NumerikoConfig.defaultFactory.copy(array)
 
 fun <T> copy(array: Array2D<T>): Array2D<T> =
-        defaultFactory.copy(array)
+        NumerikoConfig.defaultFactory.copy(array)
 
 fun <T> copy(array: ArrayND<T>): ArrayND<T> =
-        defaultFactory.copy(array)
+        NumerikoConfig.defaultFactory.copy(array)
 
 
 
 fun <T> array1DOfNulls(size: Int): Array1D<T?> =
-        defaultFactory.array1DOfNulls(size)
+        NumerikoConfig.defaultFactory.array1DOfNulls(size)
 
 fun <T> array2DOfNulls(shape0: Int, shape1: Int): Array2D<T?> =
-        defaultFactory.array2DOfNulls(shape0, shape1)
+        NumerikoConfig.defaultFactory.array2DOfNulls(shape0, shape1)
 
 fun <T> arrayNDOfNulls(shape: IntArray1D): ArrayND<T?> =
-        defaultFactory.arrayNDOfNulls(shape)
+        NumerikoConfig.defaultFactory.arrayNDOfNulls(shape)
 

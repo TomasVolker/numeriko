@@ -1,4 +1,4 @@
-package tomasvolker.numeriko.core.implementations.jvm.arraynd
+package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
@@ -7,10 +7,10 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.defaultEquals
 import tomasvolker.numeriko.core.interfaces.arraynd.double.*
 import tomasvolker.numeriko.core.reductions.product
 
-class JvmMutableDoubleArrayND(
+class NumerikoMutableDoubleArrayND(
         override val shape: IntArray1D,
         val data: DoubleArray
-): MutableDoubleArrayND {
+): DefaultMutableDoubleArrayND() {
 
     init {
         require(data.size == shape.product()) {
@@ -49,15 +49,5 @@ class JvmMutableDoubleArrayND(
         }
         return result
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (other === this) return true
-        if (other !is DoubleArrayND) return false
-        return defaultEquals(this, other)
-    }
-
-    override fun hashCode(): Int = defaultHashCode(this)
-
-    override fun toString(): String = defaultToString(this)
 
 }

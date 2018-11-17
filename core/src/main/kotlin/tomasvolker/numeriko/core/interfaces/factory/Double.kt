@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.factory
 
+import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
@@ -16,49 +17,49 @@ fun doubleArray1DOf(vararg values: Double) = doubleArray1D(values)
 
 
 fun doubleArray1D(data: DoubleArray): DoubleArray1D =
-        defaultFactory.doubleArray1D(data)
+        NumerikoConfig.defaultFactory.doubleArray1D(data)
 
 fun doubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): DoubleArray2D =
-        defaultFactory.doubleArray2D(shape0, shape1, data)
+        NumerikoConfig.defaultFactory.doubleArray2D(shape0, shape1, data)
 
 fun doubleArrayND(shape: IntArray1D, data: DoubleArray): DoubleArrayND =
-        defaultFactory.doubleArrayND(shape, data)
+        NumerikoConfig.defaultFactory.doubleArrayND(shape, data)
 
 
 
 fun copy(array: DoubleArray1D): DoubleArray1D =
-        defaultFactory.copy(array)
+        NumerikoConfig.defaultFactory.copy(array)
 
 fun copy(array: DoubleArray2D): DoubleArray2D =
-        defaultFactory.copy(array)
+        NumerikoConfig.defaultFactory.copy(array)
 
 fun copy(array: DoubleArrayND): DoubleArrayND =
-        defaultFactory.copy(array)
+        NumerikoConfig.defaultFactory.copy(array)
 
 
 
 fun doubleZeros(size: Int): DoubleArray1D =
-        defaultFactory.doubleZeros(size)
+        NumerikoConfig.defaultFactory.doubleZeros(size)
 
 fun doubleZeros(shape0: Int, shape1: Int): DoubleArray2D =
-        defaultFactory.doubleZeros(shape0, shape1)
+        NumerikoConfig.defaultFactory.doubleZeros(shape0, shape1)
 
 fun doubleZeros(shape: IntArray1D): DoubleArrayND =
-        defaultFactory.doubleZeros(shape)
+        NumerikoConfig.defaultFactory.doubleZeros(shape)
 
 
 fun doubleIdentity(size: Int): DoubleArray2D =
-        defaultFactory.doubleIdentity(size)
+        NumerikoConfig.defaultFactory.doubleIdentity(size)
 
 
 fun doubleRandom(size: Int): DoubleArray1D =
-        defaultFactory.doubleRandom(size)
+        NumerikoConfig.defaultFactory.doubleRandom(size)
 
 fun doubleRandom(shape0: Int, shape1: Int): DoubleArray2D =
-        defaultFactory.doubleRandom(shape0, shape1)
+        NumerikoConfig.defaultFactory.doubleRandom(shape0, shape1)
 
 fun doubleRandom(shape: IntArray1D): DoubleArrayND =
-        defaultFactory.doubleRandom(shape)
+        NumerikoConfig.defaultFactory.doubleRandom(shape)
 
 
 inline fun doubleDiagonal(size: Int, diagonal: (i: Int)->Double): DoubleArray2D =
@@ -70,5 +71,5 @@ inline fun doubleDiagonal(size: Int, diagonal: (i: Int)->Double): DoubleArray2D 
         }
 
 fun doubleDiagonal(diagonal: DoubleArray1D): DoubleArray2D =
-        defaultFactory.doubleDiagonal(diagonal)
+        NumerikoConfig.defaultFactory.doubleDiagonal(diagonal)
 

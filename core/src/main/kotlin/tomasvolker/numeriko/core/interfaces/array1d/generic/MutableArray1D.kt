@@ -4,7 +4,6 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultMutableArray1DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
-import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
 
@@ -46,20 +45,12 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
                     stride = indexRange.step
             )
 
-    override fun getView(indexRange: IndexProgression): MutableArray1D<T> =
-            getView(indexRange.computeProgression(size))
+    override fun getView(indexRange: IndexProgression): MutableArray1D<T> = getView(indexRange.compute())
 
-    fun setView(value: Array1D<T>, indexRange: IndexProgression): Unit =
-            setView(value, indexRange.computeProgression(size))
-
-    fun setView(value: Array1D<T>, indexRange: IntProgression): Unit =
-            getView(indexRange).setValue(value.copy())
-
-    fun setView(value: T, indexRange: IndexProgression): Unit =
-            setView(value, indexRange.computeProgression(size))
-
-    fun setView(value: T, indexRange: IntProgression): Unit =
-            getView(indexRange).setValue(value)
+    fun setView(value: Array1D<T>, indexRange: IndexProgression): Unit = setView(value, indexRange.compute())
+    fun setView(value: Array1D<T>, indexRange: IntProgression  ): Unit = getView(indexRange).setValue(value.copy())
+    fun setView(value: T, indexRange: IndexProgression): Unit = setView(value, indexRange.compute())
+    fun setView(value: T, indexRange: IntProgression): Unit = getView(indexRange).setValue(value)
 
 }
 

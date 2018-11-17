@@ -5,10 +5,9 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.index.until
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.computeIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
-import tomasvolker.numeriko.core.interfaces.factory.defaultFactory
+import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.operations.concatenate
@@ -31,7 +30,7 @@ interface DoubleArrayND: ArrayND<Double> {
             getValue(*indices.toIntArray())
 
     fun getDouble(vararg indices: Index): Double =
-            getDouble(*indices.computeIndices(shape))
+            getDouble(*indices.computeIndices())
 
     operator fun get(indices: IntArray1D): Double =
             getDouble(indices)
@@ -45,9 +44,9 @@ interface DoubleArrayND: ArrayND<Double> {
             )
 
     override fun getView(vararg indices: IndexProgression): DoubleArrayND =
-            getView(*indices.computeIndices(shape))
+            getView(*indices.computeIndices())
 
-    override fun copy(): DoubleArrayND = defaultFactory.copy(this)
+    override fun copy(): DoubleArrayND = copy(this)
 
     override fun iterator(): DoubleIterator = DefaultDoubleArrayNDIterator(this)
 

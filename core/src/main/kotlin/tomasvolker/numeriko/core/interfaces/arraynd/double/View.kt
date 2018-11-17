@@ -4,7 +4,6 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDo
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
-import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 abstract class DefaultDoubleArrayND: DoubleArrayND {
 

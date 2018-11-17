@@ -3,7 +3,6 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.computeIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
 
@@ -12,7 +11,7 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
     fun setDouble(value: Double, vararg indices: Int)
 
     fun setDouble(value: Double, vararg indices: Index) =
-            setDouble(value, *indices.computeIndices(shape))
+            setDouble(value, *indices.computeIndices())
 
     fun setDouble(value: Double, indices: IntArray1D) =
             setDouble(value, *indices.toIntArray())

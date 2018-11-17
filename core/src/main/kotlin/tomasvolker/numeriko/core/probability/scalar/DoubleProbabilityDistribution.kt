@@ -14,7 +14,7 @@ interface DoubleProbabilityDistribution {
     fun nextSample(): Double
 
     fun generateSamples(size: Int): DoubleArray1D =
-            doubleArray1D(size) { i -> nextSample() }
+            doubleArray1D(size) { nextSample() }
 
     fun sequence(): Sequence<Double> =
             generateSequence { nextSample() }

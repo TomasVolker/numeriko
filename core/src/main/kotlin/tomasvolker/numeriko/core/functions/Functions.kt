@@ -10,10 +10,10 @@ import kotlin.math.*
 
 typealias RealFunction1 = (Double) -> Double
 
-inline operator fun RealFunction1.invoke(array: DoubleArray1D): DoubleArray1D =
+operator fun RealFunction1.invoke(array: DoubleArray1D): DoubleArray1D =
         array.elementWise { this(it) }
 
-inline operator fun RealFunction1.invoke(array: DoubleArray2D): DoubleArray2D =
+operator fun RealFunction1.invoke(array: DoubleArray2D): DoubleArray2D =
         array.elementWise { this(it) }
 
 fun cos(array: DoubleArray1D): DoubleArray1D =

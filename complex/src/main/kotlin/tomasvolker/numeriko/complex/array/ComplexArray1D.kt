@@ -9,8 +9,6 @@ import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
@@ -39,8 +37,8 @@ interface ComplexArray1D: Array1D<Complex> {
     operator fun get(index: IntProgression): ComplexArray1D = getView(index)
     operator fun get(index: IndexProgression): ComplexArray1D = getView(index)
 
-    override fun getValue(index: Int): Complex =
-            Complex(getReal(index), getImag(index))
+    override fun getValue(i0: Int): Complex =
+            Complex(getReal(i0), getImag(i0))
 
     fun getReal(i: Int): Double
     fun getImag(i: Int): Double

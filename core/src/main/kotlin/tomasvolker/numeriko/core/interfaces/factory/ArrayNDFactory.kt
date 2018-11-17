@@ -2,9 +2,10 @@
 
 package tomasvolker.numeriko.core.interfaces.factory
 
+import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.implementations.jvm.factory.JvmArrayNDFactory
+import tomasvolker.numeriko.core.implementations.numeriko.factory.NumerikoArrayNDFactory
 import tomasvolker.numeriko.core.interfaces.array1d.generic.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
@@ -15,8 +16,6 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
 import tomasvolker.numeriko.core.primitives.indicative
 import tomasvolker.numeriko.core.reductions.product
 import kotlin.random.Random
-
-var defaultFactory: ArrayNDFactory = JvmArrayNDFactory()
 
 interface ArrayNDFactory {
 
@@ -109,21 +108,21 @@ interface ArrayNDFactory {
 }
 
 inline fun <T> array1D(size: Int, init: (i: Int)->T): Array1D<T> =
-        defaultFactory.array1DOfNulls<T>(size).asMutable().apply {
+        NumerikoConfig.defaultFactory.array1DOfNulls<T>(size).asMutable().apply {
             forEachIndex { i0 ->
                 setValue(init(i0), i0)
             }
         } as Array1D<T>
 
 inline fun <T> array2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->T): Array2D<T> =
-        defaultFactory.array2DOfNulls<T>(shape0, shape1).asMutable().apply {
+        NumerikoConfig.defaultFactory.array2DOfNulls<T>(shape0, shape1).asMutable().apply {
             forEachIndex { i0, i1 ->
                 setValue(init(i0, i1), i0, i1)
             }
         } as Array2D<T>
 
 inline fun <T> arrayND(shape: IntArray1D, init: (indices: IntArray1D)->T): ArrayND<T> =
-        defaultFactory.arrayNDOfNulls<T>(shape).asMutable().apply {
+        NumerikoConfig.defaultFactory.arrayNDOfNulls<T>(shape).asMutable().apply {
             forEachIndices { indices ->
                 setValue(init(indices), indices)
             }
@@ -132,7 +131,7 @@ inline fun <T> arrayND(shape: IntArray1D, init: (indices: IntArray1D)->T): Array
 
 
 inline fun intArray1D(size: Int, init: (i: Int)->Int): IntArray1D =
-        defaultFactory.intZeros(size).asMutable().apply {
+        NumerikoConfig.defaultFactory.intZeros(size).asMutable().apply {
             forEachIndex { i ->
                 this[i] = init(i)
             }
@@ -140,7 +139,7 @@ inline fun intArray1D(size: Int, init: (i: Int)->Int): IntArray1D =
 
 
 inline fun doubleArray1D(size: Int, init: (i: Int)->Double): DoubleArray1D =
-        defaultFactory.doubleZeros(size).asMutable().apply {
+        NumerikoConfig.defaultFactory.doubleZeros(size).asMutable().apply {
             forEachIndex { i ->
                 this[i] = init(i)
             }
@@ -148,7 +147,7 @@ inline fun doubleArray1D(size: Int, init: (i: Int)->Double): DoubleArray1D =
 
 
 inline fun doubleArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->Double): DoubleArray2D =
-        defaultFactory.doubleZeros(shape0, shape1).asMutable().apply {
+        NumerikoConfig.defaultFactory.doubleZeros(shape0, shape1).asMutable().apply {
             forEachIndex { i0, i1 ->
                 this[i0, i1] = init(i0, i1)
             }
@@ -156,7 +155,7 @@ inline fun doubleArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->Dou
 
 
 inline fun doubleArrayND(shape: IntArray1D, init: (indices: IntArray1D)->Double): DoubleArrayND =
-        defaultFactory.doubleZeros(shape).asMutable().apply {
+        NumerikoConfig.defaultFactory.doubleZeros(shape).asMutable().apply {
             forEachIndices { indices ->
                 this[indices] = init(indices)
             }

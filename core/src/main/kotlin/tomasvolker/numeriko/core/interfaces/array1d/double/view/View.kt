@@ -10,18 +10,12 @@ class DefaultMutableDoubleArray1DView (
 ) : DefaultMutableDoubleArray1D() {
 
     override fun setDouble(value: Double, index: Int) {
-        if (index !in 0 until size) {
-            throw IndexOutOfBoundsException("$index")
-        }
-
+        requireValidIndices(index)
         array.setDouble(value, offset + stride * index)
     }
 
     override fun getDouble(index: Int): Double {
-        if (index !in 0 until size) {
-            throw IndexOutOfBoundsException("$index")
-        }
-
+        requireValidIndices(index)
         return array.getDouble(offset + stride * index)
     }
 

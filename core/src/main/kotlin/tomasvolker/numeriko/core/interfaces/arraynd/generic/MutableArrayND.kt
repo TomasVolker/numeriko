@@ -3,9 +3,6 @@ package tomasvolker.numeriko.core.interfaces.arraynd.generic
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.computeIndices
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultMutableArrayNDView
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 
 /**
  * The parent interface of all mutable N-dimensional arrays.
@@ -58,7 +55,7 @@ interface MutableArrayND<T>: ArrayND<T> {
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
     fun setValue(value: T, vararg indices: Index): Unit =
-            setValue(value, *indices.computeIndices(shape))
+            setValue(value, *indices.computeIndices())
 
 
     fun setValue(value: ArrayND<T>) {

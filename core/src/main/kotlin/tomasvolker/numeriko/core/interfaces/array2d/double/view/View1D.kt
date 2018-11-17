@@ -8,7 +8,7 @@ class MutableDoubleArray2DCollapseView(
         val array: MutableDoubleArray2D
 ) : DefaultMutableDoubleArray1D() {
 
-    val dimension: Int = when {
+    val axis: Int = when {
         array.shape0 == 1 -> 1
         array.shape1 == 1 -> 0
         else -> throw IllegalArgumentException("array is not flat")
@@ -17,7 +17,8 @@ class MutableDoubleArray2DCollapseView(
     override val size: Int get() = array.size
 
     override fun getDouble(index: Int): Double {
-        return when(dimension) {
+        requireValidIndices(index)
+        return when(axis) {
             0 -> array.getValue(
                     index,
                     0
@@ -31,13 +32,13 @@ class MutableDoubleArray2DCollapseView(
     }
 
     override fun setDouble(value: Double, index: Int) {
-        when(dimension) {
-            0 -> array.setValue(
+        when(axis) {
+            0 -> array.setDouble(
                     value,
                     index,
                     0
             )
-            1 -> array.setValue(
+            1 -> array.setDouble(
                     value,
                     0,
                     index

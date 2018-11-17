@@ -101,9 +101,9 @@ class DoubleArray1DTest {
 
         val size = 5
 
-        val a1 = doubleArray1D(size) { i -> random.nextDouble(from = -12.3, until = 7.5) }
-        val a2 = doubleArray1D(size) { i -> random.nextDouble(from = -6.0, until = 8.9) }
-        val a3 = doubleArray1D(size) { i -> random.nextDouble(from = 1.2, until = 22.8) }
+        val a1 = doubleArray1D(size) { random.nextDouble(from = -12.3, until = 7.5) }
+        val a2 = doubleArray1D(size) { random.nextDouble(from = -6.0, until = 8.9) }
+        val a3 = doubleArray1D(size) { random.nextDouble(from = 1.2, until = 22.8) }
         val zero = doubleZeros(size)
         val one = doubleArray1D(size) { 1.0 }
 
@@ -120,8 +120,10 @@ class DoubleArray1DTest {
         assertNumericEquals(zero, a1 * zero)
 
         assertNumericEquals((a1 + a2) * a3, a1 * a3 + a2 * a3)
+        assertNumericEquals((a1 + a2) * 5.4, a1 * 5.4 + a2 * 5.4)
         assertNumericEquals(a1, a1 * a2 / a2)
         assertNumericEquals((a1 + a2) / a3, a1 / a3 + a2 / a3)
+        assertNumericEquals((a1 + a2) / 14.6, a1 / 14.6 + a2 / 14.6)
 
     }
 
@@ -132,9 +134,9 @@ class DoubleArray1DTest {
 
         val size = 5
 
-        val a1 = doubleArray1D(size) { i -> random.nextDouble() }
-        val a2 = doubleArray1D(size) { i -> random.nextDouble() }
-        val a3 = doubleArray1D(size) { i -> random.nextDouble() }
+        val a1 = doubleArray1D(size) { random.nextDouble() }
+        val a2 = doubleArray1D(size) { random.nextDouble() }
+        val a3 = doubleArray1D(size) { random.nextDouble() }
 
         assertPositive(a1.norm1())
         assertPositive(a2.norm2())

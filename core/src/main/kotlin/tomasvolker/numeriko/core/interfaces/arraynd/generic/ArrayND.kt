@@ -1,11 +1,11 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
+import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.computeIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayNDView
-import tomasvolker.numeriko.core.interfaces.factory.defaultFactory
+import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.reductions.product
 
@@ -33,7 +33,7 @@ interface ArrayND<out T>: Collection<T> {
     /**
      * The shape of the array.
      *
-     * The shape is a IntArray1D containing the sizes on each dimension.
+     * The shape is a IntArray1D containing the sizes on each axis.
      *
      * For example:
      *
@@ -45,14 +45,14 @@ interface ArrayND<out T>: Collection<T> {
     val shape: IntArray1D
 
     /**
-     * Gets the size on the given [dimension].
+     * Gets the size on the given [axis].
      *
-     * This will yield the same result as `shape[dimension]` but it may avoid creating the `shape` array
+     * This will yield the same result as `shape[axis]` but it may avoid creating the `shape` array
      * for low rank arrays.
      *
-     * @throws IndexOutOfBoundsException  if [dimension] is not within the range of the rank (`0 until rank`)
+     * @throws IndexOutOfBoundsException  if [axis] is not within the range of the rank (`0 until rank`)
      */
-    fun getShape(dimension: Int): Int = shape[dimension]
+    fun getShape(axis: Int): Int = shape[axis]
 
     /**
      * The size of the array, meaning the amount of values it contains.
@@ -62,15 +62,12 @@ interface ArrayND<out T>: Collection<T> {
     override val size: Int get() = shape.product()
 
 
-
-    override fun contains(element:@UnsafeVariance T): Boolean =
+    override fun contains(element: @UnsafeVariance T): Boolean =
             any { it == element }
-
 
 
     override fun containsAll(elements: Collection<@UnsafeVariance T>): Boolean =
             elements.all { this.contains(it) }
-
 
 
     override fun isEmpty(): Boolean = size == 0
@@ -120,8 +117,7 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
-    fun getValue(vararg indices: Index): T =
-            getValue(*indices.computeIndices(shape))
+    fun getValue(vararg indices: Index): T = getValue(*indices.computeIndices())
 
     /**
      * Returns a view of the array on the given index progressions.
@@ -156,13 +152,23 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
      * @throws IndexOutOfBoundsException  if some of the progressions are out of bounds
      */
-    fun getView(vararg indices: IndexProgression): ArrayND<T> =
-            getView(*indices.computeIndices(shape))
+    fun getView(vararg indices: IndexProgression): ArrayND<T> = getView(*indices.computeIndices())
+
+    fun Array<out Index>.computeIndices(): IntArray =
+            IntArray(size) { i -> this[i].computeValue(getShape(i)) }
+
+    fun Array<out IndexProgression>.computeIndices(): Array<IntProgression> =
+            Array(size) { i -> this[i].computeProgression(getShape(i)) }
+
+    fun Int.compute(axis: Int): Int = this
+    fun IntProgression.compute(axis: Int): IntProgression = this
+    fun Index.compute(axis: Int): Int = this.computeValue(getShape(axis))
+    fun IndexProgression.compute(axis: Int): IntProgression = this.computeProgression(getShape(axis))
 
     /**
      * Returns a copy of this [ArrayND].
      */
-    fun copy(): ArrayND<T> = defaultFactory.copy(this)
+    fun copy(): ArrayND<T> = copy(this)
 
     override fun iterator(): Iterator<T> = DefaultArrayNDIterator(this)
 
@@ -174,5 +180,21 @@ interface ArrayND<out T>: Collection<T> {
      * The default implementation for this method is just casting to [MutableArrayND]
      */
     fun asMutable(): MutableArrayND<@UnsafeVariance T> = this as MutableArrayND<T>
+
+    fun requireValidIndices(indices: IntArray) {
+
+        if (NumerikoConfig.checkRanges) {
+
+            if (indices.size == rank)
+                throw IllegalArgumentException("Indices $indices are invalid for shape $shape")
+
+            for (axis in axes) {
+                if (indices[axis] !in 0 until getShape(axis))
+                    throw IndexOutOfBoundsException("Indices $indices are out of range for shape $shape")
+            }
+
+        }
+
+    }
 
 }

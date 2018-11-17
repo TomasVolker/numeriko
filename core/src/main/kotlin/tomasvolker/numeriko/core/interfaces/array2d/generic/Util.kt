@@ -3,8 +3,6 @@ package tomasvolker.numeriko.core.interfaces.array2d.generic
 import tomasvolker.numeriko.core.interfaces.factory.array2DOfNulls
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
-fun <T> Array2D<T>.asMutable(): MutableArray2D<T> = this as MutableArray2D<T>
-
 fun <T> Array2D<T>.toListOfLists(): List<List<T>> =
         List(shape0) { i0 ->
             List(shape1) { i1 -> this.getValue(i0, i1) }
@@ -78,18 +76,6 @@ inline fun <T, A: MutableArray2D<T>> A.applyElementWise(other: Array2D<T>, opera
             operation = operation
     )
     return this
-}
-
-fun <T> Array2D<T>.checkIndices(i0: Int, i1: Int) {
-
-    if (i0 !in 0 until shape0) {
-        throw IndexOutOfBoundsException("$i0")
-    }
-
-    if (i1 !in 0 until shape1) {
-        throw IndexOutOfBoundsException("$i0")
-    }
-
 }
 
 fun Array2D<*>.isSquare(): Boolean = shape0 == shape1

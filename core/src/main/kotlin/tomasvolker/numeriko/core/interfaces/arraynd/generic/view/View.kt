@@ -5,7 +5,6 @@ import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultMutableArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.*
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
-import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 class DefaultArrayNDCollapseView<T>(
         val array: ArrayND<T>,
@@ -20,7 +19,6 @@ class DefaultArrayNDCollapseView<T>(
 
     override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
-
         return array.getValue(
                 *IntArray(array.rank) { i ->
                     when {
@@ -57,7 +55,6 @@ open class DefaultArrayNDView<T>(
 
     override fun getValue(vararg indices: Int): T {
         requireValidIndices(indices)
-
         return array.getValue(
                 *IntArray(rank) { i -> offset[i] + stride[i] * indices[i] }
         )
@@ -79,7 +76,6 @@ class DefaultMutableArrayNDView<T>(
 
     override fun setValue(value: T, vararg indices: Int) {
         requireValidIndices(indices)
-
         array.setValue(
                 value,
                 *IntArray(rank) { i -> offset[i] + stride[i] * indices[i] }
@@ -101,8 +97,8 @@ class DefaultArrayND1DView<T>(
         get() = array.getShape(0)
 
 
-    override fun getValue(index: Int): T =
-            array.getValue(index)
+    override fun getValue(i0: Int): T =
+            array.getValue(i0)
 
     override fun setValue(value: T, index: Int) {
         array.setValue(value, index)

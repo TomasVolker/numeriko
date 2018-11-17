@@ -1,13 +1,13 @@
 package tomasvolker.numeriko.core.interfaces.array2d.generic.view
 
-import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultMutableArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 
-class Array2DCollapseView<out T>(
-        val array: Array2D<T>
-) : DefaultArray1D<T>() {
+class Array2DCollapseView<T>(
+        val array: MutableArray2D<T>
+) : DefaultMutableArray1D<T>() {
 
-    val dim: Int = when {
+    val axis: Int = when {
         array.shape0 == 1 -> 1
         array.shape1 == 1 -> 0
         else -> throw IllegalArgumentException("array is not flat")
@@ -15,14 +15,30 @@ class Array2DCollapseView<out T>(
 
     override val size: Int get() = array.size
 
-    override fun getValue(index: Int): T {
-
+    override fun getValue(i0: Int): T {
+        requireValidIndices(i0)
         return when {
-            dim == 0 -> array.getValue(
+            axis == 0 -> array.getValue(
+                    i0,
+                    0
+            )
+            axis == 1 -> array.getValue(
+                    0,
+                    i0
+            )
+            else -> throw IllegalStateException()
+        }
+    }
+
+    override fun setValue(value: T, index: Int) {
+        when(axis) {
+            0 -> array.setValue(
+                    value,
                     index,
                     0
             )
-            dim == 1 -> array.getValue(
+            1 -> array.setValue(
+                    value,
                     0,
                     index
             )

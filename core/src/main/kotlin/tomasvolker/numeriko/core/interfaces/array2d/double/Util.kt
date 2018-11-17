@@ -1,9 +1,12 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double
 
 
+import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 import tomasvolker.numeriko.core.preconditions.requireSameShape
+import tomasvolker.numeriko.core.primitives.indicative
+import tomasvolker.numeriko.core.primitives.numericEqualsTo
 
 inline fun elementWise(source: DoubleArray2D, destination: MutableDoubleArray2D, operation: (Double) -> Double) {
     requireSameShape(source, destination)
@@ -78,4 +81,15 @@ inline fun DoubleArray2D.sumBy(operation: (Double) -> Double): Double {
         result += operation(this[i0, i1])
     }
     return result
+}
+
+inline fun DoubleArray2D.numericEquals(
+        tolerance: Double = NumerikoConfig.defaultTolerance,
+        selector: (i0: Int, i1: Int)->Double
+): Boolean {
+    forEachIndex { i0, i1 ->
+        if (!this[i0, i1].numericEqualsTo(selector(i0, i1), tolerance))
+            return false
+    }
+    return true
 }

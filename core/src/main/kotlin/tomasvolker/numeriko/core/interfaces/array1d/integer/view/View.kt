@@ -10,18 +10,12 @@ open class DefaultMutableIntArray1DView (
 ) : DefaultMutableIntArray1D() {
 
     override fun setInt(value: Int, index: Int) {
-        if (index !in 0 until size) {
-            throw IndexOutOfBoundsException("$index")
-        }
-
+        requireValidIndices(index)
         array.setInt(value, offset + stride * index)
     }
 
     override fun getInt(index: Int): Int {
-        if (index !in 0 until size) {
-            throw IndexOutOfBoundsException("$index")
-        }
-
+        requireValidIndices(index)
         return array.getInt(offset + stride * index)
     }
 

@@ -13,8 +13,8 @@ import tomasvolker.numeriko.core.primitives.sumInt
 
 interface IntArray1D: Array1D<Int> {
 
-    override fun getValue(index: Int): Int =
-            getInt(index)
+    override fun getValue(i0: Int): Int =
+            getInt(i0)
 
     fun getInt(index: Int): Int
 

@@ -8,14 +8,12 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 import tomasvolker.numeriko.core.preconditions.requireSameSize
-import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.primitives.modulo
 import tomasvolker.numeriko.core.primitives.sumDouble
 import kotlin.math.abs
@@ -31,12 +29,10 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
         return getDouble(indices[0])
     }
 
-    override fun getValue(index: Int): Double =
-            getDouble(index)
-
+    override fun getValue(i0: Int): Double = getDouble(i0)
 
     fun getDouble(index: Int): Double
-    fun getDouble(index: Index): Double = getDouble(index.computeValue(size))
+    fun getDouble(index: Index): Double = getDouble(index.compute())
 
     override fun getView(indexRange: IntProgression): DoubleArray1D =
             DefaultMutableDoubleArray1DView(
@@ -45,9 +41,7 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
                     size = indexRange.count(),
                     stride = indexRange.step
             )
-
-    override fun getView(indexRange: IndexProgression): DoubleArray1D =
-            getView(indexRange.computeProgression(size))
+    override fun getView(indexRange: IndexProgression): DoubleArray1D = getView(indexRange.compute())
 
 
     operator fun get(index: Int): Double = getDouble(index)
