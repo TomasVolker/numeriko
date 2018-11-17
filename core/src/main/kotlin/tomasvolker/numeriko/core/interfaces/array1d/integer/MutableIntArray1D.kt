@@ -57,11 +57,11 @@ interface MutableIntArray1D: IntArray1D, MutableArray1D<Int> {
     fun setView(value: IntArray1D, indexRange: IntProgression) =
             getView(indexRange).setValue(value.copy())
 
-    override fun setView(value: Int, indexRange: IndexProgression) =
-            setView(value, indexRange.computeProgression(size))
+    override fun setView(value: Int, i0: IndexProgression) =
+            setView(value, i0.computeProgression(size))
 
-    override fun setView(value: Int, indexRange: IntProgression) =
-            getView(indexRange).setInt(value)
+    override fun setView(value: Int, i0: IntProgression) =
+            getView(i0).setInt(value)
 
     override fun copy(): MutableIntArray1D = copy(this).asMutable()
 

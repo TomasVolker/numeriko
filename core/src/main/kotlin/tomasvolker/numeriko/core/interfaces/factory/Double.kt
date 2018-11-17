@@ -73,3 +73,16 @@ inline fun doubleDiagonal(size: Int, diagonal: (i: Int)->Double): DoubleArray2D 
 fun doubleDiagonal(diagonal: DoubleArray1D): DoubleArray2D =
         NumerikoConfig.defaultFactory.doubleDiagonal(diagonal)
 
+
+fun Random.nextDoubleArray1D(size: Int): DoubleArray1D = doubleArray1D(size) { nextDouble() }
+fun Random.nextDoubleArray1D(size: Int, from: Double, until: Double): DoubleArray1D =
+        doubleArray1D(size) { nextDouble(from, until) }
+
+fun Random.nextDoubleArray2D(shape0: Int, shape1: Int): DoubleArray2D =
+        doubleArray2D(shape0, shape1) { _, _ -> nextDouble() }
+fun Random.nextDoubleArray2D(shape0: Int, shape1: Int, from: Double, until: Double): DoubleArray2D =
+        doubleArray2D(shape0, shape1) { _, _ -> nextDouble(from, until) }
+
+fun Random.nextDoubleArrayND(shape: IntArray1D): DoubleArrayND = doubleArrayND(shape) { nextDouble() }
+fun Random.nextDoubleArrayND(shape: IntArray1D, from: Double, until: Double): DoubleArrayND =
+        doubleArrayND(shape) { nextDouble(from, until) }

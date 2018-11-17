@@ -5,8 +5,8 @@ import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.defaultEquals
 import tomasvolker.numeriko.core.interfaces.array1d.integer.defaultHashCode
-import tomasvolker.numeriko.core.interfaces.array1d.lowdim.Generic.MutableVector2
-import tomasvolker.numeriko.core.interfaces.array1d.lowdim.Generic.Vector2
+import tomasvolker.numeriko.core.interfaces.array1d.lowdim.generic.MutableVector2
+import tomasvolker.numeriko.core.interfaces.array1d.lowdim.generic.Vector2
 
 interface IntVector2: Vector2<Int>, IntArray1D {
 

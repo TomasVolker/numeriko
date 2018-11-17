@@ -1,4 +1,4 @@
-package tomasvolker.numeriko.core.interfaces.array1d.lowdim.Generic
+package tomasvolker.numeriko.core.interfaces.array1d.lowdim.generic
 
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 

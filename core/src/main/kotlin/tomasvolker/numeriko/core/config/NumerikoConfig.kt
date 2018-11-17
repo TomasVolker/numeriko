@@ -7,8 +7,8 @@ object NumerikoConfig {
 
     var defaultFactory: ArrayNDFactory = NumerikoArrayNDFactory()
 
-    var defaultTolerance: Double = 1e11
+    var defaultTolerance: Double = 1e-11
 
-    val checkRanges: Boolean = true
+    const val checkRanges: Boolean = true
 
 }

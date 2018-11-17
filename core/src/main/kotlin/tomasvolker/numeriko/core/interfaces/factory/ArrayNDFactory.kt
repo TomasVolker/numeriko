@@ -153,7 +153,6 @@ inline fun doubleArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->Dou
             }
         }
 
-
 inline fun doubleArrayND(shape: IntArray1D, init: (indices: IntArray1D)->Double): DoubleArrayND =
         NumerikoConfig.defaultFactory.doubleZeros(shape).asMutable().apply {
             forEachIndices { indices ->

@@ -110,7 +110,7 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
         for (i0 in 0 until shape0-1) {
             for (i1 in i0+1 until shape1) {
 
-                if (!this[i0, i1].numericEqualsTo(this[i1, i1], tolerance))
+                if (!this[i0, i1].numericEqualsTo(this[i1, i0], tolerance))
                     return false
 
             }

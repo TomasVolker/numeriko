@@ -8,7 +8,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
 import kotlin.math.abs
 
-val tolerance = 1e-11
+const val tolerance = 1e-10
 
 infix fun Double.numericEquals(other: Double): Boolean = abs(other -  this) < tolerance
 

@@ -102,36 +102,42 @@ class DoubleArray2DTest {
     @Test
     fun `double 2D array linear algebra`() {
 
-        val random = Random(0)
+        with(Random(seed = 0)) {
 
-        val n = 4
-        val m = 3
+            repeat(10) {
 
-        val matnxn = doubleArray2D(n, n) { _, _ -> random.nextDouble(from = -12.3, until = 7.5) }
-        val vecn1 = doubleArray1D(n) { random.nextDouble(from = -6.0, until = 8.9) }
-        val matmxn = doubleArray2D(m, n) { _, _ -> random.nextDouble(from = -12.3, until = 7.5) }
-        val vecn2 = doubleArray1D(n) { random.nextDouble(from = -6.0, until = 8.9) }
-        val identityn = doubleIdentity(n)
+                val n = nextInt(from = 4, until = 6)
+                val m = n - 2
 
-        assert(matnxn.isSquare())
-        assertNumericEquals(matnxn.trace(), matnxn.diagonal().sum())
-        assertNotNumericEquals(0.0, matnxn.determinant())
-        assertNumericEquals(vecn1, matnxn matMul matnxn.solve(vecn1))
-        assertNumericEquals(matnxn, matnxn matMul identityn)
-        assertNumericEquals((matmxn matMul matnxn) matMul vecn2, matmxn matMul (matnxn matMul vecn2))
-        assertNumericEquals(identityn, matnxn matMul matnxn.inverse())
+                val matnxn = nextDoubleArray2D(n, n, from = -12.3, until = 7.5)
+                val vecn1  = nextDoubleArray1D(n, from = -6.0, until = 8.9)
+                val matmxn = nextDoubleArray2D(m, n, from = -12.3, until = 7.5)
+                val vecn2  = nextDoubleArray1D(n, from = -6.0, until = 8.9)
+                val identityn = doubleIdentity(n)
 
-        assertNumericEquals(vecn1 inner (matnxn matMul vecn2), matnxn.bilinearForm(vecn1, vecn2))
-        assertNumericEquals(vecn1 inner vecn1, identityn.quadraticForm(vecn1))
+                assert(matnxn.isSquare())
+                assertNumericEquals(matnxn.trace(), matnxn.diagonal().sum())
+                assertNotNumericEquals(0.0, matnxn.determinant())
+                assertNumericEquals(vecn1, matnxn matMul matnxn.solve(vecn1))
+                assertNumericEquals(matnxn, matnxn matMul identityn)
+                assertNumericEquals((matmxn matMul matnxn) matMul vecn2, matmxn matMul (matnxn matMul vecn2))
+                assertNumericEquals(identityn, matnxn matMul matnxn.inverse())
 
-        assertNumericEquals(vecn1 inner vecn1, (vecn1 outer vecn1).trace())
-        assert((vecn1 outer vecn1).isSymmetric())
+                assertNumericEquals(vecn1 inner (matnxn matMul vecn2), matnxn.bilinearForm(vecn1, vecn2))
+                assertNumericEquals(vecn1 inner vecn1, identityn.quadraticForm(vecn1))
 
-        val mutableMat = matnxn.asMutable()
+                assertNumericEquals(vecn1 inner vecn1, (vecn1 outer vecn1).trace())
+                assert((vecn1 outer vecn1).isSymmetric())
 
-        mutableMat[0, All] = 2.1 * mutableMat[1, All] - 2.3 * mutableMat[3, All]
+                val mutableMat = matnxn.asMutable()
 
-        assertNumericEquals(0.0, mutableMat.determinant())
+                mutableMat[0, All] = 2.1 * mutableMat[1, All] - 2.3 * mutableMat[3, All]
+
+                assertNumericEquals(0.0, mutableMat.determinant())
+
+            }
+
+        }
 
     }
 

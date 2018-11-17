@@ -4,7 +4,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.defaultEquals
 import tomasvolker.numeriko.core.interfaces.array1d.double.defaultHashCode
 import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultToString
-import tomasvolker.numeriko.core.interfaces.array1d.lowdim.Generic.Vector3
+import tomasvolker.numeriko.core.interfaces.array1d.lowdim.generic.Vector3
 
 class DoubleVector3(
         val value0: Double,
