@@ -17,10 +17,10 @@ interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
         setValue(value, indices[0], indices[1])
     }
 
-    fun setValue(value: T, i0: Int, i1: Int)
-
-    fun setValue(value: T, i0: Index, i1: Index) =
-            setValue(value, i0.computeValue(shape0), i1.computeValue(shape1))
+    fun setValue(value: T, i0: Int  , i1: Int  )
+    fun setValue(value: T, i0: Int  , i1: Index) = setValue(value, i0.compute(0), i1.compute(1))
+    fun setValue(value: T, i0: Index, i1: Int  ) = setValue(value, i0.compute(0), i1.compute(1))
+    fun setValue(value: T, i0: Index, i1: Index) = setValue(value, i0.compute(0), i1.compute(1))
 
     fun setValue(other: Array2D<T>) {
 

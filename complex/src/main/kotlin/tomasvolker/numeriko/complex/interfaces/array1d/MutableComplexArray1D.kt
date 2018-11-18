@@ -1,13 +1,11 @@
-package tomasvolker.numeriko.complex.array
+package tomasvolker.numeriko.complex.interfaces.array1d
 
 import tomasvolker.numeriko.complex.Complex
-import tomasvolker.numeriko.complex.array.view.DefaultMutableComplexArray1DView
+import tomasvolker.numeriko.complex.interfaces.array1d.view.DefaultMutableComplexArray1DView
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
-import tomasvolker.numeriko.core.preconditions.requireSameSize
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -24,27 +22,27 @@ interface MutableComplexArray1D: MutableArray1D<Complex>, ComplexArray1D {
     override fun getView(i0: IndexProgression): MutableComplexArray1D =
             getView(i0.computeProgression(size))
 
-    operator fun set(i: Int, value: Complex): Unit = setValue(value, i)
-    operator fun set(i: Index, value: Complex): Unit = setValue(value, i)
+    operator fun set(i0: Int, value: Complex): Unit = setValue(value, i0)
+    operator fun set(i0: Index, value: Complex): Unit = setValue(value, i0)
 
     override fun setValue(value: Complex, i0: Int) {
         setReal(value.real, i0)
         setImag(value.imag, i0)
     }
 
-    fun setReal(value: Double, i: Int)
-    fun setImag(value: Double, i: Int)
+    fun setReal(value: Double, i0: Int)
+    fun setImag(value: Double, i0: Int)
 
-    fun setAbs(value: Double, i: Int) {
-        val arg = getArg(i)
-        setReal(value * cos(arg), i)
-        setImag(value * sin(arg), i)
+    fun setAbs(value: Double, i0: Int) {
+        val arg = arg(i0)
+        setReal(value * cos(arg), i0)
+        setImag(value * sin(arg), i0)
     }
 
-    fun setArg(value: Double, i: Int) {
-        val abs = getAbs(i)
-        setReal(abs * cos(value), i)
-        setImag(abs * sin(value), i)
+    fun setArg(value: Double, i0: Int) {
+        val abs = abs(i0)
+        setReal(abs * cos(value), i0)
+        setImag(abs * sin(value), i0)
     }
 
     fun applyPlus(other: ComplexArray1D): MutableComplexArray1D =
@@ -107,35 +105,4 @@ interface MutableComplexArray1D: MutableArray1D<Complex>, ComplexArray1D {
     fun applyDiv(other: Int): MutableComplexArray1D =
             applyDiv(other.toDouble())
 
-}
-
-inline fun MutableComplexArray1D.applyElementWise(
-        operation: (Complex) -> Complex
-): MutableComplexArray1D {
-    for (i in indices) {
-        this[i] = operation(this[i])
-    }
-    return this
-}
-
-inline fun MutableComplexArray1D.applyElementWise(
-        other: ComplexArray1D,
-        operation: (Complex, Complex) -> Complex
-): MutableComplexArray1D {
-    requireSameSize(this, other)
-    for (i in indices) {
-        this[i] = operation(this[i], other[i])
-    }
-    return this
-}
-
-inline fun MutableComplexArray1D.applyElementWise(
-        other: DoubleArray1D,
-        operation: (Complex, Double) -> Complex
-): MutableComplexArray1D {
-    requireSameSize(this, other)
-    for (i in indices) {
-        this[i] = operation(this[i], other[i])
-    }
-    return this
 }

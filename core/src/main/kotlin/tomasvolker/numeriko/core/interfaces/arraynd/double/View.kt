@@ -24,21 +24,21 @@ abstract class DefaultMutableDoubleArrayND: DefaultDoubleArrayND(), MutableDoubl
 
 class DefaultDoubleArrayNDCollapseView(
         val array: MutableDoubleArrayND,
-        val dimension: Int
+        val axis: Int
 ) : DefaultMutableDoubleArrayND() {
 
     init {
-        require(array.shape[dimension] == 1)
+        require(array.shape[axis] == 1)
     }
 
-    override val shape: IntArray1D = intArray1D(array.shape.filterIndexed { i, _ -> i != dimension }.toIntArray())
+    override val shape: IntArray1D = intArray1D(array.shape.filterIndexed { i, _ -> i != axis }.toIntArray())
 
     private fun convertIndices(indices: IntArray): IntArray =
             IntArray(array.rank) { i ->
                 when {
-                    i < dimension -> indices[i]
-                    i == dimension -> 0
-                    i > dimension -> indices[i-1]
+                    i < axis -> indices[i]
+                    i == axis -> 0
+                    i > axis -> indices[i-1]
                     else -> throw IllegalStateException()
                 }
             }
@@ -55,8 +55,8 @@ class DefaultDoubleArrayNDCollapseView(
 
 }
 
-fun DoubleArrayND.collapseView(dimension: Int): DoubleArrayND =
-        DefaultDoubleArrayNDCollapseView(this.asMutable(), dimension)
+fun DoubleArrayND.collapseView(axis: Int): DoubleArrayND =
+        DefaultDoubleArrayNDCollapseView(this.asMutable(), axis)
 
 class DefaultMutableDoubleArrayNDView(
         val array: MutableDoubleArrayND,

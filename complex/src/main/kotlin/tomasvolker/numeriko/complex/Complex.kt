@@ -11,7 +11,7 @@ val J = I
 class Complex(
         val real: Double = 0.0,
         val imag: Double = 0.0
-) {
+): Number() {
 
     val imaginary: Double get() = imag
 
@@ -109,6 +109,14 @@ class Complex(
 
     override fun toString() = "($real, $imag)"
 
+    override fun toByte(): Byte = toDouble().toByte()
+    override fun toChar(): Char = toDouble().toChar()
+    override fun toDouble(): Double = real
+    override fun toFloat(): Float = toDouble().toFloat()
+    override fun toInt(): Int = toDouble().toInt()
+    override fun toLong(): Long = toDouble().toLong()
+    override fun toShort(): Short = toDouble().toShort()
+
 }
 
 fun polarComplex(absoluteValue: Double, argument: Double = 0.0) =
@@ -146,7 +154,10 @@ operator fun Float.div(other: Complex) = this.toDouble() / other
 operator fun Long.div(other: Complex) = this.toDouble() / other
 operator fun Int.div(other: Complex) = this.toDouble() / other
 
-fun Number.toComplex() = this.toDouble().toComplex()
+fun Number.toComplex() = when(this) {
+    is Complex -> this
+    else -> this.toDouble().toComplex()
+}
 fun Double.toComplex() = Complex(this, 0.0)
 fun Float.toComplex() = this.toDouble().toComplex()
 fun Long.toComplex() = this.toDouble().toComplex()

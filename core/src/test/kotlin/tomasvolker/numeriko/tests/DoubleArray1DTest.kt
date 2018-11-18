@@ -20,7 +20,7 @@ class DoubleArray1DTest {
     @Test
     fun `double 1D array constructors`() {
 
-        val a1 = doubleArray1D(5) { i -> 2.0 * i }
+        val a1 = doubleArray1D(5) { i -> 2 * i }
         val a2 = doubleArrayOf(0.0, 2.0, 4.0, 6.0, 8.0).asDoubleArray1D()
         val a3 = doubleArray1DOf(0.0, 2.0, 4.0, 6.0, 8.0)
         val a4 = D[0, 2, 4, 6, 8]
@@ -35,7 +35,7 @@ class DoubleArray1DTest {
     @Test
     fun `double 1D array access`() {
 
-        val a1 = doubleArray1D(5) { i -> 2.0 * i }
+        val a1 = doubleArray1D(5) { i -> 2 * i }
         val a2 = doubleArrayOf(0.0, 2.0, 4.0, 6.0, 8.0).asDoubleArray1D()
         val a3 = doubleArray1DOf(0.0, 2.0, 4.0, 6.0, 8.0)
 
@@ -50,7 +50,7 @@ class DoubleArray1DTest {
     @Test
     fun `double 1D array view`() {
 
-        val a1 = doubleArray1D(100) { i -> 2.0 * i}
+        val a1 = doubleArray1D(100) { i -> 2 * i}
 
         assertEquals(a1[2..4], doubleArray1DOf(4.0, 6.0, 8.0))
         assertEquals(a1[8..Last].size, 92)
@@ -60,7 +60,7 @@ class DoubleArray1DTest {
     @Test
     fun `double 1D array copy view instance`() {
 
-        val a1 = doubleArray1D(100) { i -> 2.0 * i }
+        val a1 = doubleArray1D(100) { i -> 2 * i }
 
         val view = a1[10 until 20]
 
@@ -74,7 +74,7 @@ class DoubleArray1DTest {
     @Test
     fun `double 1D array modification`() {
 
-        val a1 = doubleArray1D(100) { i -> 2.0 * i }.asMutable()
+        val a1 = doubleArray1D(100) { i -> 2 * i }.asMutable()
 
         val a2 = a1.copy()
 

@@ -32,6 +32,7 @@ class MutableDoubleArray2DCollapseView(
     }
 
     override fun setDouble(value: Double, i0: Int) {
+        requireValidIndices(i0)
         when(axis) {
             0 -> array.setDouble(
                     value,

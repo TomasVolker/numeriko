@@ -13,7 +13,7 @@ fun <T> ArrayND<T>.as1D(): Array1D<T> = DefaultArrayND1DView(this.asMutable())
 fun <T> ArrayND<T>.as2D(): Array2D<T> = DefaultArrayND2DView(this.asMutable())
 
 val ArrayND<*>.volume get(): Int = size
-inline val ArrayND<*>.axes get(): IntRange = 0 until rank
+val ArrayND<*>.axes get(): IntRange = 0 until rank
 val ArrayND<*>.lastAxis get(): Int = rank - 1
 
 fun ArrayND<*>.indices(axis: Int): IntRange = 0 until shape(axis)

@@ -1,20 +1,15 @@
-package tomasvolker.numeriko.complex.array
+package tomasvolker.numeriko.complex.interfaces.array1d
 
 import tomasvolker.numeriko.complex.Complex
-import tomasvolker.numeriko.complex.array.view.*
+import tomasvolker.numeriko.complex.interfaces.array1d.view.*
 import tomasvolker.numeriko.complex.div
-import tomasvolker.numeriko.complex.toComplex
+import tomasvolker.numeriko.complex.interfaces.factory.complexArray1D
+import tomasvolker.numeriko.complex.interfaces.factory.copy
 import tomasvolker.numeriko.complex.transforms.fft.array1d.fft
-import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
-import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
-import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
-import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
-import tomasvolker.numeriko.core.preconditions.requireSameSize
 import kotlin.math.atan2
 import kotlin.math.hypot
 
@@ -28,8 +23,7 @@ interface ComplexArray1D: Array1D<Complex> {
                     stride = i0.step
             )
 
-    override fun getView(i0: IndexProgression): ComplexArray1D =
-            getView(i0.computeProgression(size))
+    override fun getView(i0: IndexProgression): ComplexArray1D = getView(i0.compute())
 
     operator fun get(index: Int): Complex = getValue(index)
     operator fun get(index: Index): Complex = getValue(index)
@@ -37,14 +31,15 @@ interface ComplexArray1D: Array1D<Complex> {
     operator fun get(index: IntProgression): ComplexArray1D = getView(index)
     operator fun get(index: IndexProgression): ComplexArray1D = getView(index)
 
-    override fun getValue(i0: Int): Complex =
-            Complex(getReal(i0), getImag(i0))
+    override fun getValue(i0: Int): Complex = Complex(real(i0), imag(i0))
 
-    fun getReal(i: Int): Double
-    fun getImag(i: Int): Double
+    override fun copy(): ComplexArray1D = copy(this)
 
-    fun getAbs(i: Int): Double = hypot(getReal(i), getImag(i))
-    fun getArg(i: Int): Double = atan2(getImag(i), getReal(i))
+    fun real(i0: Int): Double
+    fun imag(i0: Int): Double
+
+    fun abs(i0: Int): Double = hypot(real(i0), imag(i0))
+    fun arg(i0: Int): Double = atan2(imag(i0), real(i0))
 
     val real: DoubleArray1D get() = ComplexArray1DRealView(this.asMutable())
     val imag: DoubleArray1D get() = ComplexArray1DImagView(this.asMutable())
@@ -57,8 +52,8 @@ interface ComplexArray1D: Array1D<Complex> {
     fun conjugate(): ComplexArray1D =
             complexArray1D(
                     size = size,
-                    initReal = { i -> getReal(i) },
-                    initImag = { i -> -getImag(i) }
+                    initReal = { i -> real(i) },
+                    initImag = { i -> -imag(i) }
             )
 
     /**
@@ -262,131 +257,5 @@ interface ComplexArray1D: Array1D<Complex> {
 
     fun fastFourierTransform(inverse: Boolean = false): ComplexArray1D =
             fft(this, inverse = inverse)
-
-}
-
-fun DoubleArray1D.toComplexArray(): ComplexArray1D =
-        complexArray1D(size) { i ->
-            this[i].toComplex()
-        }
-
-inline fun ComplexArray1D.elementWiseIndexed(
-        operation: (i: Int, Complex)->Complex
-): ComplexArray1D {
-    val result = complexZeros(size).asMutable()
-    for (i in indices) {
-        result[i] = operation(i, this[i])
-    }
-    return result
-}
-
-inline fun ComplexArray1D.elementWise(
-        operation: (Complex)->Complex
-): ComplexArray1D {
-    val result = complexZeros(size).asMutable()
-    for (i in indices) {
-        result[i] = operation(this[i])
-    }
-    return result
-}
-
-inline fun elementWise(
-        array1: ComplexArray1D,
-        array2: ComplexArray1D,
-        operation: (Complex, Complex)->Complex
-): ComplexArray1D {
-    requireSameSize(array1, array2)
-    val result = complexZeros(array1.size).asMutable()
-    for (i in array1.indices) {
-        result[i] = operation(array1[i], array2[i])
-    }
-    return result
-}
-
-inline fun elementWise(
-        array1: ComplexArray1D,
-        array2: DoubleArray1D,
-        operation: (Complex, Double)->Complex
-): ComplexArray1D {
-    requireSameSize(array1, array2)
-    val result = complexZeros(array1.size).asMutable()
-    for (i in array1.indices) {
-        result[i] = operation(array1[i], array2[i])
-    }
-    return result
-}
-
-fun complexZeros(size: Int): ComplexArray1D =
-        JvmComplexArray(values = doubleZeros(size, 2).asMutable())
-
-fun complexArray1DOf(vararg complex: Complex): ComplexArray1D =
-        complexArray1D(complex)
-
-fun complexArray1D(complex: Array<out Complex>): ComplexArray1D =
-        JvmComplexArray(
-                values = doubleArray2D(complex.size, 2) { i0, i1 ->
-                    when(i1) {
-                        0 -> complex[i0].real
-                        1 -> complex[i0].imag
-                        else -> throw IllegalStateException()
-                    }
-                }.asMutable()
-        )
-
-inline fun complexArray1D(size: Int, init: (i: Int)->Complex): ComplexArray1D {
-    val values = doubleZeros(size, 2).asMutable()
-
-    for (i in 0 until size) {
-        val complex = init(i)
-        values[i, 0] = complex.real
-        values[i, 1] = complex.imag
-    }
-
-    return JvmComplexArray(
-            values = values
-    )
-}
-
-inline fun complexArray1D(
-        size: Int,
-        initReal: (i: Int)->Double,
-        initImag: (i: Int)->Double
-): ComplexArray1D {
-    val values = doubleZeros(size, 2).asMutable()
-
-    for (i in 0 until size) {
-        values[size, 0] = initReal(i)
-        values[size, 1] = initImag(i)
-    }
-
-    return JvmComplexArray(
-            values = values
-    )
-}
-
-
-class JvmComplexArray(
-        val values: MutableDoubleArray2D
-): DefaultMutableComplexArray1D() {
-
-    override val size: Int
-        get() = values.shape0
-
-    override val real: DoubleArray1D
-        get() = values[All, 0]
-
-    override val imag: DoubleArray1D
-        get() = values[All, 1]
-
-    override fun getReal(i: Int): Double = values[i, 0]
-    override fun getImag(i: Int): Double = values[i, 1]
-
-    override fun setReal(value: Double, i: Int) {
-        values[i, 0] = value
-    }
-
-    override fun setImag(value: Double, i: Int) {
-        values[i, 1] = value
-    }
 
 }

@@ -20,14 +20,6 @@ fun DoubleArray1D.shiftHalf() =
             this[(i + size / 2) modulo size]
         }
 
-fun ComplexArray1D.shiftHalf() =
-        complexArray1D(size) { i ->
-            this[(i + size / 2) modulo size]
-        }
-
-fun DoubleArray1D.fft() =
-        dftFromDHT(fht(this))
-
 fun main() {
 
     val space = linearSpace(

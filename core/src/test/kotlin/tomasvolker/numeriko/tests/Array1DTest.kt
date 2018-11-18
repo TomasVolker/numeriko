@@ -13,7 +13,7 @@ class Array1DTest {
     @Test
     fun `generic 1D array constructors`() {
 
-        val a1 = array1D(5) { i -> 2*i }
+        val a1 = array1D(5) { i -> 2 * i }
         val a2 = arrayOf(0, 2, 4, 6, 8).asArray1D()
         val a3 = array1DOf(0, 2, 4, 6, 8)
 
@@ -26,7 +26,7 @@ class Array1DTest {
     @Test
     fun `generic 1D array access`() {
 
-        val a1 = array1D(5) { i -> 2*i }
+        val a1 = array1D(5) { i -> 2 * i }
         val a2 = arrayOf(0, 2, 4, 6, 8).asArray1D()
         val a3 = array1DOf(0, 2, 4, 6, 8)
 
@@ -41,7 +41,7 @@ class Array1DTest {
     @Test
     fun `generic 1D array view`() {
 
-        val a1 = array1D(100) { i -> "${2*i}" }
+        val a1 = array1D(100) { i -> "${2 * i}" }
 
         assertEquals(a1[2..4], array1DOf("4", "6", "8"))
         assertEquals(a1[8..Last].size, 92)
@@ -51,7 +51,7 @@ class Array1DTest {
     @Test
     fun `generic 1D view copy instance`() {
 
-        val a1 = array1D(100) { i -> "${2*i}" }
+        val a1 = array1D(100) { i -> "${2 * i}" }
 
         val view = a1[10 until 20]
 
@@ -66,7 +66,7 @@ class Array1DTest {
     @Test
     fun `generic 1D modification`() {
 
-        val a1 = array1D(100) { i -> 2*i }.asMutable()
+        val a1 = array1D(100) { i -> 2 * i }.asMutable()
 
         val a2 = a1.copy()
 

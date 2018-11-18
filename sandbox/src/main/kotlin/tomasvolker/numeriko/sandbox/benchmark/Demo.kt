@@ -5,8 +5,6 @@ import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.inverse.InvertMatrix
 import tomasvolker.kyplot.dsl.*
 import tomasvolker.numeriko.core.config.NumerikoConfig
-import tomasvolker.numeriko.core.dsl.D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.factory.doubleRandom
 import tomasvolker.numeriko.core.interfaces.factory.nextDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.nextDoubleArray2D
@@ -17,7 +15,7 @@ fun main() {
 
     NumerikoConfig.checkRanges = true
 
-    benchmarkMatmul(iterations = 100)
+    benchmarkInverse(iterations = 20)
 
 }
 

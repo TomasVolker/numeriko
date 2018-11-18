@@ -3,10 +3,11 @@ package tomasvolker.numeriko.sandbox.image
 import tomasvolker.kyplot.dsl.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
 import kotlin.math.hypot
+import kotlin.system.measureTimeMillis
 
 fun main() {
 
-    val rgbImage = loadGrayScaleImage("./sandbox/res/sun.gif")
+    val rgbImage = loadGrayScaleImage("./sandbox/res/lena.png")
 
     //val image = rgbImage.getView(All, All, Single(0)).collapseView(2).as2D()
     val image = rgbImage
@@ -17,6 +18,7 @@ fun main() {
     val edges = elementWise(gradx, grady) { x, y ->
         hypot(x, y)
     }
+
 
     showFigure {
 

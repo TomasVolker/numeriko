@@ -139,27 +139,27 @@ inline fun intArray1D(size: Int, init: (i: Int)->Int): IntArray1D =
         }
 
 
-inline fun doubleArray1D(size: Int, init: (i: Int)->Double): DoubleArray1D =
+inline fun doubleArray1D(size: Int, init: (i: Int)->Number): DoubleArray1D =
         NumerikoConfig.defaultFactory.doubleZeros(size).asMutable().apply {
             forEachIndex { i ->
-                this[i] = init(i)
+                this[i] = init(i).toDouble()
             }
         }
 
 
-inline fun doubleArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->Double): DoubleArray2D =
+inline fun doubleArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->Number): DoubleArray2D =
         NumerikoConfig.defaultFactory.doubleZeros(shape0, shape1).asMutable().apply {
             forEachIndex { i0, i1 ->
-                this[i0, i1] = init(i0, i1)
+                this[i0, i1] = init(i0, i1).toDouble()
             }
         }
 
-inline fun doubleArrayND(shape: IntArray1D, init: (indices: IntArray1D)->Double): DoubleArrayND =
+inline fun doubleArrayND(shape: IntArray1D, init: (indices: IntArray1D)->Number): DoubleArrayND =
         NumerikoConfig.defaultFactory.doubleZeros(shape).asMutable().apply {
             forEachIndices { indices ->
-                this[indices] = init(indices)
+                this[indices] = init(indices).toDouble()
             }
         }
 
-inline fun doubleArrayND(vararg shape: Int, init: (indices: IntArray1D)->Double): DoubleArrayND =
+inline fun doubleArrayND(vararg shape: Int, init: (indices: IntArray1D)->Number): DoubleArrayND =
         doubleArrayND(shape.asIntArray1D(), init)

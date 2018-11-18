@@ -1,9 +1,9 @@
 package tomasvolker.numeriko.complex.transforms.fft.array1d
 
 
-import tomasvolker.numeriko.complex.array.ComplexArray1D
-import tomasvolker.numeriko.complex.array.MutableComplexArray1D
-import tomasvolker.numeriko.complex.array.complexZeros
+import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
+import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
+import tomasvolker.numeriko.complex.interfaces.factory.complexZeros
 import tomasvolker.numeriko.core.primitives.isPowerOf2
 import kotlin.math.PI
 import kotlin.math.cos
@@ -57,8 +57,8 @@ fun cooleyTukeyAlgorithm(
 ) {
 
     if (size == 1) {
-        destination.setReal(array.getReal(offset), destOffset)
-        destination.setImag(array.getImag(offset), destOffset)
+        destination.setReal(array.real(offset), destOffset)
+        destination.setImag(array.imag(offset), destOffset)
         return
     }
 
@@ -94,11 +94,11 @@ fun cooleyTukeyAlgorithm(
         val evenIndex = destOffset + k
         val oddIndex  = evenIndex + halfSize
 
-        val evenReal = destination.getReal(evenIndex)
-        val evenImag = destination.getImag(evenIndex)
+        val evenReal = destination.real(evenIndex)
+        val evenImag = destination.imag(evenIndex)
 
-        val oddReal  = destination.getReal(oddIndex)
-        val oddImag  = destination.getImag(oddIndex)
+        val oddReal  = destination.real(oddIndex)
+        val oddImag  = destination.imag(oddIndex)
 
         // destination[evenIndex] =  even + twiddle * odd
         destination.setReal(evenReal + twiddleReal * oddReal - twiddleImag * oddImag, evenIndex)

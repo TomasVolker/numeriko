@@ -1,7 +1,7 @@
-package tomasvolker.numeriko.complex.array.view
+package tomasvolker.numeriko.complex.interfaces.array1d.view
 
-import tomasvolker.numeriko.complex.array.ComplexArray1D
-import tomasvolker.numeriko.complex.array.MutableComplexArray1D
+import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
+import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultEquals
@@ -33,36 +33,24 @@ class DefaultMutableComplexArray1DView (
         val stride: Int
 ) : DefaultMutableComplexArray1D() {
 
-    override fun getReal(i: Int): Double {
-        if (i !in 0 until size) {
-            throw IndexOutOfBoundsException("$i")
-        }
-
-        return array.getReal(offset + stride * i)
+    override fun real(i0: Int): Double {
+        requireValidIndices(i0)
+        return array.real(offset + stride * i0)
     }
 
-    override fun setReal(value: Double, i: Int) {
-        if (i !in 0 until size) {
-            throw IndexOutOfBoundsException("$i")
-        }
-
-        array.setReal(value, offset + stride * i)
+    override fun setReal(value: Double, i0: Int) {
+        requireValidIndices(i0)
+        array.setReal(value, offset + stride * i0)
     }
 
-    override fun getImag(i: Int): Double {
-        if (i !in 0 until size) {
-            throw IndexOutOfBoundsException("$i")
-        }
-
-        return array.getImag(offset + stride * i)
+    override fun imag(i0: Int): Double {
+        requireValidIndices(i0)
+        return array.imag(offset + stride * i0)
     }
 
-    override fun setImag(value: Double, i: Int) {
-        if (i !in 0 until size) {
-            throw IndexOutOfBoundsException("$i")
-        }
-
-        array.setImag(value, offset + stride * i)
+    override fun setImag(value: Double, i0: Int) {
+        requireValidIndices(i0)
+        array.setImag(value, offset + stride * i0)
     }
 
 }
@@ -74,9 +62,13 @@ class ComplexArray1DRealView(
     override val size: Int
         get() = array.size
 
-    override fun getDouble(i0: Int): Double = array.getReal(i0)
+    override fun getDouble(i0: Int): Double {
+        requireValidIndices(i0)
+        return array.real(i0)
+    }
 
     override fun setDouble(value: Double, i0: Int) {
+        requireValidIndices(i0)
         array.setReal(value, i0)
     }
 
@@ -89,9 +81,13 @@ class ComplexArray1DImagView(
     override val size: Int
         get() = array.size
 
-    override fun getDouble(i0: Int): Double = array.getImag(i0)
+    override fun getDouble(i0: Int): Double {
+        requireValidIndices(i0)
+        return array.imag(i0)
+    }
 
     override fun setDouble(value: Double, i0: Int) {
+        requireValidIndices(i0)
         array.setImag(value, i0)
     }
 
@@ -104,9 +100,13 @@ class ComplexArray1DAbsView(
     override val size: Int
         get() = array.size
 
-    override fun getDouble(i0: Int): Double = array.getAbs(i0)
+    override fun getDouble(i0: Int): Double {
+        requireValidIndices(i0)
+        return array.abs(i0)
+    }
 
     override fun setDouble(value: Double, i0: Int) {
+        requireValidIndices(i0)
         array.setAbs(value, i0)
     }
 
@@ -119,9 +119,13 @@ class ComplexArray1DArgView(
     override val size: Int
         get() = array.size
 
-    override fun getDouble(i0: Int): Double = array.getArg(i0)
+    override fun getDouble(i0: Int): Double {
+        requireValidIndices(i0)
+        return array.arg(i0)
+    }
 
     override fun setDouble(value: Double, i0: Int) {
+        requireValidIndices(i0)
         array.setArg(value, i0)
     }
 
