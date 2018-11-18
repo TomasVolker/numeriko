@@ -1,16 +1,16 @@
-package tomasvolker.numeriko.core.probability.scalar
+package tomasvolker.numeriko.core.probability.continuous
 
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import kotlin.random.Random
 
-interface ProbabilityDistribution {
+interface ContinuousProbabilityDistribution {
 
     val mean: Double
     val variance: Double
 
-    fun pdf(x: Double): Double
-    fun cdf(x: Double): Double
+    fun probabilityDensity(x: Double): Double
+    fun cumulativeDensity(x: Double): Double
 
     fun nextDouble(random: Random = Random): Double
 
@@ -21,3 +21,6 @@ interface ProbabilityDistribution {
             generateSequence { nextDouble(Random) }
 
 }
+
+fun ContinuousProbabilityDistribution.pdf(x: Double): Double = probabilityDensity(x)
+fun ContinuousProbabilityDistribution.cdf(x: Double): Double = cumulativeDensity(x)

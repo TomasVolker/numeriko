@@ -5,7 +5,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.probability.scalar.NormalDistribution
+import tomasvolker.numeriko.core.probability.continuous.NormalDistribution
 import kotlin.math.*
 import kotlin.random.Random
 

@@ -15,14 +15,14 @@ class DefaultMutableDoubleArray1DView (
         array.requireValidIndices(convertIndex(lastIndex))
     }
 
-    override fun setDouble(value: Double, index: Int) {
-        requireValidIndices(index)
-        array.setDouble(value, offset + stride * index)
+    override fun setDouble(value: Double, i0: Int) {
+        requireValidIndices(i0)
+        array.setDouble(value, offset + stride * i0)
     }
 
-    override fun getDouble(index: Int): Double {
-        requireValidIndices(index)
-        return array.getDouble(offset + stride * index)
+    override fun getDouble(i0: Int): Double {
+        requireValidIndices(i0)
+        return array.getDouble(offset + stride * i0)
     }
 
     fun convertIndex(i0: Int): Int = offset + stride * i0

@@ -7,6 +7,8 @@ import kotlin.random.Random
 
 fun IntArray.asIntArray1D(): IntArray1D = intArray1D(this)
 
+fun IntArray.toIntArray1D(): IntArray1D = intArray1D(this.copyOf())
+
 fun intArray1DOf(vararg values: Int) = intArray1D(values)
 
 

@@ -10,7 +10,7 @@ fun defaultEquals(array1: ArrayND<*>, array2: ArrayND<*>): Boolean {
     if(array1.shape != array2.shape)
         return false
 
-    array1.forEachIndices { indices ->
+    array1.unsafeForEachIndices { indices ->
         if (array1.getValue(indices) != array2.getValue(indices))
             return false
     }
@@ -38,15 +38,15 @@ fun defaultToString(array: ArrayND<*>): String =
             0 -> array.getValue().toString()
             1 -> array.joinToString(
                     separator = ", ",
-                    prefix = "[",
-                    postfix = "]"
+                    prefix = "[ ",
+                    postfix = " ]"
             )
             else -> (0 until array.shape[0])
                     .map { array.subArray(it) }
                     .joinToString(
                             separator = ", \n",
-                            prefix = "[",
-                            postfix = "]"
+                            prefix = "[ ",
+                            postfix = " ]"
                     )
         }
 

@@ -74,10 +74,10 @@ class ComplexArray1DRealView(
     override val size: Int
         get() = array.size
 
-    override fun getDouble(index: Int): Double = array.getReal(index)
+    override fun getDouble(i0: Int): Double = array.getReal(i0)
 
-    override fun setDouble(value: Double, index: Int) {
-        array.setReal(value, index)
+    override fun setDouble(value: Double, i0: Int) {
+        array.setReal(value, i0)
     }
 
 }
@@ -89,10 +89,10 @@ class ComplexArray1DImagView(
     override val size: Int
         get() = array.size
 
-    override fun getDouble(index: Int): Double = array.getImag(index)
+    override fun getDouble(i0: Int): Double = array.getImag(i0)
 
-    override fun setDouble(value: Double, index: Int) {
-        array.setImag(value, index)
+    override fun setDouble(value: Double, i0: Int) {
+        array.setImag(value, i0)
     }
 
 }
@@ -104,10 +104,10 @@ class ComplexArray1DAbsView(
     override val size: Int
         get() = array.size
 
-    override fun getDouble(index: Int): Double = array.getAbs(index)
+    override fun getDouble(i0: Int): Double = array.getAbs(i0)
 
-    override fun setDouble(value: Double, index: Int) {
-        array.setAbs(value, index)
+    override fun setDouble(value: Double, i0: Int) {
+        array.setAbs(value, i0)
     }
 
 }
@@ -119,10 +119,10 @@ class ComplexArray1DArgView(
     override val size: Int
         get() = array.size
 
-    override fun getDouble(index: Int): Double = array.getArg(index)
+    override fun getDouble(i0: Int): Double = array.getArg(i0)
 
-    override fun setDouble(value: Double, index: Int) {
-        array.setArg(value, index)
+    override fun setDouble(value: Double, i0: Int) {
+        array.setArg(value, i0)
     }
 
 }

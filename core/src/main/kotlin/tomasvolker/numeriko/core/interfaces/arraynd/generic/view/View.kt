@@ -7,9 +7,9 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.*
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 
 class DefaultArrayNDCollapseView<T>(
-        val array: ArrayND<T>,
+        val array: MutableArrayND<T>,
         val axis: Int
-) : DefaultArrayND<T>() {
+) : DefaultMutableArrayND<T>() {
 
     init {
         require(array.shape[axis] == 1)
@@ -20,21 +20,32 @@ class DefaultArrayNDCollapseView<T>(
     override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
         return array.getValue(
-                *IntArray(array.rank) { i ->
-                    when {
-                        i < axis -> indices[i]
-                        i == axis -> 0
-                        i > axis -> indices[i-1]
-                        else -> throw IllegalStateException()
-                    }
-                }
+                *convertIndices(indices)
         )
     }
+
+    override fun setValue(value: T, vararg indices: Int) {
+        requireValidIndices(indices)
+        array.setValue(value, *convertIndices(indices))
+    }
+
+    fun convertIndices(indices: IntArray): IntArray =
+            IntArray(array.rank) { i ->
+                when {
+                    i < axis -> indices[i]
+                    i == axis -> 0
+                    i > axis -> indices[i-1]
+                    else -> throw IllegalStateException()
+                }
+            }
 
 }
 
 fun <T> ArrayND<T>.collapseView(axis: Int): ArrayND<T> =
-        DefaultArrayNDCollapseView(this, axis)
+        DefaultArrayNDCollapseView(this.asMutable(), axis)
+
+fun <T> MutableArrayND<T>.collapseView(axis: Int): MutableArrayND<T> =
+        DefaultArrayNDCollapseView(this.asMutable(), axis)
 
 class DefaultArrayNDView<T>(
         val array: MutableArrayND<T>,
@@ -82,14 +93,14 @@ class DefaultArrayND1DView<T>(
     }
 
     override val size: Int
-        get() = array.getShape(0)
+        get() = array.shape(0)
 
 
     override fun getValue(i0: Int): T =
             array.getValue(i0)
 
-    override fun setValue(value: T, index: Int) {
-        array.setValue(value, index)
+    override fun setValue(value: T, i0: Int) {
+        array.setValue(value, i0)
     }
 
 }
@@ -104,10 +115,10 @@ class DefaultArrayND2DView<T>(
     }
 
     override val shape0: Int
-        get() = array.getShape(0)
+        get() = array.shape(0)
 
     override val shape1: Int
-        get() = array.getShape(0)
+        get() = array.shape(0)
 
     override fun getValue(i0: Int, i1: Int): T =
             array.getValue(i0, i1)

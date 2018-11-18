@@ -16,32 +16,32 @@ class MutableDoubleArray2DCollapseView(
 
     override val size: Int get() = array.size
 
-    override fun getDouble(index: Int): Double {
-        requireValidIndices(index)
+    override fun getDouble(i0: Int): Double {
+        requireValidIndices(i0)
         return when(axis) {
             0 -> array.getValue(
-                    index,
+                    i0,
                     0
             )
             1 -> array.getValue(
                     0,
-                    index
+                    i0
             )
             else -> throw IllegalStateException()
         }
     }
 
-    override fun setDouble(value: Double, index: Int) {
+    override fun setDouble(value: Double, i0: Int) {
         when(axis) {
             0 -> array.setDouble(
                     value,
-                    index,
+                    i0,
                     0
             )
             1 -> array.setDouble(
                     value,
                     0,
-                    index
+                    i0
             )
             else -> throw IllegalStateException()
         }

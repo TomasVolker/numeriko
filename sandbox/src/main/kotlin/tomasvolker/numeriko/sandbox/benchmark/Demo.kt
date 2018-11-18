@@ -4,12 +4,20 @@ import koma.randn
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.inverse.InvertMatrix
 import tomasvolker.kyplot.dsl.*
+import tomasvolker.numeriko.core.config.NumerikoConfig
+import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.factory.doubleRandom
+import tomasvolker.numeriko.core.interfaces.factory.nextDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.factory.nextDoubleArray2D
+import kotlin.random.Random
 import kotlin.system.measureTimeMillis
 
 fun main() {
 
-    benchmarkInverse()
+    NumerikoConfig.checkRanges = true
+
+    benchmarkMatmul(iterations = 100)
 
 }
 
@@ -40,10 +48,7 @@ inline fun <T> logTime(label: String, block: () -> T): T {
     return result as T
 }
 
-fun benchmarkInverse() {
-
-    val iterations = 100
-    val matrixSize = 500
+fun benchmarkInverse(iterations: Int = 100, matrixSize: Int = 500) {
 
     println("Koma")
     val komaX = logTime("Matrix generation") { randn(matrixSize, matrixSize) }
@@ -130,6 +135,48 @@ fun benchmarkSolve() {
         yAxis {
             label = "Time [millis]"
             limits = between(1, 300)
+        }
+
+        legend.visible = true
+
+    }
+
+}
+
+fun benchmarkMatmul(iterations: Int = 100, matrixSize: Int = 5000) {
+
+    println("Koma")
+    val komaX = logTime("Matrix generation") { randn(matrixSize, matrixSize) }
+    val komab = logTime("Vector generation") { randn(matrixSize, 1) }
+    val komaResults = benchmark(iterations) { komaX * komab }
+
+    println("Numeriko")
+    val numerikoX = logTime("Matrix generation") { Random.nextDoubleArray2D(matrixSize, matrixSize) }
+    val numerikob = logTime("Vector generation") { Random.nextDoubleArray1D(matrixSize) }
+    val numerikoResults = benchmark(iterations) { numerikoX matMul numerikob }
+
+    showPlot {
+
+        line {
+            label = "Numeriko"
+            x = numerikoResults.map { it.index }
+            y = numerikoResults.map { it.timeMillis }
+        }
+
+        line {
+            label = "Koma"
+            x = komaResults.map { it.index }
+            y = komaResults.map { it.timeMillis }
+        }
+
+        xAxis {
+            label = "Iteration"
+            limits = between(0, iterations)
+        }
+
+        yAxis {
+            label = "Time [millis]"
+            limits = between(1, 600)
         }
 
         legend.visible = true

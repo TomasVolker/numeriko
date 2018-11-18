@@ -8,8 +8,8 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.operations.stack
-import tomasvolker.numeriko.core.probability.scalar.NormalDistribution
-import tomasvolker.numeriko.core.probability.scalar.UniformDistribution
+import tomasvolker.numeriko.core.probability.continuous.NormalDistribution
+import tomasvolker.numeriko.core.probability.continuous.UniformDistribution
 import java.io.File
 import java.nio.ByteOrder
 import kotlin.math.*

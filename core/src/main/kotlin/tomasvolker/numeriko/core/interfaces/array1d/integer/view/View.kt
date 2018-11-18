@@ -15,14 +15,14 @@ class DefaultMutableIntArray1DView (
         array.requireValidIndices(convertIndex(lastIndex))
     }
 
-    override fun setInt(value: Int, index: Int) {
-        requireValidIndices(index)
-        array.setInt(value, offset + stride * index)
+    override fun setInt(value: Int, i0: Int) {
+        requireValidIndices(i0)
+        array.setInt(value, offset + stride * i0)
     }
 
-    override fun getInt(index: Int): Int {
-        requireValidIndices(index)
-        return array.getInt(offset + stride * index)
+    override fun getInt(i0: Int): Int {
+        requireValidIndices(i0)
+        return array.getInt(offset + stride * i0)
     }
 
     fun convertIndex(i0: Int): Int = offset + stride * i0

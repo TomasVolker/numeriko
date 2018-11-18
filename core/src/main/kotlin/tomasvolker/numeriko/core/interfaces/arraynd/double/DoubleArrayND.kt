@@ -1,9 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
-import tomasvolker.numeriko.core.index.Index
-import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.index.Last
-import tomasvolker.numeriko.core.index.until
+import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
@@ -52,24 +49,54 @@ interface DoubleArrayND: ArrayND<Double> {
 
     override fun asMutable(): MutableDoubleArrayND = this as MutableDoubleArrayND
 
+    operator fun unaryPlus(): DoubleArrayND = this
+    operator fun unaryMinus(): DoubleArrayND = elementWise { -it }
+
+    operator fun plus (other: Double): DoubleArrayND = elementWise { it + other }
+    operator fun minus(other: Double): DoubleArrayND = elementWise { it - other }
+    operator fun times(other: Double): DoubleArrayND = elementWise { it * other }
+    operator fun div  (other: Double): DoubleArrayND = elementWise { it / other }
+
+    operator fun plus (other: Int): DoubleArrayND = elementWise { it + other }
+    operator fun minus(other: Int): DoubleArrayND = elementWise { it - other }
+    operator fun times(other: Int): DoubleArrayND = elementWise { it * other }
+    operator fun div  (other: Int): DoubleArrayND = elementWise { it / other }
 
     infix fun outer(other: DoubleArrayND): DoubleArrayND =
             doubleArrayND(this.shape concatenate other.shape) { indices ->
                 val thisIndices = indices[0 until this.rank]
-                val otherIndices = indices[this.rank until Last]
+                val otherIndices = indices[this.rank until Size]
                 this[thisIndices] * other[otherIndices]
             }
 
     fun contract(axis0: Int, axis1: Int): DoubleArrayND {
-        val index0 = min(axis0, axis1)
-        val index1 = max(axis0, axis1)
-        require(index0 != index1 && shape[index0] == shape[index1])
-        val newShape = shape.remove(index0).remove(index1-1)
+        val minAxis = min(axis0, axis1)
+        val maxAxis = max(axis0, axis1)
+        require(minAxis != maxAxis && shape(minAxis) == shape(maxAxis))
+        val newShape = shape.remove(minAxis).remove(maxAxis-1)
         return doubleArrayND(newShape) { indices ->
-            sumDouble(indices(index0)) { r ->
-                this[indices.inject(index = index0, value = r).inject(index = index1, value = r)]
+            sumDouble(indices(minAxis)) { r ->
+                this[indices.inject(index = minAxis, value = r).inject(index = maxAxis, value = r)]
+            }
+        }
+    }
+
+    fun contract(other: DoubleArrayND, thisAxis: Int, otherAxis: Int): DoubleArrayND {
+        this.requireValidAxis(thisAxis)
+        other.requireValidAxis(otherAxis)
+        require(this.shape(thisAxis) == other.shape(otherAxis))
+        val resultShape = this.shape.remove(thisAxis) concatenate other.shape.remove(otherAxis)
+        return doubleArrayND(resultShape) { indices ->
+            sumDouble(indices(thisAxis)) { r ->
+                this[indices[0 until this.rank-1].inject(index = thisAxis, value = r)] *
+                other[indices[this.rank-1 until Size].inject(index = otherAxis, value = r)]
             }
         }
     }
 
 }
+
+operator fun DoubleArrayND.plus (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t + o }
+operator fun DoubleArrayND.minus(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t - o }
+operator fun DoubleArrayND.times(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t * o }
+operator fun DoubleArrayND.div  (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t / o }

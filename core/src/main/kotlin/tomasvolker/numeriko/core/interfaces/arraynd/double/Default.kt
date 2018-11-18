@@ -2,7 +2,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.LiteralIndex
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indexIncrement
 import tomasvolker.numeriko.core.interfaces.factory.intZeros
 
@@ -11,7 +11,7 @@ fun defaultEquals(array1: DoubleArrayND, array2: DoubleArrayND): Boolean {
     if(array1.shape != array2.shape)
         return false
 
-    array1.forEachIndices { indices ->
+    array1.unsafeForEachIndices { indices ->
         if (array1.getDouble(indices) != array2.getDouble(indices))
             return false
     }
@@ -39,15 +39,15 @@ fun defaultToString(array: DoubleArrayND): String =
             0 -> array.getDouble().toString()
             1 -> array.joinToString(
                     separator = ", ",
-                    prefix = "[",
-                    postfix = "]"
+                    prefix = "[ ",
+                    postfix = " ]"
             )
             else -> (0 until array.shape[0])
                     .map { array.subArray(it) }
                     .joinToString(
                             separator = ", \n",
-                            prefix = "[",
-                            postfix = "]"
+                            prefix = "[ ",
+                            postfix = " ]"
                     )
         }
 

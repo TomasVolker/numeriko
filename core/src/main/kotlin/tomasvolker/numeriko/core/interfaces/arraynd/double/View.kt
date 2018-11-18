@@ -102,13 +102,13 @@ class DefaultDoubleArrayND1DView(
     }
 
     override val size: Int
-        get() = array.getShape(0)
+        get() = array.shape(0)
 
-    override fun getDouble(index: Int): Double =
-            array.getDouble(index)
+    override fun getDouble(i0: Int): Double =
+            array.getDouble(i0)
 
-    override fun setDouble(value: Double, index: Int) {
-        array.setDouble(value, index)
+    override fun setDouble(value: Double, i0: Int) {
+        array.setDouble(value, i0)
     }
 
 }
@@ -123,10 +123,10 @@ class DefaultDoubleArrayND2DView(
     }
 
     override val shape0: Int
-        get() = array.getShape(0)
+        get() = array.shape(0)
 
     override val shape1: Int
-        get() = array.getShape(0)
+        get() = array.shape(0)
 
     override fun getDouble(i0: Int, i1: Int): Double =
             array.getDouble(i0, i1)

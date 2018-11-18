@@ -5,7 +5,6 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
-import tomasvolker.numeriko.core.interfaces.array1d.integer.view.DefaultMutableIntArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.integer.view.defaultIntArray1DView
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.preconditions.requireSameSize
@@ -17,10 +16,10 @@ interface IntArray1D: Array1D<Int> {
     override fun getValue(i0: Int): Int =
             getInt(i0)
 
-    fun getInt(index: Int): Int
+    fun getInt(i0: Int): Int
 
-    fun getInt(index: Index): Int =
-            getInt(index.computeValue(size))
+    fun getInt(i0: Index): Int =
+            getInt(i0.computeValue(size))
 
     override fun getView(i0: IntProgression): IntArray1D = defaultIntArray1DView(this.asMutable(), i0)
     override fun getView(i0: IndexProgression): IntArray1D = getView(i0.compute())

@@ -12,10 +12,10 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
         return setValue(value, indices[0])
     }
 
-    fun setValue(value: T, index: Int)
+    fun setValue(value: T, i0: Int)
 
-    fun setValue(value: T, index: Index) =
-            setValue(value, index.computeValue(size))
+    fun setValue(value: T, i0: Index) =
+            setValue(value, i0.computeValue(size))
 
     fun setValue(other: Array1D<T>) {
 

@@ -131,14 +131,14 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
     fun applyTimes(other: DoubleArray2D): MutableDoubleArray2D = applyElementWise(other) { t, o -> t * o }
     fun applyDiv  (other: DoubleArray2D): MutableDoubleArray2D = applyElementWise(other) { t, o -> t / o }
 
-    fun applyPlus (other: Double): MutableDoubleArray2D = applyElementWise { it + other }
-    fun applyMinus(other: Double): MutableDoubleArray2D = applyElementWise { it - other }
-    fun applyTimes(other: Double): MutableDoubleArray2D = applyElementWise { it * other }
-    fun applyDiv  (other: Double): MutableDoubleArray2D = applyElementWise { it / other }
+    override fun applyPlus (other: Double): MutableDoubleArray2D = applyElementWise { it + other }
+    override fun applyMinus(other: Double): MutableDoubleArray2D = applyElementWise { it - other }
+    override fun applyTimes(other: Double): MutableDoubleArray2D = applyElementWise { it * other }
+    override fun applyDiv  (other: Double): MutableDoubleArray2D = applyElementWise { it / other }
 
-    fun applyPlus (other: Int): MutableDoubleArray2D = applyPlus(other.toDouble())
-    fun applyMinus(other: Int): MutableDoubleArray2D = applyMinus(other.toDouble())
-    fun applyTimes(other: Int): MutableDoubleArray2D = applyTimes(other.toDouble())
-    fun applyDiv  (other: Int): MutableDoubleArray2D = applyDiv(other.toDouble())
+    override fun applyPlus (other: Int): MutableDoubleArray2D = applyPlus(other.toDouble())
+    override fun applyMinus(other: Int): MutableDoubleArray2D = applyMinus(other.toDouble())
+    override fun applyTimes(other: Int): MutableDoubleArray2D = applyTimes(other.toDouble())
+    override fun applyDiv  (other: Int): MutableDoubleArray2D = applyDiv(other.toDouble())
 
 }

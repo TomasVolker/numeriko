@@ -5,7 +5,6 @@ package tomasvolker.numeriko.core.interfaces.factory
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.implementations.numeriko.factory.NumerikoArrayNDFactory
 import tomasvolker.numeriko.core.interfaces.array1d.generic.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
@@ -128,6 +127,8 @@ inline fun <T> arrayND(shape: IntArray1D, init: (indices: IntArray1D)->T): Array
             }
         } as ArrayND<T>
 
+inline fun <T> arrayND(vararg shape: Int, init: (indices: IntArray1D)->T): ArrayND<T> =
+        arrayND(shape.asIntArray1D(), init)
 
 
 inline fun intArray1D(size: Int, init: (i: Int)->Int): IntArray1D =
@@ -159,3 +160,6 @@ inline fun doubleArrayND(shape: IntArray1D, init: (indices: IntArray1D)->Double)
                 this[indices] = init(indices)
             }
         }
+
+inline fun doubleArrayND(vararg shape: Int, init: (indices: IntArray1D)->Double): DoubleArrayND =
+        doubleArrayND(shape.asIntArray1D(), init)

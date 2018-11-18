@@ -30,17 +30,17 @@ class Array2DCollapseView<T>(
         }
     }
 
-    override fun setValue(value: T, index: Int) {
+    override fun setValue(value: T, i0: Int) {
         when(axis) {
             0 -> array.setValue(
                     value,
-                    index,
+                    i0,
                     0
             )
             1 -> array.setValue(
                     value,
                     0,
-                    index
+                    i0
             )
             else -> throw IllegalStateException()
         }

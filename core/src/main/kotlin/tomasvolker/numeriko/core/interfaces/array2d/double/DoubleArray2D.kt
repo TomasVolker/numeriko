@@ -194,12 +194,12 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
     /**
      * Returns this array unaltered.
      */
-    operator fun unaryPlus(): DoubleArray2D = this
+    override operator fun unaryPlus(): DoubleArray2D = this
 
     /**
      * Returns a copy of this array with element wise negation.
      */
-    operator fun unaryMinus(): DoubleArray2D = elementWise { -it }
+    override operator fun unaryMinus(): DoubleArray2D = elementWise { -it }
 
     /**
      * Returns an array with the element wise addition with [other].
@@ -248,22 +248,22 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
     /**
      * Returns an array with the element wise addition with [other].
      */
-    operator fun plus(other: Double): DoubleArray2D = elementWise { it + other }
+    override operator fun plus(other: Double): DoubleArray2D = elementWise { it + other }
 
     /**
      * Returns an array with the element wise subtraction with [other].
      */
-    operator fun minus(other: Double): DoubleArray2D = elementWise { it - other }
+    override operator fun minus(other: Double): DoubleArray2D = elementWise { it - other }
 
     /**
      * Returns an array with the element wise multiplication with [other].
      */
-    operator fun times(other: Double): DoubleArray2D = elementWise { it * other }
+    override operator fun times(other: Double): DoubleArray2D = elementWise { it * other }
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    operator fun div(other: Double): DoubleArray2D = elementWise { it / other }
+    override operator fun div(other: Double): DoubleArray2D = elementWise { it / other }
 
     /**
      * Returns an array with the element wise reversed division with [other].
@@ -273,22 +273,22 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
     /**
      * Returns an array with the element wise addition with [other].
      */
-    operator fun plus(other: Int): DoubleArray2D = plus(other.toDouble())
+    override operator fun plus(other: Int): DoubleArray2D = plus(other.toDouble())
 
     /**
      * Returns an array with the element wise subtraction with [other].
      */
-    operator fun minus(other: Int): DoubleArray2D = minus(other.toDouble())
+    override operator fun minus(other: Int): DoubleArray2D = minus(other.toDouble())
 
     /**
      * Returns an array with the element wise multiplication with [other].
      */
-    operator fun times(other: Int): DoubleArray2D = times(other.toDouble())
+    override operator fun times(other: Int): DoubleArray2D = times(other.toDouble())
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    operator fun div(other: Int): DoubleArray2D = div(other.toDouble())
+    override operator fun div(other: Int): DoubleArray2D = div(other.toDouble())
 
     /**
      * Returns an array with the element wise reversed division with [other].
@@ -325,6 +325,9 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
      * @throws IllegalArgumentException  if this array is not square
      */
     fun inverse(): DoubleArray2D = DefaultLinearAlgebra.inverse(this)
+
+    fun rightPseudoInverse(): DoubleArray2D = (this.transpose() matMul this).inverse() matMul this.transpose()
+    fun leftPseudoInverse(): DoubleArray2D = this.transpose() matMul (this.transpose() matMul this).inverse()
 
     /**
      * Computes the matrix multiplication between this and [other].

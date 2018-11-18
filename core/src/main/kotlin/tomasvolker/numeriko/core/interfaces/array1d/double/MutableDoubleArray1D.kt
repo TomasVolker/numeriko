@@ -19,10 +19,10 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double>, MutableDo
         setDouble(value, indices[0])
     }
 
-    override fun setValue(value: Double, index: Int): Unit = setDouble(value, index)
+    override fun setValue(value: Double, i0: Int): Unit = setDouble(value, i0)
 
-    fun setDouble(value: Double, index: Int)
-    fun setDouble(value: Double, index: Index) = setDouble(value, index.computeValue(size))
+    fun setDouble(value: Double, i0: Int)
+    fun setDouble(value: Double, i0: Index) = setDouble(value, i0.computeValue(size))
 
     fun setValue(other: DoubleArray1D) {
         requireSameSize(other, this)
@@ -72,14 +72,14 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double>, MutableDo
     fun applyTimes(other: DoubleArray1D): MutableDoubleArray1D = applyElementWise(other) { t, o -> t * o }
     fun applyDiv  (other: DoubleArray1D): MutableDoubleArray1D = applyElementWise(other) { t, o -> t / o }
 
-    fun applyPlus (other: Double): MutableDoubleArray1D = applyElementWise { it + other }
-    fun applyMinus(other: Double): MutableDoubleArray1D = applyElementWise { it - other }
-    fun applyTimes(other: Double): MutableDoubleArray1D = applyElementWise { it * other }
-    fun applyDiv  (other: Double): MutableDoubleArray1D = applyElementWise { it / other }
+    override fun applyPlus (other: Double): MutableDoubleArray1D = applyElementWise { it + other }
+    override fun applyMinus(other: Double): MutableDoubleArray1D = applyElementWise { it - other }
+    override fun applyTimes(other: Double): MutableDoubleArray1D = applyElementWise { it * other }
+    override fun applyDiv  (other: Double): MutableDoubleArray1D = applyElementWise { it / other }
 
-    fun applyPlus (other: Int): MutableDoubleArray1D = applyPlus(other.toDouble())
-    fun applyMinus(other: Int): MutableDoubleArray1D = applyMinus(other.toDouble())
-    fun applyTimes(other: Int): MutableDoubleArray1D = applyTimes(other.toDouble())
-    fun applyDiv  (other: Int): MutableDoubleArray1D = applyDiv(other.toDouble())
+    override fun applyPlus (other: Int): MutableDoubleArray1D = applyPlus(other.toDouble())
+    override fun applyMinus(other: Int): MutableDoubleArray1D = applyMinus(other.toDouble())
+    override fun applyTimes(other: Int): MutableDoubleArray1D = applyTimes(other.toDouble())
+    override fun applyDiv  (other: Int): MutableDoubleArray1D = applyDiv(other.toDouble())
 
 }

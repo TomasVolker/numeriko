@@ -13,9 +13,10 @@ fun <T> ArrayND<T>.as1D(): Array1D<T> = DefaultArrayND1DView(this.asMutable())
 fun <T> ArrayND<T>.as2D(): Array2D<T> = DefaultArrayND2DView(this.asMutable())
 
 val ArrayND<*>.volume get(): Int = size
-val ArrayND<*>.axes get(): IntRange = 0 until rank
+inline val ArrayND<*>.axes get(): IntRange = 0 until rank
+val ArrayND<*>.lastAxis get(): Int = rank - 1
 
-fun ArrayND<*>.indices(axis: Int): IntRange = 0 until getShape(axis)
+fun ArrayND<*>.indices(axis: Int): IntRange = 0 until shape(axis)
 
 fun MutableIntArray1D.indexIncrement(shape: IntArray1D): Boolean {
 
@@ -42,12 +43,38 @@ fun MutableIntArray1D.indexIncrement(shape: IntArray1D): Boolean {
     return false
 }
 
-inline fun ArrayND<*>.forEachIndices(block: (IntArray1D)->Unit) {
+/**
+ * **Caution** Executes [block] with each indexArray of the ArrayND, using the same indices instance.
+ *
+ * If a reference to the [indices] argument is not kept, it is safe to use this function.
+ * On each iteration, it provides the same [IntArray1D] instance with a read only interface, so if a reference
+ * to it is kept, the array will change on later iterations.
+ *
+ * This function is available for fast iteration, for a safe version use [forEachIndexed].
+ *
+ */
+inline fun ArrayND<*>.unsafeForEachIndices(block: (indices: IntArray1D)->Unit) {
 
     val index = intZeros(rank).asMutable()
 
     do {
         block(index)
+    } while(!index.indexIncrement(shape))
+
+}
+
+/**
+ * Executes [block] with each indexArray of the ArrayND.
+ *
+ * This function provides a copy of each index on each iteration.
+ * For faster iteration use [unsafeForEachIndices].
+ */
+inline fun ArrayND<*>.forEachIndices(block: (indices: IntArray1D)->Unit) {
+
+    val index = intZeros(rank).asMutable()
+
+    do {
+        block(index.copy())
     } while(!index.indexIncrement(shape))
 
 }

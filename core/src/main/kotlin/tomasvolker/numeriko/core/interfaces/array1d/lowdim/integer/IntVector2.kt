@@ -37,16 +37,16 @@ class MutableIntVector2(
         override var value1: Int
 ): IntVector2, MutableVector2<Int>, MutableIntArray1D {
 
-    override fun getInt(index: Int) = when(index) {
+    override fun getInt(i0: Int) = when(i0) {
         0 -> value0
         1 -> value1
-        else -> throw IndexOutOfBoundsException("$index")
+        else -> throw IndexOutOfBoundsException("$i0")
     }
 
-    override fun setInt(value: Int, index: Int) = when(index) {
+    override fun setInt(value: Int, i0: Int) = when(i0) {
         0 -> value0 = value
         1 -> value1 = value
-        else -> throw IndexOutOfBoundsException("$index")
+        else -> throw IndexOutOfBoundsException("$i0")
     }
 
     override fun copy() = MutableIntVector2(value0, value1)

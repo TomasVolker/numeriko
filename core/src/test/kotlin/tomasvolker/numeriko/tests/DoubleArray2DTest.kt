@@ -127,6 +127,7 @@ class DoubleArray2DTest {
                 assertNumericEquals(vecn1, matnxn matMul matnxn.solve(vecn1))
                 assertNumericEquals(matnxn, matnxn matMul identityn)
                 assertNumericEquals((matmxn matMul matnxn) matMul vecn2, matmxn matMul (matnxn matMul vecn2))
+                assertNumericEquals(vecn2 matMul (matnxn matMul matmxn.transpose()), (vecn2 matMul matnxn) matMul matmxn.transpose())
                 assertNumericEquals(identityn, matnxn matMul matnxn.inverse())
 
                 assertNumericEquals(vecn1 inner (matnxn matMul vecn2), matnxn.bilinearForm(vecn1, vecn2))
@@ -134,6 +135,7 @@ class DoubleArray2DTest {
 
                 assertNumericEquals(vecn1 inner vecn1, (vecn1 outer vecn1).trace())
                 assert((vecn1 outer vecn1).isSymmetric())
+                assertNumericEquals(0.0, (vecn1 outer vecn1).determinant())
 
                 val mutableMat = matnxn.asMutable()
 

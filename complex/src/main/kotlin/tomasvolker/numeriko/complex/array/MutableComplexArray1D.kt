@@ -27,9 +27,9 @@ interface MutableComplexArray1D: MutableArray1D<Complex>, ComplexArray1D {
     operator fun set(i: Int, value: Complex): Unit = setValue(value, i)
     operator fun set(i: Index, value: Complex): Unit = setValue(value, i)
 
-    override fun setValue(value: Complex, index: Int) {
-        setReal(value.real, index)
-        setImag(value.imag, index)
+    override fun setValue(value: Complex, i0: Int) {
+        setReal(value.real, i0)
+        setImag(value.imag, i0)
     }
 
     fun setReal(value: Double, i: Int)

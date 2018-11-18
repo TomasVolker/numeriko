@@ -60,7 +60,7 @@ fun IntArray1D.remove(index: Int): IntArray1D =
             if (i < index)
                 this[i]
             else
-                this[i - 1]
+                this[i + 1]
         }
 
 fun IntArray1D.inject(index: Int, value: Int): IntArray1D =

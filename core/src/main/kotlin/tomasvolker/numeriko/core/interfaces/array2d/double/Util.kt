@@ -5,10 +5,13 @@ import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 import tomasvolker.numeriko.core.preconditions.requireSameShape
-import tomasvolker.numeriko.core.primitives.indicative
 import tomasvolker.numeriko.core.primitives.numericEqualsTo
 
-inline fun elementWise(source: DoubleArray2D, destination: MutableDoubleArray2D, operation: (Double) -> Double) {
+inline fun elementWise(
+        source: DoubleArray2D,
+        destination: MutableDoubleArray2D,
+        operation: (Double) -> Double
+) {
     requireSameShape(source, destination)
     source.forEachIndex { i0, i1 ->
             destination[i0, i1] = operation(source[i0, i1])
@@ -28,7 +31,9 @@ inline fun elementWise(
     }
 }
 
-inline fun DoubleArray2D.elementWise(operation: (Double) -> Double): DoubleArray2D {
+inline fun DoubleArray2D.elementWise(
+        operation: (Double) -> Double
+): DoubleArray2D {
     val result = doubleZeros(shape0, shape1).asMutable()
     elementWise(
             source = this,
@@ -38,7 +43,9 @@ inline fun DoubleArray2D.elementWise(operation: (Double) -> Double): DoubleArray
     return result
 }
 
-inline fun MutableDoubleArray2D.applyElementWise(operation: (Double) -> Double): MutableDoubleArray2D {
+inline fun MutableDoubleArray2D.applyElementWise(
+        operation: (Double) -> Double
+): MutableDoubleArray2D {
     elementWise(
             source = this,
             destination = this,
@@ -47,9 +54,11 @@ inline fun MutableDoubleArray2D.applyElementWise(operation: (Double) -> Double):
     return this
 }
 
-inline fun elementWise(array1: DoubleArray2D, array2: DoubleArray2D, operation: (Double, Double) -> Double): DoubleArray2D {
-    requireSameShape(array1, array2)
-
+inline fun elementWise(
+        array1: DoubleArray2D,
+        array2: DoubleArray2D,
+        operation: (Double, Double
+        ) -> Double): DoubleArray2D {
     val result = doubleZeros(array1.shape0, array2.shape1).asMutable()
     elementWise(
             source1 = array1,

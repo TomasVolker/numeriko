@@ -19,9 +19,9 @@ class DefaultArray1DView<T>(
         return array.getValue(offset + stride * i0)
     }
 
-    override fun setValue(value: T, index: Int) {
-        requireValidIndices(index)
-        array.setValue(value, offset + stride * index)
+    override fun setValue(value: T, i0: Int) {
+        requireValidIndices(i0)
+        array.setValue(value, offset + stride * i0)
     }
 
     fun convertIndex(i0: Int): Int = offset + stride * i0

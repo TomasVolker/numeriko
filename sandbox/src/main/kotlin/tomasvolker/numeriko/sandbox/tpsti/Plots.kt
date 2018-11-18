@@ -1,24 +1,18 @@
 package tomasvolker.numeriko.sandbox.tpsti
 
 import tomasvolker.kyplot.dsl.*
-import tomasvolker.numeriko.complex.*
 import tomasvolker.numeriko.complex.array.*
-import tomasvolker.numeriko.complex.transforms.fft.fft
 import tomasvolker.numeriko.complex.transforms.fht.array1d.dftFromDHT
 import tomasvolker.numeriko.complex.transforms.fht.array1d.fht
-import tomasvolker.numeriko.complex.transforms.fht.array2d.fht
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
 import tomasvolker.numeriko.core.primitives.indicative
-import tomasvolker.numeriko.core.primitives.isEven
 import tomasvolker.numeriko.core.primitives.modulo
 import tomasvolker.numeriko.core.primitives.sqrt
-import tomasvolker.numeriko.core.probability.scalar.normalPdf
-import kotlin.math.PI
+import tomasvolker.numeriko.core.probability.continuous.normalPdf
 import kotlin.math.abs
-import kotlin.math.exp
 import kotlin.math.sqrt
 
 fun DoubleArray1D.shiftHalf() =

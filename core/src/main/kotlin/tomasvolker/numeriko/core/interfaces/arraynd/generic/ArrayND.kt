@@ -45,14 +45,14 @@ interface ArrayND<out T>: Collection<T> {
     val shape: IntArray1D
 
     /**
-     * Gets the size on the given [axis].
+     * Gets the shape on the given [axis].
      *
      * This will yield the same result as `shape[axis]` but it may avoid creating the `shape` array
      * for low rank arrays.
      *
      * @throws IndexOutOfBoundsException  if [axis] is not within the range of the rank (`0 until rank`)
      */
-    fun getShape(axis: Int): Int = shape[axis]
+    fun shape(axis: Int): Int = shape[axis]
 
     /**
      * The size of the array, meaning the amount of values it contains.
@@ -102,8 +102,7 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
-    fun getValue(indices: IntArray1D): T =
-            getValue(*indices.toIntArray())
+    fun getValue(indices: IntArray1D): T = getValue(*indices.toIntArray())
 
     /**
      * Returns the element in the given indices.
@@ -155,15 +154,15 @@ interface ArrayND<out T>: Collection<T> {
     fun getView(vararg indices: IndexProgression): ArrayND<T> = getView(*indices.computeIndices())
 
     fun Array<out Index>.computeIndices(): IntArray =
-            IntArray(size) { i -> this[i].computeValue(getShape(i)) }
+            IntArray(size) { i -> this[i].computeValue(shape(i)) }
 
     fun Array<out IndexProgression>.computeIndices(): Array<IntProgression> =
-            Array(size) { i -> this[i].computeProgression(getShape(i)) }
+            Array(size) { i -> this[i].computeProgression(shape(i)) }
 
     fun Int.compute(axis: Int): Int = this
     fun IntProgression.compute(axis: Int): IntProgression = this
-    fun Index.compute(axis: Int): Int = this.computeValue(getShape(axis))
-    fun IndexProgression.compute(axis: Int): IntProgression = this.computeProgression(getShape(axis))
+    fun Index.compute(axis: Int): Int = this.computeValue(shape(axis))
+    fun IndexProgression.compute(axis: Int): IntProgression = this.computeProgression(shape(axis))
 
     /**
      * Returns a copy of this [ArrayND].
@@ -185,12 +184,13 @@ interface ArrayND<out T>: Collection<T> {
 
         if (NumerikoConfig.checkRanges) {
 
-            if (indices.size == rank)
-                throw IllegalArgumentException("Indices $indices are invalid for shape $shape")
+            if (indices.size != rank)
+                throw IllegalArgumentException("Indices [${indices.joinToString()}] are invalid for shape $shape")
 
-            for (axis in axes) {
-                if (indices[axis] !in 0 until getShape(axis))
-                    throw IndexOutOfBoundsException("Indices $indices are out of range for shape $shape")
+            for (axis in 0 until rank) {
+                // Do not use `indices(axis)` as inlining is not working
+                if (indices[axis] !in 0 until shape(axis))
+                    throw IndexOutOfBoundsException("Indices [${indices.joinToString()}] are out of range for shape $shape")
             }
 
         }
@@ -200,9 +200,30 @@ interface ArrayND<out T>: Collection<T> {
     fun requireValidAxis(axis: Int) {
 
         if (NumerikoConfig.checkRanges) {
+            // Do not use `axes` as inlining is not working
+            if (axis !in 0 until rank) throw IndexOutOfBoundsException("Axis index $axis invalid for rank $rank")
 
-            if (axis !in axes) throw IndexOutOfBoundsException("Axis index $axis invalid for rank $rank")
+        }
 
+    }
+
+    fun requireValidIndex(i: Int, axis: Int) {
+
+        if (NumerikoConfig.checkRanges) {
+            // Do not use `indices()` as inlining is not working
+            if (i !in 0 until shape(axis)) throw IndexOutOfBoundsException("Index $i on axis 0 is out of size ${shape(axis)}")
+        }
+
+    }
+
+    fun requireValidIndexRange(i: IntProgression, axis: Int) {
+
+        if (NumerikoConfig.checkRanges) {
+            // Do not use `indices` as inlining is not working
+            if (i.first !in 0 until shape(axis))
+                throw IndexOutOfBoundsException("Index ${i.first} in axis $axis is out of shape $shape")
+            if (i.last  !in 0 until shape(axis))
+                throw IndexOutOfBoundsException("Index ${i.last} in axis $axis is out of shape $shape")
         }
 
     }

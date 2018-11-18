@@ -9,13 +9,13 @@ import tomasvolker.numeriko.core.interfaces.factory.copy
 
 interface MutableIntArray1D: IntArray1D, MutableArray1D<Int> {
 
-    fun setInt(value: Int, index: Int)
+    fun setInt(value: Int, i0: Int)
 
-    fun setInt(value: Int, index: Index) =
-            setInt(value, index.computeValue(size))
+    fun setInt(value: Int, i0: Index) =
+            setInt(value, i0.computeValue(size))
 
-    override fun setValue(value: Int, index: Int) =
-            setInt(value, index)
+    override fun setValue(value: Int, i0: Int) =
+            setInt(value, i0)
 
     fun setValue(other: IntArray1D) {
 

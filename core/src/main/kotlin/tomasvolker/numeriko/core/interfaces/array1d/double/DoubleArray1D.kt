@@ -8,6 +8,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
@@ -31,8 +32,8 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
 
     override fun getValue(i0: Int): Double = getDouble(i0)
 
-    fun getDouble(index: Int): Double
-    fun getDouble(index: Index): Double = getDouble(index.compute())
+    fun getDouble(i0: Int): Double
+    fun getDouble(i0: Index): Double = getDouble(i0.compute())
 
     override fun getView(i0: IntProgression): DoubleArray1D = defaultDoubleArray1DView(this.asMutable(), i0)
     override fun getView(i0: IndexProgression): DoubleArray1D = getView(i0.compute())
@@ -55,12 +56,12 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
     /**
      * Returns this array unaltered.
      */
-    operator fun unaryPlus(): DoubleArray1D = this
+    override operator fun unaryPlus(): DoubleArray1D = this
 
     /**
      * Returns a copy of this array with element wise negation.
      */
-    operator fun unaryMinus(): DoubleArray1D = elementWise { -it }
+    override operator fun unaryMinus(): DoubleArray1D = elementWise { -it }
 
     /**
      * Returns an array with the element wise addition with [other].
@@ -109,22 +110,22 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
     /**
      * Returns an array with the element wise addition with [other].
      */
-    operator fun plus(other: Double): DoubleArray1D = elementWise { it + other }
+    override operator fun plus(other: Double): DoubleArray1D = elementWise { it + other }
 
     /**
      * Returns an array with the element wise subtraction with [other].
      */
-    operator fun minus(other: Double): DoubleArray1D = elementWise { it - other }
+    override operator fun minus(other: Double): DoubleArray1D = elementWise { it - other }
 
     /**
      * Returns an array with the element wise multiplication with [other].
      */
-    operator fun times(other: Double): DoubleArray1D = elementWise { it * other }
+    override operator fun times(other: Double): DoubleArray1D = elementWise { it * other }
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    operator fun div(other: Double): DoubleArray1D = elementWise { it / other }
+    override operator fun div(other: Double): DoubleArray1D = elementWise { it / other }
 
     /**
      * Returns an array with the element wise division with [other].
@@ -134,22 +135,22 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
     /**
      * Returns an array with the element wise addition with [other].
      */
-    operator fun plus(other: Int): DoubleArray1D = plus(other.toDouble())
+    override operator fun plus(other: Int): DoubleArray1D = plus(other.toDouble())
 
     /**
      * Returns an array with the element wise subtraction with [other].
      */
-    operator fun minus(other: Int): DoubleArray1D = minus(other.toDouble())
+    override operator fun minus(other: Int): DoubleArray1D = minus(other.toDouble())
 
     /**
      * Returns an array with the element wise multiplication with [other].
      */
-    operator fun times(other: Int): DoubleArray1D = times(other.toDouble())
+    override operator fun times(other: Int): DoubleArray1D = times(other.toDouble())
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    operator fun div(other: Int): DoubleArray1D = div(other.toDouble())
+    override operator fun div(other: Int): DoubleArray1D = div(other.toDouble())
 
     /**
      * Returns an array with the element wise division with [other].
@@ -218,6 +219,24 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
         requireSameSize(this, other)
         return doubleArray2D(this.size, other.size) { i0, i1 ->
             this[i0] * other[i1]
+        }
+    }
+
+    /**
+     * Computes the matrix multiplication between this and [other]
+     *
+     * This is equivalent to `this^T * other` in matrix notation with [other] as a column vector
+     *
+     * @param other  array to compute the matrix multiplication with
+     * @return the result of the matrix multiplication
+     * @throws IllegalArgumentException  if `this.size != other.shape1`
+     */
+    infix fun matMul(other: DoubleArray2D): DoubleArray1D {
+        require(this.size == other.shape0) {
+            "sizes dont match"
+        }
+        return doubleArray1D(other.shape1) { i ->
+            sumDouble(other.indices0) { k -> this[k] * other[k, i] }
         }
     }
 

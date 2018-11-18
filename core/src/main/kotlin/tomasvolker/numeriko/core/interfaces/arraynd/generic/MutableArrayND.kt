@@ -59,7 +59,7 @@ interface MutableArrayND<T>: ArrayND<T> {
 
 
     fun setValue(value: ArrayND<T>) {
-        forEachIndices { indices ->
+        unsafeForEachIndices { indices ->
             setValue(value.getValue(indices), indices)
         }
     }

@@ -19,7 +19,7 @@ interface Array1D<out T>: ArrayND<T> {
 
     val shape0: Int get() = size
 
-    override fun getShape(axis: Int): Int {
+    override fun shape(axis: Int): Int {
         requireValidAxis(axis)
         return shape0
     }
@@ -59,7 +59,18 @@ interface Array1D<out T>: ArrayND<T> {
     fun requireValidIndices(i0: Int) {
 
         if (NumerikoConfig.checkRanges) {
-            if (i0 !in indices) throw IndexOutOfBoundsException("Index $i0 is out of size $size")
+            // Do not use `indices` as inlining is not working
+            if (i0 !in 0 until size) throw IndexOutOfBoundsException("Index $i0 is out of size $size")
+        }
+
+    }
+
+    fun requireValidIndexRange(i0: IntProgression) {
+
+        if (NumerikoConfig.checkRanges) {
+            // Do not use `indices` as inlining is not working
+            if (i0.first !in 0 until size) throw IndexOutOfBoundsException("Index $i0 is out of size $size")
+            if (i0.last  !in 0 until size) throw IndexOutOfBoundsException("Index $i0 is out of size $size")
         }
 
     }

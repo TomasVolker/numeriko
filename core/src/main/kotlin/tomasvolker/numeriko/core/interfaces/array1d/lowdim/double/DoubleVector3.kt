@@ -12,11 +12,11 @@ class DoubleVector3(
         val value2: Double
 ): Vector3<Double>, DoubleArray1D {
 
-    override fun getDouble(index: Int) = when(index) {
+    override fun getDouble(i0: Int) = when(i0) {
         0 -> value0
         1 -> value1
         2 -> value2
-        else -> throw IndexOutOfBoundsException("$index")
+        else -> throw IndexOutOfBoundsException("$i0")
     }
 
     override fun equals(other: Any?): Boolean {

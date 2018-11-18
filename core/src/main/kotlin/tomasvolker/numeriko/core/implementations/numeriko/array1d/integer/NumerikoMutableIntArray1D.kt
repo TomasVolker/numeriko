@@ -8,10 +8,10 @@ class NumerikoMutableIntArray1D(
 
     override val size: Int get() = data.size
 
-    override fun setInt(value: Int, index: Int) {
-        data[index] = value
+    override fun setInt(value: Int, i0: Int) {
+        data[i0] = value
     }
 
-    override fun getInt(index: Int): Int = data[index]
+    override fun getInt(i0: Int): Int = data[i0]
 
 }
