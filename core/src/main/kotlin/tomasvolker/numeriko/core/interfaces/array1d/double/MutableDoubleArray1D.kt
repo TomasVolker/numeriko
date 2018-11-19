@@ -26,9 +26,10 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double>, MutableDo
 
     fun setValue(other: DoubleArray1D) {
         requireSameSize(other, this)
-
+        // Anti alias copy
+        val copy = other.copy()
         forEachIndex { i ->
-            setDouble(other.getDouble(i), i)
+            setDouble(copy.getDouble(i), i)
         }
 
     }
@@ -50,7 +51,7 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double>, MutableDo
     override operator fun get(i0: IndexProgression): MutableDoubleArray1D = getView(i0)
 
 
-    fun setView(value: DoubleArray1D, i0: IntProgression): Unit = getView(i0).setValue(value.copy())
+    fun setView(value: DoubleArray1D, i0: IntProgression): Unit = getView(i0).setValue(value)
     fun setView(value: DoubleArray1D, i0: IndexProgression): Unit = setView(value, i0.compute())
 
     override fun setView(value: Double, i0: IntProgression): Unit = getView(i0).setDouble(value)

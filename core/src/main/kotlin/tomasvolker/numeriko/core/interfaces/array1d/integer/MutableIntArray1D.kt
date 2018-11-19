@@ -6,6 +6,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array1d.integer.view.DefaultMutableIntArray1DView
 import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.preconditions.requireSameSize
 
 interface MutableIntArray1D: IntArray1D, MutableArray1D<Int> {
 
@@ -18,13 +19,11 @@ interface MutableIntArray1D: IntArray1D, MutableArray1D<Int> {
             setInt(value, i0)
 
     fun setValue(other: IntArray1D) {
-
-        require(other.size == this.size) {
-            "Sizes must much"
-        }
-
+        requireSameSize(other, this)
+        // Anti alias copy
+        val copy = other.copy()
         for (i in indices) {
-            setInt(other.getInt(i), i)
+            setInt(copy.getInt(i), i)
         }
 
     }
@@ -53,9 +52,8 @@ interface MutableIntArray1D: IntArray1D, MutableArray1D<Int> {
     fun setView(value: IntArray1D, indexRange: IndexProgression) =
             setView(value, indexRange.computeProgression(size))
 
-    //TODO avoid copy when possible
     fun setView(value: IntArray1D, indexRange: IntProgression) =
-            getView(indexRange).setValue(value.copy())
+            getView(indexRange).setValue(value)
 
     override fun setView(value: Int, i0: IndexProgression) =
             setView(value, i0.computeProgression(size))

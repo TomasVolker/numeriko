@@ -5,6 +5,7 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
+import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
 
@@ -15,8 +16,11 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
     fun setDouble(value: Double, indices: IntArray1D) = setDouble(value, *indices.toIntArray())
 
     fun setValue(value: DoubleArrayND) {
+        requireSameShape(this, value)
+        // Anti alias copy
+        val copy = value.copy()
         unsafeForEachIndices { indices ->
-            setDouble(value.getDouble(indices), indices)
+            setDouble(copy.getDouble(indices), indices)
         }
     }
 

@@ -166,7 +166,7 @@ fun main() {
 
     showImage(image)
 
-    showImage(fft.abs.elementWise { ln(it) }.shiftHalf())
+    showImage(fft.arg.shiftHalf())
 
     showImage(fft.ifft2D().real)
 

@@ -3,6 +3,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.generic
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 /**
  * The parent interface of all mutable N-dimensional arrays.
@@ -59,8 +60,11 @@ interface MutableArrayND<T>: ArrayND<T> {
 
 
     fun setValue(value: ArrayND<T>) {
+        requireSameShape(this, value)
+        // Anti alias copy
+        val copy = value.copy()
         unsafeForEachIndices { indices ->
-            setValue(value.getValue(indices), indices)
+            setValue(copy.getValue(indices), indices)
         }
     }
 
