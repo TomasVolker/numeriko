@@ -2,6 +2,9 @@ package tomasvolker.numeriko.core.interfaces.array1d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
+import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
@@ -10,10 +13,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
-import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
-import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
+import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.primitives.modulo
 import tomasvolker.numeriko.core.primitives.sumDouble
@@ -34,6 +34,11 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
 
     fun getDouble(i0: Int): Double
     fun getDouble(i0: Index): Double = getDouble(i0.compute())
+
+    override fun lowerRank(axis: Int): DoubleArray0D {
+        requireValidAxis(axis)
+        return defaultDoubleArray0DView(this.asMutable(), 0)
+    }
 
     override fun getView(i0: IntProgression): DoubleArray1D = defaultDoubleArray1DView(this.asMutable(), i0)
     override fun getView(i0: IndexProgression): DoubleArray1D = getView(i0.compute())

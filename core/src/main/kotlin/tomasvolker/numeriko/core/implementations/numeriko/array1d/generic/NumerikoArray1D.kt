@@ -2,7 +2,7 @@ package tomasvolker.numeriko.core.implementations.numeriko.array1d.generic
 
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultMutableArray1D
 
-class NumerikoMutableArray1D<T>(
+class NumerikoArray1D<T>(
         val data: Array<T>
 ): DefaultMutableArray1D<T>() {
 

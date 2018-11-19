@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.LiteralIndex
+import tomasvolker.numeriko.core.index.toIndexProgression
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indexIncrement
 import tomasvolker.numeriko.core.interfaces.factory.intZeros
@@ -31,8 +32,7 @@ fun defaultHashCode(array1: DoubleArrayND): Int {
 }
 
 fun DoubleArrayND.subArray(i: Int): DoubleArrayND =
-        getView(*Array(rank) { d -> if (d==0) LiteralIndex(i)..i else All })
-                .lowerRank(0)
+        getView(*Array(rank) { axis -> if (axis==0) (i..i).toIndexProgression() else All }).lowerRank(0)
 
 fun defaultToString(array: DoubleArrayND): String =
         when(array.rank) {

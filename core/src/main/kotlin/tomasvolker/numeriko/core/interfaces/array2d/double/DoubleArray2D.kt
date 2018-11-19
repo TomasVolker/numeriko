@@ -3,6 +3,7 @@ package tomasvolker.numeriko.core.interfaces.array2d.double
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.*
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
@@ -92,9 +93,9 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
     fun transpose(): DoubleArray2D =
             DefaultMutableDoubleArray2DTransposeView(this.asMutable())
 
-    override fun contract(axis0: Int, axis1: Int): DoubleArrayND =
+    override fun contract(axis0: Int, axis1: Int): DoubleArray0D =
             if (axis0 == 0 && axis1 == 1 || axis0 == 1 && axis1 == 0)
-                doubleArrayND(intArray1DOf()) { trace() }
+                doubleArray0D(trace())
             else
                 throw IllegalArgumentException()
 

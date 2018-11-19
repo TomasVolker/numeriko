@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
+import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
@@ -15,11 +16,14 @@ fun DoubleArray.toDoubleArray1D(): DoubleArray1D = doubleArray1D(this.copyOf())
 fun Array<out Number>.asDoubleArray1D(): DoubleArray1D = doubleArray1D(this.map { it.toDouble() }.toDoubleArray())
 
 fun doubleArray1DOf(vararg values: Double) = doubleArray1D(values)
+fun doubleArray1DOf(value: Double) = doubleArray0D(value)
 
 
+fun doubleArray0D(value: Double): DoubleArray0D =
+        NumerikoConfig.defaultFactory.doubleArray0D(value)
 
-fun doubleArray1D(data: DoubleArray): DoubleArray1D =
-        NumerikoConfig.defaultFactory.doubleArray1D(data)
+fun doubleArray1D(value: DoubleArray): DoubleArray1D =
+        NumerikoConfig.defaultFactory.doubleArray1D(value)
 
 fun doubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): DoubleArray2D =
         NumerikoConfig.defaultFactory.doubleArray2D(shape0, shape1, data)
@@ -28,6 +32,8 @@ fun doubleArrayND(shape: IntArray1D, data: DoubleArray): DoubleArrayND =
         NumerikoConfig.defaultFactory.doubleArrayND(shape, data)
 
 
+fun copy(array: DoubleArray0D): DoubleArray0D =
+        NumerikoConfig.defaultFactory.copy(array)
 
 fun copy(array: DoubleArray1D): DoubleArray1D =
         NumerikoConfig.defaultFactory.copy(array)
@@ -39,6 +45,8 @@ fun copy(array: DoubleArrayND): DoubleArrayND =
         NumerikoConfig.defaultFactory.copy(array)
 
 
+fun doubleZeros(): DoubleArray0D =
+        NumerikoConfig.defaultFactory.doubleZeros()
 
 fun doubleZeros(size: Int): DoubleArray1D =
         NumerikoConfig.defaultFactory.doubleZeros(size)
@@ -75,6 +83,10 @@ inline fun doubleDiagonal(size: Int, diagonal: (i: Int)->Double): DoubleArray2D 
 fun doubleDiagonal(diagonal: DoubleArray1D): DoubleArray2D =
         NumerikoConfig.defaultFactory.doubleDiagonal(diagonal)
 
+
+fun Random.nextDoubleArray0D(): DoubleArray0D = doubleArray0D(nextDouble())
+fun Random.nextDoubleArray0D(from: Double, until: Double): DoubleArray0D =
+        doubleArray0D(nextDouble(from, until))
 
 fun Random.nextDoubleArray1D(size: Int): DoubleArray1D = doubleArray1D(size) { nextDouble() }
 fun Random.nextDoubleArray1D(size: Int, from: Double, until: Double): DoubleArray1D =

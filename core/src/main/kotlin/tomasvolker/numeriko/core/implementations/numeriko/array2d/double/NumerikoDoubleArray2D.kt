@@ -1,6 +1,5 @@
 package tomasvolker.numeriko.core.implementations.numeriko.array2d.double
 
-import tomasvolker.numeriko.core.implementations.numeriko.array1d.double.NumerikoMutableDoubleArray1D
 import tomasvolker.numeriko.core.implementations.numeriko.array1d.double.NumerikoMutableDoubleArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
@@ -8,7 +7,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDo
 import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex1
 
-class NumerikoMutableDoubleArray2D(
+class NumerikoDoubleArray2D(
         override val shape0: Int,
         override val shape1: Int,
         val data: DoubleArray

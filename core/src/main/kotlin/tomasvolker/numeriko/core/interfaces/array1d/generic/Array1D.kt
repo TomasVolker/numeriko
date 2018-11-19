@@ -3,10 +3,13 @@ package tomasvolker.numeriko.core.interfaces.array1d.generic
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.Default1DArrayListView
+import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.factory.array0DOf
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 
@@ -33,6 +36,11 @@ interface Array1D<out T>: ArrayND<T> {
 
     fun getValue(i0: Int): T
     fun getValue(i0: Index): T = getValue(i0.compute())
+
+    override fun lowerRank(axis: Int): Array0D<T> {
+        require(shape(axis) == 1)
+        return defaultArray0DView(this.asMutable(), 0)
+    }
 
     fun getView(i0: IntProgression): Array1D<T> = defaultArray1DView(this.asMutable(), i0)
     fun getView(i0: IndexProgression): Array1D<T> = getView(i0.compute())

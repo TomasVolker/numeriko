@@ -3,6 +3,8 @@
 package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
+import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.*
@@ -18,6 +20,8 @@ import kotlin.random.Random
 
 interface ArrayNDFactory {
 
+    fun <T> array0D(value: T): Array0D<T>
+
     fun <T> array1D(data: Array<T>): Array1D<T>
 
     fun <T> array2D(shape0: Int, shape1: Int, data: Array<T>): Array2D<T>
@@ -25,6 +29,9 @@ interface ArrayNDFactory {
     fun <T> arrayND(shape: IntArray1D, data: Array<T>): ArrayND<T>
 
     // Copy
+
+    fun <T> copy(array: Array0D<T>): Array0D<T> =
+            array0D(array.getValue())
 
     fun <T> copy(array: Array1D<T>): Array1D<T> =
             array1D(array.size) { i -> array.getValue(i) }
@@ -36,6 +43,8 @@ interface ArrayNDFactory {
             arrayND(array.shape) { indices -> array.getValue(indices) }
 
     // Array Of Nulls
+
+    fun <T> array0DOfNull(): Array0D<T?> = array0D(null)
 
     fun <T> array1DOfNulls(size: Int): Array1D<T?> =
             array1D(arrayOfNulls<Any?>(size) as Array<T?>)
@@ -58,6 +67,8 @@ interface ArrayNDFactory {
 
     // Double
 
+    fun doubleArray0D(value: Double): DoubleArray0D
+
     fun doubleArray1D(data: DoubleArray): DoubleArray1D
 
     fun doubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): DoubleArray2D
@@ -65,6 +76,9 @@ interface ArrayNDFactory {
     fun doubleArrayND(shape: IntArray1D, data: DoubleArray): DoubleArrayND
 
     // Copy
+
+    fun copy(array: DoubleArray0D): DoubleArray0D =
+            doubleArray0D(array.get())
 
     fun copy(array: DoubleArray1D): DoubleArray1D =
             doubleArray1D(array.size) { i -> array[i] }
@@ -76,6 +90,9 @@ interface ArrayNDFactory {
             doubleArrayND(array.shape) { indices -> array[indices] }
 
     // Zeros
+
+    fun doubleZeros(): DoubleArray0D =
+            doubleArray0D(0.0)
 
     fun doubleZeros(size: Int): DoubleArray1D =
             doubleArray1D(DoubleArray(size) { 0.0 })

@@ -3,7 +3,7 @@ package tomasvolker.numeriko.core.interfaces.array1d.double.view
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.lastIndex
 
-class DefaultMutableDoubleArray1DView (
+class DefaultDoubleArray1DView (
         val array: MutableDoubleArray1D,
         val offset: Int,
         override val size: Int,
@@ -30,7 +30,7 @@ class DefaultMutableDoubleArray1DView (
 }
 
 fun defaultDoubleArray1DView(array: MutableDoubleArray1D, i0: IntProgression) =
-        DefaultMutableDoubleArray1DView(
+        DefaultDoubleArray1DView(
                 array = array,
                 offset = i0.first,
                 size = i0.count(),

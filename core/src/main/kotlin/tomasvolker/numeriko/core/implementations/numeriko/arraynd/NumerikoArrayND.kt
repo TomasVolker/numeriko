@@ -5,9 +5,8 @@ import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.*
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultMutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
-import tomasvolker.numeriko.core.reductions.product
 
-class NumerikoMutableArrayND<T>(
+class NumerikoArrayND<T>(
         override val shape: IntArray1D,
         val data: Array<T>,
         val offset: Int = 0,
@@ -34,7 +33,7 @@ class NumerikoMutableArrayND<T>(
         for (axis in 0 until rank) {
             requireValidIndexRange(indices[axis], axis = axis)
         }
-        return NumerikoMutableArrayND(
+        return NumerikoArrayND(
                 shape = intArray1D(rank) { axis -> indices[axis].count() },
                 data = data,
                 offset = linearIndex(IntArray(rank) { axis -> indices[axis].first }),

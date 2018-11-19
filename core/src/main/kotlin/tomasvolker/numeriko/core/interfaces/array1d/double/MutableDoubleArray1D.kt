@@ -2,6 +2,9 @@ package tomasvolker.numeriko.core.interfaces.array1d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
@@ -23,6 +26,11 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double>, MutableDo
 
     fun setDouble(value: Double, i0: Int)
     fun setDouble(value: Double, i0: Index) = setDouble(value, i0.computeValue(size))
+
+    override fun lowerRank(axis: Int): MutableDoubleArray0D {
+        requireValidAxis(axis)
+        return defaultDoubleArray0DView(this, 0)
+    }
 
     fun setValue(other: DoubleArray1D) {
         requireSameSize(other, this)

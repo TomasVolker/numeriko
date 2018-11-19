@@ -1,10 +1,12 @@
 package tomasvolker.numeriko.core.implementations.numeriko.array1d.double
 
+import tomasvolker.numeriko.core.implementations.numeriko.array0d.double.NumerikoDoubleArray0DView
+import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.lastIndex
 
-class NumerikoMutableDoubleArray1D(
+class NumerikoDoubleArray1D(
         val data: DoubleArray
 ): DefaultMutableDoubleArray1D() {
 
@@ -26,7 +28,13 @@ class NumerikoMutableDoubleArray1D(
         )
     }
 
+    override fun lowerRank(axis: Int): MutableDoubleArray0D {
+        require(shape(axis) == 1)
+        return NumerikoDoubleArray0DView(data, 0)
+    }
+
 }
+
 
 class NumerikoMutableDoubleArray1DView(
         val data: DoubleArray,
@@ -60,6 +68,11 @@ class NumerikoMutableDoubleArray1DView(
                 size = i0.count(),
                 stride = stride * i0.step
         )
+    }
+
+    override fun lowerRank(axis: Int): MutableDoubleArray0D {
+        require(shape(axis) == 1)
+        return NumerikoDoubleArray0DView(data, offset)
     }
 
 }

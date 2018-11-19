@@ -4,7 +4,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.lastIndex
 import tomasvolker.numeriko.core.interfaces.array1d.integer.MutableIntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.view.DefaultMutableIntArray1D
 
-class NumerikoMutableIntArray1D(
+class NumerikoIntArray1D(
         val data: IntArray
 ): DefaultMutableIntArray1D() {
 

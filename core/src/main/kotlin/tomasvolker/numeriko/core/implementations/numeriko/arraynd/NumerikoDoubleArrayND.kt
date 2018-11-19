@@ -7,7 +7,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultMutableDo
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.operations.remove
 
-class NumerikoMutableDoubleArrayND(
+class NumerikoDoubleArrayND(
         override val shape: IntArray1D,
         val data: DoubleArray,
         val offset: Int = 0,
@@ -34,7 +34,7 @@ class NumerikoMutableDoubleArrayND(
         for (axis in 0 until rank) {
             requireValidIndexRange(indices[axis], axis = axis)
         }
-        return NumerikoMutableDoubleArrayND(
+        return NumerikoDoubleArrayND(
                 shape = intArray1D(rank) { axis -> indices[axis].count() },
                 data = data,
                 offset = linearIndex(IntArray(rank) { axis -> indices[axis].first }),
@@ -44,10 +44,10 @@ class NumerikoMutableDoubleArrayND(
 
     override fun lowerRank(axis: Int): MutableDoubleArrayND {
         require(shape(axis) <= 1)
-        return NumerikoMutableDoubleArrayND(
+        return NumerikoDoubleArrayND(
                 shape = shape.remove(axis),
                 data = data,
-                offset = linearIndex(IntArray(rank-1) { 0 }),
+                offset = linearIndex(IntArray(rank) { 0 }),
                 strideArray = IntArray(rank-1) { i -> if (i < axis) strideArray[i] else strideArray[i+1] }
         )
     }
