@@ -89,8 +89,8 @@ inline fun complexArray1D(
     val values = doubleZeros(size, 2).asMutable()
 
     for (i in 0 until size) {
-        values[size, 0] = initReal(i)
-        values[size, 1] = initImag(i)
+        values[i, 0] = initReal(i)
+        values[i, 1] = initImag(i)
     }
 
     return NumerikoMutableComplexArray1D(

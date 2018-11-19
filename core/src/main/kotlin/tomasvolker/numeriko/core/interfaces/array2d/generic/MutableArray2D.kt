@@ -40,7 +40,7 @@ interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
                             array = this,
                             offset0 = i0,
                             offset1 = i1.first,
-                            shape0 = i0,
+                            shape0 = 1,
                             shape1 = i1.count(),
                             stride0 = i0,
                             stride1 = i1.step
@@ -58,7 +58,7 @@ interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
                             offset0 = i0.first,
                             offset1 = i1,
                             shape0 = i0.count(),
-                            shape1 = i1,
+                            shape1 = 1,
                             stride0 = i0.step,
                             stride1 = i1
                     )

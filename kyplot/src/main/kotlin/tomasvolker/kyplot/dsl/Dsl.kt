@@ -61,7 +61,7 @@ inline fun showStem(
 }
 
 inline fun showImage(
-    data: Iterable<Iterable<Double>> = emptyList(),
+    data: Iterable<Iterable<Number>> = emptyList(),
     title: String = "",
     init: Image.Builder.()->Unit = {}
 ) {

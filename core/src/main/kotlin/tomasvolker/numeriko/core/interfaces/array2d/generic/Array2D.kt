@@ -65,7 +65,7 @@ interface Array2D<out T>: ArrayND<T> {
                             offset0 = i0.first,
                             offset1 = i1,
                             shape0 = i0.count(),
-                            shape1 = i1,
+                            shape1 = 1,
                             stride0 = i0.step,
                             stride1 = 1
                     )
@@ -101,8 +101,8 @@ interface Array2D<out T>: ArrayND<T> {
 
         if (NumerikoConfig.checkRanges) {
             // Do not use `indices0` and `indices1` as inlining is not working
-            if (i0 !in 0 until shape0) throw IndexOutOfBoundsException("Index $i0 on axis 0 is out of size $shape0")
-            if (i1 !in 0 until shape1) throw IndexOutOfBoundsException("Index $i1 on axis 1 is out of size $shape1")
+            if (i0 !in 0 until shape0) throw IndexOutOfBoundsException("Index $i0 on axis 0 is out of shape $shape")
+            if (i1 !in 0 until shape1) throw IndexOutOfBoundsException("Index $i1 on axis 1 is out of shape $shape")
         }
 
     }

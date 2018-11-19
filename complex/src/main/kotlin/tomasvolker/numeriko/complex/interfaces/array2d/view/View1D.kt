@@ -46,8 +46,8 @@ class MutableComplexArray2DCollapseView(
     override fun setImag(value: Double, i0: Int) {
         requireValidIndices(i0)
         when(axis) {
-            0 -> array.setReal(value, i0, 0)
-            1 -> array.setReal(value, 0, i0)
+            0 -> array.setImag(value, i0, 0)
+            1 -> array.setImag(value, 0, i0)
             else -> throw IllegalStateException()
         }
     }

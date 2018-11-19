@@ -16,6 +16,8 @@ class DefaultMutableComplexArray2DView(
 
     init {
         array.requireValidIndices(convertIndex0(0), convertIndex1(0))
+        array.requireValidIndices(convertIndex0(lastIndex0), convertIndex1(0))
+        array.requireValidIndices(convertIndex0(0), convertIndex1(lastIndex1))
         array.requireValidIndices(convertIndex0(lastIndex0), convertIndex1(lastIndex1))
     }
 

@@ -133,7 +133,7 @@ inline fun Plot.Builder.bar(
 }
 
 inline fun Plot.Builder.image(
-    data: Iterable<Iterable<Double>> = emptyList(),
+    data: Iterable<Iterable<Number>> = emptyList(),
     init: Image.Builder.()->Unit = {}
 ) {
     drawing(Image.Builder()) {

@@ -19,12 +19,14 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
 
     fun setValue(other: Array1D<T>) {
 
+        val copy = other.copy()
+
         require(other.size == this.size) {
             "Sizes must match"
         }
 
         for (i in indices) {
-            setValue(other.getValue(i), i)
+            setValue(copy.getValue(i), i)
         }
 
     }

@@ -6,6 +6,7 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -24,7 +25,14 @@ interface MutableComplexArray1D: MutableArray1D<Complex>, ComplexArray1D {
 
     operator fun set(i0: Int, value: Complex): Unit = setValue(value, i0)
     operator fun set(i0: Index, value: Complex): Unit = setValue(value, i0)
-
+    /*
+    fun setValue(value: ComplexArray1D) {
+        forEachIndex { i0 ->
+            setReal(value.real(i0), i0)
+            setImag(value.imag(i0), i0)
+        }
+    }
+    */
     override fun setValue(value: Complex, i0: Int) {
         setReal(value.real, i0)
         setImag(value.imag, i0)
