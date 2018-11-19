@@ -2,7 +2,7 @@ package tomasvolker.numeriko.core.interfaces.array2d.generic.view
 
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 
-class DefaultMutableArray2DTransposeView<T>(
+class DefaultArray2DTransposeView<T>(
         val array: MutableArray2D<T>
 ) : DefaultMutableArray2D<T>() {
 

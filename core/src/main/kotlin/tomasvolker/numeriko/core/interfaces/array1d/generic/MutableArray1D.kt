@@ -35,7 +35,7 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
 
     }
 
-    fun setValue(value: T) {
+    override fun setValue(value: T) {
 
         for (i in indices) {
             setValue(value, i)

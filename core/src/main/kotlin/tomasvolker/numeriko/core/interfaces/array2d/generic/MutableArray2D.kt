@@ -5,7 +5,6 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DLowerRankView
-import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.defaultArray2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
@@ -33,7 +32,7 @@ interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
 
     }
 
-    fun setValue(value: T) {
+    override fun setValue(value: T) {
         applyMap { value }
     }
 

@@ -9,7 +9,7 @@ interface MutableArray0D<T>: Array0D<T>, MutableArrayND<T> {
         return setValue(value)
     }
 
-    fun setValue(value: T)
+    override fun setValue(value: T)
 
     fun setValue(other: Array0D<T>) {
         setValue(other.getValue())

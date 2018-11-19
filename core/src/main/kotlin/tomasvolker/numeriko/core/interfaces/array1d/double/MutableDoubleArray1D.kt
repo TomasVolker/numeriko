@@ -44,7 +44,7 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableArray1D<Double>, MutableDo
 
     override fun setValue(value: Double) = setDouble(value)
 
-    fun setDouble(value: Double) {
+    override fun setDouble(value: Double) {
 
         for (i in indices) {
             setDouble(value, i)

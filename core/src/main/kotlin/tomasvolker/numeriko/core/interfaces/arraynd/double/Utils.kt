@@ -1,13 +1,16 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
+import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND0DView
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND1DView
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
+fun DoubleArrayND.as0D(): DoubleArray0D = DefaultDoubleArrayND0DView(this.asMutable())
 fun DoubleArrayND.as1D(): DoubleArray1D = DefaultDoubleArrayND1DView(this.asMutable())
 fun DoubleArrayND.as2D(): DoubleArray2D = DefaultDoubleArrayND2DView(this.asMutable())
 

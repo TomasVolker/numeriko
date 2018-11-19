@@ -18,6 +18,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
 
 
@@ -49,5 +50,8 @@ class NumerikoArrayNDFactory: ArrayNDFactory {
 
     override fun doubleArrayND(shape: IntArray1D, data: DoubleArray): DoubleArrayND =
             NumerikoDoubleArrayND(shape, data)
+
+    override fun <N: Number> copy(array: NumericArrayND<N>): NumericArrayND<N> =
+            TODO()
 
 }

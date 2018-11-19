@@ -1,9 +1,6 @@
 package tomasvolker.numeriko.sandbox.tpsti
 
 import tomasvolker.kyplot.dsl.*
-import tomasvolker.numeriko.complex.array.*
-import tomasvolker.numeriko.complex.transforms.fht.array1d.dftFromDHT
-import tomasvolker.numeriko.complex.transforms.fht.array1d.fht
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D

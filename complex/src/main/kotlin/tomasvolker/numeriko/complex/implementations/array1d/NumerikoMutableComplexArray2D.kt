@@ -1,5 +1,7 @@
 package tomasvolker.numeriko.complex.implementations.array1d
 
+import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
+import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
 import tomasvolker.numeriko.complex.interfaces.array2d.view.DefaultMutableComplexArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 
@@ -27,6 +29,41 @@ class NumerikoMutableComplexArray2D(
 
     override fun setImag(value: Double, i0: Int, i1: Int) {
         imag[i0, i1] = value
+    }
+
+    override fun getView(i0: Int, i1: IntProgression): MutableComplexArray1D {
+        requireValidIndex(i0, axis = 0)
+        requireValidIndexRange(i1, axis = 1)
+        return NumerikoMutableComplexArray1D(
+                real = real[i0, i1],
+                imag = imag[i0, i1]
+        )
+    }
+
+    override fun getView(i0: IntProgression, i1: Int): MutableComplexArray1D {
+        requireValidIndexRange(i0, axis = 0)
+        requireValidIndex(i1, axis = 1)
+        return NumerikoMutableComplexArray1D(
+                real = real[i0, i1],
+                imag = imag[i0, i1]
+        )
+    }
+
+    override fun getView(i0: IntProgression, i1: IntProgression): MutableComplexArray2D {
+        requireValidIndexRange(i0, axis = 0)
+        requireValidIndexRange(i1, axis = 1)
+        return NumerikoMutableComplexArray2D(
+                real = real[i0, i1],
+                imag = imag[i0, i1]
+        )
+    }
+
+    override fun lowerRank(axis: Int): MutableComplexArray1D {
+        requireValidAxis(axis)
+        return NumerikoMutableComplexArray1D(
+                real = real.lowerRank(axis),
+                imag = imag.lowerRank(axis)
+        )
     }
 
 }

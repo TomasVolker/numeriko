@@ -70,6 +70,7 @@ interface MutableArrayND<T>: ArrayND<T> {
     fun setValue(value: T, vararg indices: Index): Unit =
             setValue(value, *indices.computeIndices())
 
+    fun setValue(value: T): Unit = setValue(value, *intArrayOf())
 
     fun setValue(value: ArrayND<T>) {
         requireSameShape(this, value)

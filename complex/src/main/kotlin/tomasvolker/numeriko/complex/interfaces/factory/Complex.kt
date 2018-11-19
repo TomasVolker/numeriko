@@ -9,6 +9,7 @@ import tomasvolker.numeriko.complex.toComplex
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
+import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 
@@ -44,7 +45,10 @@ fun copy(array: ComplexArray2D): ComplexArray2D =
 
 
 fun complexZeros(size: Int): ComplexArray1D =
-        NumerikoMutableComplexArray1D(values = doubleZeros(size, 2).asMutable())
+        NumerikoMutableComplexArray1D(
+                real = doubleZeros(size).asMutable(),
+                imag = doubleZeros(size).asMutable()
+        )
 
 fun complexZeros(shape0: Int, shape1: Int): ComplexArray2D =
         NumerikoMutableComplexArray2D(
@@ -58,26 +62,23 @@ fun complexArray1DOf(vararg complex: Complex): ComplexArray1D =
 
 fun complexArray1D(complex: Array<out Complex>): ComplexArray1D =
         NumerikoMutableComplexArray1D(
-                values = doubleArray2D(complex.size, 2) { i0, i1 ->
-                    when (i1) {
-                        0 -> complex[i0].real
-                        1 -> complex[i0].imag
-                        else -> throw IllegalStateException()
-                    }
-                }.asMutable()
+                real = doubleArray1D(complex.size) { i -> complex[i].real }.asMutable(),
+                imag = doubleArray1D(complex.size) { i -> complex[i].imag }.asMutable()
         )
 
 inline fun complexArray1D(size: Int, init: (i: Int)->Number): ComplexArray1D {
-    val values = doubleZeros(size, 2).asMutable()
+    val real = doubleZeros(size).asMutable()
+    val imag = doubleZeros(size).asMutable()
 
     for (i in 0 until size) {
         val complex = init(i).toComplex()
-        values[i, 0] = complex.real
-        values[i, 1] = complex.imag
+        real[i] = complex.real
+        imag[i] = complex.imag
     }
 
     return NumerikoMutableComplexArray1D(
-            values = values
+            real = real,
+            imag = imag
     )
 }
 
@@ -86,15 +87,17 @@ inline fun complexArray1D(
         initReal: (i: Int)->Double,
         initImag: (i: Int)->Double
 ): ComplexArray1D {
-    val values = doubleZeros(size, 2).asMutable()
+    val real = doubleZeros(size).asMutable()
+    val imag = doubleZeros(size).asMutable()
 
     for (i in 0 until size) {
-        values[i, 0] = initReal(i)
-        values[i, 1] = initImag(i)
+        real[i] = initReal(i)
+        imag[i] = initImag(i)
     }
 
     return NumerikoMutableComplexArray1D(
-            values = values
+            real = real,
+            imag = imag
     )
 }
 

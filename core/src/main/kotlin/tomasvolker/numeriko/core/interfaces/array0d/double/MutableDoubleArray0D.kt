@@ -15,7 +15,7 @@ interface MutableDoubleArray0D: DoubleArray0D, MutableArray0D<Double>, MutableDo
 
     override fun setValue(value: Double): Unit = setDouble(value)
 
-    fun setDouble(value: Double)
+    override fun setDouble(value: Double)
 
     fun setValue(other: DoubleArray0D) {
         setDouble(other.getDouble())

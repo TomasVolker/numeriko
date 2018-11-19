@@ -10,9 +10,10 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.view.defaultDoubleArr
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.defaultArrayNDView
+import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
-interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
+interface MutableDoubleArrayND: DoubleArrayND, MutableNumericArrayND<Double> {
 
     override fun getView(vararg indices: IntProgression): MutableDoubleArrayND =
             defaultDoubleArrayNDView(this, indices)
@@ -20,11 +21,15 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
     override fun getView(vararg indices: IndexProgression): MutableDoubleArrayND =
             getView(*indices.computeIndices())
 
-    fun setDouble(value: Double, vararg indices: Int)
+    fun setDouble(value: Double) = setDouble(value, *intArrayOf())
+
+    override fun setDouble(value: Double, vararg indices: Int)
+    override fun setFloat (value: Float , vararg indices: Int) = setDouble(value.toDouble(), *indices)
+    override fun setLong  (value: Long  , vararg indices: Int) = setDouble(value.toDouble(), *indices)
+    override fun setInt   (value: Int   , vararg indices: Int) = setDouble(value.toDouble(), *indices)
+    override fun setShort (value: Short , vararg indices: Int) = setDouble(value.toDouble(), *indices)
 
     fun setDouble(value: Double, vararg indices: Index) = setDouble(value, *indices.computeIndices())
-
-    fun setDouble(value: Double, indices: IntArray1D) = setDouble(value, *indices.toIntArray())
 
     fun setValue(value: DoubleArrayND) {
         requireSameShape(this, value)
@@ -56,9 +61,9 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
     fun applyTimes(other: Double): MutableDoubleArrayND = applyElementWise { it * other }
     fun applyDiv  (other: Double): MutableDoubleArrayND = applyElementWise { it / other }
 
-    fun applyPlus (other: Int): MutableDoubleArrayND = applyPlus(other.toDouble())
+    fun applyPlus (other: Int): MutableDoubleArrayND = applyPlus (other.toDouble())
     fun applyMinus(other: Int): MutableDoubleArrayND = applyMinus(other.toDouble())
     fun applyTimes(other: Int): MutableDoubleArrayND = applyTimes(other.toDouble())
-    fun applyDiv  (other: Int): MutableDoubleArrayND = applyDiv(other.toDouble())
+    fun applyDiv  (other: Int): MutableDoubleArrayND = applyDiv  (other.toDouble())
 
 }

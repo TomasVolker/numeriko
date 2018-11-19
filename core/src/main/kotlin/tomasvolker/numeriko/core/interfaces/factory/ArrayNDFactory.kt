@@ -14,6 +14,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
+import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 import tomasvolker.numeriko.core.primitives.indicative
 import tomasvolker.numeriko.core.reductions.product
 import kotlin.random.Random
@@ -88,6 +89,8 @@ interface ArrayNDFactory {
 
     fun copy(array: DoubleArrayND): DoubleArrayND =
             doubleArrayND(array.shape) { indices -> array[indices] }
+
+    fun <N: Number> copy(array: NumericArrayND<N>): NumericArrayND<N>
 
     // Zeros
 

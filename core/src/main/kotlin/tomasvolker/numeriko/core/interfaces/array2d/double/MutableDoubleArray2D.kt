@@ -41,7 +41,7 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
 
     override fun setValue(value: Double) = setDouble(value)
 
-    fun setDouble(value: Double) {
+    override fun setDouble(value: Double) {
 
         forEachIndex { i0, i1 ->
             setDouble(value, i0, i1)

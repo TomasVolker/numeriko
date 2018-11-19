@@ -6,6 +6,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArr
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.defaultDoubleArrayNDView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
+import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
 import tomasvolker.numeriko.core.operations.concatenate
@@ -15,20 +16,20 @@ import tomasvolker.numeriko.core.primitives.sumDouble
 import kotlin.math.max
 import kotlin.math.min
 
-interface DoubleArrayND: ArrayND<Double> {
+interface DoubleArrayND: ArrayND<Double>, NumericArrayND<Double> {
 
-    override fun getValue(vararg indices: Int): Double =
-            getDouble(*indices)
+    override fun cast(value: Number): Double = value.toDouble()
 
-    fun getDouble(vararg indices: Int): Double
+    override fun getValue(vararg indices: Int): Double = getDouble(*indices)
+
+    override fun getDouble(vararg indices: Int): Double
+    override fun getFloat (vararg indices: Int): Float  = getDouble(*indices).toFloat()
+    override fun getLong  (vararg indices: Int): Long   = getDouble(*indices).toLong()
+    override fun getInt   (vararg indices: Int): Int    = getDouble(*indices).toInt()
+    override fun getShort (vararg indices: Int): Short  = getDouble(*indices).toShort()
 
     fun getDouble(): Double = getDouble(*intArrayOf())
-
-    fun getDouble(indices: IntArray1D): Double =
-            getValue(*indices.toIntArray())
-
-    fun getDouble(vararg indices: Index): Double =
-            getDouble(*indices.computeIndices())
+    fun getDouble(vararg indices: Index): Double = getDouble(*indices.computeIndices())
 
     operator fun get(indices: IntArray1D): Double =
             getDouble(indices)
