@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.implementations.numeriko.array2d.double
 
+import tomasvolker.numeriko.core.implementations.numeriko.array1d.double.NumerikoMutableDoubleArray1D
 import tomasvolker.numeriko.core.implementations.numeriko.array1d.double.NumerikoMutableDoubleArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
@@ -66,6 +67,16 @@ class NumerikoMutableDoubleArray2D(
         )
     }
 
+    override fun lowerRank(axis: Int): MutableDoubleArray1D {
+        require(shape(axis) <= 1)
+        return NumerikoMutableDoubleArray1DView(
+                data = data,
+                offset = 0,
+                size = shape(axis),
+                stride = if (axis == 0) shape1 else 1
+        )
+    }
+
 }
 
 class NumerikoMutableDoubleArray2DView(
@@ -126,6 +137,16 @@ class NumerikoMutableDoubleArray2DView(
                 offset = linearIndex(i0.first, i1),
                 size = i0.count(),
                 stride = stride0 * i0.step
+        )
+    }
+
+    override fun lowerRank(axis: Int): MutableDoubleArray1D {
+        require(shape(axis) <= 1)
+        return NumerikoMutableDoubleArray1DView(
+                data = data,
+                offset = linearIndex(0, 0),
+                size = shape(axis),
+                stride = if (axis == 0) stride0 else stride1
         )
     }
 

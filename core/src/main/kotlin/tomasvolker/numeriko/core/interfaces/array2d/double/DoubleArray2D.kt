@@ -29,6 +29,9 @@ interface DoubleArray2D: Array2D<Double>, DoubleArrayND {
     override fun getValue(i0: Int, i1: Int): Double =
             getDouble(i0, i1)
 
+    override fun lowerRank(axis: Int): DoubleArray1D =
+            MutableDoubleArray2DLowerRankView(this.asMutable(), axis)
+
     fun getDouble(i0: Int  , i1: Int  ): Double
     fun getDouble(i0: Int  , i1: Index): Double = getDouble(i0.compute(0), i1.compute(1))
     fun getDouble(i0: Index, i1: Int  ): Double = getDouble(i0.compute(0), i1.compute(1))

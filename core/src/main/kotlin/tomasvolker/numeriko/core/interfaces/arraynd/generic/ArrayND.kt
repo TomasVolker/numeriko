@@ -1,10 +1,14 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
+import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.index.toIndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayNDLowerRankView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayNDView
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.defaultArrayNDView
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.reductions.product
@@ -131,12 +135,7 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IndexOutOfBoundsException  if some of the progressions are out of bounds
      */
     fun getView(vararg indices: IntProgression): ArrayND<T> =
-            DefaultArrayNDView(
-                    array = this.asMutable(),
-                    offset = intArray1D(indices.size) { i -> indices[i].first },
-                    shape = intArray1D(indices.size) { i -> indices[i].count() },
-                    stride = intArray1D(indices.size) { i -> indices[i].step }
-            )
+            defaultArrayNDView(this.asMutable(), indices)
 
     /**
      * Returns a view of the array on the given index progressions.
@@ -152,6 +151,17 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IndexOutOfBoundsException  if some of the progressions are out of bounds
      */
     fun getView(vararg indices: IndexProgression): ArrayND<T> = getView(*indices.computeIndices())
+
+    /**
+     * Returns a view of this array without the given [axis].
+     *
+     * The [axis] parameter must correspond to an axis with size <= 1 (`shape(axis) <= 1)`.
+     */
+    fun lowerRank(axis: Int): ArrayND<T> =
+            DefaultArrayNDLowerRankView(this.asMutable(), axis)
+
+    fun arrayAlongAxis(axis: Int, index: Int): ArrayND<T> =
+            getView(*Array(rank) { ax -> if (ax == axis) IntRange(index, index).toIndexProgression() else All })
 
     fun Array<out Index>.computeIndices(): IntArray =
             IntArray(size) { i -> this[i].computeValue(shape(i)) }

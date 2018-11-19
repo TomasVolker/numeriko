@@ -4,12 +4,12 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.view.Array2DCollapseView
+import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DLowerRankView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DView
+import tomasvolker.numeriko.core.interfaces.array2d.generic.view.defaultArray2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.preconditions.requireSameShape
-import tomasvolker.numeriko.core.preconditions.requireSameSize
 
 interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
 
@@ -37,50 +37,20 @@ interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
         applyMap { value }
     }
 
-    override fun getView(i0: Int, i1: IntProgression): MutableArray1D<T> =
-            Array2DCollapseView(
-                    DefaultArray2DView(
-                            array = this,
-                            offset0 = i0,
-                            offset1 = i1.first,
-                            shape0 = 1,
-                            shape1 = i1.count(),
-                            stride0 = i0,
-                            stride1 = i1.step
-                    )
-            )
+    override fun lowerRank(axis: Int): MutableArray1D<T> =
+            DefaultArray2DLowerRankView(this, axis)
 
+    override fun getView(i0: Int  , i1: IntProgression  ): MutableArray1D<T> = defaultArray2DView(this, i0, i1)
     override fun getView(i0: Int  , i1: IndexProgression): MutableArray1D<T> = getView(i0.compute(0), i1.compute(1))
     override fun getView(i0: Index, i1: IntProgression  ): MutableArray1D<T> = getView(i0.compute(0), i1.compute(1))
     override fun getView(i0: Index, i1: IndexProgression): MutableArray1D<T> = getView(i0.compute(0), i1.compute(1))
 
-    override fun getView(i0: IntProgression, i1: Int): MutableArray1D<T> =
-            Array2DCollapseView(
-                    DefaultArray2DView(
-                            array = this,
-                            offset0 = i0.first,
-                            offset1 = i1,
-                            shape0 = i0.count(),
-                            shape1 = 1,
-                            stride0 = i0.step,
-                            stride1 = i1
-                    )
-            )
-
+    override fun getView(i0: IntProgression  , i1: Int  ): MutableArray1D<T> = defaultArray2DView(this, i0, i1)
     override fun getView(i0: IndexProgression, i1: Int  ): MutableArray1D<T> = getView(i0.compute(0), i1.compute(1))
     override fun getView(i0: IntProgression  , i1: Index): MutableArray1D<T> = getView(i0.compute(0), i1.compute(1))
     override fun getView(i0: IndexProgression, i1: Index): MutableArray1D<T> = getView(i0.compute(0), i1.compute(1))
 
-    override fun getView(i0: IntProgression, i1: IntProgression): MutableArray2D<T> =
-            DefaultArray2DView(
-                    array = this,
-                    offset0 = i0.first,
-                    offset1 = i1.first,
-                    shape0 = i0.count(),
-                    shape1 = i1.count(),
-                    stride0 = i0.step,
-                    stride1 = i1.step
-            )
+    override fun getView(i0: IntProgression  , i1: IntProgression  ): MutableArray2D<T> = defaultArray2DView(this, i0, i1)
     override fun getView(i0: IntProgression  , i1: IndexProgression): MutableArray2D<T> = getView(i0.compute(0), i1.compute(1))
     override fun getView(i0: IndexProgression, i1: IntProgression  ): MutableArray2D<T> = getView(i0.compute(0), i1.compute(1))
     override fun getView(i0: IndexProgression, i1: IndexProgression): MutableArray2D<T> = getView(i0.compute(0), i1.compute(1))

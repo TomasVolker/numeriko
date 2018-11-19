@@ -4,14 +4,13 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDo
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 
 
-class MutableDoubleArray2DCollapseView(
-        val array: MutableDoubleArray2D
+class MutableDoubleArray2DLowerRankView(
+        val array: MutableDoubleArray2D,
+        val axis: Int
 ) : DefaultMutableDoubleArray1D() {
 
-    val axis: Int = when {
-        array.shape0 == 1 -> 1
-        array.shape1 == 1 -> 0
-        else -> throw IllegalArgumentException("array is not flat")
+    init {
+        require(array.shape(axis) <= 1)
     }
 
     override val size: Int get() = array.size
@@ -50,28 +49,9 @@ class MutableDoubleArray2DCollapseView(
 
 }
 
-fun defaultDoubleArray2DView(array: MutableDoubleArray2D, i0: IntProgression, i1: Int) =
-        MutableDoubleArray2DCollapseView(
-            DefaultMutableDoubleArray2DView(
-                array = array,
-                offset0 = i0.first,
-                offset1 = i1,
-                shape0 = i0.count(),
-                shape1 = 1,
-                stride0 = i0.step,
-                stride1 = 1
-        )
-)
-
 fun defaultDoubleArray2DView(array: MutableDoubleArray2D, i0: Int, i1: IntProgression) =
-        MutableDoubleArray2DCollapseView(
-                DefaultMutableDoubleArray2DView(
-                        array = array,
-                        offset0 = i0,
-                        offset1 = i1.first,
-                        shape0 = 1,
-                        shape1 = i1.count(),
-                        stride0 = 1,
-                        stride1 = i1.step
-                )
-        )
+        defaultDoubleArray2DView(array, i0..i0, i1).lowerRank(axis = 0)
+
+fun defaultDoubleArray2DView(array: MutableDoubleArray2D, i0: IntProgression, i1: Int) =
+            defaultDoubleArray2DView(array, i0, i1..i1).lowerRank(axis = 1)
+

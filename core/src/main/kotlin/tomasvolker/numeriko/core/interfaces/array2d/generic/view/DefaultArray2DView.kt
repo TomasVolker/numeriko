@@ -2,8 +2,8 @@ package tomasvolker.numeriko.core.interfaces.array2d.generic.view
 
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 
-open class DefaultArray2DView<T>(
-        open val array: MutableArray2D<T>,
+class DefaultArray2DView<T>(
+        val array: MutableArray2D<T>,
         val offset0: Int,
         val offset1: Int,
         override val shape0: Int,
@@ -40,3 +40,14 @@ open class DefaultArray2DView<T>(
     override fun toString(): String = defaultToString(this)
 
 }
+
+fun <T> defaultArray2DView(array: MutableArray2D<T>, i0: IntProgression, i1: IntProgression) =
+        DefaultArray2DView(
+                array = array,
+                offset0 = i0.first,
+                offset1 = i1.first,
+                shape0 = i0.count(),
+                shape1 = i1.count(),
+                stride0 = i0.step,
+                stride1 = i1.step
+        )

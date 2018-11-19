@@ -2,7 +2,6 @@ package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.*
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.collapseView
 import tomasvolker.numeriko.core.interfaces.factory.intZeros
 
 fun defaultEquals(array1: ArrayND<*>, array2: ArrayND<*>): Boolean {
@@ -31,7 +30,7 @@ fun defaultHashCode(array1: ArrayND<*>): Int {
 
 fun <T> ArrayND<T>.subArray(i: Int): ArrayND<T> =
         getView(*Array(rank) { d -> if (d==0) LiteralIndex(i)..i else All })
-                .collapseView(0)
+                .lowerRank(0)
 
 fun defaultToString(array: ArrayND<*>): String =
         when(array.rank) {

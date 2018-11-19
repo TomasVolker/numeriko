@@ -2,11 +2,12 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayNDLowerRankView
+import tomasvolker.numeriko.core.interfaces.arraynd.double.view.defaultDoubleArrayNDView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.operations.concatenate
 import tomasvolker.numeriko.core.operations.inject
 import tomasvolker.numeriko.core.operations.remove
@@ -33,15 +34,16 @@ interface DoubleArrayND: ArrayND<Double> {
             getDouble(indices)
 
     override fun getView(vararg indices: IntProgression): DoubleArrayND =
-            DefaultMutableDoubleArrayNDView(
-                    array = this.asMutable(),
-                    offset = intArray1D(indices.map { it.first }.toIntArray()),
-                    shape = intArray1D(indices.map { it.count() }.toIntArray()),
-                    stride = intArray1D(indices.map { it.step }.toIntArray())
-            )
+            defaultDoubleArrayNDView(this.asMutable(), indices)
 
     override fun getView(vararg indices: IndexProgression): DoubleArrayND =
             getView(*indices.computeIndices())
+
+    override fun lowerRank(axis: Int): DoubleArrayND =
+            DefaultDoubleArrayNDLowerRankView(this.asMutable(), axis)
+
+    override fun arrayAlongAxis(axis: Int, index: Int): DoubleArrayND =
+            getView(*Array(rank) { ax -> if (ax == axis) IntRange(index, index).toIndexProgression() else All })
 
     override fun copy(): DoubleArrayND = copy(this)
 

@@ -9,7 +9,7 @@ fun main() {
 
     val rgbImage = loadGrayScaleImage("./sandbox/res/lena.png")
 
-    //val image = rgbImage.getView(All, All, Single(0)).collapseView(2).as2D()
+    //val image = rgbImage.getView(All, All, Single(0)).lowerRank(2).as2D()
     val image = rgbImage
 
     val gradx = image.computeGradientX()

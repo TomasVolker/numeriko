@@ -1,8 +1,14 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
+import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.index.toIndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayNDLowerRankView
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayNDView
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.defaultArrayNDView
+import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 /**
@@ -17,6 +23,12 @@ import tomasvolker.numeriko.core.preconditions.requireSameShape
  * @see ArrayND
  */
 interface MutableArrayND<T>: ArrayND<T> {
+
+    override fun getView(vararg indices: IntProgression): MutableArrayND<T> =
+            defaultArrayNDView(this, indices)
+
+    override fun getView(vararg indices: IndexProgression): MutableArrayND<T> =
+            getView(*indices.computeIndices())
 
     /**
      * Sets [value] to the given indices.
@@ -74,5 +86,11 @@ interface MutableArrayND<T>: ArrayND<T> {
 
     fun setView(value: ArrayND<T>, vararg indices: IndexProgression): Unit =
             setView(value, *Array(indices.size) { i -> indices[i].computeProgression(shape[i]) })
+
+    override fun lowerRank(axis: Int): MutableArrayND<T> =
+            DefaultArrayNDLowerRankView(this, axis)
+
+    override fun arrayAlongAxis(axis: Int, index: Int): MutableArrayND<T> =
+            getView(*Array(rank) { ax -> if (ax == axis) IntRange(index, index).toIndexProgression() else All })
 
 }

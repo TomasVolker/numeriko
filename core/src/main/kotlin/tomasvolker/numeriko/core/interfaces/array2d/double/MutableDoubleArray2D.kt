@@ -4,6 +4,7 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2DLowerRankView
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.defaultDoubleArray2DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
@@ -47,6 +48,9 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
         }
 
     }
+
+    override fun lowerRank(axis: Int): MutableDoubleArray1D =
+            MutableDoubleArray2DLowerRankView(this, axis)
 
     override fun getView(i0: Int  , i1: IntProgression  ): MutableDoubleArray1D = defaultDoubleArray2DView(this, i0, i1)
     override fun getView(i0: Int  , i1: IndexProgression): MutableDoubleArray1D = getView(i0.compute(0), i1.compute(1))

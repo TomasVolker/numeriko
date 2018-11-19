@@ -32,7 +32,7 @@ fun defaultHashCode(array1: DoubleArrayND): Int {
 
 fun DoubleArrayND.subArray(i: Int): DoubleArrayND =
         getView(*Array(rank) { d -> if (d==0) LiteralIndex(i)..i else All })
-                .collapseView(0)
+                .lowerRank(0)
 
 fun defaultToString(array: DoubleArrayND): String =
         when(array.rank) {

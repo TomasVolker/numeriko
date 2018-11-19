@@ -3,14 +3,13 @@ package tomasvolker.numeriko.core.interfaces.array2d.generic.view
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultMutableArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 
-class Array2DCollapseView<T>(
-        val array: MutableArray2D<T>
+class DefaultArray2DLowerRankView<T>(
+        val array: MutableArray2D<T>,
+        val axis: Int
 ) : DefaultMutableArray1D<T>() {
 
-    val axis: Int = when {
-        array.shape0 == 1 -> 1
-        array.shape1 == 1 -> 0
-        else -> throw IllegalArgumentException("array is not flat")
+    init {
+        require(array.shape(axis) <= 1)
     }
 
     override val size: Int get() = array.size
@@ -47,3 +46,9 @@ class Array2DCollapseView<T>(
     }
 
 }
+
+fun <T> defaultArray2DView(array: MutableArray2D<T>, i0: Int, i1: IntProgression) =
+        defaultArray2DView(array, i0..i0, i1).lowerRank(0)
+
+fun <T> defaultArray2DView(array: MutableArray2D<T>, i0: IntProgression, i1: Int) =
+        defaultArray2DView(array, i0, i1..i1).lowerRank(1)
