@@ -2,16 +2,19 @@ package tomasvolker.numeriko.core.interfaces.array2d.double
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2DLowerRankView
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.defaultDoubleArray2DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
+import tomasvolker.numeriko.core.interfaces.array2d.numeric.MutableNumericArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
-interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDoubleArrayND {
+interface MutableDoubleArray2D: DoubleArray2D, MutableNumericArray2D<Double>, MutableDoubleArrayND {
 
     override fun setValue(value: Double, vararg indices: Int) {
         setDouble(value, *indices)
@@ -22,10 +25,20 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
         setDouble(value, indices[0], indices[1])
     }
 
-    fun setDouble(value: Double, i0: Int  , i1: Int)
+    override fun setFloat(value: Float, vararg indices: Int) = setDouble(value.toDouble())
+    override fun setLong (value: Long , vararg indices: Int) = setDouble(value.toDouble())
+    override fun setInt  (value: Int  , vararg indices: Int) = setDouble(value.toDouble())
+    override fun setShort(value: Short, vararg indices: Int) = setDouble(value.toDouble())
+
+    override fun setDouble(value: Double, i0: Int, i1: Int)
     fun setDouble(value: Double, i0: Int  , i1: Index) = setDouble(value, i0.compute(0), i1.compute(1))
     fun setDouble(value: Double, i0: Index, i1: Int  ) = setDouble(value, i0.compute(0), i1.compute(1))
     fun setDouble(value: Double, i0: Index, i1: Index) = setDouble(value, i0.compute(0), i1.compute(1))
+
+    override fun setFloat(value: Float, i0: Int, i1: Int) = setDouble(value.toDouble(), i0, i1)
+    override fun setLong (value: Long , i0: Int, i1: Int) = setDouble(value.toDouble(), i0, i1)
+    override fun setInt  (value: Int  , i0: Int, i1: Int) = setDouble(value.toDouble(), i0, i1)
+    override fun setShort(value: Short, i0: Int, i1: Int) = setDouble(value.toDouble(), i0, i1)
 
     override fun setValue(value: Double, i0: Int, i1: Int) = setDouble(value, i0, i1)
 
@@ -49,8 +62,23 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableArray2D<Double>, MutableDo
 
     }
 
+    override fun getView(vararg indices: IntProgression): MutableDoubleArray2D {
+        requireValidIndices(indices)
+        return getView(indices[0], indices[1])
+    }
+
+    override fun getView(vararg indices: IndexProgression): MutableDoubleArray2D = getView(*indices.computeIndices())
+
     override fun lowerRank(axis: Int): MutableDoubleArray1D =
             MutableDoubleArray2DLowerRankView(this, axis)
+
+    override fun arrayAlongAxis(axis: Int, index: Int): MutableDoubleArray1D =
+            super<DoubleArray2D>.arrayAlongAxis(axis, index).asMutable()
+
+    override fun getView(i0: Int  , i1: Int  ): MutableDoubleArray0D = defaultDoubleArray2DView(this, i0, i1)
+    override fun getView(i0: Int  , i1: Index): MutableDoubleArray0D = getView(i0.compute(0), i1.compute(1))
+    override fun getView(i0: Index, i1: Int  ): MutableDoubleArray0D = getView(i0.compute(0), i1.compute(1))
+    override fun getView(i0: Index, i1: Index): MutableDoubleArray0D = getView(i0.compute(0), i1.compute(1))
 
     override fun getView(i0: Int  , i1: IntProgression  ): MutableDoubleArray1D = defaultDoubleArray2DView(this, i0, i1)
     override fun getView(i0: Int  , i1: IndexProgression): MutableDoubleArray1D = getView(i0.compute(0), i1.compute(1))

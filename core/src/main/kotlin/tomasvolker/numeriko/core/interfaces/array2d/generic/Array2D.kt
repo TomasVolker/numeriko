@@ -3,6 +3,7 @@ package tomasvolker.numeriko.core.interfaces.array2d.generic
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.IntVector2
 import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.intVector2
@@ -44,6 +45,10 @@ interface Array2D<out T>: ArrayND<T> {
     fun getValue(i0: Index, i1: Int  ): T = getValue(i0.compute(0), i1.compute(1))
     fun getValue(i0: Index, i1: Index): T = getValue(i0.compute(0), i1.compute(1))
 
+    fun getView(i0: Int  , i1: Int  ): Array0D<T> = defaultArray2DView(this.asMutable(), i0, i1)
+    fun getView(i0: Index, i1: Int  ): Array0D<T> = getView(i0.compute(0), i1.compute(1))
+    fun getView(i0: Int, i1: Index  ): Array0D<T> = getView(i0.compute(0), i1.compute(1))
+    fun getView(i0: Index, i1: Index): Array0D<T> = getView(i0.compute(0), i1.compute(1))
 
     fun getView(i0: Int  , i1: IntProgression  ): Array1D<T> = defaultArray2DView(this.asMutable(), i0, i1)
     fun getView(i0: Int  , i1: IndexProgression): Array1D<T> = getView(i0.compute(0), i1.compute(1))

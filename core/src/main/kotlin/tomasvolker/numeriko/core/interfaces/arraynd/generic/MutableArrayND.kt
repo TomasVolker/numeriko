@@ -4,10 +4,17 @@ import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndexProgression
+import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array0d.generic.MutableArray0D
+import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayNDLowerRankView
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayNDView
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.defaultArrayNDView
+import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND0DView
+import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND1DView
+import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND2DView
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
@@ -23,6 +30,10 @@ import tomasvolker.numeriko.core.preconditions.requireSameShape
  * @see ArrayND
  */
 interface MutableArrayND<T>: ArrayND<T> {
+
+    override fun as0D(): MutableArray0D<T> = DefaultArrayND0DView(this)
+    override fun as1D(): MutableArray1D<T> = DefaultArrayND1DView(this)
+    override fun as2D(): MutableArray2D<T> = DefaultArrayND2DView(this)
 
     override fun getView(vararg indices: IntProgression): MutableArrayND<T> =
             defaultArrayNDView(this, indices)

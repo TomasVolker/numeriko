@@ -42,6 +42,9 @@ interface Array1D<out T>: ArrayND<T> {
         return defaultArray0DView(this.asMutable(), 0)
     }
 
+    fun getView(i0: Int  ): Array0D<T> = defaultArray0DView(this.asMutable(), i0)
+    fun getView(i0: Index): Array0D<T> = getView(i0.compute())
+
     fun getView(i0: IntProgression): Array1D<T> = defaultArray1DView(this.asMutable(), i0)
     fun getView(i0: IndexProgression): Array1D<T> = getView(i0.compute())
 

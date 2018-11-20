@@ -4,9 +4,14 @@ import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndexProgression
+import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayNDLowerRankView
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.defaultDoubleArrayNDView
+import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.defaultArrayNDView
@@ -43,6 +48,10 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableNumericArrayND<Double> {
     operator fun set(indices: IntArray1D, value: Double) = setDouble(value, indices)
 
     override fun setValue(value: Double, vararg indices: Int) = setDouble(value, *indices)
+
+    override fun as0D(): MutableDoubleArray0D = DefaultDoubleArrayND0DView(this)
+    override fun as1D(): MutableDoubleArray1D = DefaultDoubleArrayND1DView(this)
+    override fun as2D(): MutableDoubleArray2D = DefaultDoubleArrayND2DView(this)
 
     fun setView(value: DoubleArrayND, vararg indices: IntProgression): Unit =
             getView(*indices).asMutable().setValue(value)

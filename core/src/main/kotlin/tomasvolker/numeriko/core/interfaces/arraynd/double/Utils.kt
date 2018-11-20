@@ -6,13 +6,12 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND0DView
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND1DView
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND2DView
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeGetView
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 import tomasvolker.numeriko.core.preconditions.requireSameShape
-
-fun DoubleArrayND.as0D(): DoubleArray0D = DefaultDoubleArrayND0DView(this.asMutable())
-fun DoubleArrayND.as1D(): DoubleArray1D = DefaultDoubleArrayND1DView(this.asMutable())
-fun DoubleArrayND.as2D(): DoubleArray2D = DefaultDoubleArrayND2DView(this.asMutable())
 
 inline fun elementWise(
         source: DoubleArrayND,
@@ -85,3 +84,9 @@ inline fun MutableDoubleArrayND.applyElementWise(
     )
     return this
 }
+
+fun DoubleArrayND.unsafeGetView(vararg indices: Any): DoubleArrayND =
+        (this as ArrayND<Double>).unsafeGetView(*indices) as DoubleArrayND
+
+fun MutableDoubleArrayND.unsafeGetView(vararg indices: Any): MutableDoubleArrayND =
+        (this as DoubleArrayND).unsafeGetView(*indices) as MutableDoubleArrayND

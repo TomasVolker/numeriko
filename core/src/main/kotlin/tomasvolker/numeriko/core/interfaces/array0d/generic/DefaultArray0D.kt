@@ -4,10 +4,11 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 
 abstract class DefaultArray0D<T>: Array0D<T> {
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this) return true
-        if (other !is ArrayND<*>) return false
-        return other.rank == 0 && other.getValue() == this.getValue()
+    override fun equals(other: Any?): Boolean = when {
+        other === this -> true
+        other is Array0D<*> -> other.getValue() == this.getValue()
+        other is ArrayND<*> -> other.rank == 0 && other.getValue() == this.getValue()
+        else -> false
     }
 
     override fun hashCode(): Int = getValue().hashCode()

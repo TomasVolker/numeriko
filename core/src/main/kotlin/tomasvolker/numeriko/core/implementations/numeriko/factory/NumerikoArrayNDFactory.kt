@@ -51,7 +51,4 @@ class NumerikoArrayNDFactory: ArrayNDFactory {
     override fun doubleArrayND(shape: IntArray1D, data: DoubleArray): DoubleArrayND =
             NumerikoDoubleArrayND(shape, data)
 
-    override fun <N: Number> copy(array: NumericArrayND<N>): NumericArrayND<N> =
-            TODO()
-
 }

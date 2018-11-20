@@ -5,12 +5,13 @@ import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndexProgression
+import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayNDLowerRankView
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayNDView
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.defaultArrayNDView
+import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.reductions.product
 
 /**
@@ -122,6 +123,10 @@ interface ArrayND<out T>: Collection<T> {
      */
     fun getValue(vararg indices: Index): T = getValue(*indices.computeIndices())
 
+    fun as0D(): Array0D<T> = DefaultArrayND0DView(this.asMutable())
+    fun as1D(): Array1D<T> = DefaultArrayND1DView(this.asMutable())
+    fun as2D(): Array2D<T> = DefaultArrayND2DView(this.asMutable())
+
     /**
      * Returns a view of the array on the given index progressions.
      *
@@ -201,6 +206,26 @@ interface ArrayND<out T>: Collection<T> {
                 // Do not use `indices(axis)` as inlining is not working
                 if (indices[axis] !in 0 until shape(axis))
                     throw IndexOutOfBoundsException("Indices [${indices.joinToString()}] are out of range for shape $shape")
+            }
+
+        }
+
+    }
+
+    fun requireValidIndices(indices: Array<out IntProgression>) {
+
+        if (NumerikoConfig.checkRanges) {
+
+            if (indices.size != rank)
+                throw IllegalArgumentException("Indices [${indices.joinToString()}] are invalid for shape $shape")
+
+            for (axis in 0 until rank) {
+                val indexProgression = indices[axis]
+                // Do not use `indices(axis)` as inlining is not working
+                if (indexProgression.first !in 0 until shape(axis))
+                    throw IndexOutOfBoundsException("Indices [${indexProgression.joinToString()}] are out of range for shape $shape")
+                if (indexProgression.last !in 0 until shape(axis))
+                    throw IndexOutOfBoundsException("Indices [${indexProgression.joinToString()}] are out of range for shape $shape")
             }
 
         }

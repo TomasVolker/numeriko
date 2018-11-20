@@ -1,9 +1,11 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.index.*
+import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayNDLowerRankView
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.defaultDoubleArrayNDView
+import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
@@ -31,8 +33,14 @@ interface DoubleArrayND: ArrayND<Double>, NumericArrayND<Double> {
     fun getDouble(): Double = getDouble(*intArrayOf())
     fun getDouble(vararg indices: Index): Double = getDouble(*indices.computeIndices())
 
+    override fun toDoubleArrayND(): DoubleArrayND = copy()
+
     operator fun get(indices: IntArray1D): Double =
             getDouble(indices)
+
+    override fun as0D(): DoubleArray0D = DefaultDoubleArrayND0DView(this.asMutable())
+    override fun as1D(): DoubleArray1D = DefaultDoubleArrayND1DView(this.asMutable())
+    override fun as2D(): DoubleArray2D = DefaultDoubleArrayND2DView(this.asMutable())
 
     override fun getView(vararg indices: IntProgression): DoubleArrayND =
             defaultDoubleArrayNDView(this.asMutable(), indices)

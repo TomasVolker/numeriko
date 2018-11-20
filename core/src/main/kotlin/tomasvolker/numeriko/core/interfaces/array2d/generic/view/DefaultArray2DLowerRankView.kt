@@ -47,6 +47,9 @@ class DefaultArray2DLowerRankView<T>(
 
 }
 
+fun <T> defaultArray2DView(array: MutableArray2D<T>, i0: Int, i1: Int) =
+        defaultArray2DView(array, i0..i0, i1..i1).lowerRank(0).lowerRank(0)
+
 fun <T> defaultArray2DView(array: MutableArray2D<T>, i0: Int, i1: IntProgression) =
         defaultArray2DView(array, i0..i0, i1).lowerRank(0)
 

@@ -10,8 +10,11 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
+import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray0DView
+import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
+import tomasvolker.numeriko.core.interfaces.array2d.numeric.NumericArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.preconditions.requireSameSize
@@ -20,7 +23,12 @@ import tomasvolker.numeriko.core.primitives.sumDouble
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
+interface DoubleArray1D: NumericArray1D<Double>, DoubleArrayND {
+
+    override fun getView(vararg indices: IntProgression): DoubleArray1D {
+        requireValidIndices(indices)
+        return getView(indices[0])
+    }
 
     override fun getValue(vararg indices: Int): Double =
             getDouble(*indices)
@@ -32,13 +40,26 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
 
     override fun getValue(i0: Int): Double = getDouble(i0)
 
-    fun getDouble(i0: Int): Double
+    override fun getFloat(vararg indices: Int): Float = getDouble(*indices).toFloat()
+    override fun getLong (vararg indices: Int): Long  = getDouble(*indices).toLong()
+    override fun getInt  (vararg indices: Int): Int   = getDouble(*indices).toInt()
+    override fun getShort(vararg indices: Int): Short = getDouble(*indices).toShort()
+
+    override fun getDouble(i0: Int): Double
+    override fun getFloat(i0: Int): Float = getDouble(i0).toFloat()
+    override fun getLong (i0: Int): Long  = getDouble(i0).toLong()
+    override fun getInt  (i0: Int): Int   = getDouble(i0).toInt()
+    override fun getShort(i0: Int): Short = getDouble(i0).toShort()
+
     fun getDouble(i0: Index): Double = getDouble(i0.compute())
 
     override fun lowerRank(axis: Int): DoubleArray0D {
         requireValidAxis(axis)
         return defaultDoubleArray0DView(this.asMutable(), 0)
     }
+
+    override fun getView(i0: Int  ): DoubleArray0D = defaultDoubleArray0DView(this.asMutable(), i0)
+    override fun getView(i0: Index): DoubleArray0D = getView(i0.compute())
 
     override fun getView(i0: IntProgression): DoubleArray1D = defaultDoubleArray1DView(this.asMutable(), i0)
     override fun getView(i0: IndexProgression): DoubleArray1D = getView(i0.compute())
@@ -49,6 +70,10 @@ interface DoubleArray1D: Array1D<Double>, DoubleArrayND {
     operator fun get(i0: IntProgression): DoubleArray1D = getView(i0)
     operator fun get(i0: IndexProgression): DoubleArray1D = getView(i0)
 
+    override fun arrayAlongAxis(axis: Int, index: Int): DoubleArray0D {
+        requireValidAxis(axis)
+        return getView(index)
+    }
 
     override fun copy(): DoubleArray1D = copy(this)
 

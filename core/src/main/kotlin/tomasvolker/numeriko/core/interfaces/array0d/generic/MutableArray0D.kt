@@ -15,4 +15,6 @@ interface MutableArray0D<T>: Array0D<T>, MutableArrayND<T> {
         setValue(other.getValue())
     }
 
+    override fun getView(): MutableArray0D<T> = this
+
 }

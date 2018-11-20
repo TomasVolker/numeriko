@@ -26,6 +26,8 @@ interface Array0D<out T>: ArrayND<T> {
 
     override fun getValue(): T
 
+    fun getView(): Array0D<T> = this
+
     override fun copy(): Array0D<T> = copy(this)
 
     override fun iterator(): Iterator<T> = DefaultArray0DIterator(this)

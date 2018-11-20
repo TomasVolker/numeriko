@@ -1,23 +1,14 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.numeric
 
-import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.index.toIndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayNDLowerRankView
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.defaultDoubleArrayNDView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.defaultArrayNDView
-import tomasvolker.numeriko.core.interfaces.arraynd.numeric.view.DefaultNumericArrayNDLowerRankView
-import tomasvolker.numeriko.core.interfaces.arraynd.numeric.view.defaultNumericArrayNDView
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableNumericArrayND<N: Number>: NumericArrayND<N>, MutableArrayND<N> {
 
-    override fun getView(vararg indices: IntProgression): MutableNumericArrayND<N> =
-            defaultNumericArrayNDView(this, indices)
+    override fun getView(vararg indices: IntProgression): MutableNumericArrayND<N>
 
     override fun getView(vararg indices: IndexProgression): MutableNumericArrayND<N> =
             getView(*indices.computeIndices())
@@ -52,22 +43,10 @@ interface MutableNumericArrayND<N: Number>: NumericArrayND<N>, MutableArrayND<N>
             getView(*indices).asMutable().setValue(value)
 
     fun setView(value: NumericArrayND<N>, vararg indices: IndexProgression): Unit =
-            setView(value, *Array(indices.size) { i -> indices[i].computeProgression(shape[i]) })
+            setView(value, *indices.computeIndices())
 
-    override fun lowerRank(axis: Int): MutableNumericArrayND<N> =
-            DefaultNumericArrayNDLowerRankView(this, axis)
+    override fun lowerRank(axis: Int): MutableNumericArrayND<N>
 
-    override fun arrayAlongAxis(axis: Int, index: Int): MutableNumericArrayND<N> =
-            getView(*Array(rank) { ax -> if (ax == axis) IntRange(index, index).toIndexProgression() else All })
-/*
-    fun applyPlus (other: Double): MutableNumericArrayND = applyElementWise { it + other }
-    fun applyMinus(other: Double): MutableNumericArrayND = applyElementWise { it - other }
-    fun applyTimes(other: Double): MutableNumericArrayND = applyElementWise { it * other }
-    fun applyDiv  (other: Double): MutableNumericArrayND = applyElementWise { it / other }
+    override fun arrayAlongAxis(axis: Int, index: Int): MutableNumericArrayND<N>
 
-    fun applyPlus (other: Int): MutableNumericArrayND = applyPlus(other.toDouble())
-    fun applyMinus(other: Int): MutableNumericArrayND = applyMinus(other.toDouble())
-    fun applyTimes(other: Int): MutableNumericArrayND = applyTimes(other.toDouble())
-    fun applyDiv  (other: Int): MutableNumericArrayND = applyDiv(other.toDouble())
-*/
 }

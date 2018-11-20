@@ -30,7 +30,7 @@ class NumerikoDoubleArrayND(
     }
 
     override fun getView(vararg indices: IntProgression): MutableDoubleArrayND {
-        require(indices.size == rank)
+        require(indices.size == rank) { "${indices.size} indices supplied when $rank required" }
         for (axis in 0 until rank) {
             requireValidIndexRange(indices[axis], axis = axis)
         }

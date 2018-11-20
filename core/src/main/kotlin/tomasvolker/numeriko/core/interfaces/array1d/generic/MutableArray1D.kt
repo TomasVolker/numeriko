@@ -43,6 +43,9 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
 
     }
 
+    override fun getView(i0: Int  ): MutableArray0D<T> = defaultArray0DView(this, i0)
+    override fun getView(i0: Index): MutableArray0D<T> = getView(i0.compute())
+
     override fun getView(i0: IntProgression): MutableArray1D<T> = defaultArray1DView(this, i0)
     override fun getView(i0: IndexProgression): MutableArray1D<T> = getView(i0.compute())
 
