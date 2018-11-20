@@ -1,17 +1,16 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double.view
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.*
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.defaultEquals
 
 abstract class DefaultDoubleArrayND: DoubleArrayND {
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this) return true
-        if (other !is DoubleArrayND) return false
-        return defaultEquals(this, other)
+    override fun equals(other: Any?): Boolean = when {
+        other === this -> true
+        other is DoubleArrayND -> defaultEquals(this, other)
+        other is ArrayND<*> -> defaultEquals(this, other)
+        else -> false
     }
 
     override fun hashCode(): Int = defaultHashCode(this)

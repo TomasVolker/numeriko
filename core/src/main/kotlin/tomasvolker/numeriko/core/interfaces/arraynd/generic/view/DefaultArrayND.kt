@@ -4,10 +4,10 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.*
 
 abstract class DefaultArrayND<T>: ArrayND<T> {
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this) return true
-        if (other !is ArrayND<*>) return false
-        return defaultEquals(this, other)
+    override fun equals(other: Any?): Boolean = when {
+        other === this -> true
+        other is ArrayND<*> -> defaultEquals(this, other)
+        else -> false
     }
 
     override fun hashCode(): Int = defaultHashCode(this)

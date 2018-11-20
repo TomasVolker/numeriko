@@ -1,14 +1,15 @@
 package tomasvolker.numeriko.core.interfaces.array2d.generic.view
 
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 
 abstract class DefaultArray2D<out T>: Array2D<T> {
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this) return true
-        if (other !is DoubleArray2D) return false
-        return defaultEquals(this, other)
+    override fun equals(other: Any?): Boolean = when {
+        other === this -> true
+        other is Array2D<*> -> defaultEquals(this, other)
+        other is ArrayND<*> -> other.rank == this.rank && defaultEquals(this, other.as2D())
+        else -> false
     }
 
     override fun hashCode(): Int = defaultHashCode(this)

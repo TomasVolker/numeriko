@@ -1,13 +1,15 @@
 package tomasvolker.numeriko.core.interfaces.array1d.generic.view
 
 import tomasvolker.numeriko.core.interfaces.array1d.generic.*
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 
 abstract class DefaultArray1D<out T>: Array1D<T> {
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this) return true
-        if (other !is Array1D<*>) return false
-        return defaultEquals(this, other)
+    override fun equals(other: Any?): Boolean = when {
+        other === this -> true
+        other is Array1D<*> -> defaultEquals(this, other)
+        other is ArrayND<*> -> other.rank == 1 && defaultEquals(this, other.as1D())
+        else -> false
     }
 
     override fun hashCode(): Int = defaultHashCode(this)
