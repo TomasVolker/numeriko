@@ -34,7 +34,7 @@ inline fun ComplexArray1D.elementWiseIndexed(
 }
 
 fun copy(complex: ComplexArray0D): ComplexArray0D =
-        NumerikoComplexArray0D(complex.get())
+        NumerikoComplexArray0D(complex.real(), complex.imag())
 
 fun copy(array: ComplexArray1D): ComplexArray1D =
         complexArray1D(
@@ -78,7 +78,7 @@ fun complexZeros(shape: IntArray1D): ComplexArrayND =
         )
 
 fun complexArray0D(complex: Complex): ComplexArray0D =
-        NumerikoComplexArray0D(data = complex)
+        NumerikoComplexArray0D(complex.real, complex.imag)
 
 
 fun complexArray1DOf(vararg complex: Complex): ComplexArray1D =

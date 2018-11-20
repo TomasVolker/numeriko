@@ -4,7 +4,7 @@ import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex1
 
-class DefaultMutableComplexArray2DView(
+class DefaultComplexArray2DView(
         val array: MutableComplexArray2D,
         val offset0: Int,
         val offset1: Int,
@@ -61,7 +61,7 @@ class DefaultMutableComplexArray2DView(
 }
 
 fun defaultComplexArray2DView(array: MutableComplexArray2D, i0: IntProgression, i1: IntProgression) =
-        DefaultMutableComplexArray2DView(
+        DefaultComplexArray2DView(
                 array = array,
                 offset0 = i0.first,
                 offset1 = i1.first,

@@ -1,19 +1,50 @@
 package tomasvolker.numeriko.complex.interfaces.array1d
 
 import tomasvolker.numeriko.complex.Complex
-import tomasvolker.numeriko.complex.interfaces.array1d.view.DefaultMutableComplexArray1DView
+import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
+import tomasvolker.numeriko.complex.interfaces.array0d.MutableComplexArray0D
+import tomasvolker.numeriko.complex.interfaces.array1d.view.DefaultComplexArray1DLowerRankView
+import tomasvolker.numeriko.complex.interfaces.array1d.view.DefaultComplexArray1DView
+import tomasvolker.numeriko.complex.interfaces.array1d.view.defaultComplexArray0DView
+import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
+import tomasvolker.numeriko.complex.interfaces.factory.copy
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
+import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
 import kotlin.math.cos
 import kotlin.math.sin
 
-interface MutableComplexArray1D: MutableArray1D<Complex>, ComplexArray1D {
+interface MutableComplexArray1D: MutableNumericArray1D<Complex>, ComplexArray1D, MutableComplexArrayND {
+
+    override fun setValue(value: Complex, vararg indices: Int) {
+        requireValidIndices(indices)
+        setValue(value, indices[0])
+    }
+
+    override fun setReal(value: Double, vararg indices: Int) {
+        requireValidIndices(indices)
+        setReal(value, *indices)
+    }
+
+    override fun setImag(value: Double, vararg indices: Int) {
+        requireValidIndices(indices)
+        setImag(value, *indices)
+    }
+
+    override fun getView(vararg indices: IntProgression): MutableComplexArray1D {
+        requireValidIndices(indices)
+        return getView(indices[0])
+    }
+
+    override fun getView(i0: Int): MutableComplexArray0D =
+            defaultComplexArray0DView(this, i0)
 
     override fun getView(i0: IntProgression): MutableComplexArray1D =
-            DefaultMutableComplexArray1DView(
+            DefaultComplexArray1DView(
                     array = this,
                     offset = i0.first,
                     size = i0.count(),
@@ -23,16 +54,22 @@ interface MutableComplexArray1D: MutableArray1D<Complex>, ComplexArray1D {
     override fun getView(i0: IndexProgression): MutableComplexArray1D =
             getView(i0.computeProgression(size))
 
+    override fun lowerRank(axis: Int): MutableComplexArray0D =
+            super<ComplexArray1D>.lowerRank(axis).asMutable()
+
+    override fun arrayAlongAxis(axis: Int, index: Int): MutableComplexArray0D =
+            super<ComplexArray1D>.arrayAlongAxis(axis, index).asMutable()
+
     operator fun set(i0: Int, value: Complex): Unit = setValue(value, i0)
     operator fun set(i0: Index, value: Complex): Unit = setValue(value, i0)
-    /*
+
     fun setValue(value: ComplexArray1D) {
         forEachIndex { i0 ->
             setReal(value.real(i0), i0)
             setImag(value.imag(i0), i0)
         }
     }
-    */
+
     override fun setValue(value: Complex, i0: Int) {
         setReal(value.real, i0)
         setImag(value.imag, i0)
@@ -40,6 +77,8 @@ interface MutableComplexArray1D: MutableArray1D<Complex>, ComplexArray1D {
 
     fun setReal(value: Double, i0: Int)
     fun setImag(value: Double, i0: Int)
+
+    override fun copy(): MutableComplexArray1D = copy(this).asMutable()
 
     fun setAbs(value: Double, i0: Int) {
         val arg = arg(i0)
@@ -89,28 +128,28 @@ interface MutableComplexArray1D: MutableArray1D<Complex>, ComplexArray1D {
     fun applyDiv(other: Complex): MutableComplexArray1D =
             applyElementWise { it / other }
 
-    fun applyPlus(other: Double): MutableComplexArray1D =
+    override fun applyPlus(other: Double): MutableComplexArray1D =
             applyElementWise { it + other }
 
-    fun applyMinus(other: Double): MutableComplexArray1D =
+    override fun applyMinus(other: Double): MutableComplexArray1D =
             applyElementWise { it - other }
 
-    fun applyTimes(other: Double): MutableComplexArray1D =
+    override fun applyTimes(other: Double): MutableComplexArray1D =
             applyElementWise { it * other }
 
-    fun applyDiv(other: Double): MutableComplexArray1D =
+    override fun applyDiv(other: Double): MutableComplexArray1D =
             applyElementWise { it / other }
 
-    fun applyPlus(other: Int): MutableComplexArray1D =
+    override fun applyPlus(other: Int): MutableComplexArray1D =
             applyPlus(other.toDouble())
 
-    fun applyMinus(other: Int): MutableComplexArray1D =
+    override fun applyMinus(other: Int): MutableComplexArray1D =
             applyMinus(other.toDouble())
 
-    fun applyTimes(other: Int): MutableComplexArray1D =
+    override fun applyTimes(other: Int): MutableComplexArray1D =
             applyTimes(other.toDouble())
 
-    fun applyDiv(other: Int): MutableComplexArray1D =
+    override fun applyDiv(other: Int): MutableComplexArray1D =
             applyDiv(other.toDouble())
 
 }

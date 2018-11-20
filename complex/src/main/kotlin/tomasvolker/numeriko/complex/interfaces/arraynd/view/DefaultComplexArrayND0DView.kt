@@ -15,11 +15,15 @@ class DefaultComplexArrayND0DView(
     override val size: Int
         get() = 1
 
-    override fun getValue(): Complex =
-            array.getValue()
+    override fun real(): Double = array.real()
+    override fun imag(): Double = array.imag()
 
-    override fun setValue(value: Complex) {
-        array.setValue(value)
+    override fun setReal(value: Double) {
+        array.setReal(value)
+    }
+
+    override fun setImag(value: Double) {
+        array.setImag(value)
     }
 
 }

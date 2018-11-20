@@ -1,17 +1,23 @@
 package tomasvolker.numeriko.complex.implementations.array0d
 
-import tomasvolker.numeriko.complex.Complex
+
 import tomasvolker.numeriko.complex.interfaces.array0d.DefaultMutableComplexArray0D
 
 class NumerikoComplexArray0D(
-        var data: Complex
+        var realValue: Double,
+        var imagValue: Double
 ): DefaultMutableComplexArray0D() {
 
-    override fun getValue(): Complex = data
+    override fun real(): Double = realValue
 
-    override fun setValue(value: Complex) {
-        data = value
+    override fun imag(): Double = imagValue
+
+    override fun setReal(value: Double) {
+        realValue = value
     }
 
+    override fun setImag(value: Double) {
+        imagValue = value
+    }
 
 }

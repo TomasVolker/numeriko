@@ -3,20 +3,38 @@ package tomasvolker.numeriko.complex.interfaces.array1d
 import tomasvolker.numeriko.complex.Complex
 import tomasvolker.numeriko.complex.interfaces.array1d.view.*
 import tomasvolker.numeriko.complex.div
+import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
+import tomasvolker.numeriko.complex.interfaces.array0d.MutableComplexArray0D
+import tomasvolker.numeriko.complex.interfaces.arraynd.ComplexArrayND
 import tomasvolker.numeriko.complex.interfaces.factory.complexArray1D
 import tomasvolker.numeriko.complex.interfaces.factory.copy
 import tomasvolker.numeriko.complex.transforms.fft.array1d.fft
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
 import kotlin.math.atan2
 import kotlin.math.hypot
 
-interface ComplexArray1D: Array1D<Complex> {
+interface ComplexArray1D: NumericArray1D<Complex>, ComplexArrayND {
+
+    override fun getValue(vararg indices: Int): Complex {
+        requireValidIndices(indices)
+        return getValue(indices[0])
+    }
+
+    override fun real(vararg indices: Int): Double {
+        requireValidIndices(indices)
+        return real(indices[0])
+    }
+
+    override fun imag(vararg indices: Int): Double {
+        requireValidIndices(indices)
+        return imag(indices[0])
+    }
 
     override fun getView(i0: IntProgression): ComplexArray1D =
-            DefaultMutableComplexArray1DView(
+            DefaultComplexArray1DView(
                     array = this.asMutable(),
                     offset = i0.first,
                     size = i0.count(),
@@ -24,6 +42,25 @@ interface ComplexArray1D: Array1D<Complex> {
             )
 
     override fun getView(i0: IndexProgression): ComplexArray1D = getView(i0.compute())
+
+    override fun getView(i0: Int): MutableComplexArray0D =
+            defaultComplexArray0DView(this.asMutable(), i0)
+
+    override fun getView(vararg indices: IntProgression): ComplexArray1D {
+        requireValidIndices(indices)
+        return getView(indices[0])
+    }
+
+    override fun lowerRank(axis: Int): ComplexArray0D {
+        requireValidAxis(axis)
+        return DefaultComplexArray1DLowerRankView(this.asMutable(), 0)
+    }
+
+    override fun arrayAlongAxis(axis: Int, index: Int): ComplexArray0D {
+        requireValidAxis(axis)
+        requireValidIndices(index)
+        return DefaultComplexArray1DLowerRankView(this.asMutable(), index)
+    }
 
     operator fun get(index: Int): Complex = getValue(index)
     operator fun get(index: Index): Complex = getValue(index)
@@ -59,12 +96,12 @@ interface ComplexArray1D: Array1D<Complex> {
     /**
      * Returns this array unaltered.
      */
-    operator fun unaryPlus(): ComplexArray1D = this
+    override operator fun unaryPlus(): ComplexArray1D = this
 
     /**
      * Returns a copy of this array with element wise negation.
      */
-    operator fun unaryMinus(): ComplexArray1D =
+    override operator fun unaryMinus(): ComplexArray1D =
             elementWise { -it }
 
     /**
@@ -198,25 +235,25 @@ interface ComplexArray1D: Array1D<Complex> {
     /**
      * Returns an array with the element wise addition with [other].
      */
-    operator fun plus(other: Double): ComplexArray1D =
+    override operator fun plus(other: Double): ComplexArray1D =
             elementWise { it + other }
 
     /**
      * Returns an array with the element wise subtraction with [other].
      */
-    operator fun minus(other: Double): ComplexArray1D =
+    override operator fun minus(other: Double): ComplexArray1D =
             elementWise { it - other }
 
     /**
      * Returns an array with the element wise multiplication with [other].
      */
-    operator fun times(other: Double): ComplexArray1D =
+    override operator fun times(other: Double): ComplexArray1D =
             elementWise { it * other }
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    operator fun div(other: Double): ComplexArray1D =
+    override operator fun div(other: Double): ComplexArray1D =
             elementWise { it / other }
 
     /**
@@ -228,25 +265,25 @@ interface ComplexArray1D: Array1D<Complex> {
     /**
      * Returns an array with the element wise addition with [other].
      */
-    operator fun plus(other: Int): ComplexArray1D =
+    override operator fun plus(other: Int): ComplexArray1D =
             plus(other.toDouble())
 
     /**
      * Returns an array with the element wise subtraction with [other].
      */
-    operator fun minus(other: Int): ComplexArray1D =
+    override operator fun minus(other: Int): ComplexArray1D =
             minus(other.toDouble())
 
     /**
      * Returns an array with the element wise multiplication with [other].
      */
-    operator fun times(other: Int): ComplexArray1D =
+    override operator fun times(other: Int): ComplexArray1D =
             times(other.toDouble())
 
     /**
      * Returns an array with the element wise division with [other].
      */
-    operator fun div(other: Int): ComplexArray1D =
+    override operator fun div(other: Int): ComplexArray1D =
             div(other.toDouble())
 
     /**

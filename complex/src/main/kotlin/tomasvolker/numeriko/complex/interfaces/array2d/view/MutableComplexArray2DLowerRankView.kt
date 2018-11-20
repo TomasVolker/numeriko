@@ -3,15 +3,13 @@ package tomasvolker.numeriko.complex.interfaces.array2d.view
 import tomasvolker.numeriko.complex.interfaces.array1d.view.DefaultMutableComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
 
-
-class MutableComplexArray2DCollapseView(
-        val array: MutableComplexArray2D
+class MutableComplexArray2DLowerRankView(
+        val array: MutableComplexArray2D,
+        val axis: Int
 ) : DefaultMutableComplexArray1D() {
 
-    val axis: Int = when {
-        array.shape0 == 1 -> 1
-        array.shape1 == 1 -> 0
-        else -> throw IllegalArgumentException("array is not flat")
+    init {
+        require(array.shape(axis) <= 1)
     }
 
     override val size: Int get() = array.size
@@ -54,28 +52,11 @@ class MutableComplexArray2DCollapseView(
 
 }
 
-fun defaultComplexArray2DView(array: MutableComplexArray2D, i0: IntProgression, i1: Int) =
-        MutableComplexArray2DCollapseView(
-            DefaultMutableComplexArray2DView(
-                array = array,
-                offset0 = i0.first,
-                offset1 = i1,
-                shape0 = i0.count(),
-                shape1 = 1,
-                stride0 = i0.step,
-                stride1 = 1
-        )
-)
+fun defaultComplexArray2DView(array: MutableComplexArray2D, i0: Int, i1: Int) =
+        defaultComplexArray2DView(array, i0..i0, i1..i1).lowerRank(axis = 0).lowerRank(axis = 0)
 
 fun defaultComplexArray2DView(array: MutableComplexArray2D, i0: Int, i1: IntProgression) =
-        MutableComplexArray2DCollapseView(
-                DefaultMutableComplexArray2DView(
-                        array = array,
-                        offset0 = i0,
-                        offset1 = i1.first,
-                        shape0 = 1,
-                        shape1 = i1.count(),
-                        stride0 = 1,
-                        stride1 = i1.step
-                )
-        )
+        defaultComplexArray2DView(array, i0..i0, i1).lowerRank(axis = 0)
+
+fun defaultComplexArray2DView(array: MutableComplexArray2D, i0: IntProgression, i1: Int) =
+        defaultComplexArray2DView(array, i0, i1..i1).lowerRank(axis = 1)

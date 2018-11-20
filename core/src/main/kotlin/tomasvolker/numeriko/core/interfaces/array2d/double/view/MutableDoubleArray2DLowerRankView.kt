@@ -18,14 +18,8 @@ class MutableDoubleArray2DLowerRankView(
     override fun getDouble(i0: Int): Double {
         requireValidIndices(i0)
         return when(axis) {
-            0 -> array.getValue(
-                    i0,
-                    0
-            )
-            1 -> array.getValue(
-                    0,
-                    i0
-            )
+            0 -> array.getValue(i0, 0)
+            1 -> array.getValue(0, i0)
             else -> throw IllegalStateException()
         }
     }
@@ -33,16 +27,8 @@ class MutableDoubleArray2DLowerRankView(
     override fun setDouble(value: Double, i0: Int) {
         requireValidIndices(i0)
         when(axis) {
-            0 -> array.setDouble(
-                    value,
-                    i0,
-                    0
-            )
-            1 -> array.setDouble(
-                    value,
-                    0,
-                    i0
-            )
+            0 -> array.setDouble(value, i0, 0)
+            1 -> array.setDouble(value, 0, i0)
             else -> throw IllegalStateException()
         }
     }

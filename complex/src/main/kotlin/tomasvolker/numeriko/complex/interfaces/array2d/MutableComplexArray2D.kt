@@ -1,20 +1,53 @@
 package tomasvolker.numeriko.complex.interfaces.array2d
 
 import tomasvolker.numeriko.complex.Complex
+import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
+import tomasvolker.numeriko.complex.interfaces.array0d.MutableComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.view.DefaultMutableComplexArray2DTransposeView
 import tomasvolker.numeriko.complex.interfaces.array2d.view.defaultComplexArray2DView
+import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.complex.toComplex
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.complex.interfaces.factory.*
+import tomasvolker.numeriko.core.interfaces.array2d.numeric.MutableNumericArray2D
 import kotlin.math.cos
 import kotlin.math.sin
 
-interface MutableComplexArray2D: ComplexArray2D, MutableArray2D<Complex> {
+interface MutableComplexArray2D: ComplexArray2D, MutableNumericArray2D<Complex>, MutableComplexArrayND {
+
+    override fun setValue(value: Complex, vararg indices: Int) {
+        requireValidIndices(indices)
+        setValue(value, indices[0], indices[1])
+    }
+
+    override fun setReal(value: Double, vararg indices: Int) {
+        requireValidIndices(indices)
+        setReal(value, indices[0], indices[1])
+    }
+
+    override fun setImag(value: Double, vararg indices: Int) {
+        requireValidIndices(indices)
+        setImag(value, indices[0], indices[1])
+    }
+
+    override fun lowerRank(axis: Int): MutableComplexArray1D =
+            super<ComplexArray2D>.lowerRank(axis).asMutable()
+
+    override fun arrayAlongAxis(axis: Int, index: Int): MutableComplexArray1D =
+            super<ComplexArray2D>.arrayAlongAxis(axis, index).asMutable()
+
+    override fun getView(vararg indices: IndexProgression): MutableComplexArray2D =
+            getView(*indices.computeIndices())
+
+    override fun getView(vararg indices: IntProgression): MutableComplexArray2D {
+        requireValidIndices(indices)
+        return getView(indices[0], indices[1])
+    }
 
     override fun setValue(value: Complex, i0: Int, i1: Int) {
         setReal(value.real, i0, i1)
@@ -55,6 +88,11 @@ interface MutableComplexArray2D: ComplexArray2D, MutableArray2D<Complex> {
         }
 
     }
+
+    override fun getView(i0: Int  , i1: Int  ): MutableComplexArray0D = defaultComplexArray2DView(this.asMutable(), i0, i1)
+    override fun getView(i0: Int  , i1: Index): MutableComplexArray0D = getView(i0.compute(0), i1.compute(1))
+    override fun getView(i0: Index, i1: Int  ): MutableComplexArray0D = getView(i0.compute(0), i1.compute(1))
+    override fun getView(i0: Index, i1: Index): MutableComplexArray0D = getView(i0.compute(0), i1.compute(1))
 
     override fun getView(i0: Int  , i1: IntProgression  ): MutableComplexArray1D = defaultComplexArray2DView(this, i0, i1)
     override fun getView(i0: Int  , i1: IndexProgression): MutableComplexArray1D = getView(i0.compute(0), i1.compute(1))
