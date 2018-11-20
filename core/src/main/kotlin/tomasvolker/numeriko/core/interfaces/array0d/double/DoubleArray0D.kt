@@ -24,6 +24,14 @@ interface DoubleArray0D: NumericArray0D<Double>, DoubleArrayND {
 
     override fun getView(): DoubleArray0D = this
 
+    override fun arrayAlongAxis(axis: Int, index: Int): Nothing {
+        super<NumericArray0D>.arrayAlongAxis(axis, index)
+    }
+
+    override fun lowerRank(axis: Int): Nothing {
+        super<NumericArray0D>.lowerRank(axis)
+    }
+
     override fun getDouble(): Double
 
     override fun copy(): DoubleArray0D = copy(this)

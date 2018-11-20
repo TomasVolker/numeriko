@@ -3,14 +3,18 @@ package tomasvolker.numeriko.complex.interfaces.factory
 import tomasvolker.numeriko.complex.Complex
 import tomasvolker.numeriko.complex.implementations.array0d.NumerikoComplexArray0D
 import tomasvolker.numeriko.complex.implementations.array1d.NumerikoComplexArray1D
-import tomasvolker.numeriko.complex.implementations.array2d.NumerikoMutableComplexArray2D
+import tomasvolker.numeriko.complex.implementations.array2d.NumerikoComplexArray2D
+import tomasvolker.numeriko.complex.implementations.arraynd.NumerikoComplexArrayND
 import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.ComplexArray2D
+import tomasvolker.numeriko.complex.interfaces.arraynd.ComplexArrayND
 import tomasvolker.numeriko.complex.toComplex
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 
@@ -47,6 +51,13 @@ fun copy(array: ComplexArray2D): ComplexArray2D =
                 initImag = { i0, i1 -> array.imag(i0, i1) }
         )
 
+fun copy(array: ComplexArrayND): ComplexArrayND =
+        complexArrayND(
+                shape = array.shape,
+                initReal = { indices -> array.real(*indices.toIntArray()) },
+                initImag = { indices -> array.imag(*indices.toIntArray()) }
+        )
+
 
 fun complexZeros(size: Int): ComplexArray1D =
         NumerikoComplexArray1D(
@@ -55,9 +66,15 @@ fun complexZeros(size: Int): ComplexArray1D =
         )
 
 fun complexZeros(shape0: Int, shape1: Int): ComplexArray2D =
-        NumerikoMutableComplexArray2D(
+        NumerikoComplexArray2D(
                 real = doubleZeros(shape0, shape1).asMutable(),
                 imag = doubleZeros(shape0, shape1).asMutable()
+        )
+
+fun complexZeros(shape: IntArray1D): ComplexArrayND =
+        NumerikoComplexArrayND(
+                real = doubleZeros(shape).asMutable(),
+                imag = doubleZeros(shape).asMutable()
         )
 
 fun complexArray0D(complex: Complex): ComplexArray0D =
@@ -123,7 +140,7 @@ inline fun complexArray2D(
 
     }
 
-    return NumerikoMutableComplexArray2D(
+    return NumerikoComplexArray2D(
             real = real,
             imag = imag
     )
@@ -144,7 +161,45 @@ inline fun complexArray2D(
 
     }
 
-    return NumerikoMutableComplexArray2D(
+    return NumerikoComplexArray2D(
+            real = real,
+            imag = imag
+    )
+}
+
+inline fun complexArrayND(
+        shape: IntArray1D,
+        init: (indices: IntArray1D)->Number
+): ComplexArrayND {
+    val real = doubleZeros(shape).asMutable()
+    val imag = doubleZeros(shape).asMutable()
+
+    real.forEachIndices { indices ->
+        val complex = init(indices).toComplex()
+        real[indices] = complex.real
+        imag[indices] = complex.imag
+    }
+
+    return NumerikoComplexArrayND(
+            real = real,
+            imag = imag
+    )
+}
+
+inline fun complexArrayND(
+        shape: IntArray1D,
+        initReal: (indices: IntArray1D)->Number,
+        initImag: (indices: IntArray1D)->Number
+): ComplexArrayND {
+    val real = doubleZeros(shape).asMutable()
+    val imag = doubleZeros(shape).asMutable()
+
+    real.forEachIndices { indices ->
+        real[indices] = initReal(indices).toDouble()
+        imag[indices] = initImag(indices).toDouble()
+    }
+
+    return NumerikoComplexArrayND(
             real = real,
             imag = imag
     )

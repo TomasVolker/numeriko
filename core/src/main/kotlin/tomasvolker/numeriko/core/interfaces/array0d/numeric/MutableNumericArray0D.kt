@@ -43,6 +43,14 @@ interface MutableNumericArray0D<N: Number>: NumericArray0D<N>, MutableArray0D<N>
 
     override fun getView(): MutableNumericArray0D<N> = this
 
+    override fun arrayAlongAxis(axis: Int, index: Int): Nothing {
+        super<NumericArray0D>.arrayAlongAxis(axis, index)
+    }
+
+    override fun lowerRank(axis: Int): Nothing {
+        super<NumericArray0D>.lowerRank(axis)
+    }
+
     fun setValue(other: NumericArray0D<N>) {
         setValue(other.getValue())
     }

@@ -6,7 +6,6 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
@@ -18,7 +17,7 @@ import tomasvolker.numeriko.core.primitives.sumDouble
 import kotlin.math.max
 import kotlin.math.min
 
-interface DoubleArrayND: ArrayND<Double>, NumericArrayND<Double> {
+interface DoubleArrayND: NumericArrayND<Double> {
 
     override fun cast(value: Number): Double = value.toDouble()
 

@@ -28,6 +28,16 @@ interface Array0D<out T>: ArrayND<T> {
 
     fun getView(): Array0D<T> = this
 
+    override fun lowerRank(axis: Int): Nothing {
+        requireValidAxis(axis)
+        error("requireValidAxis should fail")
+    }
+
+    override fun arrayAlongAxis(axis: Int, index: Int): Nothing {
+        requireValidAxis(axis)
+        error("requireValidAxis should fail")
+    }
+
     override fun copy(): Array0D<T> = copy(this)
 
     override fun iterator(): Iterator<T> = DefaultArray0DIterator(this)

@@ -8,7 +8,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 
-interface MutableComplexArray0D: ComplexArray0D, MutableNumericArray0D<Complex>/*, MutableComplexArrayND */{
+interface MutableComplexArray0D: ComplexArray0D, MutableNumericArray0D<Complex> /*, MutableComplexArrayND */{
 
     override fun getView(vararg indices: IntProgression): MutableComplexArray0D {
         requireValidIndices(indices)
@@ -34,20 +34,18 @@ interface MutableComplexArray0D: ComplexArray0D, MutableNumericArray0D<Complex>/
 */
     override fun getView(): MutableComplexArray0D = this
 
-    override fun lowerRank(axis: Int): MutableNumericArrayND<Complex> {
-        requireValidAxis(axis)
-        error("requireValidAxis should fail")
+    override fun lowerRank(axis: Int): Nothing {
+        super<ComplexArray0D>.lowerRank(axis)
     }
 
-    override fun arrayAlongAxis(axis: Int, index: Int): MutableNumericArrayND<Complex> {
-        requireValidAxis(axis)
-        error("requireValidAxis should fail")
+    override fun arrayAlongAxis(axis: Int, index: Int): Nothing {
+        super<ComplexArray0D>.arrayAlongAxis(axis, index)
     }
 
     fun setValue(other: ComplexArray0D) {
-        setDouble(other.getDouble())
+        setValue(other.get())
     }
 
-    fun set(value: Double): Unit = setDouble(value)
+    fun set(value: Complex): Unit = setValue(value)
 
 }

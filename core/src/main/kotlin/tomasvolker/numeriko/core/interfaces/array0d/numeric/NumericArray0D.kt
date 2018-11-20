@@ -41,6 +41,14 @@ interface NumericArray0D<out N: Number>: Array0D<N>, NumericArrayND<N> {
 
     override fun getView(): NumericArray0D<N> = this
 
+    override fun lowerRank(axis: Int): Nothing {
+        super.lowerRank(axis)
+    }
+
+    override fun arrayAlongAxis(axis: Int, index: Int): Nothing {
+        super<Array0D>.arrayAlongAxis(axis, index)
+    }
+
     override fun copy(): NumericArray0D<N> = TODO() // copy(this)
 
     override fun asMutable(): MutableNumericArray0D<@UnsafeVariance N> = this as MutableNumericArray0D<N>

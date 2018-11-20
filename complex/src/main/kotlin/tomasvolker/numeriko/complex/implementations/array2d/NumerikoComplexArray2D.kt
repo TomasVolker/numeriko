@@ -6,7 +6,7 @@ import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
 import tomasvolker.numeriko.complex.interfaces.array2d.view.DefaultMutableComplexArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 
-class NumerikoMutableComplexArray2D(
+class NumerikoComplexArray2D(
         override val real: MutableDoubleArray2D,
         override val imag: MutableDoubleArray2D
 ): DefaultMutableComplexArray2D() {
@@ -53,7 +53,7 @@ class NumerikoMutableComplexArray2D(
     override fun getView(i0: IntProgression, i1: IntProgression): MutableComplexArray2D {
         requireValidIndexRange(i0, axis = 0)
         requireValidIndexRange(i1, axis = 1)
-        return NumerikoMutableComplexArray2D(
+        return NumerikoComplexArray2D(
                 real = real[i0, i1],
                 imag = imag[i0, i1]
         )

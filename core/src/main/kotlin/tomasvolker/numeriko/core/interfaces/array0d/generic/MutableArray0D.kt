@@ -17,4 +17,12 @@ interface MutableArray0D<T>: Array0D<T>, MutableArrayND<T> {
 
     override fun getView(): MutableArray0D<T> = this
 
+    override fun lowerRank(axis: Int): Nothing {
+        super<Array0D>.lowerRank(axis)
+    }
+
+    override fun arrayAlongAxis(axis: Int, index: Int): Nothing {
+        super<Array0D>.arrayAlongAxis(axis, index)
+    }
+
 }
