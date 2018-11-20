@@ -1,8 +1,10 @@
 package tomasvolker.numeriko.complex.interfaces.factory
 
 import tomasvolker.numeriko.complex.Complex
-import tomasvolker.numeriko.complex.implementations.array1d.NumerikoMutableComplexArray1D
-import tomasvolker.numeriko.complex.implementations.array1d.NumerikoMutableComplexArray2D
+import tomasvolker.numeriko.complex.implementations.array0d.NumerikoComplexArray0D
+import tomasvolker.numeriko.complex.implementations.array1d.NumerikoComplexArray1D
+import tomasvolker.numeriko.complex.implementations.array2d.NumerikoMutableComplexArray2D
+import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.ComplexArray2D
 import tomasvolker.numeriko.complex.toComplex
@@ -10,7 +12,6 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
-import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 
 fun DoubleArray1D.toComplexArray(): ComplexArray1D =
@@ -27,6 +28,9 @@ inline fun ComplexArray1D.elementWiseIndexed(
     }
     return result
 }
+
+fun copy(complex: ComplexArray0D): ComplexArray0D =
+        NumerikoComplexArray0D(complex.get())
 
 fun copy(array: ComplexArray1D): ComplexArray1D =
         complexArray1D(
@@ -45,7 +49,7 @@ fun copy(array: ComplexArray2D): ComplexArray2D =
 
 
 fun complexZeros(size: Int): ComplexArray1D =
-        NumerikoMutableComplexArray1D(
+        NumerikoComplexArray1D(
                 real = doubleZeros(size).asMutable(),
                 imag = doubleZeros(size).asMutable()
         )
@@ -56,12 +60,15 @@ fun complexZeros(shape0: Int, shape1: Int): ComplexArray2D =
                 imag = doubleZeros(shape0, shape1).asMutable()
         )
 
+fun complexArray0D(complex: Complex): ComplexArray0D =
+        NumerikoComplexArray0D(data = complex)
+
 
 fun complexArray1DOf(vararg complex: Complex): ComplexArray1D =
         complexArray1D(complex)
 
 fun complexArray1D(complex: Array<out Complex>): ComplexArray1D =
-        NumerikoMutableComplexArray1D(
+        NumerikoComplexArray1D(
                 real = doubleArray1D(complex.size) { i -> complex[i].real }.asMutable(),
                 imag = doubleArray1D(complex.size) { i -> complex[i].imag }.asMutable()
         )
@@ -76,7 +83,7 @@ inline fun complexArray1D(size: Int, init: (i: Int)->Number): ComplexArray1D {
         imag[i] = complex.imag
     }
 
-    return NumerikoMutableComplexArray1D(
+    return NumerikoComplexArray1D(
             real = real,
             imag = imag
     )
@@ -95,7 +102,7 @@ inline fun complexArray1D(
         imag[i] = initImag(i)
     }
 
-    return NumerikoMutableComplexArray1D(
+    return NumerikoComplexArray1D(
             real = real,
             imag = imag
     )

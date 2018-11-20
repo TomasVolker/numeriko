@@ -2,12 +2,9 @@ package tomasvolker.numeriko.complex.implementations.array1d
 
 import tomasvolker.numeriko.complex.interfaces.array1d.view.DefaultMutableComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
-import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 
-class NumerikoMutableComplexArray1D(
+class NumerikoComplexArray1D(
         override val real: MutableDoubleArray1D,
         override val imag: MutableDoubleArray1D
 ): DefaultMutableComplexArray1D() {
@@ -32,7 +29,7 @@ class NumerikoMutableComplexArray1D(
 
     override fun getView(i0: IntProgression): MutableComplexArray1D {
         requireValidIndexRange(i0)
-        return NumerikoMutableComplexArray1D(
+        return NumerikoComplexArray1D(
                 real = real[i0],
                 imag = imag[i0]
         )

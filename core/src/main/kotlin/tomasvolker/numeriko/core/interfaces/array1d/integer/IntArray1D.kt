@@ -34,7 +34,6 @@ interface IntArray1D: Array1D<Int> {
     operator fun get(index: IntProgression): IntArray1D = getView(index)
     operator fun get(index: IndexProgression): IntArray1D = getView(index)
 
-    // Return copy?
     operator fun unaryPlus(): IntArray1D = this
     operator fun unaryMinus(): IntArray1D = elementWise { -it }
 
