@@ -3,11 +3,11 @@
 This module contains an implementation of complex numbers,
 complex n-dimensional arrays and associated algorithms.
 
-Below is an example of an FFT implemented with 'numeriko-complex'.
+Below is an example of an FFT implemented with `numeriko-complex`.
 
 
 ```kotlin
-
+// FFT for powers of 2
 fun ComplexArray1D.fft(): ComplexArray1D = when(size) {
     0, 1 -> this.copy()
     else -> {
