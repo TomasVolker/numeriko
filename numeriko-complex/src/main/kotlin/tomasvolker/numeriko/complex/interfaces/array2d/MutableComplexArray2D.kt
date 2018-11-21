@@ -1,7 +1,6 @@
 package tomasvolker.numeriko.complex.interfaces.array2d
 
-import tomasvolker.numeriko.complex.Complex
-import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.array0d.MutableComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
@@ -10,7 +9,7 @@ import tomasvolker.numeriko.complex.interfaces.array2d.view.defaultComplexArray2
 import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.complex.toComplex
+import tomasvolker.numeriko.complex.primitives.toComplex
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.complex.interfaces.factory.*
@@ -124,8 +123,8 @@ interface MutableComplexArray2D: ComplexArray2D, MutableNumericArray2D<Complex>,
     fun setView(value: ComplexArray2D, i0: IntProgression  , i1: IndexProgression) = setView(value, i0.compute(0), i1.compute(1))
     fun setView(value: ComplexArray2D, i0: IndexProgression, i1: IntProgression  ) = setView(value, i0.compute(0), i1.compute(1))
 
-    override fun setView(value: Complex, i0: IntProgression  , i1: IntProgression  ) = getView(i0, i1).setValue(value)
-    override fun setView(value: Complex, i0: IntProgression  , i1: IndexProgression) = setView(value, i0.compute(0), i1.compute(1))
+    override fun setView(value: Complex, i0: IntProgression, i1: IntProgression  ) = getView(i0, i1).setValue(value)
+    override fun setView(value: Complex, i0: IntProgression, i1: IndexProgression) = setView(value, i0.compute(0), i1.compute(1))
     override fun setView(value: Complex, i0: IndexProgression, i1: IntProgression  ) = setView(value, i0.compute(0), i1.compute(1))
     override fun setView(value: Complex, i0: IndexProgression, i1: IndexProgression) = setView(value, i0.compute(0), i1.compute(1))
 

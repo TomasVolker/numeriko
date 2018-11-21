@@ -1,6 +1,5 @@
 package tomasvolker.numeriko.complex.interfaces.arraynd.view
 
-import tomasvolker.numeriko.complex.Complex
 import tomasvolker.numeriko.complex.interfaces.array0d.DefaultMutableComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
 

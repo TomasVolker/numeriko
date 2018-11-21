@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.complex.interfaces.arraynd
 
-import tomasvolker.numeriko.complex.Complex
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.factory.complexZeros
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices

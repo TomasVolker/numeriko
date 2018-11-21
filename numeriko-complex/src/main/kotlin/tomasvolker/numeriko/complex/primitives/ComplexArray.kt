@@ -1,4 +1,4 @@
-package tomasvolker.numeriko.complex
+package tomasvolker.numeriko.complex.primitives
 
 import kotlin.math.atan2
 import kotlin.math.hypot
@@ -49,7 +49,7 @@ class ComplexArrayIterator(
 
 }
 
-inline fun ComplexArray(size: Int, init: (i: Int)->Complex) =
+inline fun ComplexArray(size: Int, init: (i: Int)-> Complex) =
         ComplexArray(size).apply {
             for (i in 0 until size) {
                 val value = init(i)

@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.complex.transforms.fht.array1d
 
-import tomasvolker.numeriko.complex.ComplexArray
+import tomasvolker.numeriko.complex.primitives.ComplexArray
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros

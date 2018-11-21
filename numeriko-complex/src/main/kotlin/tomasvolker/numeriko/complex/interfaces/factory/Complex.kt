@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.complex.interfaces.factory
 
-import tomasvolker.numeriko.complex.Complex
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.implementations.array0d.NumerikoComplexArray0D
 import tomasvolker.numeriko.complex.implementations.array1d.NumerikoComplexArray1D
 import tomasvolker.numeriko.complex.implementations.array2d.NumerikoComplexArray2D
@@ -9,7 +9,7 @@ import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.ComplexArray2D
 import tomasvolker.numeriko.complex.interfaces.arraynd.ComplexArrayND
-import tomasvolker.numeriko.complex.toComplex
+import tomasvolker.numeriko.complex.primitives.toComplex
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D

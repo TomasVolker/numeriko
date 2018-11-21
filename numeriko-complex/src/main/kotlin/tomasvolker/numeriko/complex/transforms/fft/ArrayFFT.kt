@@ -1,6 +1,9 @@
 package tomasvolker.numeriko.complex.transforms.fft
 
-import tomasvolker.numeriko.complex.*
+import tomasvolker.numeriko.complex.primitives.Complex
+import tomasvolker.numeriko.complex.primitives.ComplexArray
+import tomasvolker.numeriko.complex.primitives.j
+import tomasvolker.numeriko.complex.primitives.unaryDoubleComplex
 
 import tomasvolker.numeriko.complex.transforms.replaceAll
 import tomasvolker.numeriko.core.primitives.isPowerOf2

@@ -1,5 +1,6 @@
 import org.junit.Test
-import tomasvolker.numeriko.complex.*
+import tomasvolker.numeriko.complex.primitives.j
+import tomasvolker.numeriko.complex.primitives.plus
 import tomasvolker.numeriko.complex.transforms.fft.fft
 import tomasvolker.numeriko.complex.transforms.fft.ifft
 

@@ -1,8 +1,8 @@
 package tomasvolker.numeriko.complex.interfaces.array2d
 
-import tomasvolker.numeriko.complex.Complex
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.factory.complexZeros
-import tomasvolker.numeriko.complex.j
+import tomasvolker.numeriko.complex.primitives.j
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 

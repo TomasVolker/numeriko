@@ -1,5 +1,5 @@
 import org.junit.Test
-import tomasvolker.numeriko.complex.*
+import tomasvolker.numeriko.complex.primitives.*
 import java.util.*
 import kotlin.math.E
 

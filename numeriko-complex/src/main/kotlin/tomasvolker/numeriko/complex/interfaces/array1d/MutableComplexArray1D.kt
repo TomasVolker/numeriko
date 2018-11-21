@@ -1,18 +1,14 @@
 package tomasvolker.numeriko.complex.interfaces.array1d
 
-import tomasvolker.numeriko.complex.Complex
-import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.array0d.MutableComplexArray0D
-import tomasvolker.numeriko.complex.interfaces.array1d.view.DefaultComplexArray1DLowerRankView
 import tomasvolker.numeriko.complex.interfaces.array1d.view.DefaultComplexArray1DView
 import tomasvolker.numeriko.complex.interfaces.array1d.view.defaultComplexArray0DView
 import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
 import tomasvolker.numeriko.complex.interfaces.factory.copy
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
 import kotlin.math.cos

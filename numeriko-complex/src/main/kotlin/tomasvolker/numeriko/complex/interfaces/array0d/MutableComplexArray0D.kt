@@ -1,13 +1,8 @@
 package tomasvolker.numeriko.complex.interfaces.array0d
 
-import tomasvolker.numeriko.complex.Complex
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
-import tomasvolker.numeriko.complex.toComplex
-import tomasvolker.numeriko.core.interfaces.array0d.generic.MutableArray0D
 import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0D
-import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 
 interface MutableComplexArray0D: ComplexArray0D, MutableNumericArray0D<Complex>, MutableComplexArrayND {
 

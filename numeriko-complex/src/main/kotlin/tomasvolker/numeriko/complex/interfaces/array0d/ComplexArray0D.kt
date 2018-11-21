@@ -1,9 +1,9 @@
 package tomasvolker.numeriko.complex.interfaces.array0d
 
-import tomasvolker.numeriko.complex.Complex
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.arraynd.ComplexArrayND
 import tomasvolker.numeriko.complex.interfaces.factory.copy
-import tomasvolker.numeriko.complex.toComplex
+import tomasvolker.numeriko.complex.primitives.toComplex
 import tomasvolker.numeriko.core.interfaces.array0d.numeric.NumericArray0D
 
 interface ComplexArray0D: NumericArray0D<Complex>, ComplexArrayND {

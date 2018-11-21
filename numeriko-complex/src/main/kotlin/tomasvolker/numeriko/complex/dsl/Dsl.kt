@@ -4,7 +4,7 @@ import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.ComplexArray2D
 import tomasvolker.numeriko.complex.interfaces.factory.complexArray1D
 import tomasvolker.numeriko.complex.interfaces.factory.complexArray2D
-import tomasvolker.numeriko.complex.toComplex
+import tomasvolker.numeriko.complex.primitives.toComplex
 
 object C {
 

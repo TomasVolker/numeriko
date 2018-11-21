@@ -1,4 +1,4 @@
-package tomasvolker.numeriko.complex
+package tomasvolker.numeriko.complex.primitives
 
 import kotlin.math.*
 

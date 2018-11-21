@@ -1,10 +1,10 @@
 package tomasvolker.numeriko.complex.transforms.fft
 
-import tomasvolker.numeriko.complex.Complex
-import tomasvolker.numeriko.complex.toComplex
+import tomasvolker.numeriko.complex.primitives.Complex
+import tomasvolker.numeriko.complex.primitives.toComplex
 import tomasvolker.numeriko.complex.transforms.mapBoth
 import tomasvolker.numeriko.complex.transforms.partitionByIndex
-import tomasvolker.numeriko.complex.unaryDoubleComplex
+import tomasvolker.numeriko.complex.primitives.unaryDoubleComplex
 import tomasvolker.numeriko.core.primitives.isEven
 import tomasvolker.numeriko.core.primitives.modulo
 import kotlin.math.PI
@@ -70,7 +70,7 @@ fun List<Complex>.cooleyTukey(
                 .flatten()
 }
 
-inline fun <T> Iterable<T>.sumByComplex(operation: (T)->Complex) =
+inline fun <T> Iterable<T>.sumByComplex(operation: (T)-> Complex) =
         fold(0.0.toComplex()) { acc, next -> acc + operation(next) }
 
 fun List<Complex>.dft(inverse: Boolean) =

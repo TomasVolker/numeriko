@@ -1,12 +1,12 @@
 package tomasvolker.numeriko.complex.interfaces.arraynd
 
-import tomasvolker.numeriko.complex.Complex
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.ComplexArray2D
 import tomasvolker.numeriko.complex.interfaces.arraynd.view.*
 import tomasvolker.numeriko.complex.interfaces.factory.copy
-import tomasvolker.numeriko.complex.toComplex
+import tomasvolker.numeriko.complex.primitives.toComplex
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND

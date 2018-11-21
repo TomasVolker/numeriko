@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.complex.interfaces.array2d
 
-import tomasvolker.numeriko.complex.Complex
-import tomasvolker.numeriko.complex.div
+import tomasvolker.numeriko.complex.primitives.Complex
+import tomasvolker.numeriko.complex.primitives.div
 import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.view.*
@@ -9,11 +9,8 @@ import tomasvolker.numeriko.complex.interfaces.arraynd.ComplexArrayND
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.complex.interfaces.factory.*
 import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.interfaces.array0d.numeric.NumericArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.numeric.NumericArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import kotlin.math.atan2

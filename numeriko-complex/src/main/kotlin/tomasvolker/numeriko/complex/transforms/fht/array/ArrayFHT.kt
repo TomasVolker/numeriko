@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.complex.transforms.fht.array
 
-import tomasvolker.numeriko.complex.ComplexArray
+import tomasvolker.numeriko.complex.primitives.ComplexArray
 import tomasvolker.numeriko.core.primitives.modulo
 import tomasvolker.numeriko.core.primitives.sqrt
 import kotlin.math.PI

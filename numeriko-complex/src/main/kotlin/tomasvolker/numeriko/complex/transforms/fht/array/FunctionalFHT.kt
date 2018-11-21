@@ -1,8 +1,9 @@
 package tomasvolker.numeriko.complex.transforms.fht.array
 
-import tomasvolker.numeriko.complex.Complex
-import tomasvolker.numeriko.complex.*
-import tomasvolker.numeriko.complex.j
+import tomasvolker.numeriko.complex.primitives.Complex
+import tomasvolker.numeriko.complex.primitives.div
+import tomasvolker.numeriko.complex.primitives.j
+import tomasvolker.numeriko.complex.primitives.plus
 import tomasvolker.numeriko.complex.transforms.mapBoth
 import tomasvolker.numeriko.complex.transforms.partitionByIndex
 import tomasvolker.numeriko.core.primitives.isEven

@@ -1,25 +1,15 @@
 package tomasvolker.numeriko.complex.interfaces.arraynd
 
-import tomasvolker.numeriko.complex.Complex
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.array0d.MutableComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
 import tomasvolker.numeriko.complex.interfaces.arraynd.view.*
 import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndexProgression
-import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
-import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.defaultArrayNDView
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 

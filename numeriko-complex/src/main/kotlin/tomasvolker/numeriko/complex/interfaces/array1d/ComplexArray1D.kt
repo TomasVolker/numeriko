@@ -1,8 +1,8 @@
 package tomasvolker.numeriko.complex.interfaces.array1d
 
-import tomasvolker.numeriko.complex.Complex
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.array1d.view.*
-import tomasvolker.numeriko.complex.div
+import tomasvolker.numeriko.complex.primitives.div
 import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.array0d.MutableComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.arraynd.ComplexArrayND
