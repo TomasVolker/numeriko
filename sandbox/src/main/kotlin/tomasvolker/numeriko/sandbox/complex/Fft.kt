@@ -3,6 +3,9 @@ package tomasvolker.numeriko.sandbox.complex
 import tomasvolker.numeriko.complex.exp
 import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.ComplexArray2D
+import tomasvolker.numeriko.complex.interfaces.arraynd.ComplexArrayND
+import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
+import tomasvolker.numeriko.complex.interfaces.arraynd.unsafeGetView
 import tomasvolker.numeriko.complex.interfaces.factory.complexArray1D
 import tomasvolker.numeriko.complex.interfaces.factory.complexZeros
 import tomasvolker.numeriko.complex.j
@@ -11,10 +14,13 @@ import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.index.rangeTo
 import tomasvolker.numeriko.core.index.step
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.integer.elementWise
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
+import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.primitives.modulo
 import kotlin.math.PI
 import kotlin.math.cos
@@ -112,6 +118,27 @@ fun DoubleArray2D.fft2D(): ComplexArray2D {
 
     for (i1 in indices1) {
         result[All, i1] = horizontal[All, i1].fft()
+    }
+
+    return result
+}
+
+fun ComplexArrayND.fft(axis: Int): ComplexArrayND {
+
+    val result = complexZeros(this.shape).asMutable()
+
+    unsafeForEachIndices { indices ->
+
+        if (indices[axis] == 0) {
+
+            val indxs = Array<Any>(rank) { a ->
+                if (a == axis) All else 0
+            }
+            result.unsafeGetView(*indxs).setValue(
+                    this.unsafeGetView(*indxs).as1D().fastFourierTransform()
+            )
+        }
+
     }
 
     return result

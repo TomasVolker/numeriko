@@ -8,6 +8,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
+import tomasvolker.numeriko.core.interfaces.factory.doubleIdentity
 import tomasvolker.numeriko.core.primitives.indicative
 import tomasvolker.numeriko.core.primitives.isEven
 import tomasvolker.numeriko.core.primitives.sumDouble
@@ -28,6 +29,19 @@ object DefaultLinearAlgebra {
         table.inplaceReducedEchelonForm()
 
         return table[All, matrix.shape1..Last].copy()
+
+
+        /*
+        val table = matrix.copy().asMutable()
+
+        val result = doubleIdentity(matrix.shape0).asMutable()
+
+        table.inplaceGaussianElimination(result)
+
+        table.inplaceBackSubstitution(result)
+
+        return result
+        */
     }
 
     fun solve(matrix: DoubleArray2D, image: DoubleArray1D): DoubleArray1D {

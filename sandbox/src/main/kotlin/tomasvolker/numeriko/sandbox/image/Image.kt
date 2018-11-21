@@ -1,8 +1,10 @@
 package tomasvolker.numeriko.sandbox.image
 
+import com.sun.javafx.iio.ImageStorage
 import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.array2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
@@ -10,12 +12,31 @@ import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
+import kotlin.math.roundToInt
 
 val Int.alpha: Int get() = (this and 0x00FFFFFF.inv()) shr 24
 val Int.red  : Int get() = (this and 0x00FF0000) shr 16
 val Int.green: Int get() = (this and 0x0000FF00) shr 8
 val Int.blue : Int get() = (this and 0x000000FF)
 
+fun rgb(red: Int, green: Int, blue: Int): Int =
+        (red shl 16) or (green shl 8) or blue
+
+fun saveGrayScale(imag: DoubleArray2D, file: File, format: String = "png") {
+
+    val rescale = 1.0 / (2.0 * imag.maxNorm())
+
+    val image = BufferedImage(imag.shape1, imag.shape0, BufferedImage.TYPE_INT_RGB).apply {
+        imag.forEachIndex { y, x ->
+
+            val gray = (255 * (0.5 + rescale * imag[y, x])).roundToInt()
+
+            setRGB(x, y, rgb(gray, gray, gray))
+        }
+    }
+
+    ImageIO.write(image, format, file)
+}
 
 fun BufferedImage.toDoubleArray2D(): DoubleArray2D =
         doubleArray2D(height, width) { y, x ->

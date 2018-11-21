@@ -15,7 +15,7 @@ fun main() {
 
     NumerikoConfig.checkRanges = true
 
-    benchmarkInverse(iterations = 20)
+    benchmarkInverse(iterations = 100)
 
 }
 

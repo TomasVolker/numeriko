@@ -6,8 +6,8 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.defaultEquals
 import tomasvolker.numeriko.core.interfaces.array2d.double.defaultHashCode
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.defaultEquals
+import tomasvolker.numeriko.core.interfaces.array2d.generic.defaultToString
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.double.defaultToString
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 
 abstract class DefaultDoubleArray2D: DoubleArray2D {

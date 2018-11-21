@@ -2,6 +2,7 @@ package tomasvolker.numeriko.sandbox.image
 
 import tomasvolker.kyplot.dsl.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
+import java.io.File
 import kotlin.math.hypot
 import kotlin.system.measureTimeMillis
 
@@ -14,6 +15,8 @@ fun main() {
 
     val gradx = image.computeGradientX()
     val grady = image.computeGradientY()
+
+    saveGrayScale(gradx, File("./sandbox/res/lena_grad_x.png"), format = "png")
 
     val edges = elementWise(gradx, grady) { x, y ->
         hypot(x, y)

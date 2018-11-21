@@ -16,7 +16,10 @@ inline fun MutableDoubleArray2D.inplaceGaussianElimination(
 
     require(shape0 <= shape1)
 
-    for (pivotIndex in indices0) {
+    val shape0 = shape0
+    val shape1 = shape1
+
+    for (pivotIndex in 0 until shape0) {
 
         val pivot = this[pivotIndex, pivotIndex]
 
@@ -42,8 +45,10 @@ fun MutableDoubleArray2D.inplaceGaussianElimination(image: MutableDoubleArray2D)
 
     require(this.shape0 == image.shape0)
 
+    val imageShape1 = image.shape1
+
     inplaceGaussianElimination { pivotIndex, i0, factor ->
-        for (i1 in image.indices1) {
+        for (i1 in 0 until imageShape1) {
             image[i0, i1] -= factor * image[pivotIndex, i1]
         }
     }
@@ -62,9 +67,25 @@ fun MutableDoubleArray2D.inplaceGaussianElimination(image: MutableDoubleArray1D)
 
 fun DoubleArray2D.inplaceBackSubstitution(image: MutableDoubleArray1D) {
 
+    val shape1 = shape1
+
     for (i0 in indices0.reversed()) {
         image[i0] = (image[i0] -
-                sumDouble((i0+1) until shape1) { i1 -> this[i0, i1] * image[i1] }) / this[i0, i0]
+                sumDouble((i0+1) until shape1) { k1 -> this[i0, k1] * image[k1] }) / this[i0, i0]
+    }
+
+}
+
+fun DoubleArray2D.inplaceBackSubstitution(image: MutableDoubleArray2D) {
+
+    val shape1 = shape1
+    val imageShape1 = image.shape1
+
+    for (i0 in indices0.reversed()) {
+        for (i1 in 0 until imageShape1) {
+            image[i0, i1] = (image[i0, i1] -
+                    sumDouble((i0 + 1) until shape1) { k1 -> this[i0, k1] * image[k1, i1] }) / this[i0, i0]
+        }
     }
 
 }
@@ -72,6 +93,9 @@ fun DoubleArray2D.inplaceBackSubstitution(image: MutableDoubleArray1D) {
 fun MutableDoubleArray2D.inplaceReducedEchelonForm() {
 
     inplaceGaussianElimination()
+
+    val shape0 = shape0
+    val shape1 = shape1
 
     for (pivotIndex in indices0.reversed()) {
 

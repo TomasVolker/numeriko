@@ -3,18 +3,12 @@ package tomasvolker.numeriko.core.interfaces.array1d.double
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
-import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray1DView
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
-import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
-import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
-import tomasvolker.numeriko.core.interfaces.array2d.numeric.NumericArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.preconditions.requireSameSize
@@ -265,8 +259,11 @@ interface DoubleArray1D: NumericArray1D<Double>, DoubleArrayND {
         require(this.size == other.shape0) {
             "sizes dont match"
         }
+
+        val contractionSize = this.size
+
         return doubleArray1D(other.shape1) { i ->
-            sumDouble(other.indices0) { k -> this[k] * other[k, i] }
+            sumDouble(0 until contractionSize) { k -> this[k] * other[k, i] }
         }
     }
 
@@ -339,14 +336,17 @@ interface DoubleArray1D: NumericArray1D<Double>, DoubleArrayND {
 
         val filterCenter = filter.size / 2
 
-        return doubleArray1D(this.size) { i ->
-            sumDouble(filter.indices) { j ->
-                val k = i - j - filterCenter
-                if (k in 0 until this.size) {
-                    this[k] * filter[j]
+        val resultSize = this.size
+        val filterSize = filter.size
+
+        return doubleArray1D(resultSize) { i ->
+            sumDouble(0 until filterSize) { j ->
+                val k = i + j - filterCenter
+                if (k in 0 until resultSize) {
+                    this[k]
                 } else {
                     padding
-                }
+                } * filter[j]
             }
         }
     }

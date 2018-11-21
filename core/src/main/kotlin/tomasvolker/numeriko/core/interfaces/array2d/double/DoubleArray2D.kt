@@ -194,7 +194,7 @@ interface DoubleArray2D: NumericArray2D<Double>, DoubleArrayND {
 
     fun trace(): Double {
         require(isSquare())
-        return sumDouble(indices0) { i ->
+        return sumDouble(0 until this.shape0) { i ->
             this[i, i]
         }
     }
@@ -382,8 +382,10 @@ interface DoubleArray2D: NumericArray2D<Double>, DoubleArrayND {
         require(this.shape1 == other.size) {
             "sizes dont match: this.shape0 = ${this.shape1} other.size = ${other.size}"
         }
+        val contractionIndices = this.indices1
+
         return doubleArray1D(this.shape0) { i0 ->
-            sumDouble(this.indices1) { k -> this[i0, k] * other[k] }
+            sumDouble(contractionIndices) { k -> this[i0, k] * other[k] }
         }
     }
 
@@ -445,15 +447,21 @@ interface DoubleArray2D: NumericArray2D<Double>, DoubleArrayND {
         val filterCenter0 = filter.shape0 / 2
         val filterCenter1 = filter.shape1 / 2
 
-        return doubleArray2D(this.shape0, this.shape1) { i0, i1 ->
-            sumDouble(filter.indices(0), filter.indices(1)) { j0, j1 ->
-                val k0 = i0 - j0 - filterCenter0
-                val k1 = i1 - j1 - filterCenter1
-                if (k0 in 0 until this.shape0 && k1 in 0 until this.shape1) {
-                    this[k0, k1] * filter[j0, j1]
+        val filterShape0 = filter.shape0
+        val filterShape1 = filter.shape1
+
+        val resultShape0 = this.shape0
+        val resultShape1 = this.shape1
+
+        return doubleArray2D(resultShape0, resultShape1) { i0, i1 ->
+            sumDouble(0 until filterShape0, 0 until filterShape1) { j0, j1 ->
+                val k0 = i0 + j0 - filterCenter0
+                val k1 = i1 + j1 - filterCenter1
+                if (k0 in 0 until resultShape0 && k1 in 0 until resultShape1) {
+                    this[k0, k1]
                 } else {
                     padding
-                }
+                } * filter[j0, j1]
             }
         }
     }

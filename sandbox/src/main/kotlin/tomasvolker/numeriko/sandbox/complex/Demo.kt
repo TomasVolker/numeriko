@@ -31,8 +31,7 @@ import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.primitives.modulo
 import tomasvolker.numeriko.core.primitives.squared
-import tomasvolker.numeriko.sandbox.image.loadGrayScaleImage
-import tomasvolker.numeriko.sandbox.image.showImage
+import tomasvolker.numeriko.sandbox.image.*
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.ln
@@ -40,11 +39,6 @@ import kotlin.math.sin
 
 
 fun main() {
-/*
-    val c3d = complexArrayND(I[2,3,4]) { (i0, i1, i2) ->
-        i0 + i1.j + 10 * i2
-    }
-    */
 
     val image = loadGrayScaleImage("./sandbox/res/lena.png")
 

@@ -66,6 +66,7 @@ inline fun showImage(
     init: Image.Builder.()->Unit = {}
 ) {
     showPlot(title) {
+        grid.visible = false
         image(
             data = data,
             init = init
