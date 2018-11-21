@@ -140,7 +140,7 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IndexOutOfBoundsException  if some of the progressions are out of bounds
      */
     fun getView(vararg indices: IntProgression): ArrayND<T> =
-            defaultArrayNDView(this.asMutable(), indices)
+            defaultArrayNDView<T>(this.asMutable(), indices)
 
     /**
      * Returns a view of the array on the given index progressions.

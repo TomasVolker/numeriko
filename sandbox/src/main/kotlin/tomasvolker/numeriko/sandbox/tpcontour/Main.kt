@@ -1,16 +1,20 @@
 package tomasvolker.numeriko.sandbox.tpcontour
 
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.sumBy
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultDoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2D
+import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
+import tomasvolker.numeriko.core.primitives.indicative
 import tomasvolker.numeriko.core.primitives.squared
 import tomasvolker.numeriko.core.probability.continuous.NormalDistribution
 import tomasvolker.numeriko.sandbox.image.*
 import kotlin.math.exp
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
-import kotlin.system.measureTimeMillis
 
 fun DoubleArray2D.power() = sumBy { it.squared() }
 
@@ -21,6 +25,16 @@ interface ImageFilter: (DoubleArray2D)->DoubleArray2D {
     fun filter(image: DoubleArray2D): DoubleArray2D
 
     override fun invoke(image: DoubleArray2D): DoubleArray2D = filter(image)
+
+}
+
+data class ConvolutionRank1Filter(
+        val kernelX: DoubleArray1D,
+        val kernelY: DoubleArray1D
+): ImageFilter {
+
+    override fun filter(image: DoubleArray2D): DoubleArray2D =
+            image.filter2D(D[kernelX]).filter2D(D[kernelY].transpose())
 
 }
 
@@ -35,6 +49,40 @@ data class ConvolutionFilter(
 
 fun imageFilter(kernel: DoubleArray2D) = ConvolutionFilter(kernel)
 
+fun imageFilter(kernelX: DoubleArray1D, kernelY: DoubleArray1D) = ConvolutionRank1Filter(kernelX, kernelY)
+
+inline fun dynamicArray2DView(
+        shape0: Int,
+        shape1: Int,
+        crossinline getter: (i0: Int, i1: Int)->Double,
+        crossinline setter: (value: Double, i0: Int, i1: Int)->Double
+): DoubleArray2D = object : DefaultMutableDoubleArray2D() {
+
+    override val shape0: Int
+        get() = shape0
+
+
+    override val shape1: Int
+        get() = shape1
+
+    override fun getDouble(i0: Int, i1: Int): Double {
+        requireValidIndices(i0, i1)
+        return getter(i0, i1)
+    }
+
+    override fun setDouble(value: Double, i0: Int, i1: Int) {
+        requireValidIndices(i0, i1)
+        setter(value, i0, i1)
+    }
+
+}
+
+val view = dynamicArray2DView(
+        4, 2,
+        getter = { i0, i1 ->  (i0==i1).indicative() },
+        setter = { value, i0, i1 -> TODO() }
+)
+
 interface GradientExtractor: (DoubleArray2D)->ImageGradient {
 
 
@@ -47,13 +95,13 @@ data class ImageGradient(
 )
 
 val sobelX = imageFilter(
-        kernel = D[D[-1,  0, 1],
-                   D[-2,  0, 2],
-                   D[-1,  0, 1]]
+        kernelX = D[-1, 0, 1],
+        kernelY = D[ 1, 2, 1]
 )
 
 val sobelY = imageFilter(
-        kernel = sobelX.kernel.transpose()
+        kernelX = D[ 1, 2, 1],
+        kernelY = D[-1, 0, 1]
 )
 
 val simpleX = imageFilter(
@@ -65,13 +113,13 @@ val simpleY = imageFilter(
 )
 
 val prewittX = imageFilter(
-        kernel = D[D[-1,  0, 1],
-                   D[-1,  0, 1],
-                   D[-1,  0, 1]]
+        kernelX = D[-1, 0, 1],
+        kernelY = D[ 1, 1, 1]
 )
 
 val prewittY = imageFilter(
-        kernel = prewittX.kernel.transpose()
+        kernelX = prewittX.kernelY,
+        kernelY = prewittX.kernelX
 )
 
 val laplacian = imageFilter(
@@ -100,30 +148,32 @@ fun main() {
 
     println(signal.meanPower() / noisySignal.meanPower())
 
-
-    for (i in 0..10) {
-        showImage(noisySignal.smooth(1.0 * i))
-    }
-
-
     //saveGrayScale(smoothed, File(folder + "noisy_circle_smoothed.png"))
 
 }
 
-fun gaussianFilter2D(deviation: Double): DoubleArray2D {
+fun gaussianFilter1D(deviation: Double): DoubleArray1D {
 
     val variance = deviation.squared()
 
     val filterSize = ((3 * deviation).roundToInt() / 2) * 2 + 1
     val center = filterSize / 2
 
-    val filter = doubleArray2D(filterSize, filterSize) { i0, i1 ->
-        exp(-((i0-center).squared() + (i1-center).squared()) / variance)
+    val filterX = doubleArray1D(filterSize) { i0 ->
+        exp(-(i0-center).squared() / variance)
     }
 
-    return filter / filter.sum()
+    return filterX / filterX.sum()
 }
 
-fun DoubleArray2D.smooth(deviation: Double): DoubleArray2D {
-    return filter2D(gaussianFilter2D(deviation))
+fun DoubleArray2D.smoothed(deviation: Double): DoubleArray2D {
+
+    val gaussian = gaussianFilter1D(deviation)
+
+    val gaussianFilter = imageFilter(
+            kernelX = gaussian,
+            kernelY = gaussian
+    )
+
+    return gaussianFilter.filter(this)
 }

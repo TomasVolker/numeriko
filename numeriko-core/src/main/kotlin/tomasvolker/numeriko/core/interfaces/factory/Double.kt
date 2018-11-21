@@ -15,6 +15,8 @@ fun DoubleArray.toDoubleArray1D(): DoubleArray1D = doubleArray1D(this.copyOf())
 
 fun Array<out Number>.asDoubleArray1D(): DoubleArray1D = doubleArray1D(this.map { it.toDouble() }.toDoubleArray())
 
+fun Iterable<Number>.toDoubleArray1D(): DoubleArray1D = doubleArray1D(this.map { it.toDouble() }.toDoubleArray())
+
 fun doubleArray1DOf(vararg values: Double) = doubleArray1D(values)
 fun doubleArray1DOf(value: Double) = doubleArray0D(value)
 

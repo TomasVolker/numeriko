@@ -8,7 +8,8 @@ data class Histogram(
     val bins: Int = 10,
     override val label: String = "",
     val normalized: Boolean = false,
-    val color: Color = Color.Auto
+    val color: Color = Color.Auto,
+    val alpha: Double = 1.0
 ): Drawing {
 
     @PlotDsl
@@ -17,7 +18,8 @@ data class Histogram(
         var bins: Int = 10,
         var label: String = "",
         var normalized: Boolean = false,
-        var color: Color = Color.Auto
+        var color: Color = Color.Auto,
+        var alpha: Double = 1.0
     ): Drawing.Builder {
 
         override fun build() =
@@ -26,7 +28,8 @@ data class Histogram(
                 bins = bins,
                 label = label,
                 normalized = normalized,
-                color = color
+                color = color,
+                    alpha = alpha
             )
 
     }

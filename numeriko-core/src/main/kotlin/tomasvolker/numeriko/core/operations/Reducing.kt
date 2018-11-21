@@ -1,11 +1,13 @@
 package tomasvolker.numeriko.core.operations
 
+import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.double.unsafeGetView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
@@ -43,6 +45,16 @@ inline fun DoubleArray2D.reduce(
     else -> throw IllegalArgumentException()
 }
 
+inline fun DoubleArray2D.reduce(
+        initial: Double,
+        axis: Int = 0,
+        reduction: (array: DoubleArray1D)->Double
+): DoubleArray1D =
+        doubleArray1D(shape.remove(axis)[0]) { i ->
+            reduction(this.arrayAlongAxis(axis = axis, index = i))
+        }
+
+
 inline fun DoubleArrayND.reduce(
         initial: Double,
         axis: Int = 0,
@@ -52,6 +64,24 @@ inline fun DoubleArrayND.reduce(
             reduce(this.indices(axis), initial, combine) { ir ->
                 this[indices.inject(index = axis, value = ir)]
             }
+        }
+
+inline fun DoubleArrayND.reduce(
+        axis: Int = 0,
+        reduction: (acc: DoubleArray1D)->Double
+): DoubleArrayND =
+        doubleArrayND(shape.remove(axis)) { indices ->
+            reduction(
+                    this.unsafeGetView(
+                        *Array<Any>(rank) { a ->
+                            when {
+                                a < axis -> indices[a]
+                                a == axis -> All
+                                else -> indices[a-1]
+                            }
+                        }
+                    ).as1D()
+            )
         }
 
 

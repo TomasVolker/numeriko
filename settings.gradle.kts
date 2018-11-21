@@ -7,4 +7,5 @@ pluginManagement {
         maven { setUrl("https://plugins.gradle.org/m2/") }
     }
 }
-include("core", "kyplot", "complex", "sandbox")
+
+include("numeriko-core", "numeriko-complex", "kyscript", "kyplot", "sandbox")

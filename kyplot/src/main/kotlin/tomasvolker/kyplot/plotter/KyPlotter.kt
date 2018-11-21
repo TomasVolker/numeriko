@@ -149,7 +149,8 @@ class KyPlot: KyScriptWriter() {
                         "label"   to drawing.label,
                         "density" to drawing.normalized,
                         "zorder"  to 3,
-                        "color"   to drawing.color.toPythonColor()
+                        "color"   to drawing.color.toPythonColor(),
+                        "alpha"   to drawing.alpha
                     )
                 )
             }
