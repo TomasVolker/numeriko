@@ -46,7 +46,6 @@ inline fun DoubleArray2D.reduce(
 }
 
 inline fun DoubleArray2D.reduce(
-        initial: Double,
         axis: Int = 0,
         reduction: (array: DoubleArray1D)->Double
 ): DoubleArray1D =

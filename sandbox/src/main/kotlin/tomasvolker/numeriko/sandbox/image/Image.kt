@@ -24,12 +24,15 @@ fun rgb(red: Int, green: Int, blue: Int): Int =
 
 fun saveGrayScale(imag: DoubleArray2D, file: File, format: String = "png") {
 
-    val rescale = 1.0 / (2.0 * imag.maxNorm())
+    val min = imag.min() ?: 0.0
+    val max = imag.max() ?: 1.0
+
+    val range = max - min
 
     val image = BufferedImage(imag.shape1, imag.shape0, BufferedImage.TYPE_INT_RGB).apply {
         imag.forEachIndex { y, x ->
 
-            val gray = (255 * (0.5 + rescale * imag[y, x])).roundToInt()
+            val gray = (255 * (imag[y, x] - min) / range).roundToInt()
 
             setRGB(x, y, rgb(gray, gray, gray))
         }

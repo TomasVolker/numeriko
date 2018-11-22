@@ -11,9 +11,11 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(project(":numeriko-core"))
-    implementation(project(":numeriko-complex"))
-    implementation(project(":kyplot"))
+    
+    implementation(group = "tomasvolker", name = "kyplot", version = "0.0.1")
+    implementation(group = "tomasvolker", name = "numeriko-core", version = "0.0.1")
+    implementation(group = "tomasvolker", name = "numeriko-complex", version = "0.0.1")
+    
     implementation(group = "com.kyonifer", name = "koma-core-ejml", version = "0.12")
 
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "0.26.1-eap13")

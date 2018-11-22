@@ -1,24 +1,21 @@
 
-buildscript {
-
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.0")
-    }
-
+plugins {
+    kotlin("jvm") version "1.3.0"
+    id("com.jfrog.bintray") version "1.8.4"
 }
+
+val projectGroup = "tomasvolker"
 
 allprojects {
 
-    group = "tomasvolker"
+    group = projectGroup
 
     repositories {
         mavenCentral()
         jcenter()
+        maven {
+            setUrl("http://dl.bintray.com/tomasvolker/maven")
+        }
     }
 
 }
