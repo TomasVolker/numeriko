@@ -162,8 +162,16 @@ interface ArrayND<out T>: Collection<T> {
      *
      * The [axis] parameter must correspond to an axis with size <= 1 (`shape(axis) <= 1)`.
      */
-    fun lowerRank(axis: Int): ArrayND<T> =
+    fun lowerRank(axis: Int = 0): ArrayND<T> =
             DefaultArrayNDLowerRankView(this.asMutable(), axis)
+
+    /**
+     * Returns a higher rank view with size 1 on [axis].
+     *
+     * The [axis] parameter must be between 0 and size (inclusive)
+     */
+    fun higherRank(axis: Int = 0): ArrayND<T> =
+            DefaultArrayNDHigherRankView(this.asMutable(), axis)
 
     fun arrayAlongAxis(axis: Int, index: Int): ArrayND<T> =
             getView(*Array(rank) { ax -> if (ax == axis) IntRange(index, index).toIndexProgression() else All })

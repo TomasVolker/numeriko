@@ -2,6 +2,8 @@ package tomasvolker.numeriko.core.interfaces.array0d.numeric
 
 import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
 import tomasvolker.numeriko.core.interfaces.array0d.generic.DefaultArray0DIterator
+import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 
 interface NumericArray0D<out N: Number>: Array0D<N>, NumericArrayND<N> {
@@ -48,6 +50,9 @@ interface NumericArray0D<out N: Number>: Array0D<N>, NumericArrayND<N> {
     override fun arrayAlongAxis(axis: Int, index: Int): Nothing {
         super<Array0D>.arrayAlongAxis(axis, index)
     }
+
+    override fun higherRank(): NumericArray1D<N>
+    override fun higherRank(axis: Int): NumericArray1D<N>
 
     override fun copy(): NumericArray0D<N> = TODO() // copy(this)
 

@@ -1,17 +1,21 @@
 package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 
-import tomasvolker.numeriko.core.interfaces.array1d.generic.lastIndex
+import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultMutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.operations.remove
+import tomasvolker.numeriko.core.view.ElementOrder
+import tomasvolker.numeriko.core.view.linearIndex
+import tomasvolker.numeriko.core.view.strideArray
 
 class NumerikoDoubleArrayND(
         override val shape: IntArray1D,
         val data: DoubleArray,
+        order: ElementOrder = NumerikoConfig.defaultElementOrder,
         val offset: Int = 0,
-        val strideArray: IntArray = strideArray(shape)
+        val strideArray: IntArray = strideArray(shape, order)
 ): DefaultMutableDoubleArrayND() {
 
     override val rank: Int
@@ -21,12 +25,12 @@ class NumerikoDoubleArrayND(
 
     override fun getDouble(vararg indices: Int): Double {
         requireValidIndices(indices)
-        return data[linearIndex(indices)]
+        return data[convertIndices(indices)]
     }
 
     override fun setDouble(value: Double, vararg indices: Int) {
         requireValidIndices(indices)
-        data[linearIndex(indices)] = value
+        data[convertIndices(indices)] = value
     }
 
     override fun getView(vararg indices: IntProgression): MutableDoubleArrayND {
@@ -37,7 +41,7 @@ class NumerikoDoubleArrayND(
         return NumerikoDoubleArrayND(
                 shape = intArray1D(rank) { axis -> indices[axis].count() },
                 data = data,
-                offset = linearIndex(IntArray(rank) { axis -> indices[axis].first }),
+                offset = convertIndices(IntArray(rank) { axis -> indices[axis].first }),
                 strideArray = IntArray(rank) { axis -> indices[axis].step * strideArray[axis] }
         )
     }
@@ -47,26 +51,12 @@ class NumerikoDoubleArrayND(
         return NumerikoDoubleArrayND(
                 shape = shape.remove(axis),
                 data = data,
-                offset = linearIndex(IntArray(rank) { 0 }),
+                offset = convertIndices(IntArray(rank) { 0 }),
                 strideArray = IntArray(rank-1) { i -> if (i < axis) strideArray[i] else strideArray[i+1] }
         )
     }
 
-    private fun linearIndex(indices: IntArray): Int {
-        var result = offset
-        for (axis in 0 until rank) {
-            result += strideArray[axis] * indices[axis]
-        }
-        return result
-    }
+    private fun convertIndices(indices: IntArray): Int =
+            linearIndex(offset, strideArray, indices)
 
 }
-
-private fun strideArray(shapeArray: IntArray1D): IntArray =
-        IntArray(shapeArray.size).apply {
-            val lastAxis = shapeArray.lastIndex
-            this[lastAxis] = 1
-            for (axis in lastAxis-1 downTo 0) {
-                this[axis] = this[axis+1] * shapeArray[axis+1]
-            }
-        }

@@ -1,6 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.array0d.double
 
 import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0D
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 
 interface MutableDoubleArray0D: DoubleArray0D, MutableNumericArray0D<Double>, MutableDoubleArrayND {
@@ -35,6 +37,13 @@ interface MutableDoubleArray0D: DoubleArray0D, MutableNumericArray0D<Double>, Mu
 
     override fun lowerRank(axis: Int): Nothing {
         super<DoubleArray0D>.lowerRank(axis)
+    }
+
+    override fun higherRank(): MutableDoubleArray1D = higherRank(0)
+
+    override fun higherRank(axis: Int): MutableDoubleArray1D {
+        require(axis == 0)
+        return DefaultDoubleArray0DHigherRankView(this.asMutable())
     }
 
     fun setValue(other: DoubleArray0D) {

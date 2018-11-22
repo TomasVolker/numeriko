@@ -1,6 +1,10 @@
 package tomasvolker.numeriko.core.interfaces.array0d.double
 
+import tomasvolker.numeriko.core.interfaces.array0d.generic.DefaultArray0DHigherRankView
 import tomasvolker.numeriko.core.interfaces.array0d.numeric.NumericArray0D
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 
@@ -30,6 +34,13 @@ interface DoubleArray0D: NumericArray0D<Double>, DoubleArrayND {
 
     override fun lowerRank(axis: Int): Nothing {
         super<NumericArray0D>.lowerRank(axis)
+    }
+
+    override fun higherRank(): DoubleArray1D = higherRank(0)
+
+    override fun higherRank(axis: Int): DoubleArray1D {
+        require(axis == 0)
+        return DefaultDoubleArray0DHigherRankView(this.asMutable())
     }
 
     override fun getDouble(): Double

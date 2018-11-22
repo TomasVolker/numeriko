@@ -6,6 +6,8 @@ import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0
 import tomasvolker.numeriko.core.interfaces.array0d.numeric.NumericArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.DefaultArray1DIterator
+import tomasvolker.numeriko.core.interfaces.array2d.numeric.MutableNumericArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.numeric.NumericArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 
@@ -48,6 +50,8 @@ interface NumericArray1D<out N: Number>: Array1D<N>, NumericArrayND<N> {
     }
 
     override fun lowerRank(axis: Int): NumericArray0D<N>
+
+    override fun higherRank(axis: Int): NumericArray2D<N>
 
     override fun getView(vararg indices: IntProgression): NumericArray1D<N> {
         requireValidIndices(indices)

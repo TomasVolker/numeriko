@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.config
 
 import tomasvolker.numeriko.core.implementations.numeriko.factory.NumerikoArrayNDFactory
 import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
+import tomasvolker.numeriko.core.view.ElementOrder
 
 /**
  * Singleton containing global configurations.
@@ -32,5 +33,9 @@ object NumerikoConfig {
      * be on range.
      */
     var checkRanges: Boolean = true
+
+
+
+    var defaultElementOrder: ElementOrder = ElementOrder.ContiguousLastIndex
 
 }

@@ -5,6 +5,8 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
+import tomasvolker.numeriko.core.interfaces.array2d.numeric.MutableNumericArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.numeric.NumericArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 
 interface MutableNumericArray1D<N: Number>: NumericArray1D<N>, MutableArray1D<N>, MutableNumericArrayND<N> {
@@ -59,6 +61,8 @@ interface MutableNumericArray1D<N: Number>: NumericArray1D<N>, MutableArray1D<N>
     override fun getView(i0: IndexProgression): MutableNumericArray1D<N> = getView(i0.compute())
 
     override fun lowerRank(axis: Int): MutableNumericArray0D<N>
+
+    override fun higherRank(axis: Int): MutableNumericArray2D<N>
 
     override fun arrayAlongAxis(axis: Int, index: Int): MutableNumericArray0D<N>
 

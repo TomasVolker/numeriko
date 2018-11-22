@@ -102,6 +102,9 @@ interface MutableArrayND<T>: ArrayND<T> {
     override fun lowerRank(axis: Int): MutableArrayND<T> =
             DefaultArrayNDLowerRankView(this, axis)
 
+    override fun higherRank(axis: Int): MutableArrayND<T> =
+            DefaultArrayNDHigherRankView(this, axis)
+
     override fun arrayAlongAxis(axis: Int, index: Int): MutableArrayND<T> =
             getView(*Array(rank) { ax -> if (ax == axis) IntRange(index, index).toIndexProgression() else All })
 

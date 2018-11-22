@@ -47,6 +47,8 @@ interface MutableNumericArrayND<N: Number>: NumericArrayND<N>, MutableArrayND<N>
 
     override fun lowerRank(axis: Int): MutableNumericArrayND<N>
 
+    override fun higherRank(axis: Int): MutableNumericArrayND<N>
+
     override fun arrayAlongAxis(axis: Int, index: Int): MutableNumericArrayND<N>
 
 }

@@ -37,6 +37,8 @@ interface NumericArrayND<out N: Number>: ArrayND<N> {
 
     override fun lowerRank(axis: Int): NumericArrayND<N>
 
+    override fun higherRank(axis: Int): NumericArrayND<N>
+
     override fun arrayAlongAxis(axis: Int, index: Int): NumericArrayND<N> =
             getView(*Array(rank) { ax -> if (ax == axis) IntRange(index, index).toIndexProgression() else All })
 

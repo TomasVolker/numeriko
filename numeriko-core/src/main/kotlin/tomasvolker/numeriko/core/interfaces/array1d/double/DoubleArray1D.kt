@@ -3,12 +3,15 @@ package tomasvolker.numeriko.core.interfaces.array1d.double
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleArray1DHigherRankView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
+import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultArray1DHigherRankView
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.preconditions.requireSameSize
@@ -50,6 +53,11 @@ interface DoubleArray1D: NumericArray1D<Double>, DoubleArrayND {
     override fun lowerRank(axis: Int): DoubleArray0D {
         requireValidAxis(axis)
         return defaultDoubleArray0DView(this.asMutable(), 0)
+    }
+
+    override fun higherRank(axis: Int): DoubleArray2D {
+        require(axis in 0..1)
+        return DefaultDoubleArray1DHigherRankView(this.asMutable(), axis)
     }
 
     override fun getView(i0: Int  ): DoubleArray0D = defaultDoubleArray0DView(this.asMutable(), i0)

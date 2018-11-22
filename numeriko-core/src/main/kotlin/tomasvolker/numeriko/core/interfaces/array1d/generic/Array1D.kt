@@ -4,10 +4,13 @@ import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
+import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleArray1DHigherRankView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.Default1DArrayListView
+import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultArray1DHigherRankView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.array0DOf
 import tomasvolker.numeriko.core.interfaces.factory.copy
@@ -40,6 +43,11 @@ interface Array1D<out T>: ArrayND<T> {
     override fun lowerRank(axis: Int): Array0D<T> {
         require(shape(axis) == 1)
         return defaultArray0DView(this.asMutable(), 0)
+    }
+
+    override fun higherRank(axis: Int): Array2D<T> {
+        require(axis in 0..1)
+        return DefaultArray1DHigherRankView(this.asMutable(), axis)
     }
 
     fun getView(i0: Int  ): Array0D<T> = defaultArray0DView(this.asMutable(), i0)

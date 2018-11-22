@@ -1,5 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.array0d.generic
 
+import tomasvolker.numeriko.core.interfaces.array0d.double.DefaultDoubleArray0DHigherRankView
+import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleArray1DHigherRankView
+import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
@@ -31,6 +34,13 @@ interface Array0D<out T>: ArrayND<T> {
     override fun lowerRank(axis: Int): Nothing {
         requireValidAxis(axis)
         error("requireValidAxis should fail")
+    }
+
+    fun higherRank(): Array1D<T> = higherRank(0)
+
+    override fun higherRank(axis: Int): Array1D<T> {
+        require(axis == 0)
+        return DefaultArray0DHigherRankView(this.asMutable())
     }
 
     override fun arrayAlongAxis(axis: Int, index: Int): Nothing {

@@ -3,8 +3,11 @@ package tomasvolker.numeriko.core.interfaces.array1d.generic
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.generic.MutableArray0D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultArray1DHigherRankView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray1DView
+import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 
@@ -18,6 +21,11 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
     override fun lowerRank(axis: Int): MutableArray0D<T> {
         require(shape(axis) == 1)
         return defaultArray0DView(this, 0)
+    }
+
+    override fun higherRank(axis: Int): MutableArray2D<T> {
+        require(axis in 0..1)
+        return DefaultArray1DHigherRankView(this, axis)
     }
 
     fun setValue(value: T, i0: Int)

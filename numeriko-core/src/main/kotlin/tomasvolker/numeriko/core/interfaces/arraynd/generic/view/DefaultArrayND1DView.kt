@@ -15,8 +15,7 @@ class DefaultArrayND1DView<T>(
         get() = array.shape(0)
 
 
-    override fun getValue(i0: Int): T =
-            array.getValue(i0)
+    override fun getValue(i0: Int): T = array.getValue(i0)
 
     override fun setValue(value: T, i0: Int) {
         array.setValue(value, i0)
