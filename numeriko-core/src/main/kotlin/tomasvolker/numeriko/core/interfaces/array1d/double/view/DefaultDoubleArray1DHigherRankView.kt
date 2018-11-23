@@ -30,8 +30,8 @@ class DefaultDoubleArray1DHigherRankView (
     override fun getDouble(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return when (axis) {
-            0 -> array.getDouble(0, i1)
-            1 -> array.getDouble(i0, 0)
+            0 -> array.getDouble(i1)
+            1 -> array.getDouble(i0)
             else -> error("requireValidIndices should fail")
         }
     }
@@ -39,8 +39,8 @@ class DefaultDoubleArray1DHigherRankView (
     override fun setDouble(value: Double, i0: Int, i1: Int) {
         requireValidIndices(i0, i1)
         when (axis) {
-            0 -> array.setDouble(value, 0, i1)
-            1 -> array.setDouble(value, i0, 0)
+            0 -> array.setDouble(value, i1)
+            1 -> array.setDouble(value, i0)
             else -> error("requireValidIndices should fail")
         }
     }

@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
+import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
@@ -7,6 +8,7 @@ import tomasvolker.numeriko.core.index.toIndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array0d.generic.MutableArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
@@ -17,6 +19,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArr
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.preconditions.requireSameShape
+import tomasvolker.numeriko.core.view.ElementOrder
 
 /**
  * The parent interface of all mutable N-dimensional arrays.
@@ -106,6 +109,14 @@ interface MutableArrayND<T>: ArrayND<T> {
             DefaultArrayNDHigherRankView(this, axis)
 
     override fun arrayAlongAxis(axis: Int, index: Int): MutableArrayND<T> =
-            getView(*Array(rank) { ax -> if (ax == axis) IntRange(index, index).toIndexProgression() else All })
+            getView(*Array(rank) { ax ->
+                if (ax == axis)
+                    IntRange(index, index).toIndexProgression()
+                else
+                    All
+            }).lowerRank(axis = axis)
+
+    override fun linearView(order: ElementOrder): MutableArray1D<T> =
+            DefaultArrayNDLinearView(this, order)
 
 }

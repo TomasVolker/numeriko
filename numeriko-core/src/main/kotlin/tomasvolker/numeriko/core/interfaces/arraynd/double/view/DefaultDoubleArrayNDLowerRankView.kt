@@ -3,6 +3,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double.view
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.operations.remove
+import tomasvolker.numeriko.core.view.with
 import tomasvolker.numeriko.core.view.without
 
 class DefaultDoubleArrayNDLowerRankView(
@@ -27,6 +28,6 @@ class DefaultDoubleArrayNDLowerRankView(
     }
 
     private fun convertIndices(indices: IntArray): IntArray =
-            indices.without(index = axis)
+            indices.with(index = axis, value = 0)
 
 }

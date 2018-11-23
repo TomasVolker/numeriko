@@ -13,6 +13,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.reductions.product
+import tomasvolker.numeriko.core.view.ElementOrder
 
 /**
  * The parent interface of all N-dimensional arrays.
@@ -157,6 +158,9 @@ interface ArrayND<out T>: Collection<T> {
      */
     fun getView(vararg indices: IndexProgression): ArrayND<T> = getView(*indices.computeIndices())
 
+    fun linearView(order: ElementOrder = NumerikoConfig.defaultElementOrder): Array1D<T> =
+            DefaultArrayNDLinearView(this.asMutable(), order)
+
     /**
      * Returns a view of this array without the given [axis].
      *
@@ -174,7 +178,9 @@ interface ArrayND<out T>: Collection<T> {
             DefaultArrayNDHigherRankView(this.asMutable(), axis)
 
     fun arrayAlongAxis(axis: Int, index: Int): ArrayND<T> =
-            getView(*Array(rank) { ax -> if (ax == axis) IntRange(index, index).toIndexProgression() else All })
+            getView(*Array(rank) { ax ->
+                if (ax == axis) IntRange(index, index).toIndexProgression() else All
+            }).lowerRank(axis = axis)
 
     fun Array<out Index>.computeIndices(): IntArray =
             IntArray(size) { i -> this[i].computeValue(shape(i)) }

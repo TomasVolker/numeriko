@@ -4,35 +4,56 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.lastIndex
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 
 
-enum class ElementOrder {
-    ContiguousFirstIndex,
-    ContiguousLastIndex
+sealed class ElementOrder {
+
+    abstract fun strideArray(shape: IntArray1D): IntArray
+
+    abstract fun linearToIndices(linearIndex: Int, strideArray: IntArray): IntArray
+
 }
 
-internal fun strideArray(
-        shape: IntArray1D,
-        order: ElementOrder = ElementOrder.ContiguousLastIndex
-): IntArray = when (order) {
-    ElementOrder.ContiguousFirstIndex -> contiguousFirstIndexStrideArray(shape)
-    ElementOrder.ContiguousLastIndex -> contiguousLastIndexStrideArray(shape)
+object ContiguousFirstIndex: ElementOrder() {
+
+    override fun strideArray(shape: IntArray1D): IntArray =
+            IntArray(shape.size).apply {
+                this[0] = 1
+                for (axis in 1 until shape.size) {
+                    this[axis] = this[axis-1] * shape[axis-1]
+                }
+            }
+
+    override fun linearToIndices(linearIndex: Int, strideArray: IntArray): IntArray =
+            IntArray(strideArray.size) { a ->
+                (if(a == strideArray.size-1)
+                    linearIndex
+                else
+                    linearIndex % strideArray[a+1]
+                ) / strideArray[a]
+            }
+
 }
 
-internal fun contiguousLastIndexStrideArray(shape: IntArray1D): IntArray =
-        IntArray(shape.size).apply {
-            val lastAxis = shape.lastIndex
-            this[lastAxis] = 1
-            for (axis in lastAxis-1 downTo 0) {
-                this[axis] = this[axis+1] * shape[axis+1]
-            }
-        }
+object ContiguousLastIndex: ElementOrder() {
 
-internal fun contiguousFirstIndexStrideArray(shape: IntArray1D): IntArray =
-        IntArray(shape.size).apply {
-            this[0] = 1
-            for (axis in 1 until shape.size) {
-                this[axis] = this[axis-1] * shape[axis-1]
+    override fun strideArray(shape: IntArray1D): IntArray =
+            IntArray(shape.size).apply {
+                val lastAxis = shape.lastIndex
+                this[lastAxis] = 1
+                for (axis in lastAxis-1 downTo 0) {
+                    this[axis] = this[axis+1] * shape[axis+1]
+                }
             }
-        }
+
+    override fun linearToIndices(linearIndex: Int, strideArray: IntArray): IntArray =
+            IntArray(strideArray.size) { a ->
+                (if(a == 0)
+                    linearIndex
+                else
+                    linearIndex % strideArray[a-1]
+                ) / strideArray[a]
+            }
+
+}
 
 fun IntArray.without(index: Int): IntArray {
 

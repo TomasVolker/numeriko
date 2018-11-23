@@ -17,30 +17,16 @@ class DefaultArray2DLowerRankView<T>(
     override fun getValue(i0: Int): T {
         requireValidIndices(i0)
         return when {
-            axis == 0 -> array.getValue(
-                    i0,
-                    0
-            )
-            axis == 1 -> array.getValue(
-                    0,
-                    i0
-            )
+            axis == 0 -> array.getValue(0, i0)
+            axis == 1 -> array.getValue(i0, 0)
             else -> throw IllegalStateException()
         }
     }
 
     override fun setValue(value: T, i0: Int) {
         when(axis) {
-            0 -> array.setValue(
-                    value,
-                    i0,
-                    0
-            )
-            1 -> array.setValue(
-                    value,
-                    0,
-                    i0
-            )
+            0 -> array.setValue(value, 0, i0)
+            1 -> array.setValue(value, i0, 0)
             else -> throw IllegalStateException()
         }
     }

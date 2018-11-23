@@ -17,6 +17,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.defaultArrayNDView
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 import tomasvolker.numeriko.core.preconditions.requireSameShape
+import tomasvolker.numeriko.core.view.ElementOrder
 
 interface MutableDoubleArrayND: DoubleArrayND, MutableNumericArrayND<Double> {
 
@@ -66,7 +67,15 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableNumericArrayND<Double> {
             DefaultDoubleArrayNDHigherRankView(this, axis)
 
     override fun arrayAlongAxis(axis: Int, index: Int): MutableDoubleArrayND =
-            getView(*Array(rank) { ax -> if (ax == axis) IntRange(index, index).toIndexProgression() else All })
+            getView(*Array(rank) { ax ->
+                if (ax == axis)
+                    IntRange(index, index).toIndexProgression()
+                else
+                    All
+            }).lowerRank(axis = axis)
+
+    override fun linearView(order: ElementOrder): MutableDoubleArray1D =
+            DefaultDoubleArrayNDLinearView(this, order)
 
     fun applyPlus (other: Double): MutableDoubleArrayND = applyElementWise { it + other }
     fun applyMinus(other: Double): MutableDoubleArrayND = applyElementWise { it - other }

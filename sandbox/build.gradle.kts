@@ -12,9 +12,9 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     
-    implementation(group = "tomasvolker", name = "kyplot", version = "0.0.1")
-    implementation(group = "tomasvolker", name = "numeriko-core", version = "0.0.1")
-    implementation(group = "tomasvolker", name = "numeriko-complex", version = "0.0.1")
+    implementation(project(":numeriko-core"))
+    implementation(project(":numeriko-complex"))
+    implementation(project(":kyplot"))
     
     implementation(group = "com.kyonifer", name = "koma-core-ejml", version = "0.12")
 

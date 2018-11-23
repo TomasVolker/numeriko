@@ -3,6 +3,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
@@ -16,6 +17,7 @@ import tomasvolker.numeriko.core.operations.concatenate
 import tomasvolker.numeriko.core.operations.inject
 import tomasvolker.numeriko.core.operations.remove
 import tomasvolker.numeriko.core.primitives.sumDouble
+import tomasvolker.numeriko.core.view.ElementOrder
 import kotlin.math.max
 import kotlin.math.min
 
@@ -56,7 +58,15 @@ interface DoubleArrayND: NumericArrayND<Double> {
             DefaultDoubleArrayNDHigherRankView(this.asMutable(), axis)
 
     override fun arrayAlongAxis(axis: Int, index: Int): DoubleArrayND =
-            getView(*Array(rank) { ax -> if (ax == axis) IntRange(index, index).toIndexProgression() else All })
+            getView(*Array(rank) { ax ->
+                if (ax == axis)
+                    IntRange(index, index).toIndexProgression()
+                else
+                    All
+            }).lowerRank(axis = axis)
+
+    override fun linearView(order: ElementOrder): DoubleArray1D =
+            DefaultDoubleArrayNDLinearView(this.asMutable(), order)
 
     override fun copy(): DoubleArrayND = copy(this)
 

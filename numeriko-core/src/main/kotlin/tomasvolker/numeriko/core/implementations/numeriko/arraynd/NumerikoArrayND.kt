@@ -7,14 +7,13 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultMutableA
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.view.ElementOrder
 import tomasvolker.numeriko.core.view.linearIndex
-import tomasvolker.numeriko.core.view.strideArray
 
 class NumerikoArrayND<T>(
         override val shape: IntArray1D,
         val data: Array<T>,
         order: ElementOrder = NumerikoConfig.defaultElementOrder,
         val offset: Int = 0,
-        val strideArray: IntArray = strideArray(shape, order)
+        val strideArray: IntArray = order.strideArray(shape)
 ): DefaultMutableArrayND<T>() {
 
     override val rank: Int

@@ -29,8 +29,7 @@ fun defaultHashCode(array1: ArrayND<*>): Int {
 }
 
 fun <T> ArrayND<T>.subArray(i: Int): ArrayND<T> =
-        getView(*Array(rank) { d -> if (d==0) LiteralIndex(i)..i else All })
-                .lowerRank(0)
+        arrayAlongAxis(axis = 0, index = i)
 
 fun defaultToString(array: ArrayND<*>): String =
         when(array.rank) {
@@ -40,8 +39,8 @@ fun defaultToString(array: ArrayND<*>): String =
                     prefix = "[ ",
                     postfix = " ]"
             )
-            else -> (0 until array.shape[0])
-                    .map { array.subArray(it) }
+            else -> (0 until array.shape(0))
+                    .map { i -> array.arrayAlongAxis(axis = 0, index = i) }
                     .joinToString(
                             separator = ", \n",
                             prefix = "[ ",

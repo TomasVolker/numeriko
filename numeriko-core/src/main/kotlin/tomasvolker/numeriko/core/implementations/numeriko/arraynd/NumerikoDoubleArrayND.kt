@@ -8,14 +8,13 @@ import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.operations.remove
 import tomasvolker.numeriko.core.view.ElementOrder
 import tomasvolker.numeriko.core.view.linearIndex
-import tomasvolker.numeriko.core.view.strideArray
 
 class NumerikoDoubleArrayND(
         override val shape: IntArray1D,
         val data: DoubleArray,
         order: ElementOrder = NumerikoConfig.defaultElementOrder,
         val offset: Int = 0,
-        val strideArray: IntArray = strideArray(shape, order)
+        val strideArray: IntArray = order.strideArray(shape)
 ): DefaultMutableDoubleArrayND() {
 
     override val rank: Int
