@@ -37,10 +37,10 @@ Then add the following dependencies:
 ```groovy
 dependencies {
     // Core library
-    implementation group: "tomasvolker", name: "numerico-core", version: "0.0.1"
+    implementation group: "tomasvolker", name: "numeriko-core", version: "0.0.1"
     
     // Complex arrays
-    implementation group: "tomasvolker", name: "numerico-complex", version: "0.0.1"
+    implementation group: "tomasvolker", name: "numeriko-complex", version: "0.0.1"
         
     // Plotting
     implementation group: "tomasvolker", name: "kyplot", version: "0.0.1"
@@ -51,7 +51,7 @@ dependencies {
 ```kotlin
 dependencies {
     // Core library
-    implementation(group = "tomasvolker", name = "numerico-core", version = "0.0.1")
+    implementation(group = "tomasvolker", name = "numeriko-core", version = "0.0.1")
     
     // Complex arrays
     implementation(group = "tomasvolker", name = "numeriko-complex", version = "0.0.1")
