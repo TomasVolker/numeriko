@@ -15,7 +15,7 @@ class DefaultDoubleArrayND2DView(
         get() = array.shape(0)
 
     override val shape1: Int
-        get() = array.shape(0)
+        get() = array.shape(1)
 
     override fun getDouble(i0: Int, i1: Int): Double =
             array.getDouble(i0, i1)

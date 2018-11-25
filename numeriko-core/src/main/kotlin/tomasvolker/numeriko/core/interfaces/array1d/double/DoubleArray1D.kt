@@ -4,19 +4,24 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleArray1DHigherRankView
+import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleReshapedView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultArray1DHigherRankView
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.primitives.modulo
 import tomasvolker.numeriko.core.primitives.sumDouble
+import tomasvolker.numeriko.core.view.ElementOrder
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -49,6 +54,17 @@ interface DoubleArray1D: NumericArray1D<Double>, DoubleArrayND {
     override fun getShort(i0: Int): Short = getDouble(i0).toShort()
 
     fun getDouble(i0: Index): Double = getDouble(i0.compute())
+
+    override fun withShape(shape0: Int, shape1: Int, order: ElementOrder): DoubleArray2D =
+            withShape(intArray1DOf(shape0, shape1), order).as2D()
+
+    override fun withShape(shape: IntArray1D, order: ElementOrder): MutableDoubleArrayND =
+            DefaultDoubleReshapedView(
+                    shape = shape.copy(),
+                    array = this.asMutable(),
+                    offset = 0,
+                    order = order
+            )
 
     override fun lowerRank(axis: Int): DoubleArray0D {
         requireValidAxis(axis)

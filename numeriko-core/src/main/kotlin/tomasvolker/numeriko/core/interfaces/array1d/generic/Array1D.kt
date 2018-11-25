@@ -5,16 +5,14 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleArray1DHigherRankView
-import tomasvolker.numeriko.core.interfaces.array1d.generic.view.Default1DArrayListView
-import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultArray1DHigherRankView
-import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray0DView
-import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray1DView
+import tomasvolker.numeriko.core.interfaces.array1d.generic.view.*
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.array0DOf
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
+import tomasvolker.numeriko.core.view.ElementOrder
 
 interface Array1D<out T>: ArrayND<T> {
 
@@ -39,6 +37,17 @@ interface Array1D<out T>: ArrayND<T> {
 
     fun getValue(i0: Int): T
     fun getValue(i0: Index): T = getValue(i0.compute())
+
+    fun withShape(shape0: Int, shape1: Int, order: ElementOrder = NumerikoConfig.defaultElementOrder): Array2D<T> =
+            withShape(intArray1DOf(shape0, shape1), order).as2D()
+
+    fun withShape(shape: IntArray1D, order: ElementOrder = NumerikoConfig.defaultElementOrder): ArrayND<T> =
+            DefaultReshapedView(
+                    shape = shape.copy(),
+                    array = this.asMutable(),
+                    offset = 0,
+                    order = order
+                    )
 
     override fun lowerRank(axis: Int): Array0D<T> {
         require(shape(axis) == 1)

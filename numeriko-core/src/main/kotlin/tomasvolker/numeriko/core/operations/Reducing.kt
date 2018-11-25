@@ -12,6 +12,8 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import kotlin.math.max
+import kotlin.math.min
 
 inline fun reduce(
         indices: IntProgression,
