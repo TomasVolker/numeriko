@@ -102,7 +102,7 @@ myArray / yourArray // Element wise division
 
 ## The ArrayND interfaces
 
-Al the array interfaces comply with the `Collection<T>` interface and
+All the array interfaces comply with the `Collection<T>` interface and
 follow kotlin's convention for separation of the read-only and the
 mutable interfaces. This enables out variance on the read-only interfaces
 as well as self-documenting signatures specifying if the array is being 
