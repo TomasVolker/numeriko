@@ -1,11 +1,13 @@
-package tomasvolker.numeriko.tests
+package tomasvolker.numeriko.interfaces.array2d
 
-import org.junit.Test
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.array1d.double.times
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
+import tomasvolker.numeriko.tests.*
 import kotlin.random.Random
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
@@ -13,29 +15,33 @@ import kotlin.test.assertFalse
 
 class DoubleArray2DTest {
 
-    @Test
-    fun `double 2D array constructors`() {
+    @Nested
+    inner class Constructors {
 
-        with(Random(0)) {
+        @Test
+        fun `lambda and dsl`() {
 
-            val shape0 = 3
-            val shape1 = 2
+            with(Random(0)) {
 
-            val values = Array(shape0) { DoubleArray(shape0) { nextDouble() } }
+                val shape0 = 3
+                val shape1 = 2
 
-            val a1 = doubleArray2D(shape0, shape1) { i0, i1 -> values[i0][i1] }
-            val a2 = D[D[values[0][0], values[0][1]],
-                       D[values[1][0], values[1][1]],
-                       D[values[2][0], values[2][1]]]
+                val values = Array(shape0) { DoubleArray(shape0) { nextDouble() } }
 
-            assertNumericEquals(a1, a2)
+                val a1 = doubleArray2D(shape0, shape1) { i0, i1 -> values[i0][i1] }
+                val a2 = D[D[values[0][0], values[0][1]],
+                           D[values[1][0], values[1][1]],
+                           D[values[2][0], values[2][1]]]
+
+                assertNumericEquals(a1, a2)
+
+            }
 
         }
-
     }
 
     @Test
-    fun `double 2D array operators`() {
+    fun operators() {
 
         with(Random(0)) {
 
@@ -71,7 +77,7 @@ class DoubleArray2DTest {
     }
 
     @Test
-    fun `double 2D array functions`() {
+    fun functions() {
 
         with(Random(0)) {
 
@@ -106,7 +112,7 @@ class DoubleArray2DTest {
     }
 
     @Test
-    fun `double 2D array linear algebra`() {
+    fun `linear algebra`() {
 
         with(Random(seed = 0)) {
 

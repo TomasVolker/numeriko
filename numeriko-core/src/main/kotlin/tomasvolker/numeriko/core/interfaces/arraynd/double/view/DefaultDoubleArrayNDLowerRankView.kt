@@ -2,9 +2,8 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double.view
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
-import tomasvolker.numeriko.core.operations.remove
+import tomasvolker.numeriko.core.operations.reduction.remove
 import tomasvolker.numeriko.core.view.with
-import tomasvolker.numeriko.core.view.without
 
 class DefaultDoubleArrayNDLowerRankView(
         val array: MutableDoubleArrayND,

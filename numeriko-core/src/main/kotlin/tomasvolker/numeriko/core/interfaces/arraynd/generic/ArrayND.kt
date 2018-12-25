@@ -12,7 +12,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.reductions.product
+import tomasvolker.numeriko.core.operations.reduction.product
 import tomasvolker.numeriko.core.view.ElementOrder
 
 /**

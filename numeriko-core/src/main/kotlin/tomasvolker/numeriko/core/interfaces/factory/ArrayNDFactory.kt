@@ -15,7 +15,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
 import tomasvolker.numeriko.core.primitives.indicative
-import tomasvolker.numeriko.core.reductions.product
+import tomasvolker.numeriko.core.operations.reduction.product
 import kotlin.random.Random
 
 interface ArrayNDFactory {
@@ -168,6 +168,13 @@ inline fun doubleArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->Num
         NumerikoConfig.defaultFactory.doubleZeros(shape0, shape1).asMutable().apply {
             forEachIndex { i0, i1 ->
                 this[i0, i1] = init(i0, i1).toDouble()
+            }
+        }
+
+inline fun doubleArray2D(shape0: Int, shape1: Int, init: ()->Double): DoubleArray2D =
+        NumerikoConfig.defaultFactory.doubleZeros(shape0, shape1).asMutable().apply {
+            forEachIndex { i0, i1 ->
+                this[i0, i1] = init()
             }
         }
 

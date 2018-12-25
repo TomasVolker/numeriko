@@ -9,13 +9,18 @@ plugins {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    testImplementation("junit:junit:4.12")
-    testImplementation(kotlin("test"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    //testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 val projectGroup   = "tomasvolker"
 val projectName    = "numeriko-core"
-val projectVersion = "0.0.1"
+val projectVersion = "0.0.2-SNAPSHOT"
 
 version = projectVersion
 

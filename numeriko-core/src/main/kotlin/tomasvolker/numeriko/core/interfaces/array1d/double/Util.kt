@@ -11,7 +11,12 @@ inline fun elementWise(source: DoubleArray1D, destination: MutableDoubleArray1D,
     }
 }
 
-inline fun elementWise(source1: DoubleArray1D, source2: DoubleArray1D, destination: MutableDoubleArray1D, operation: (Double, Double) -> Double) {
+inline fun elementWise(
+        source1: DoubleArray1D,
+        source2: DoubleArray1D,
+        destination: MutableDoubleArray1D,
+        operation: (Double, Double) -> Double
+) {
     requireSameSize(source1, source2)
     requireSameSize(source1, destination)
     for (i in source1.indices) {

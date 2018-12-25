@@ -24,7 +24,7 @@ interface Array0D<out T>: ArrayND<T> {
 
     override fun getValue(vararg indices: Int): T {
         requireValidIndices(indices)
-        return getValue(indices[0])
+        return getValue()
     }
 
     override fun getValue(): T

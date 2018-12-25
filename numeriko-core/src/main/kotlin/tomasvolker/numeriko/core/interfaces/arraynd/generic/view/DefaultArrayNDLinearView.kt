@@ -1,11 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic.view
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
-import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultMutableArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
-import tomasvolker.numeriko.core.view.ContiguousFirstIndex
-import tomasvolker.numeriko.core.view.ContiguousLastIndex
 import tomasvolker.numeriko.core.view.ElementOrder
 
 class DefaultArrayNDLinearView<T>(

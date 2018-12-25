@@ -2,7 +2,7 @@ package tomasvolker.numeriko.core.config
 
 import tomasvolker.numeriko.core.implementations.numeriko.factory.NumerikoArrayNDFactory
 import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
-import tomasvolker.numeriko.core.view.ContiguousLastIndex
+import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.ElementOrder
 
 /**
@@ -37,6 +37,6 @@ object NumerikoConfig {
 
 
 
-    var defaultElementOrder: ElementOrder = ContiguousLastIndex
+    var defaultElementOrder: ElementOrder = ContiguousLastAxis
 
 }

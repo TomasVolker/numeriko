@@ -1,6 +1,5 @@
 package tomasvolker.numeriko.sandbox.generic
 
-import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.unsafeGetView
@@ -8,7 +7,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeGetView
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
-import tomasvolker.numeriko.core.operations.reduce
+import tomasvolker.numeriko.core.operations.reduction.reduce
 
 
 operator fun <T> ArrayND<T>.get(vararg indices: Int): T = getValue(*indices)

@@ -1,14 +1,11 @@
-package tomasvolker.numeriko.tests
+package tomasvolker.numeriko.interfaces.array1d
 
-import org.junit.Test
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.index.*
-import tomasvolker.numeriko.core.interfaces.array1d.double.times
 import tomasvolker.numeriko.core.interfaces.factory.*
-import tomasvolker.numeriko.core.functions.cos
-import tomasvolker.numeriko.core.functions.invoke
-import tomasvolker.numeriko.core.linearalgebra.linearSpace
-import kotlin.math.PI
+import tomasvolker.numeriko.tests.*
 import kotlin.math.sqrt
 import kotlin.random.Random
 import kotlin.test.assertEquals
@@ -17,23 +14,28 @@ import kotlin.test.assertNotEquals
 
 class DoubleArray1DTest {
 
-    @Test
-    fun `double 1D array constructors`() {
+    @Nested
+    inner class Constructors {
 
-        val a1 = doubleArray1D(5) { i -> 2 * i }
-        val a2 = doubleArrayOf(0.0, 2.0, 4.0, 6.0, 8.0).asDoubleArray1D()
-        val a3 = doubleArray1DOf(0.0, 2.0, 4.0, 6.0, 8.0)
-        val a4 = D[0, 2, 4, 6, 8]
+        @Test
+        fun compare() {
 
-        assertEquals(a1, a2)
-        assertEquals(a1, a3)
-        assertEquals(a2, a3)
-        assertEquals(a2, a4)
+            val a1 = doubleArray1D(5) { i -> 2 * i }
+            val a2 = doubleArrayOf(0.0, 2.0, 4.0, 6.0, 8.0).asDoubleArray1D()
+            val a3 = doubleArray1DOf(0.0, 2.0, 4.0, 6.0, 8.0)
+            val a4 = D[0, 2, 4, 6, 8]
+
+            assertEquals(a1, a2)
+            assertEquals(a1, a3)
+            assertEquals(a2, a3)
+            assertEquals(a2, a4)
+
+        }
 
     }
 
     @Test
-    fun `double 1D array access`() {
+    fun access() {
 
         val a1 = doubleArray1D(5) { i -> 2 * i }
         val a2 = doubleArrayOf(0.0, 2.0, 4.0, 6.0, 8.0).asDoubleArray1D()
@@ -48,7 +50,7 @@ class DoubleArray1DTest {
     }
 
     @Test
-    fun `double 1D array view`() {
+    fun slice() {
 
         val a1 = doubleArray1D(100) { i -> 2 * i}
 
@@ -58,7 +60,7 @@ class DoubleArray1DTest {
     }
 
     @Test
-    fun `double 1D array copy view instance`() {
+    fun `slice instance`() {
 
         val a1 = doubleArray1D(100) { i -> 2 * i }
 
@@ -72,7 +74,19 @@ class DoubleArray1DTest {
     }
 
     @Test
-    fun `double 1D array modification`() {
+    fun aliasing() {
+
+        val a = doubleArray1D(10) { it }.asMutable()
+
+        a[3..8] = a[0..5]
+
+        val expected = D[0, 1, 2, 0, 1, 2, 3, 4, 5, 9]
+
+        assertEquals(expected, a)
+    }
+
+    @Test
+    fun modify() {
 
         val a1 = doubleArray1D(100) { i -> 2 * i }.asMutable()
 
@@ -95,40 +109,42 @@ class DoubleArray1DTest {
     }
 
     @Test
-    fun `double 1D array operators`() {
+    fun operators() {
 
-        val random = Random(0)
+        with(Random(0)) {
 
-        val size = 5
+            val size = 5
 
-        val a1 = doubleArray1D(size) { random.nextDouble(from = -12.3, until = 7.5) }
-        val a2 = doubleArray1D(size) { random.nextDouble(from = -6.0, until = 8.9) }
-        val a3 = doubleArray1D(size) { random.nextDouble(from = 1.2, until = 22.8) }
-        val zero = doubleZeros(size)
-        val one = doubleArray1D(size) { 1.0 }
+            val a1 = doubleArray1D(size) { nextDouble(from = -12.3, until = 7.5) }
+            val a2 = doubleArray1D(size) { nextDouble(from = -6.0, until = 8.9) }
+            val a3 = doubleArray1D(size) { nextDouble(from = 1.2, until = 22.8) }
+            val zero = doubleZeros(size)
+            val one = doubleArray1D(size) { 1.0 }
 
-        assertNumericEquals(a1 + a2, a2 + a1)
-        assertNumericEquals(a1, a1 + zero)
-        assertNumericEquals((a1 + a2) + a3, a1 + (a2 + a3))
-        assertNumericEquals(a1, a1 + a2 - a2)
-        assertNumericEquals(zero, a1 - a1)
-        assertNumericEquals(-a1, zero - a1)
+            assertNumericEquals(a1 + a2, a2 + a1)
+            assertNumericEquals(a1, a1 + zero)
+            assertNumericEquals((a1 + a2) + a3, a1 + (a2 + a3))
+            assertNumericEquals(a1, a1 + a2 - a2)
+            assertNumericEquals(zero, a1 - a1)
+            assertNumericEquals(-a1, zero - a1)
 
-        assertNumericEquals(a1 * a2, a2 * a1)
-        assertNumericEquals((a1 * a2) * a3, a1 * (a2 * a3))
-        assertNumericEquals(a1, a1 * one)
-        assertNumericEquals(zero, a1 * zero)
+            assertNumericEquals(a1 * a2, a2 * a1)
+            assertNumericEquals((a1 * a2) * a3, a1 * (a2 * a3))
+            assertNumericEquals(a1, a1 * one)
+            assertNumericEquals(zero, a1 * zero)
 
-        assertNumericEquals((a1 + a2) * a3, a1 * a3 + a2 * a3)
-        assertNumericEquals((a1 + a2) * 5.4, a1 * 5.4 + a2 * 5.4)
-        assertNumericEquals(a1, a1 * a2 / a2)
-        assertNumericEquals((a1 + a2) / a3, a1 / a3 + a2 / a3)
-        assertNumericEquals((a1 + a2) / 14.6, a1 / 14.6 + a2 / 14.6)
+            assertNumericEquals((a1 + a2) * a3, a1 * a3 + a2 * a3)
+            assertNumericEquals((a1 + a2) * 5.4, a1 * 5.4 + a2 * 5.4)
+            assertNumericEquals(a1, a1 * a2 / a2)
+            assertNumericEquals((a1 + a2) / a3, a1 / a3 + a2 / a3)
+            assertNumericEquals((a1 + a2) / 14.6, a1 / 14.6 + a2 / 14.6)
+
+        }
 
     }
 
     @Test
-    fun `double 1D array functions`() {
+    fun functions() {
 
         val random = Random(0)
 

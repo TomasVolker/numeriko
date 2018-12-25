@@ -12,7 +12,7 @@ sealed class ElementOrder {
 
 }
 
-object ContiguousFirstIndex: ElementOrder() {
+object ContiguousFirstAxis: ElementOrder() {
 
     override fun strideArray(shape: IntArray1D): IntArray =
             IntArray(shape.size).apply {
@@ -33,7 +33,7 @@ object ContiguousFirstIndex: ElementOrder() {
 
 }
 
-object ContiguousLastIndex: ElementOrder() {
+object ContiguousLastAxis: ElementOrder() {
 
     override fun strideArray(shape: IntArray1D): IntArray =
             IntArray(shape.size).apply {

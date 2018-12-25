@@ -5,7 +5,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultMutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
-import tomasvolker.numeriko.core.operations.remove
+import tomasvolker.numeriko.core.operations.reduction.remove
 import tomasvolker.numeriko.core.view.ElementOrder
 import tomasvolker.numeriko.core.view.linearIndex
 

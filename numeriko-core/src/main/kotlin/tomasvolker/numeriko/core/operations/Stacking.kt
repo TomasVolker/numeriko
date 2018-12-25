@@ -46,7 +46,10 @@ fun stack(arrays: List<DoubleArray1D>, axis: Int = 0): DoubleArray2D {
 
 }
 
-fun stack(vararg arrays: DoubleArray1D, axis: Int = 0): DoubleArray2D = stack(arrays.toList(), axis)
+fun stack(
+        vararg arrays: DoubleArray1D,
+        axis: Int = 0
+): DoubleArray2D = stack(arrays.toList(), axis)
 
 infix fun DoubleArray1D.concatenate(other: DoubleArray1D): DoubleArray1D =
         doubleArray1D(this.size + other.size) { i ->

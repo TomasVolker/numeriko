@@ -1,6 +1,7 @@
-package tomasvolker.numeriko.tests
+package tomasvolker.numeriko.interfaces.array1d
 
-import org.junit.Test
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.array1d.generic.*
@@ -8,23 +9,41 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
 
-class Array1DTest {
+class GenericArray1DTest {
 
-    @Test
-    fun `generic 1D array constructors`() {
+    @Nested
+    inner class Constructors {
 
-        val a1 = array1D(5) { i -> 2 * i }
-        val a2 = arrayOf(0, 2, 4, 6, 8).asArray1D()
-        val a3 = array1DOf(0, 2, 4, 6, 8)
+        @Test
+        fun lambda() {
 
-        assertEquals(a1, a2)
-        assertEquals(a1, a3)
-        assertEquals(a2, a3)
+            val a1 = array1D(5) { i -> "element $i" }
+
+            assertEquals(a1[0], "element 0")
+            assertEquals(a1[1], "element 1")
+            assertEquals(a1[2], "element 2")
+            assertEquals(a1[3], "element 3")
+            assertEquals(a1[4], "element 4")
+
+        }
+
+        @Test
+        fun compare() {
+
+            val a1 = array1D(5) { i -> 2 * i }
+            val a2 = arrayOf(0, 2, 4, 6, 8).asArray1D()
+            val a3 = array1DOf(0, 2, 4, 6, 8)
+
+            assertEquals(a1, a2)
+            assertEquals(a1, a3)
+            assertEquals(a2, a3)
+
+        }
 
     }
 
     @Test
-    fun `generic 1D array access`() {
+    fun access() {
 
         val a1 = array1D(5) { i -> 2 * i }
         val a2 = arrayOf(0, 2, 4, 6, 8).asArray1D()
@@ -39,7 +58,7 @@ class Array1DTest {
     }
 
     @Test
-    fun `generic 1D array view`() {
+    fun slice() {
 
         val a1 = array1D(100) { i -> "${2 * i}" }
 
@@ -49,7 +68,7 @@ class Array1DTest {
     }
 
     @Test
-    fun `generic 1D view copy instance`() {
+    fun `view copy instance`() {
 
         val a1 = array1D(100) { i -> "${2 * i}" }
 
@@ -64,7 +83,7 @@ class Array1DTest {
     }
 
     @Test
-    fun `generic 1D modification`() {
+    fun modification() {
 
         val a1 = array1D(100) { i -> 2 * i }.asMutable()
 

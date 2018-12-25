@@ -2,9 +2,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.generic.view
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.*
-import tomasvolker.numeriko.core.operations.inject
-import tomasvolker.numeriko.core.operations.remove
-import tomasvolker.numeriko.core.view.with
+import tomasvolker.numeriko.core.operations.reduction.inject
 import tomasvolker.numeriko.core.view.without
 
 class DefaultArrayNDHigherRankView<T>(

@@ -1,6 +1,5 @@
 package tomasvolker.numeriko.sandbox.image
 
-import com.sun.javafx.iio.ImageStorage
 import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
