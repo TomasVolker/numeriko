@@ -17,7 +17,7 @@ class FFTTest {
 
         val reconstructed = ifft(arrayFtt)
 
-        println(reconstructed)
+        println(reconstructed.joinToString())
 
     }
 

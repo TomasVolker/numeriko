@@ -16,7 +16,7 @@ dependencies {
 
 val projectGroup   = "tomasvolker"
 val projectName    = "numeriko-complex"
-val projectVersion = "0.0.1"
+val projectVersion = "0.0.2"
 
 version = projectVersion
 

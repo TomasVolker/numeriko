@@ -3,7 +3,7 @@
 Kotlin plotting library backed by Python's `matplotlib`. A `python3` interpreter
 with `matplotlib` installed has to be available in the system.
 
-Kyplot provides a declarative DSL for plotting as shown in the example below:
+KyPlot provides a declarative DSL for plotting as shown in the example below:
 
 ```kotlin
 fun main() {
