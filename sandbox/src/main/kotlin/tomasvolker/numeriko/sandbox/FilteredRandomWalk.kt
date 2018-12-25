@@ -1,10 +1,14 @@
 package tomasvolker.numeriko.sandbox
 
 import tomasvolker.kyplot.dsl.*
-import tomasvolker.kyplot.model.Legend
+import tomasvolker.kyplot.model.*
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
+import tomasvolker.numeriko.core.interfaces.factory.nextDoubleArray1D
+import tomasvolker.numeriko.core.interfaces.factory.nextGaussianArray1D
 
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
+import tomasvolker.numeriko.core.primitives.squared
+import kotlin.math.exp
 import kotlin.random.Random
 
 fun main() {
@@ -21,26 +25,37 @@ fun main() {
 
     val windowSize = 100
 
-    val filter = doubleArray1D(windowSize) { 1.0 }
+    // Gaussian filter
+    val filter = doubleArray1D(windowSize) { i ->
+        exp(-(i - windowSize / 2.0).squared() / 10.0.squared())
+    }
 
-    val speed = doubleArray1D(time.size) { Random.nextDouble(-0.1, 0.1) }.filter1D(filter)
+    val speed = Random.nextGaussianArray1D(time.size).filter1D(filter)
     val position = speed.cumulativeSum() * delta
 
     showPlot {
         title = "Random walk"
 
         line(x = time, y = speed) {
-            label = "speed"
+            label = "Speed"
+            color = Color.BLUE
         }
 
         line(x = time, y = position) {
-            label = "position"
+            label = "Position"
+            color = Color.RED
         }
 
-        legend {
-            visible = true
-            this.position = Legend.Position.UPPER_LEFT
+        xAxis {
+            label = "time"
         }
+
+        yAxis {
+            label = "position/speed"
+        }
+
+        legend.visible = true
+        legend.position = Legend.Position.UPPER_LEFT
 
     }
 
