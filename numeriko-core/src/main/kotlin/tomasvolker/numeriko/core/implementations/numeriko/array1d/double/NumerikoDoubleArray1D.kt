@@ -12,9 +12,9 @@ class NumerikoDoubleArray1D(
 
     override val size: Int get() = data.size
 
-    override fun getDouble(i0: Int): Double = data[i0]
+    override operator fun get(i0: Int): Double = data[i0]
 
-    override fun setDouble(value: Double, i0: Int) {
+    override operator fun set(i0: Int, value: Double) {
         data[i0] = value
     }
 
@@ -48,12 +48,12 @@ class NumerikoMutableDoubleArray1DView(
         require(convertIndex(lastIndex) in 0 until data.size)
     }
 
-    override fun getDouble(i0: Int): Double {
+    override operator fun get(i0: Int): Double {
         requireValidIndices(i0)
         return data[convertIndex(i0)]
     }
 
-    override fun setDouble(value: Double, i0: Int) {
+    override operator fun set(i0: Int, value: Double) {
         requireValidIndices(i0)
         data[convertIndex(i0)] = value
     }

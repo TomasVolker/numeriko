@@ -2,11 +2,17 @@ package tomasvolker.numeriko.complex.interfaces.array1d.view
 
 import tomasvolker.numeriko.complex.interfaces.array0d.DefaultMutableComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
+import tomasvolker.numeriko.complex.primitives.Complex
+import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
 
 class DefaultComplexArray0DView (
         val array: MutableComplexArray1D,
         val offset: Int
 ) : DefaultMutableComplexArray0D() {
+
+    override fun higherRank(): MutableNumericArray1D<Complex> = TODO("not implemented")
+
+    override fun higherRank(axis: Int): MutableNumericArray1D<Complex> = TODO("not implemented")
 
     init {
         array.requireValidIndices(offset)

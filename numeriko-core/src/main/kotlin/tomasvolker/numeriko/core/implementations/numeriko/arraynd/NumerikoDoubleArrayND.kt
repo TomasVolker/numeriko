@@ -20,16 +20,77 @@ class NumerikoDoubleArrayND(
     override val rank: Int
         get() = shape.size
 
+    private val arrayShape = shape.toIntArray()
+
+    override fun shape(axis: Int): Int = arrayShape[axis]
+
     override val size: Int get() = data.size
 
-    override fun getDouble(vararg indices: Int): Double {
+    private inline fun <reified T> requireRank(rank: Int, block: ()->T): T {
+        require(this.rank == rank) { "Rank $rank operation requested on a rank ${this.rank} array" }
+        return block()
+    }
+
+    override fun get(): Double = requireRank(0) { data[offset] }
+
+    override operator fun get(i0: Int): Double = requireRank(1) {
+        data[convertIndices(i0)]
+    }
+
+    override operator fun get(i0: Int, i1: Int): Double = requireRank(2) {
+        data[convertIndices(i0, i1)]
+    }
+
+    override operator fun get(i0: Int, i1: Int, i2: Int): Double = requireRank(3) {
+        data[convertIndices(i0, i1, i2)]
+    }
+
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int): Double = requireRank(4) {
+        data[convertIndices(i0, i1, i2, i3)]
+    }
+
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): Double = requireRank(5) {
+        data[convertIndices(i0, i1, i2, i3, i4)]
+    }
+
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): Double = requireRank(6) {
+        data[convertIndices(i0, i1, i2, i3, i4, i5)]
+    }
+
+    override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
         return data[convertIndices(indices)]
     }
 
-    override fun setDouble(value: Double, vararg indices: Int) {
+    override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
         data[convertIndices(indices)] = value
+    }
+
+    override fun set(value: Double) = requireRank(0) { data[offset] = value }
+
+    override operator fun set(i0: Int, value: Double) = requireRank(1) {
+        data[convertIndices(i0)] = value
+    }
+
+    override operator fun set(i0: Int, i1: Int, value: Double) = requireRank(2) {
+        data[convertIndices(i0, i1)] = value
+    }
+
+    override operator fun set(i0: Int, i1: Int, i2: Int, value: Double) = requireRank(3) {
+        data[convertIndices(i0, i1, i2)] = value
+    }
+
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, value: Double) = requireRank(4) {
+        data[convertIndices(i0, i1, i2, i3)] = value
+    }
+
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, value: Double) = requireRank(5) {
+        data[convertIndices(i0, i1, i2, i3, i4)] = value
+    }
+
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, value: Double) = requireRank(6) {
+        data[convertIndices(i0, i1, i2, i3, i4, i5)] = value
     }
 
     override fun getView(vararg indices: IntProgression): MutableDoubleArrayND {
@@ -57,5 +118,23 @@ class NumerikoDoubleArrayND(
 
     private fun convertIndices(indices: IntArray): Int =
             linearIndex(offset, strideArray, indices)
+
+    private fun convertIndices(i0: Int): Int =
+            linearIndex(offset, strideArray, i0)
+
+    private fun convertIndices(i0: Int, i1: Int): Int =
+            linearIndex(offset, strideArray, i0, i1)
+
+    private fun convertIndices(i0: Int, i1: Int, i2: Int): Int =
+            linearIndex(offset, strideArray, i0, i1, i2)
+
+    private fun convertIndices(i0: Int, i1: Int, i2: Int, i3: Int): Int =
+            linearIndex(offset, strideArray, i0, i1, i2, i3)
+
+    private fun convertIndices(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): Int =
+            linearIndex(offset, strideArray, i0, i1, i2, i3, i4)
+
+    private fun convertIndices(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): Int =
+            linearIndex(offset, strideArray, i0, i1, i2, i3, i4, i5)
 
 }

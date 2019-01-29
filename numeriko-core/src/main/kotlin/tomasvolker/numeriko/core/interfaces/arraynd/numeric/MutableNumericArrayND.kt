@@ -3,7 +3,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.numeric
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
+import tomasvolker.numeriko.core.performance.fastForEachIndexed
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableNumericArrayND<N: Number>: NumericArrayND<N>, MutableArrayND<N> {
@@ -13,31 +13,30 @@ interface MutableNumericArrayND<N: Number>: NumericArrayND<N>, MutableArrayND<N>
     override fun getView(vararg indices: IndexProgression): MutableNumericArrayND<N> =
             getView(*indices.computeIndices())
 
-    fun setDouble(value: Double, vararg indices: Int) = setValue(cast(value), *indices)
-    fun setDouble(value: Double, indices: IntArray1D) = setDouble(value, *indices.toIntArray())
+    fun setDouble(indices: IntArray, value: Double) = setValue(indices, cast(value))
+    fun setDouble(indices: IntArray1D, value: Double) = setDouble(indices.toIntArray(), value)
 
-    fun setFloat(value: Float, vararg indices: Int) = setValue(cast(value))
-    fun setFloat(value: Float, indices: IntArray1D) = setFloat(value, *indices.toIntArray())
+    fun setFloat(indices: IntArray, value: Float) = setValue(cast(value))
+    fun setFloat(indices: IntArray1D, value: Float) = setFloat(indices.toIntArray(), value)
 
-    fun setLong(value: Long, vararg indices: Int) = setValue(cast(value), *indices)
-    fun setLong(value: Long, indices: IntArray1D) = setLong(value, *indices.toIntArray())
+    fun setLong(indices: IntArray, value: Long) = setValue(indices, cast(value))
+    fun setLong(indices: IntArray1D, value: Long) = setLong(indices.toIntArray(), value)
 
-    fun setInt(value: Int, vararg indices: Int) = setValue(cast(value))
-    fun setInt(value: Int, indices: IntArray1D) = setInt(value, *indices.toIntArray())
+    fun setInt(indices: IntArray, value: Int) = setValue(cast(value))
+    fun setInt(indices: IntArray1D, value: Int) = setInt(indices.toIntArray(), value)
 
-    fun setShort(value: Short, vararg indices: Int) = setValue(cast(value), *indices)
-    fun setShort(value: Short, indices: IntArray1D) = setShort(value, *indices.toIntArray())
+    fun setShort(indices: IntArray, value: Short) = setValue(indices, cast(value))
+    fun setShort(indices: IntArray1D, value: Short) = setShort(indices.toIntArray(), value)
 
     fun setValue(value: NumericArrayND<N>) {
         requireSameShape(this, value)
         // Anti alias copy
-        val copy = value.copy()
-        unsafeForEachIndices { indices ->
-            setValue(copy.getValue(indices), indices)
+        value.copy().fastForEachIndexed { indices, element ->
+            setValue(indices, element)
         }
     }
 
-    override fun setValue(value: N, vararg indices: Int)
+    override fun setValue(indices: IntArray, value: N)
 
     fun setView(value: NumericArrayND<N>, vararg indices: IntProgression): Unit =
             getView(*indices).asMutable().setValue(value)

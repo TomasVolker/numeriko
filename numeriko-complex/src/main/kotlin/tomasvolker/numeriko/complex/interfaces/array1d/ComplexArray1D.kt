@@ -5,6 +5,7 @@ import tomasvolker.numeriko.complex.interfaces.array1d.view.*
 import tomasvolker.numeriko.complex.primitives.div
 import tomasvolker.numeriko.complex.interfaces.array0d.ComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.array0d.MutableComplexArray0D
+import tomasvolker.numeriko.complex.interfaces.array2d.ComplexArray2D
 import tomasvolker.numeriko.complex.interfaces.arraynd.ComplexArrayND
 import tomasvolker.numeriko.complex.interfaces.factory.complexArray1D
 import tomasvolker.numeriko.complex.interfaces.factory.copy
@@ -13,10 +14,16 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
+import java.io.File
+import java.nio.ByteBuffer
+import java.nio.DoubleBuffer
 import kotlin.math.atan2
 import kotlin.math.hypot
 
 interface ComplexArray1D: NumericArray1D<Complex>, ComplexArrayND {
+
+    override fun as0D(): Nothing = throw IllegalArgumentException("")
+    override fun as2D(): Nothing = TODO("not implemented")
 
     override fun getValue(vararg indices: Int): Complex {
         requireValidIndices(indices)

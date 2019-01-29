@@ -1,8 +1,10 @@
 package tomasvolker.numeriko.complex.interfaces.array2d.view
 
 import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex1
+import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 
 class DefaultComplexArray2DView(
         val array: MutableComplexArray2D,
@@ -20,6 +22,8 @@ class DefaultComplexArray2DView(
         array.requireValidIndices(convertIndex0(0), convertIndex1(lastIndex1))
         array.requireValidIndices(convertIndex0(lastIndex0), convertIndex1(lastIndex1))
     }
+
+    override fun higherRank(axis: Int): Nothing = TODO()
 
     override fun real(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)

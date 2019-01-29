@@ -9,8 +9,8 @@ import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
+import tomasvolker.numeriko.core.performance.fastForEachIndices
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableComplexArrayND: ComplexArrayND, MutableNumericArrayND<Complex> {
@@ -34,12 +34,12 @@ interface MutableComplexArrayND: ComplexArrayND, MutableNumericArrayND<Complex> 
         requireSameShape(this, value)
         // Anti alias copy
         val copy = value.copy()
-        unsafeForEachIndices { indices ->
-            setValue(copy.getValue(indices), indices)
+        fastForEachIndices { indices ->
+            setValue(indices, copy.getValue(*indices))
         }
     }
 
-    override fun setValue(value: Complex, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: Complex) {
         setReal(value.real, *indices)
         setImag(value.imag, *indices)
     }
@@ -47,7 +47,7 @@ interface MutableComplexArrayND: ComplexArrayND, MutableNumericArrayND<Complex> 
     fun setReal(value: Double, vararg indices: Int)
     fun setImag(value: Double, vararg indices: Int)
 
-    operator fun set(indices: IntArray1D, value: Complex) = setValue(value, indices)
+    operator fun set(indices: IntArray1D, value: Complex) = setValue(indices, value)
 
     override fun as0D(): MutableComplexArray0D = DefaultComplexArrayND0DView(this)
     override fun as1D(): MutableComplexArray1D = DefaultComplexArrayND1DView(this)

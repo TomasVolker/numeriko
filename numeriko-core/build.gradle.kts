@@ -11,7 +11,7 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    //testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
 }
 
 tasks.test {
@@ -20,7 +20,7 @@ tasks.test {
 
 val projectGroup   = "tomasvolker"
 val projectName    = "numeriko-core"
-val projectVersion = "0.0.2"
+val projectVersion = "0.0.3"
 
 version = projectVersion
 

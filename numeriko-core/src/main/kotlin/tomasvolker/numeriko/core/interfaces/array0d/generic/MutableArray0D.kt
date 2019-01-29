@@ -6,7 +6,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 
 interface MutableArray0D<T>: Array0D<T>, MutableArrayND<T> {
 
-    override fun setValue(value: T, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: T) {
         requireValidIndices(indices)
         return setValue(value)
     }

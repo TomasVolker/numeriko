@@ -9,8 +9,8 @@ abstract class DefaultDoubleArray0D: DoubleArray0D {
     override fun equals(other: Any?): Boolean = when {
         other === this -> true
         other is DoubleArray0D -> other.get() == this.get()
-        other is DoubleArrayND -> other.rank == 0 && other.getDouble() == this.get()
-        other is Array0D<*> -> other.getValue() == this.getDouble()
+        other is DoubleArrayND -> other.rank == 0 && other.get() == this.get()
+        other is Array0D<*> -> other.getValue() == this.get()
         other is ArrayND<*> -> other.rank == 0 && other.getValue() == this.getValue()
         else -> false
     }

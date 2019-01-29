@@ -1,16 +1,10 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
-import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND0DView
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND1DView
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeGetView
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
+import tomasvolker.numeriko.core.performance.fastForEachIndexed
+import tomasvolker.numeriko.core.performance.fastForEachIndices
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 inline fun elementWise(
@@ -19,8 +13,8 @@ inline fun elementWise(
         operation: (Double) -> Double
 ) {
     requireSameShape(source, destination)
-    source.unsafeForEachIndices { indices ->
-        destination[indices] = operation(source[indices])
+    source.fastForEachIndexed { indices, value ->
+        destination.setDouble(indices, operation(value))
     }
 }
 
@@ -32,8 +26,8 @@ inline fun elementWise(
 ) {
     requireSameShape(source1, source2)
     requireSameShape(source1, destination)
-    source1.unsafeForEachIndices { indices ->
-        destination[indices] = operation(source1[indices], source2[indices])
+    source1.fastForEachIndices { indices ->
+        destination.setDouble(indices, operation(source1.getDouble(indices), source2.getDouble(indices)))
     }
 }
 

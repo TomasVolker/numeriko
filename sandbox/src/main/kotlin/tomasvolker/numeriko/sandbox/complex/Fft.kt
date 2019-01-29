@@ -16,8 +16,8 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
+import tomasvolker.numeriko.core.performance.fastForEachIndices
 import tomasvolker.numeriko.core.primitives.modulo
 import kotlin.math.PI
 import kotlin.math.cos
@@ -124,7 +124,7 @@ fun ComplexArrayND.fft(axis: Int): ComplexArrayND {
 
     val result = complexZeros(this.shape).asMutable()
 
-    unsafeForEachIndices { indices ->
+    fastForEachIndices { indices ->
 
         if (indices[axis] == 0) {
 

@@ -7,6 +7,7 @@ import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.*
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import java.util.*
 import kotlin.math.PI

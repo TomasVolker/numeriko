@@ -19,20 +19,20 @@ class DefaultDoubleArrayNDView(
 
     }
 
-    override fun getDouble(vararg indices: Int): Double {
+    override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
 
         return array.getValue(
-                *IntArray(rank) { i -> offset[i] + stride[i] * indices[i] }
+                IntArray(rank) { i -> offset[i] + stride[i] * indices[i] }
         )
     }
 
-    override fun setDouble(value: Double, vararg indices: Int) {
+    override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
 
         array.setValue(
-                value,
-                *IntArray(rank) { i -> offset[i] + stride[i] * indices[i] }
+                IntArray(rank) { i -> offset[i] + stride[i] * indices[i] },
+                value
         )
     }
 

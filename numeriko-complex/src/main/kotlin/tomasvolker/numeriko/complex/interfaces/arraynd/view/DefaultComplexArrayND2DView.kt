@@ -2,6 +2,9 @@ package tomasvolker.numeriko.complex.interfaces.arraynd.view
 
 import tomasvolker.numeriko.complex.interfaces.array2d.view.DefaultMutableComplexArray2D
 import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
+import tomasvolker.numeriko.complex.primitives.Complex
+import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 
 class DefaultComplexArrayND2DView(
         val array: MutableComplexArrayND
@@ -28,5 +31,7 @@ class DefaultComplexArrayND2DView(
     override fun setImag(value: Double, i0: Int, i1: Int) {
         array.setImag(value, i0, i1)
     }
+
+    override fun higherRank(axis: Int): MutableNumericArrayND<Complex> = TODO("not implemented")
 
 }

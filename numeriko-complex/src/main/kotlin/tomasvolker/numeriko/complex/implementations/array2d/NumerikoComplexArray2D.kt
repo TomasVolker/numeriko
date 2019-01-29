@@ -4,12 +4,26 @@ import tomasvolker.numeriko.complex.implementations.array1d.NumerikoComplexArray
 import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
 import tomasvolker.numeriko.complex.interfaces.array2d.view.DefaultMutableComplexArray2D
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
+import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 
 class NumerikoComplexArray2D(
         override val real: MutableDoubleArray2D,
         override val imag: MutableDoubleArray2D
 ): DefaultMutableComplexArray2D() {
+
+    override fun higherRank(axis: Int): MutableNumericArrayND<Complex> {
+        TODO("not implemented")
+    }
+
+    override fun setValue(indices: IntArray, value: Complex) {
+        TODO("not implemented")
+    }
+
+    override fun setValue(i0: Int, i1: Int, value: Complex) {
+        TODO("not implemented")
+    }
 
     init {
         require(real.shape == imag.shape)

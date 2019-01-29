@@ -3,10 +3,11 @@ package tomasvolker.numeriko.sandbox.tpmovement
 import koma.pow
 import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.index.Last
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
+import tomasvolker.numeriko.core.interfaces.array1d.double.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
+import tomasvolker.numeriko.core.interfaces.array2d.double.inverse
+import tomasvolker.numeriko.core.interfaces.array2d.double.matMul
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND

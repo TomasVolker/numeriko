@@ -3,8 +3,9 @@ package tomasvolker.numeriko.complex.interfaces.arraynd
 import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.factory.complexZeros
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeGetView
+import tomasvolker.numeriko.core.performance.fastForEachIndices
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 inline fun elementWise(
@@ -13,8 +14,8 @@ inline fun elementWise(
         operation: (Complex) -> Complex
 ) {
     requireSameShape(source, destination)
-    source.unsafeForEachIndices { indices ->
-        destination[indices] = operation(source[indices])
+    source.fastForEachIndices { indices ->
+        destination.setValue(indices, operation(source.getValue(*indices)))
     }
 }
 
@@ -26,7 +27,7 @@ inline fun elementWise(
 ) {
     requireSameShape(source1, source2)
     requireSameShape(source1, destination)
-    source1.unsafeForEachIndices { indices ->
+    source1.forEachIndices { indices ->
         destination[indices] = operation(source1[indices], source2[indices])
     }
 }

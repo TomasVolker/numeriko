@@ -1,30 +1,55 @@
 package tomasvolker.numeriko.core.interfaces.array0d.double
 
-import tomasvolker.numeriko.core.interfaces.array0d.generic.DefaultArray0DHigherRankView
+import tomasvolker.numeriko.core.annotations.CompileTimeError
 import tomasvolker.numeriko.core.interfaces.array0d.numeric.NumericArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 
+private const val rankError = "Array is known to be rank 1D in compile time"
+internal typealias Level = DeprecationLevel
+
 interface DoubleArray0D: NumericArray0D<Double>, DoubleArrayND {
 
-    override fun getValue(vararg indices: Int): Double = getDouble(*indices)
+    override fun getValue(indices: IntArray): Double = getDouble(indices)
 
-    override fun getDouble(vararg indices: Int): Double {
+    override fun getDouble(): Double = get()
+
+    override fun get(): Double
+
+    override operator fun get(vararg indices: Int): Double = getDouble(indices)
+
+    override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
-        return getDouble()
+        return get()
     }
 
-    override fun getFloat(vararg indices: Int): Float = getDouble(*indices).toFloat()
-    override fun getLong (vararg indices: Int): Long  = getDouble(*indices).toLong()
-    override fun getInt  (vararg indices: Int): Int   = getDouble(*indices).toInt()
-    override fun getShort(vararg indices: Int): Short = getDouble(*indices).toShort()
+    override fun getFloat(indices: IntArray): Float = getDouble(indices).toFloat()
+    override fun getLong (indices: IntArray): Long  = getDouble(indices).toLong()
+    override fun getInt  (indices: IntArray): Int   = getDouble(indices).toInt()
+    override fun getShort(indices: IntArray): Short = getDouble(indices).toShort()
 
-    fun get(): Double = getDouble()
+    private fun rankError(): Nothing = throw IllegalArgumentException("Array is known to be rank 0D in compile time")
 
-    override fun getValue(): Double = getDouble()
+    @CompileTimeError(message = rankError, level = Level.ERROR)
+    override fun get(i0: Int): Nothing = rankError()
+    @CompileTimeError(message = rankError, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int): Nothing = rankError()
+    @CompileTimeError(message = rankError, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int): Nothing = rankError()
+    @CompileTimeError(message = rankError, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int): Nothing = rankError()
+    @CompileTimeError(message = rankError, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): Nothing = rankError()
+    @CompileTimeError(message = rankError, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): Nothing = rankError()
+
+    @CompileTimeError(message = rankError, level = Level.ERROR)
+    override fun as0D(): Nothing = rankError()
+    @CompileTimeError(message = rankError, level = Level.ERROR)
+    override fun as2D(): Nothing = rankError()
+
+    override fun getValue(): Double = get()
 
     override fun getView(): DoubleArray0D = this
 
@@ -43,30 +68,10 @@ interface DoubleArray0D: NumericArray0D<Double>, DoubleArrayND {
         return DefaultDoubleArray0DHigherRankView(this.asMutable())
     }
 
-    override fun getDouble(): Double
-
     override fun copy(): DoubleArray0D = copy(this)
 
     override fun asMutable(): MutableDoubleArray0D = this as MutableDoubleArray0D
 
     override fun iterator(): DoubleIterator = DefaultDoubleArray0DIterator(this)
-
-    override operator fun unaryPlus(): DoubleArray0D = this
-    override operator fun unaryMinus(): DoubleArray0D = elementWise { -it }
-
-    operator fun plus (other: DoubleArray0D): DoubleArray0D = elementWise(this, other) { t, o -> t + o }
-    operator fun minus(other: DoubleArray0D): DoubleArray0D = elementWise(this, other) { t, o -> t - o }
-    operator fun times(other: DoubleArray0D): DoubleArray0D = elementWise(this, other) { t, o -> t * o }
-    operator fun div  (other: DoubleArray0D): DoubleArray0D = elementWise(this, other) { t, o -> t / o }
-
-    override operator fun plus (other: Double): DoubleArray0D = elementWise { it + other }
-    override operator fun minus(other: Double): DoubleArray0D = elementWise { it - other }
-    override operator fun times(other: Double): DoubleArray0D = elementWise { it * other }
-    override operator fun div  (other: Double): DoubleArray0D = elementWise { it / other }
-
-    override operator fun plus (other: Int): DoubleArray0D = elementWise { it + other }
-    override operator fun minus(other: Int): DoubleArray0D = elementWise { it - other }
-    override operator fun times(other: Int): DoubleArray0D = elementWise { it * other }
-    override operator fun div  (other: Int): DoubleArray0D = elementWise { it / other }
     
 }

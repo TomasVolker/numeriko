@@ -2,8 +2,10 @@ package tomasvolker.numeriko.sandbox
 
 import tomasvolker.kyplot.dsl.*
 import tomasvolker.kyplot.model.*
+import tomasvolker.numeriko.core.interfaces.array1d.double.cumulativeSum
+import tomasvolker.numeriko.core.interfaces.array1d.double.filter1D
+import tomasvolker.numeriko.core.interfaces.array1d.double.times
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
-import tomasvolker.numeriko.core.interfaces.factory.nextDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.nextGaussianArray1D
 
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
@@ -12,6 +14,8 @@ import kotlin.math.exp
 import kotlin.random.Random
 
 fun main() {
+
+
 
     val amount = 1000
     val max = 100.0

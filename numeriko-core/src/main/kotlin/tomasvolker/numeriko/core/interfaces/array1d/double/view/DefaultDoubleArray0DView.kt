@@ -14,11 +14,11 @@ class DefaultDoubleArray0DView (
         array.requireValidIndices(offset)
     }
 
-    override fun setDouble(value: Double) {
-        array.setDouble(value, offset)
+    override fun set(value: Double) {
+        array.setDouble(offset, value)
     }
 
-    override fun getDouble(): Double {
+    override fun get(): Double {
         return array.getDouble(offset)
     }
 

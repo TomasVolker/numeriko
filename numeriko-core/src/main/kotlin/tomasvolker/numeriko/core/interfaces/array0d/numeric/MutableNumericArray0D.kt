@@ -7,9 +7,9 @@ import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayN
 
 interface MutableNumericArray0D<N: Number>: NumericArray0D<N>, MutableArray0D<N>, MutableNumericArrayND<N> {
 
-    override fun setValue(value: N, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: N) {
         requireValidIndices(indices)
-        setValue(value, *indices)
+        setValue(indices, value)
     }
 
     fun setDouble(value: Double) = setValue(cast(value))
@@ -18,27 +18,27 @@ interface MutableNumericArray0D<N: Number>: NumericArray0D<N>, MutableArray0D<N>
     fun setInt   (value: Int   ) = setValue(cast(value))
     fun setShort (value: Short ) = setValue(cast(value))
 
-    override fun setDouble(value: Double, vararg indices: Int) {
+    override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
         setDouble(value)
     }
 
-    override fun setFloat(value: Float, vararg indices: Int) {
+    override fun setFloat(indices: IntArray, value: Float) {
         requireValidIndices(indices)
         setFloat(value)
     }
 
-    override fun setLong(value: Long, vararg indices: Int) {
+    override fun setLong(indices: IntArray, value: Long) {
         requireValidIndices(indices)
         setLong(value)
     }
 
-    override fun setInt(value: Int, vararg indices: Int) {
+    override fun setInt(indices: IntArray, value: Int) {
         requireValidIndices(indices)
         setInt(value)
     }
 
-    override fun setShort(value: Short, vararg indices: Int) {
+    override fun setShort(indices: IntArray, value: Short) {
         requireValidIndices(indices)
         setShort(value)
     }

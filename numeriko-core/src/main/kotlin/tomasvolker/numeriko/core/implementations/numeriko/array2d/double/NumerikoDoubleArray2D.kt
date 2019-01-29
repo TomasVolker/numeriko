@@ -19,12 +19,12 @@ class NumerikoDoubleArray2D(
 
     override val size: Int get() = data.size
 
-    override fun setDouble(value: Double, i0: Int, i1: Int) {
+    override operator fun set(i0: Int, i1: Int, value: Double) {
         requireValidIndices(i0, i1)
         data[linearIndex(i0, i1)] = value
     }
 
-    override fun getDouble(i0: Int, i1: Int): Double {
+    override operator fun get(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return data[linearIndex(i0, i1)]
     }
@@ -94,12 +94,12 @@ class NumerikoMutableDoubleArray2DView(
         require(linearIndex(lastIndex0, lastIndex1) in 0 until data.size)
     }
 
-    override fun getDouble(i0: Int, i1: Int): Double {
+    override operator fun get(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return data[linearIndex(i0, i1)]
     }
 
-    override fun setDouble(value: Double, i0: Int, i1: Int) {
+    override operator fun set(i0: Int, i1: Int, value: Double) {
         requireValidIndices(i0, i1)
         data[linearIndex(i0, i1)] = value
     }

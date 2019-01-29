@@ -3,9 +3,9 @@ package tomasvolker.numeriko.complex.interfaces.array0d
 import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
 import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0D
+import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
 
 interface MutableComplexArray0D: ComplexArray0D, MutableNumericArray0D<Complex>, MutableComplexArrayND {
-
     override fun setReal(value: Double, vararg indices: Int) {
         requireValidIndices(indices)
         setReal(value, indices[0])
@@ -22,12 +22,15 @@ interface MutableComplexArray0D: ComplexArray0D, MutableNumericArray0D<Complex>,
     }
 
     fun setReal(value: Double)
+
     fun setImag(value: Double)
 
-    override fun setValue(value: Complex, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: Complex) {
         requireValidIndices(indices)
         setValue(value)
     }
+
+    override fun higherRank(): MutableNumericArray1D<Complex> = TODO()
 
     override fun getView(vararg indices: IntProgression): MutableComplexArray0D {
         requireValidIndices(indices)

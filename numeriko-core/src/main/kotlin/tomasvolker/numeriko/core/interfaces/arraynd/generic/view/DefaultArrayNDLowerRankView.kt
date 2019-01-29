@@ -18,12 +18,12 @@ class DefaultArrayNDLowerRankView<T>(
 
     override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
-        return array.getValue(*convertIndices(indices))
+        return array.getValue(convertIndices(indices))
     }
 
-    override fun setValue(value: T, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: T) {
         requireValidIndices(indices)
-        array.setValue(value,*convertIndices(indices))
+        array.setValue(convertIndices(indices), value)
     }
 
     fun convertIndices(indices: IntArray): IntArray = indices.with(index = axis, value = 0)

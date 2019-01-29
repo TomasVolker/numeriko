@@ -12,6 +12,7 @@ import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import java.lang.IllegalArgumentException
 
+
 inline fun <reified T> stack(vararg arrays: Array1D<T>): Array2D<T> {
 
     if (arrays.isEmpty()) return array2D<T>(0, 0) { _, _-> TODO() }

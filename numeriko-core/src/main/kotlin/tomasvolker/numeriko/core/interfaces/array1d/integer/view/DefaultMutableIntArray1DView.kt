@@ -15,9 +15,9 @@ class DefaultMutableIntArray1DView (
         array.requireValidIndices(convertIndex(lastIndex))
     }
 
-    override fun setInt(value: Int, i0: Int) {
+    override fun setInt(i0: Int, value: Int) {
         requireValidIndices(i0)
-        array.setInt(value, offset + stride * i0)
+        array.setInt(offset + stride * i0, value)
     }
 
     override fun getInt(i0: Int): Int {

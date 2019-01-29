@@ -10,7 +10,7 @@ class DefaultDoubleArray1DHigherRankView (
 ) : DefaultMutableDoubleArray2D() {
 
     init {
-        require(axis <= 1)
+        require(axis in 0..1)
     }
 
     override val shape0: Int
@@ -27,7 +27,7 @@ class DefaultDoubleArray1DHigherRankView (
             else -> error("")
         }
 
-    override fun getDouble(i0: Int, i1: Int): Double {
+    override operator fun get(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return when (axis) {
             0 -> array.getDouble(i1)
@@ -36,11 +36,11 @@ class DefaultDoubleArray1DHigherRankView (
         }
     }
 
-    override fun setDouble(value: Double, i0: Int, i1: Int) {
+    override operator fun set(i0: Int, i1: Int, value: Double) {
         requireValidIndices(i0, i1)
         when (axis) {
-            0 -> array.setDouble(value, i1)
-            1 -> array.setDouble(value, i0)
+            0 -> array.setDouble(i1, value)
+            1 -> array.setDouble(i0, value)
             else -> error("requireValidIndices should fail")
         }
     }

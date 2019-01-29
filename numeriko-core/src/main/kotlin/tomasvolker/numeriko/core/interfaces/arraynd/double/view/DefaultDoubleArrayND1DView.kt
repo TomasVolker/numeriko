@@ -14,11 +14,10 @@ class DefaultDoubleArrayND1DView(
     override val size: Int
         get() = array.shape(0)
 
-    override fun getDouble(i0: Int): Double =
-            array.getDouble(i0)
+    override fun get(i0: Int): Double = array[i0]
 
-    override fun setDouble(value: Double, i0: Int) {
-        array.setDouble(value, i0)
+    override fun set(i0: Int, value: Double) {
+        array[i0] = value
     }
 
 }

@@ -12,7 +12,7 @@ import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 
 interface NumericArray2D<out N: Number>: Array2D<N>, NumericArrayND<N> {
 
-    override fun getValue(vararg indices: Int): N {
+    override fun getValue(indices: IntArray): N {
         requireValidIndices(indices)
         return getValue(indices[0], indices[1])
     }
@@ -24,27 +24,27 @@ interface NumericArray2D<out N: Number>: Array2D<N>, NumericArrayND<N> {
     fun getShort (i0: Int, i1: Int): Short  = getValue(i0, i1).toShort()
 
 
-    override fun getDouble(vararg indices: Int): Double {
+    override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
         return getDouble(indices[0], indices[1])
     }
 
-    override fun getFloat(vararg indices: Int): Float {
+    override fun getFloat(indices: IntArray): Float {
         requireValidIndices(indices)
         return getFloat(indices[0], indices[1])
     }
 
-    override fun getLong(vararg indices: Int): Long {
+    override fun getLong(indices: IntArray): Long {
         requireValidIndices(indices)
         return getLong(indices[0], indices[1])
     }
 
-    override fun getInt(vararg indices: Int): Int {
+    override fun getInt(indices: IntArray): Int {
         requireValidIndices(indices)
         return getInt(indices[0], indices[1])
     }
 
-    override fun getShort(vararg indices: Int): Short {
+    override fun getShort(indices: IntArray): Short {
         requireValidIndices(indices)
         return getShort(indices[0], indices[1])
     }

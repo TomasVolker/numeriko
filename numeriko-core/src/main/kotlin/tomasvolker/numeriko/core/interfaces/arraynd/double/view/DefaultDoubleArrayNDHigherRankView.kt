@@ -21,12 +21,12 @@ class DefaultDoubleArrayNDHigherRankView(
 
     override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
-        return array.getDouble(*convertIndices(indices))
+        return array.get(*convertIndices(indices))
     }
 
-    override fun setDouble(value: Double, vararg indices: Int) {
+    override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
-        array.setDouble(value,*convertIndices(indices))
+        array.setDouble(convertIndices(indices), value)
     }
 
 }

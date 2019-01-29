@@ -22,14 +22,14 @@ class DefaultReshapedView<T>(
 
     override val size: Int get() = array.size
 
-    override fun getValue(vararg indices: Int): T {
+    override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
         return array.getValue(convertIndices(indices))
     }
 
-    override fun setValue(value: T, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: T) {
         requireValidIndices(indices)
-        array.setValue(value, convertIndices(indices))
+        array.setValue(convertIndices(indices), value)
     }
 
     override fun getView(vararg indices: IntProgression): MutableArrayND<T> {

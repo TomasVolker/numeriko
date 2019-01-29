@@ -20,12 +20,12 @@ class DefaultArray2DView<T>(
         )
     }
 
-    override fun setValue(value: T, i0: Int, i1: Int) {
+    override fun setValue(i0: Int, i1: Int, value: T) {
         requireValidIndices(i0, i1)
         array.setValue(
-                value,
                 offset0 + stride0 * i0,
-                offset1 + stride1 * i1
+                offset1 + stride1 * i1,
+                value
         )
     }
 

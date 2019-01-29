@@ -21,12 +21,12 @@ class NumerikoArrayND<T>(
 
     override val size: Int get() = data.size
 
-    override fun getValue(vararg indices: Int): T {
+    override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
         return data[convertIndices(indices)]
     }
 
-    override fun setValue(value: T, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: T) {
         requireValidIndices(indices)
         data[convertIndices(indices)] = value
     }
@@ -36,6 +36,7 @@ class NumerikoArrayND<T>(
         for (axis in 0 until rank) {
             requireValidIndexRange(indices[axis], axis = axis)
         }
+
         return NumerikoArrayND(
                 shape = intArray1D(rank) { axis -> indices[axis].count() },
                 data = data,

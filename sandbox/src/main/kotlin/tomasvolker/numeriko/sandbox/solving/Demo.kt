@@ -6,7 +6,11 @@ import tomasvolker.kyplot.dsl.showPlot
 import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array1d.double.inner
+import tomasvolker.numeriko.core.interfaces.array1d.double.outer
+import tomasvolker.numeriko.core.interfaces.array2d.double.*
+import tomasvolker.numeriko.core.interfaces.arraynd.double.contract
+import tomasvolker.numeriko.core.interfaces.arraynd.double.outer
 import tomasvolker.numeriko.core.interfaces.factory.asDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.linearalgebra.linearSpace

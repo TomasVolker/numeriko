@@ -84,7 +84,7 @@ interface ArrayND<out T>: Collection<T> {
      *
      * @throws IllegalArgumentException  if the [rank] is not 0
      */
-    fun getValue(): T = getValue(*intArrayOf())
+    fun getValue(): T = getValue(intArrayOf())
 
     /**
      * Returns the element in the given indices.
@@ -96,7 +96,7 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
-    fun getValue(vararg indices: Int): T
+    fun getValue(indices: IntArray): T
 
     /**
      * Returns the element in the given indices.
@@ -108,7 +108,7 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
-    fun getValue(indices: IntArray1D): T = getValue(*indices.toIntArray())
+    fun getValue(indices: IntArray1D): T = getValue(indices.toIntArray())
 
     /**
      * Returns the element in the given indices.
@@ -122,7 +122,7 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
-    fun getValue(vararg indices: Index): T = getValue(*indices.computeIndices())
+    fun getValue(vararg indices: Index): T = getValue(indices.computeIndices())
 
     fun as0D(): Array0D<T> = DefaultArrayND0DView(this.asMutable())
     fun as1D(): Array1D<T> = DefaultArrayND1DView(this.asMutable())

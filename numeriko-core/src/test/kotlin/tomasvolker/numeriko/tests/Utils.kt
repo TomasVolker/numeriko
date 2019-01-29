@@ -5,7 +5,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
+import tomasvolker.numeriko.core.performance.fastForEachIndices
 import kotlin.math.abs
 
 const val tolerance = 1e-10
@@ -19,8 +19,8 @@ infix fun DoubleArrayND.numericEquals(other: DoubleArrayND): Boolean {
     if (this.shape != other.shape)
         return false
 
-    unsafeForEachIndices { indices ->
-        if(this[indices] notNumericEquals other[indices])
+    fastForEachIndices { indices ->
+        if(this.get(*indices) notNumericEquals other.get(*indices))
             return false
     }
 

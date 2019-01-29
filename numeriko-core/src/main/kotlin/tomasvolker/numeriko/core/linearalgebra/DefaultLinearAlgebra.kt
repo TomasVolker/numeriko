@@ -5,6 +5,7 @@ import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.index.rangeTo
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.determinant
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
@@ -87,7 +88,7 @@ object DefaultLinearAlgebra {
         override val shape1: Int
             get() = array.shape1 - 1
 
-        override fun getDouble(i0: Int, i1: Int): Double =
+        override fun get(i0: Int, i1: Int): Double =
                 array.getDouble(
                         if(i0 < row) i0 else i0 + 1,
                         if(i1 < column) i1 else i1 + 1

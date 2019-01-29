@@ -2,8 +2,12 @@ package tomasvolker.numeriko.sandbox.tpsti
 
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
+import tomasvolker.numeriko.core.interfaces.array1d.double.div
+import tomasvolker.numeriko.core.interfaces.array1d.double.*
+import tomasvolker.numeriko.core.interfaces.array1d.double.inner
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.array2d.double.matMul
+import tomasvolker.numeriko.core.interfaces.array2d.double.transpose
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleDiagonal

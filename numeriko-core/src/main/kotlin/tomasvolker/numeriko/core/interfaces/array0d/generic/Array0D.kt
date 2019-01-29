@@ -22,7 +22,7 @@ interface Array0D<out T>: ArrayND<T> {
 
     override val size: Int get() = 1
 
-    override fun getValue(vararg indices: Int): T {
+    override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
         return getValue()
     }

@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.interfaces.array1d.double.times
+import tomasvolker.numeriko.core.interfaces.array1d.double.*
+import tomasvolker.numeriko.core.interfaces.array2d.double.*
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
 import tomasvolker.numeriko.tests.*

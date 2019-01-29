@@ -25,14 +25,14 @@ class DefaultDoubleReshapedView(
 
     override val size: Int get() = array.size
 
-    override fun getDouble(vararg indices: Int): Double {
+    override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
         return array.getValue(convertIndices(indices))
     }
 
-    override fun setDouble(value: Double, vararg indices: Int) {
+    override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
-        array.setValue(value, convertIndices(indices))
+        array.setValue(convertIndices(indices), value)
     }
 
     override fun getView(vararg indices: IntProgression): MutableDoubleArrayND {

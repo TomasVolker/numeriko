@@ -14,14 +14,14 @@ class DefaultDoubleArrayNDLinearView(
 
     private val strideArray: IntArray = order.strideArray(array.shape)
 
-    override fun getDouble(i0: Int): Double {
+    override fun get(i0: Int): Double {
         requireValidIndices(i0)
-        return array.getValue(*convertIndices(i0))
+        return array.getValue(convertIndices(i0))
     }
 
-    override fun setDouble(value: Double, i0: Int) {
+    override fun set(i0: Int, value: Double) {
         requireValidIndices(i0)
-        array.setValue(value, *convertIndices(i0))
+        array.setValue(convertIndices(i0), value)
     }
 
     fun convertIndices(index: Int): IntArray =

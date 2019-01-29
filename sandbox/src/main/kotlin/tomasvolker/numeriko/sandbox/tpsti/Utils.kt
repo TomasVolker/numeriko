@@ -2,8 +2,6 @@ package tomasvolker.numeriko.sandbox.tpsti
 
 import org.ejml.data.DMatrixRMaj
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
@@ -25,6 +23,7 @@ import javax.sound.sampled.AudioSystem
 import javax.sound.sampled.AudioInputStream
 import java.io.ByteArrayInputStream
 import org.opencv.core.CvType.channels
+import tomasvolker.numeriko.core.interfaces.array1d.double.*
 import tomasvolker.numeriko.core.primitives.pow2
 import javax.sound.sampled.AudioFormat
 import kotlin.math.absoluteValue

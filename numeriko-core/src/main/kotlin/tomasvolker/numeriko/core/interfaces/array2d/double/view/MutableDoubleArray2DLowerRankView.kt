@@ -15,7 +15,7 @@ class MutableDoubleArray2DLowerRankView(
 
     override val size: Int get() = array.size
 
-    override fun getDouble(i0: Int): Double {
+    override operator fun get(i0: Int): Double {
         requireValidIndices(i0)
         return when(axis) {
             0 -> array.getValue(0, i0)
@@ -24,11 +24,11 @@ class MutableDoubleArray2DLowerRankView(
         }
     }
 
-    override fun setDouble(value: Double, i0: Int) {
+    override operator fun set(i0: Int, value: Double) {
         requireValidIndices(i0)
         when(axis) {
-            0 -> array.setDouble(value, 0, i0)
-            1 -> array.setDouble(value, i0, 0)
+            0 -> array.setDouble(0, i0, value)
+            1 -> array.setDouble(i0, 0, value)
             else -> throw IllegalStateException()
         }
     }

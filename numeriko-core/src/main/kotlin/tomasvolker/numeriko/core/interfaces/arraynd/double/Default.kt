@@ -1,19 +1,17 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.index.LiteralIndex
 import tomasvolker.numeriko.core.index.toIndexProgression
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.indexIncrement
-import tomasvolker.numeriko.core.interfaces.factory.intZeros
+import tomasvolker.numeriko.core.performance.fastForEachIndices
+import tomasvolker.numeriko.core.performance.indexIncrement
 
 fun defaultEquals(array1: DoubleArrayND, array2: DoubleArrayND): Boolean {
 
     if(array1.shape != array2.shape)
         return false
 
-    array1.unsafeForEachIndices { indices ->
-        if (array1.getDouble(indices) != array2.getDouble(indices))
+    array1.fastForEachIndices { indices ->
+        if (array1.get(*indices) != array2.get(*indices))
             return false
     }
 
@@ -36,7 +34,7 @@ fun DoubleArrayND.subArray(i: Int): DoubleArrayND =
 
 fun defaultToString(array: DoubleArrayND): String =
         when(array.rank) {
-            0 -> array.getDouble().toString()
+            0 -> array.get().toString()
             1 -> array.joinToString(
                     separator = ", ",
                     prefix = "[ ",
@@ -55,15 +53,16 @@ class DefaultDoubleArrayNDIterator(
         val array: DoubleArrayND
 ): DoubleIterator() {
 
-    var currentIndex = intZeros(array.rank).asMutable()
+    var currentIndex = IntArray(array.rank) { 0 }
+    private var shape = IntArray(array.rank) { i -> array.shape(i) }
 
     var overflow = false
 
     override fun hasNext(): Boolean = !overflow
 
     override fun nextDouble(): Double =
-            array.getDouble(currentIndex).also {
-                overflow = currentIndex.indexIncrement(array.shape)
+            array.get(*currentIndex).also {
+                overflow = currentIndex.indexIncrement(shape)
             }
 
 }

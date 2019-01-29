@@ -13,6 +13,7 @@ import tomasvolker.numeriko.core.interfaces.factory.array0DOf
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 import tomasvolker.numeriko.core.view.ElementOrder
+import tomasvolker.numeriko.core.annotations.CompileTimeError
 
 interface Array1D<out T>: ArrayND<T> {
 
@@ -30,7 +31,7 @@ interface Array1D<out T>: ArrayND<T> {
 
     override val size: Int
 
-    override fun getValue(vararg indices: Int): T {
+    override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
         return getValue(indices[0])
     }
@@ -75,6 +76,17 @@ interface Array1D<out T>: ArrayND<T> {
     override fun iterator(): Iterator<T> = DefaultArray1DIterator(this)
 
     fun asList(): List<T> = Default1DArrayListView(this)
+
+    @CompileTimeError(
+            message = "Array is known to be rank 1 in compile time",
+            level = DeprecationLevel.ERROR
+    )
+    override fun as0D(): Nothing = throw IllegalArgumentException("Array is 1D")
+    @CompileTimeError(
+            message = "Array is known to be rank 1 in compile time",
+            level = DeprecationLevel.ERROR
+    )
+    override fun as2D(): Nothing = throw IllegalArgumentException("Array is 1D")
 
     operator fun component1(): T = getValue(0)
     operator fun component2(): T = getValue(1)

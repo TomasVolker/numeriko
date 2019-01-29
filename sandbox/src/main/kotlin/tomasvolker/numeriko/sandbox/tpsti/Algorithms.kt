@@ -1,8 +1,7 @@
 package tomasvolker.numeriko.sandbox.tpsti
 
 import org.ejml.dense.row.factory.DecompositionFactory_DDRM
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.times
+import tomasvolker.numeriko.core.interfaces.array1d.double.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D

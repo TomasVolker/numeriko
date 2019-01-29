@@ -12,7 +12,7 @@ class DoubleVector2(
         val value1: Double
 ): Vector2<Double>, DoubleArray1D {
 
-    override fun getDouble(i0: Int) = when(i0) {
+    override fun get(i0: Int) = when(i0) {
         0 -> value0
         1 -> value1
         else -> throw IndexOutOfBoundsException("$i0")
@@ -38,13 +38,13 @@ class MutableDoubleVector2(
         var value1: Double
 ): Vector2<Double>, MutableDoubleArray1D {
 
-    override fun getDouble(i0: Int) = when(i0) {
+    override fun get(i0: Int) = when(i0) {
         0 -> value0
         1 -> value1
         else -> throw IndexOutOfBoundsException("$i0")
     }
 
-    override fun setDouble(value: Double, i0: Int) = when(i0) {
+    override fun set(i0: Int, value: Double) = when(i0) {
         0 -> value0 = value
         1 -> value1 = value
         else -> throw IndexOutOfBoundsException("$i0")

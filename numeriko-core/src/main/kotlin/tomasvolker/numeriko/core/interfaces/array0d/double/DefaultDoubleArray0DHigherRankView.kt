@@ -8,14 +8,14 @@ class DefaultDoubleArray0DHigherRankView (
     
     override val size: Int get() = 1
 
-    override fun getDouble(i0: Int): Double {
+    override fun get(i0: Int): Double {
         requireValidIndices(i0)
         return array.getDouble()
     }
 
-    override fun setDouble(value: Double, i0: Int) {
+    override fun set(i0: Int, value: Double) {
         requireValidIndices(i0)
-        setDouble(value)
+        set(i0, value)
     }
 
 }

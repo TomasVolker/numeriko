@@ -11,6 +11,7 @@ import tomasvolker.numeriko.complex.primitives.plus
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.index.rangeTo
+import tomasvolker.numeriko.core.interfaces.array1d.double.cumulativeSum
 import tomasvolker.numeriko.core.interfaces.array2d.generic.get
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.linearalgebra.linearSpace

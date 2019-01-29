@@ -12,28 +12,24 @@ import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
 
-    override fun setValue(value: T, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: T) {
         require(indices.size == 2)
-        setValue(value, indices[0], indices[1])
+        setValue(indices[0], indices[1], value)
     }
 
-    fun setValue(value: T, i0: Int  , i1: Int  )
-    fun setValue(value: T, i0: Int  , i1: Index) = setValue(value, i0.compute(0), i1.compute(1))
-    fun setValue(value: T, i0: Index, i1: Int  ) = setValue(value, i0.compute(0), i1.compute(1))
-    fun setValue(value: T, i0: Index, i1: Index) = setValue(value, i0.compute(0), i1.compute(1))
+    fun setValue(i0: Int  , i1: Int, value: T)
+    fun setValue(value: T, i0: Int  , i1: Index) = setValue(i0.compute(0), i1.compute(1), value)
+    fun setValue(value: T, i0: Index, i1: Int  ) = setValue(i0.compute(0), i1.compute(1), value)
+    fun setValue(value: T, i0: Index, i1: Index) = setValue(i0.compute(0), i1.compute(1), value)
 
     fun setValue(other: Array2D<T>) {
         requireSameShape(other, this)
         // Anti alias copy
         val copy = other.copy()
         forEachIndex { i0, i1 ->
-            setValue(copy.getValue(i0, i1), i0, i1)
+            setValue(i0, i1, copy.getValue(i0, i1))
         }
 
-    }
-
-    override fun setValue(value: T) {
-        applyMap { value }
     }
 
     override fun lowerRank(axis: Int): MutableArray1D<T> =
@@ -73,4 +69,4 @@ interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
 
 }
 
-operator fun <T> MutableArray2D<T>.set(i0: Int, i1: Int, value: T): Unit = setValue(value, i0, i1)
+operator fun <T> MutableArray2D<T>.set(i0: Int, i1: Int, value: T): Unit = setValue(i0, i1, value)

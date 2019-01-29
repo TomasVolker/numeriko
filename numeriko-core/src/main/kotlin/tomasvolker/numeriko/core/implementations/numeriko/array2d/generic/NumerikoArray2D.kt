@@ -14,7 +14,7 @@ class NumerikoArray2D<T>(
 
     override val size: Int get() = data.size
 
-    override fun setValue(value: T, i0: Int, i1: Int) {
+    override fun setValue(i0: Int, i1: Int, value: T) {
         requireValidIndices(i0, i1)
         data[i0 * shape1 + i1] = value
     }

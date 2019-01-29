@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.array1d.generic
 
-import tomasvolker.numeriko.core.config.NumerikoConfig
+import tomasvolker.numeriko.core.annotations.CompileTimeError
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.generic.MutableArray0D
@@ -9,20 +9,29 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultReshaped
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray1DView
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.view.ElementOrder
 
+
+private const val rankError = "Array is known to be rank 1D in compile time"
+internal typealias Level = DeprecationLevel
+
 interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
 
-    override fun setValue(value: T, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: T) {
         requireValidIndices(indices)
-        return setValue(value, indices[0])
+        return setValue(indices[0], value)
     }
+
+    private fun rankError(): Nothing = throw IllegalArgumentException("Array is known to be rank 1D in compile time")
+
+    @CompileTimeError(message = rankError, level = Level.ERROR)
+    override fun as0D(): Nothing = rankError()
+    @CompileTimeError(message = rankError, level = Level.ERROR)
+    override fun as2D(): Nothing = rankError()
 
     override fun withShape(shape0: Int, shape1: Int, order: ElementOrder): MutableArray2D<T> =
             withShape(intArray1DOf(shape0, shape1), order).as2D()
@@ -45,25 +54,16 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
         return DefaultArray1DHigherRankView(this, axis)
     }
 
-    fun setValue(value: T, i0: Int)
-
-    fun setValue(value: T, i0: Index) =
-            setValue(value, i0.computeValue(size))
+    fun setValue(i0: Int, value: T)
+    fun setValue(i0: Index, value: T) = setValue(i0.computeValue(size), value)
 
     fun setValue(other: Array1D<T>) {
         requireSameSize(other, this)
         // Anti alias copy
         val copy = other.copy()
-        for (i in indices) {
-            setValue(copy.getValue(i), i)
-        }
 
-    }
-
-    override fun setValue(value: T) {
-
-        for (i in indices) {
-            setValue(value, i)
+        forEachIndex { i0 ->
+            setValue(i0, copy.getValue(i0))
         }
 
     }
@@ -77,17 +77,11 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
     fun setView(value: Array1D<T>, i0: IndexProgression): Unit = setView(value, i0.compute())
     fun setView(value: Array1D<T>, i0: IntProgression  ): Unit = getView(i0).setValue(value)
 
-    fun setView(value: T, i0: IndexProgression): Unit = setView(value, i0.compute())
-    fun setView(value: T, i0: IntProgression  ): Unit = getView(i0).setValue(value)
-
 }
 
 // Setter functions defined as extensions to avoid boxing when using get syntax on primitive specializations
-operator fun <T> MutableArray1D<T>.set(i0: Int, value: T) = setValue(value, i0)
-operator fun <T> MutableArray1D<T>.set(i0: Index, value: T) = setValue(value, i0)
+operator fun <T> MutableArray1D<T>.set(i0: Int, value: T) = setValue(i0, value)
+operator fun <T> MutableArray1D<T>.set(i0: Index, value: T) = setValue(i0, value)
 
 operator fun <T> MutableArray1D<T>.set(i0: IntProgression, value: Array1D<T>) = setView(value, i0)
 operator fun <T> MutableArray1D<T>.set(i0: IndexProgression, value: Array1D<T>) = setView(value, i0)
-
-operator fun <T> MutableArray1D<T>.set(i0: IntProgression, value: T) = setView(value, i0)
-operator fun <T> MutableArray1D<T>.set(i0: IndexProgression, value: T) = setView(value, i0)

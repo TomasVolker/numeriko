@@ -3,6 +3,7 @@ package tomasvolker.numeriko.sandbox.image
 import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
+import tomasvolker.numeriko.core.interfaces.array2d.double.filter2D
 import kotlin.math.hypot
 
 fun DoubleArray2D.computeGradientX(): DoubleArray2D {

@@ -17,7 +17,7 @@ class DefaultArray0DView<T> (
     }
 
     override fun setValue(value: T) {
-        array.setValue(value, offset)
+        array.setValue(offset, value)
     }
 
 }

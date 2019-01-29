@@ -1,8 +1,11 @@
 package tomasvolker.numeriko.complex.interfaces.arraynd.view
 
 import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
+import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.operations.remove
+import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
+import tomasvolker.numeriko.core.operations.reduction.remove
 
 class DefaultComplexArrayNDLowerRankView(
         val array: MutableComplexArrayND,
@@ -44,5 +47,7 @@ class DefaultComplexArrayNDLowerRankView(
         requireValidIndices(indices)
         array.setImag(value, *convertIndices(indices))
     }
+
+    override fun higherRank(axis: Int): MutableNumericArrayND<Complex> = TODO("not implemented")
 
 }

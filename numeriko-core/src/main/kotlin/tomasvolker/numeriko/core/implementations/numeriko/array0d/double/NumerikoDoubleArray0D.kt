@@ -7,9 +7,9 @@ class NumerikoDoubleArray0D(
         var data: Double
 ): DefaultMutableDoubleArray0D() {
 
-    override fun getDouble(): Double = data
+    override fun get(): Double = data
 
-    override fun setDouble(value: Double) {
+    override fun set(value: Double) {
         data = value
     }
 
@@ -24,9 +24,9 @@ class NumerikoDoubleArray0DView(
         require(offset in 0 until data.size)
     }
 
-    override fun getDouble(): Double = data[offset]
+    override fun get(): Double = data[offset]
 
-    override fun setDouble(value: Double) {
+    override fun set(value: Double) {
         data[offset] = value
     }
 

@@ -16,12 +16,12 @@ class ComplexArray2DRealView(
     override val shape1: Int
         get() = array.shape1
 
-    override fun getDouble(i0: Int, i1: Int): Double {
+    override fun get(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return array.real(i0, i1)
     }
 
-    override fun setDouble(value: Double, i0: Int, i1: Int) {
+    override fun set(i0: Int, i1: Int, value: Double) {
         requireValidIndices(i0, i1)
         array.setReal(value, i0, i1)
     }
@@ -38,12 +38,12 @@ class ComplexArray2DImagView(
     override val shape1: Int
         get() = array.shape1
 
-    override fun getDouble(i0: Int, i1: Int): Double {
+    override fun get(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return array.imag(i0, i1)
     }
 
-    override fun setDouble(value: Double, i0: Int, i1: Int) {
+    override fun set(i0: Int, i1: Int, value: Double) {
         requireValidIndices(i0, i1)
         array.setImag(value, i0, i1)
     }
@@ -60,12 +60,12 @@ class ComplexArray2DAbsView(
     override val shape1: Int
         get() = array.shape1
 
-    override fun getDouble(i0: Int, i1: Int): Double {
+    override fun get(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return array.abs(i0, i1)
     }
 
-    override fun setDouble(value: Double, i0: Int, i1: Int) {
+    override fun set(i0: Int, i1: Int, value: Double) {
         requireValidIndices(i0, i1)
         array.setAbs(value, i0, i1)
     }
@@ -82,12 +82,12 @@ class ComplexArray2DArgView(
     override val shape1: Int
         get() = array.shape1
 
-    override fun getDouble(i0: Int, i1: Int): Double {
+    override fun get(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return array.arg(i0, i1)
     }
 
-    override fun setDouble(value: Double, i0: Int, i1: Int) {
+    override fun set(i0: Int, i1: Int, value: Double) {
         requireValidIndices(i0, i1)
         array.setArg(value, i0, i1)
     }

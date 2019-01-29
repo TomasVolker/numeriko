@@ -13,6 +13,8 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayND0
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayND1DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultArrayND2DView
 import tomasvolker.numeriko.core.interfaces.factory.intZeros
+import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
+import tomasvolker.numeriko.core.performance.fastForEachIndices
 
 val ArrayND<*>.volume get(): Int = size
 val ArrayND<*>.axes get(): IntRange = 0 until rank
@@ -20,66 +22,14 @@ val ArrayND<*>.lastAxis get(): Int = rank - 1
 
 fun ArrayND<*>.indices(axis: Int): IntRange = 0 until shape(axis)
 
-fun MutableIntArray1D.indexIncrement(shape: IntArray1D): Boolean {
-
-    var currentDim = shape.lastIndex
-    var carry = true
-
-    while(carry) {
-
-        if (currentDim == -1)
-            return true // Overflow
-
-        carry = false
-        this[currentDim]++
-
-        if (this[currentDim] == shape[currentDim]) {
-            carry = true
-            this[currentDim] = 0
-        }
-
-        currentDim--
-
-    }
-
-    return false
-}
-
-/**
- * **Caution** Executes [block] with each indexArray of the ArrayND, using the same indices instance.
- *
- * If a reference to the [indices] argument is not kept, it is safe to use this function.
- * On each iteration, it provides the same [IntArray1D] instance with a read only interface, so if a reference
- * to it is kept, the array will change on later iterations.
- *
- * This function is available for fast iteration, for a safe version use [forEachIndexed].
- *
- */
-inline fun ArrayND<*>.unsafeForEachIndices(block: (indices: IntArray1D)->Unit) {
-
-    val index = intZeros(rank).asMutable()
-
-    do {
-        block(index)
-    } while(!index.indexIncrement(shape))
-
-}
-
 /**
  * Executes [block] with each indexArray of the ArrayND.
  *
  * This function provides a copy of each index on each iteration.
  * For faster iteration use [unsafeForEachIndices].
  */
-inline fun ArrayND<*>.forEachIndices(block: (indices: IntArray1D)->Unit) {
-
-    val index = intZeros(rank).asMutable()
-
-    do {
-        block(index.copy())
-    } while(!index.indexIncrement(shape))
-
-}
+inline fun ArrayND<*>.forEachIndices(block: (indices: IntArray1D)->Unit) =
+        fastForEachIndices { indices -> block(indices.toIntArray1D()) }
 
 
 private fun Array<out Any>.convertToIndicesProgression(): Array<IndexProgression> =

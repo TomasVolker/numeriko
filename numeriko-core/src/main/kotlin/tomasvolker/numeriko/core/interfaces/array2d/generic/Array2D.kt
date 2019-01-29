@@ -35,7 +35,7 @@ interface Array2D<out T>: ArrayND<T> {
     override fun lowerRank(axis: Int): Array1D<T> =
             DefaultArray2DLowerRankView(this.asMutable(), axis)
 
-    override fun getValue(vararg indices: Int): T {
+    override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
         return getValue(indices[0], indices[1])
     }

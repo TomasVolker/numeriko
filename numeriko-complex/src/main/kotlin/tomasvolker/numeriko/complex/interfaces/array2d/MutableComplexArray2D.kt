@@ -19,9 +19,9 @@ import kotlin.math.sin
 
 interface MutableComplexArray2D: ComplexArray2D, MutableNumericArray2D<Complex>, MutableComplexArrayND {
 
-    override fun setValue(value: Complex, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: Complex) {
         requireValidIndices(indices)
-        setValue(value, indices[0], indices[1])
+        setValue(indices[0], indices[1], value)
     }
 
     override fun setReal(value: Double, vararg indices: Int) {
@@ -48,7 +48,7 @@ interface MutableComplexArray2D: ComplexArray2D, MutableNumericArray2D<Complex>,
         return getView(indices[0], indices[1])
     }
 
-    override fun setValue(value: Complex, i0: Int, i1: Int) {
+    override fun setValue(i0: Int, i1: Int, value: Complex) {
         setReal(value.real, i0, i1)
         setImag(value.imag, i0, i1)
     }
@@ -149,7 +149,7 @@ interface MutableComplexArray2D: ComplexArray2D, MutableNumericArray2D<Complex>,
 
     // Set operators
 
-    operator fun set(i0: Int  , i1: Int  , value: Complex) = setValue(value, i0, i1)
+    operator fun set(i0: Int  , i1: Int  , value: Complex) = setValue(i0, i1, value)
     operator fun set(i0: Int  , i1: Index, value: Complex) = setValue(value, i0, i1)
     operator fun set(i0: Index, i1: Int  , value: Complex) = setValue(value, i0, i1)
     operator fun set(i0: Index, i1: Index, value: Complex) = setValue(value, i0, i1)
