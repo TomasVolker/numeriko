@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.array1d.generic
 
 import tomasvolker.numeriko.core.annotations.CompileTimeError
+import tomasvolker.numeriko.core.annotations.Level
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.generic.MutableArray0D
@@ -12,12 +13,10 @@ import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.rankError2DMessage
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.view.ElementOrder
-
-
-private const val rankError = "Array is known to be rank 1D in compile time"
-internal typealias Level = DeprecationLevel
 
 interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
 
@@ -26,12 +25,12 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
         return setValue(indices[0], value)
     }
 
-    private fun rankError(): Nothing = throw IllegalArgumentException("Array is known to be rank 1D in compile time")
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as0D(): Nothing = rankError(0, 1)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as2D(): Nothing = rankError(2, 1)
 
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override fun as0D(): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override fun as2D(): Nothing = rankError()
+    override fun as1D() = this
 
     override fun withShape(shape0: Int, shape1: Int, order: ElementOrder): MutableArray2D<T> =
             withShape(intArray1DOf(shape0, shape1), order).as2D()

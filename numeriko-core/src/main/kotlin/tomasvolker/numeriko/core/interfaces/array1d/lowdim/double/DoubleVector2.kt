@@ -21,12 +21,12 @@ class DoubleVector2(
     override fun equals(other: Any?): Boolean {
         if (other === this) return true
         if (other !is DoubleArray1D) return false
-        return defaultEquals(this, other)
+        return this.defaultEquals(other)
     }
 
-    override fun hashCode(): Int = defaultHashCode(this)
+    override fun hashCode(): Int = this.defaultHashCode()
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 
     override operator fun component1(): Double = value0
     override operator fun component2(): Double = value1
@@ -53,12 +53,12 @@ class MutableDoubleVector2(
     override fun equals(other: Any?): Boolean {
         if (other === this) return true
         if (other !is DoubleVector2) return false
-        return defaultEquals(this, other)
+        return this.defaultEquals(other)
     }
 
-    override fun hashCode(): Int = defaultHashCode(this)
+    override fun hashCode(): Int = this.defaultHashCode()
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 
     override operator fun component1(): Double = value0
     override operator fun component2(): Double = value1

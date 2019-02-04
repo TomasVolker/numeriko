@@ -2,16 +2,14 @@ package tomasvolker.numeriko.core.operations.reduction
 
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.double.unsafeGetView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.core.interfaces.slicing.get
 
 inline fun reduce(
         indices: IntProgression,
@@ -75,7 +73,7 @@ inline fun DoubleArrayND.reduce(
 ): DoubleArrayND =
         doubleArrayND(shape.remove(axis)) { indices ->
             reduction(
-                    this.unsafeGetView(
+                    this.get(
                         *Array<Any>(rank) { a ->
                             when {
                                 a < axis -> indices[a]

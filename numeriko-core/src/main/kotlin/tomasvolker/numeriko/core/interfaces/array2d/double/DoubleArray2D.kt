@@ -1,33 +1,23 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double
 
 import tomasvolker.numeriko.core.annotations.CompileTimeError
-import tomasvolker.numeriko.core.config.NumerikoConfig
+import tomasvolker.numeriko.core.annotations.Level
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.view.*
-import tomasvolker.numeriko.core.interfaces.array2d.generic.*
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2DLowerRankView
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.defaultDoubleArray2DView
 import tomasvolker.numeriko.core.interfaces.array2d.numeric.NumericArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.*
-import tomasvolker.numeriko.core.linearalgebra.DefaultLinearAlgebra
-import tomasvolker.numeriko.core.primitives.indicative
-import tomasvolker.numeriko.core.primitives.numericEqualsTo
-import tomasvolker.numeriko.core.primitives.squared
-import tomasvolker.numeriko.core.primitives.sumDouble
-import kotlin.math.abs
-import kotlin.math.sqrt
-
-private const val rankError = "Array is known to be rank 2D in compile time"
-private typealias Level = DeprecationLevel
+import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.rankError2DMessage
 
 interface DoubleArray2D: NumericArray2D<Double>, DoubleArrayND {
 
     override fun cast(value: Number): Double = value.toDouble()
-
-    override operator fun get(vararg indices: Int) = getDouble(indices)
 
     override fun getDouble(indices: IntArray): Double {
         require(indices.size == rank)
@@ -48,20 +38,28 @@ interface DoubleArray2D: NumericArray2D<Double>, DoubleArrayND {
 
     override fun getFloat(i0: Int, i1: Int  ): Float = getDouble(i0, i1).toFloat()
 
-    private fun rankError(): Nothing = throw IllegalArgumentException("Array is known to be rank 2D in compile time")
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun get(): Nothing = rankError(0, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(i0: Int): Nothing = rankError(1, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int): Nothing = rankError(3, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int): Nothing = rankError(4, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): Nothing = rankError(5, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): Nothing = rankError(6, 2)
 
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override fun get(): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override operator fun get(i0: Int): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override operator fun get(i0: Int, i1: Int, i2: Int): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): Nothing = rankError()
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(vararg indices: Int): Nothing = rankError(rank, 2)
+
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as0D(): Nothing = rankError(0, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as1D(): Nothing = rankError(1, 2)
+
+    override fun as2D() = this
 
     override fun get(i0: Int, i1: Int): Double
 
@@ -135,7 +133,7 @@ interface DoubleArray2D: NumericArray2D<Double>, DoubleArrayND {
 
     override fun asMutable(): MutableDoubleArray2D = this as MutableDoubleArray2D
 
-    override fun iterator(): DoubleIterator =
-            DefaultDoubleArray2DIterator(this)
+    override fun iterator(): DoubleIterator = arrayIterator()
+    override fun arrayIterator(): DoubleArray2DIterator = DefaultDoubleArray2DIterator(this)
 
 }

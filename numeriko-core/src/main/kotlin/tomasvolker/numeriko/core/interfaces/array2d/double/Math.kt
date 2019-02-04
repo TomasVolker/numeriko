@@ -12,7 +12,7 @@ import tomasvolker.numeriko.core.interfaces.factory.doubleArray0D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.linearalgebra.DefaultLinearAlgebra
-import tomasvolker.numeriko.core.primitives.indicative
+import tomasvolker.numeriko.core.primitives.indicator
 import tomasvolker.numeriko.core.primitives.numericEqualsTo
 import tomasvolker.numeriko.core.primitives.squared
 import tomasvolker.numeriko.core.primitives.sumDouble
@@ -37,7 +37,7 @@ fun DoubleArray2D.contract(axis0: Int, axis1: Int): DoubleArray0D =
             throw IllegalArgumentException()
 
 fun DoubleArray2D.isIdentity(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean =
-        isSquare() && numericEquals(tolerance) { i0, i1 -> (i0 == i1).indicative() }
+        isSquare() && numericEquals(tolerance) { i0, i1 -> (i0 == i1).indicator() }
 
 fun DoubleArray2D.isZero(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean =
         isConstant(0.0, tolerance)

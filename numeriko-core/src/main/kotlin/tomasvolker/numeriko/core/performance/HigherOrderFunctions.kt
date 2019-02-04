@@ -1,6 +1,5 @@
 package tomasvolker.numeriko.core.performance
 
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices

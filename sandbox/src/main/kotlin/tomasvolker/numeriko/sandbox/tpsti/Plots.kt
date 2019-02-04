@@ -7,7 +7,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
 import tomasvolker.numeriko.core.interfaces.array1d.double.times
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
-import tomasvolker.numeriko.core.primitives.indicative
+import tomasvolker.numeriko.core.primitives.indicator
 import tomasvolker.numeriko.core.primitives.modulo
 import tomasvolker.numeriko.core.primitives.sqrt
 import tomasvolker.numeriko.core.probability.continuous.normalPdf
@@ -30,7 +30,7 @@ fun main() {
     val delta = space[1] - space[0]
 
     val uniform = space.elementWise { x ->
-        (abs(x) < sqrt(3.0)).indicative() / (2 * sqrt(3.0))
+        (abs(x) < sqrt(3.0)).indicator() / (2 * sqrt(3.0))
     }
 
     val result = mutableListOf(uniform)

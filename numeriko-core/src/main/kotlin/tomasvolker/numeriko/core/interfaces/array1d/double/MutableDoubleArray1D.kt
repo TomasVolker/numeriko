@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.array1d.double
 
 import tomasvolker.numeriko.core.annotations.CompileTimeError
+import tomasvolker.numeriko.core.annotations.Level
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
@@ -15,10 +16,12 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.rankError1DMessage
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.view.ElementOrder
 
-private const val rankError = "Array is known to be rank 1D in compile time"
 
 interface MutableDoubleArray1D: DoubleArray1D, MutableNumericArray1D<Double>, MutableDoubleArrayND {
 
@@ -31,27 +34,27 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableNumericArray1D<Double>, Mu
         setDouble(indices[0], value)
     }
 
-    private fun rankError(): Nothing = throw IllegalArgumentException("Array is known to be rank 1D in compile time")
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override fun set(value: Double): Nothing = rankError(0, 1)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, value: Double): Nothing = rankError(2, 1)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, value: Double): Nothing = rankError(3, 1)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, value: Double): Nothing = rankError(4, 1)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, value: Double): Nothing = rankError(5, 1)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, value: Double): Nothing = rankError(6, 1)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override fun set(vararg indices: Int, value: Double): Nothing = rankError(-1, 1)
 
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override fun set(value: Double): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override operator fun set(i0: Int, i1: Int, value: Double): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override operator fun set(i0: Int, i1: Int, i2: Int, value: Double): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, value: Double): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, value: Double): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, value: Double): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override fun set(vararg indices: Int, value: Double): Nothing = rankError()
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override fun as0D(): Nothing = rankError(0, 1)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override fun as2D(): Nothing = rankError(2, 1)
 
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override fun as0D(): Nothing = rankError()
-    @CompileTimeError(message = rankError, level = Level.ERROR)
-    override fun as2D(): Nothing = rankError()
+    override fun as1D() = this
 
 
     override fun setFloat(indices: IntArray, value: Float) = setDouble(indices, value.toDouble())
@@ -90,12 +93,11 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableNumericArray1D<Double>, Mu
         return DefaultDoubleArray1DHigherRankView(this, axis)
     }
 
-    fun setValue(other: DoubleArray1D) {
-        requireSameSize(other, this)
+    fun setValue(value: DoubleArray1D) {
+        requireSameSize(value, this)
         // Anti alias copy
-        val copy = other.copy()
-        forEachIndex { i ->
-            setDouble(i, copy.getDouble(i))
+        value.copy().forEachIndexed { i0, element ->
+            setDouble(i0, element)
         }
 
     }

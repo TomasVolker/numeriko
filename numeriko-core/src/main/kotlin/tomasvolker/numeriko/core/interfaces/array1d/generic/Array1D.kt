@@ -1,19 +1,20 @@
 package tomasvolker.numeriko.core.interfaces.array1d.generic
 
+import tomasvolker.numeriko.core.annotations.CompileTimeError
+import tomasvolker.numeriko.core.annotations.Level
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
-import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleArray1DHigherRankView
 import tomasvolker.numeriko.core.interfaces.array1d.generic.view.*
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.factory.array0DOf
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.rankError2DMessage
 import tomasvolker.numeriko.core.view.ElementOrder
-import tomasvolker.numeriko.core.annotations.CompileTimeError
 
 interface Array1D<out T>: ArrayND<T> {
 
@@ -36,7 +37,7 @@ interface Array1D<out T>: ArrayND<T> {
         return getValue(indices[0])
     }
 
-    fun getValue(i0: Int): T
+    override fun getValue(i0: Int): T
     fun getValue(i0: Index): T = getValue(i0.compute())
 
     fun withShape(shape0: Int, shape1: Int, order: ElementOrder = NumerikoConfig.defaultElementOrder): Array2D<T> =
@@ -73,26 +74,23 @@ interface Array1D<out T>: ArrayND<T> {
 
     override fun copy(): Array1D<T> = copy(this)
 
-    override fun iterator(): Iterator<T> = DefaultArray1DIterator(this)
-
     fun asList(): List<T> = Default1DArrayListView(this)
 
-    @CompileTimeError(
-            message = "Array is known to be rank 1 in compile time",
-            level = DeprecationLevel.ERROR
-    )
-    override fun as0D(): Nothing = throw IllegalArgumentException("Array is 1D")
-    @CompileTimeError(
-            message = "Array is known to be rank 1 in compile time",
-            level = DeprecationLevel.ERROR
-    )
-    override fun as2D(): Nothing = throw IllegalArgumentException("Array is 1D")
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as0D(): Nothing = rankError(0, 1)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as2D(): Nothing = rankError(2, 1)
+
+    override fun as1D() = this
 
     operator fun component1(): T = getValue(0)
     operator fun component2(): T = getValue(1)
     operator fun component3(): T = getValue(2)
     operator fun component4(): T = getValue(3)
     operator fun component5(): T = getValue(4)
+
+    override fun iterator(): Iterator<T> = arrayIterator()
+    override fun arrayIterator(): Array1DIterator<T> = DefaultArray1DIterator(this)
 
     override fun asMutable(): MutableArray1D<@UnsafeVariance T> = this as MutableArray1D<T>
 

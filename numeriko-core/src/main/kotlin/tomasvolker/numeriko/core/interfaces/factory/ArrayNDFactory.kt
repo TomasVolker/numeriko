@@ -14,9 +14,9 @@ import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
-import tomasvolker.numeriko.core.primitives.indicative
 import tomasvolker.numeriko.core.operations.reduction.product
 import tomasvolker.numeriko.core.performance.fastForEachIndices
+import tomasvolker.numeriko.core.primitives.indicator
 import kotlin.random.Random
 
 interface ArrayNDFactory {
@@ -88,7 +88,7 @@ interface ArrayNDFactory {
             doubleArray2D(array.shape0, array.shape1) { i0, i1 -> array[i0, i1] }
 
     fun copy(array: DoubleArrayND): DoubleArrayND =
-            fastDoubleArrayND(array.shape) { indices -> array.get(*indices) }
+            fastDoubleArrayND(array.shape) { indices -> array.getDouble(indices) }
 
     // Zeros
 
@@ -107,7 +107,7 @@ interface ArrayNDFactory {
     // Math
 
     fun doubleIdentity(size: Int): DoubleArray2D = doubleArray2D(size, size) { i0, i1 ->
-        (i0 == i1).indicative()
+        (i0 == i1).indicator()
     }
 
     fun doubleRandom(size: Int): DoubleArray1D =

@@ -48,21 +48,3 @@ fun defaultToString(array: DoubleArrayND): String =
                             postfix = " ]"
                     )
         }
-
-class DefaultDoubleArrayNDIterator(
-        val array: DoubleArrayND
-): DoubleIterator() {
-
-    var currentIndex = IntArray(array.rank) { 0 }
-    private var shape = IntArray(array.rank) { i -> array.shape(i) }
-
-    var overflow = false
-
-    override fun hasNext(): Boolean = !overflow
-
-    override fun nextDouble(): Double =
-            array.get(*currentIndex).also {
-                overflow = currentIndex.indexIncrement(shape)
-            }
-
-}

@@ -11,7 +11,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.matMul
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.double.unsafeGetView
+import tomasvolker.numeriko.core.interfaces.arraynd.double.get
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.toDoubleArray1D
 import tomasvolker.numeriko.core.operations.reduction.reduce
@@ -24,8 +24,8 @@ import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
 
-operator fun DoubleArrayND.get(vararg indices: Any) = unsafeGetView(*indices)
-operator fun MutableDoubleArrayND.get(vararg indices: Any) = unsafeGetView(*indices)
+operator fun DoubleArrayND.get(vararg indices: Any) = get(*indices)
+operator fun MutableDoubleArrayND.get(vararg indices: Any) = get(*indices)
 
 fun DoubleArray1D.average(): Double = sum() / size
 

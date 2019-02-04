@@ -8,7 +8,7 @@ abstract class DefaultComplexArray0D: ComplexArray0D {
     override fun equals(other: Any?): Boolean = when {
         other === this -> true
         other is ComplexArray0D -> this.get() == other.get()
-        other is ArrayND<*> -> defaultEquals(this, other)
+        other is ArrayND<*> -> this.defaultEquals(other)
         else -> false
     }
 

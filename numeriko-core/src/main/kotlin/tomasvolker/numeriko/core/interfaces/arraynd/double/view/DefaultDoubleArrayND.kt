@@ -8,8 +8,8 @@ abstract class DefaultDoubleArrayND: DoubleArrayND {
 
     override fun equals(other: Any?): Boolean = when {
         other === this -> true
-        other is DoubleArrayND -> defaultEquals(this, other)
-        other is ArrayND<*> -> defaultEquals(this, other)
+        other is DoubleArrayND -> this.defaultEquals(other)
+        other is ArrayND<*> -> this.defaultEquals(other)
         else -> false
     }
 

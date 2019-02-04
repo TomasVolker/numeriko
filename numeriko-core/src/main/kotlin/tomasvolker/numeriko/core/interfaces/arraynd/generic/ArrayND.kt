@@ -10,6 +10,8 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DefaultDoubleArrayNDIterator
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayNDIterator
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.operations.reduction.product
@@ -78,14 +80,6 @@ interface ArrayND<out T>: Collection<T> {
 
     override fun isEmpty(): Boolean = size == 0
 
-
-    /**
-     * Returns the only value if the array is of rank 0.
-     *
-     * @throws IllegalArgumentException  if the [rank] is not 0
-     */
-    fun getValue(): T = getValue(intArrayOf())
-
     /**
      * Returns the element in the given indices.
      *
@@ -97,6 +91,14 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
     fun getValue(indices: IntArray): T
+
+    fun getValue(): T = getValue(intArrayOf())
+    fun getValue(i0: Int): T = getValue(intArrayOf(i0))
+    fun getValue(i0: Int, i1: Int): T = getValue(intArrayOf(i0, i1))
+    fun getValue(i0: Int, i1: Int, i2: Int): T = getValue(intArrayOf(i0, i1, i2))
+    fun getValue(i0: Int, i1: Int, i2: Int, i3: Int): T = getValue(intArrayOf(i0, i1, i2, i3))
+    fun getValue(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): T = getValue(intArrayOf(i0, i1, i2, i3, i4))
+    fun getValue(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): T = getValue(intArrayOf(i0, i1, i2, i3, i4, i5))
 
     /**
      * Returns the element in the given indices.
@@ -198,7 +200,8 @@ interface ArrayND<out T>: Collection<T> {
      */
     fun copy(): ArrayND<T> = copy(this)
 
-    override fun iterator(): Iterator<T> = DefaultArrayNDIterator(this)
+    override fun iterator(): Iterator<T> = arrayIterator()
+    fun arrayIterator(): ArrayNDIterator<T> = DefaultArrayNDIterator(this)
 
     /**
      * Provides a mutable view of this array.

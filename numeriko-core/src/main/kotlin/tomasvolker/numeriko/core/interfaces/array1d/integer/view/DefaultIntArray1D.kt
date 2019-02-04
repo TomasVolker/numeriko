@@ -14,14 +14,14 @@ abstract class DefaultIntArray1D: IntArray1D {
     override fun equals(other: Any?): Boolean = when {
         other === this -> true
         other is IntArray1D -> defaultEquals(this, other)
-        other is Array1D<*> -> defaultEquals(this, other)
-        other is ArrayND<*> -> other.rank == 1 && defaultEquals(this, other.as1D())
+        other is Array1D<*> -> this.defaultEquals(other)
+        other is ArrayND<*> -> other.rank == 1 && this.defaultEquals(other.as1D())
         else -> false
     }
 
     override fun hashCode(): Int = defaultHashCode(this)
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 
 }
 

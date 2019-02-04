@@ -10,7 +10,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleIdentity
-import tomasvolker.numeriko.core.primitives.indicative
+import tomasvolker.numeriko.core.primitives.indicator
 import tomasvolker.numeriko.core.primitives.isEven
 import tomasvolker.numeriko.core.primitives.sumDouble
 
@@ -24,7 +24,7 @@ object DefaultLinearAlgebra {
             if (i1 < matrix.shape1)
                 matrix[i0, i1]
             else
-                (i0 == (i1-matrix.shape1)).indicative()
+                (i0 == (i1-matrix.shape1)).indicator()
         }.asMutable()
 
         table.inplaceReducedEchelonForm()

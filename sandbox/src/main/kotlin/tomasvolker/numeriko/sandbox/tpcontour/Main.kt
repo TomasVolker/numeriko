@@ -9,7 +9,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.sumBy
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
-import tomasvolker.numeriko.core.primitives.indicative
+import tomasvolker.numeriko.core.primitives.indicator
 import tomasvolker.numeriko.core.primitives.squared
 import tomasvolker.numeriko.core.probability.continuous.NormalDistribution
 import tomasvolker.numeriko.sandbox.image.*
@@ -80,7 +80,7 @@ inline fun dynamicArray2DView(
 
 val view = dynamicArray2DView(
         4, 2,
-        getter = { i0, i1 ->  (i0==i1).indicative() },
+        getter = { i0, i1 ->  (i0==i1).indicator() },
         setter = { value, i0, i1 -> TODO() }
 )
 

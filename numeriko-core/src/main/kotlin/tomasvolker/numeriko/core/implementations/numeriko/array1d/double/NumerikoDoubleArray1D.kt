@@ -1,16 +1,22 @@
 package tomasvolker.numeriko.core.implementations.numeriko.array1d.double
 
+import tomasvolker.numeriko.core.implementations.numeriko.NumerikoDoubleArray
 import tomasvolker.numeriko.core.implementations.numeriko.array0d.double.NumerikoDoubleArray0DView
 import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.lastIndex
+import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 class NumerikoDoubleArray1D(
         val data: DoubleArray
-): DefaultMutableDoubleArray1D() {
+): DefaultMutableDoubleArray1D(), NumerikoDoubleArray {
 
     override val size: Int get() = data.size
+
+    override val backingArray: DoubleArray
+        get() = data
 
     override operator fun get(i0: Int): Double = data[i0]
 
@@ -31,6 +37,21 @@ class NumerikoDoubleArray1D(
     override fun lowerRank(axis: Int): MutableDoubleArray0D {
         require(shape(axis) == 1)
         return NumerikoDoubleArray0DView(data, 0)
+    }
+
+    override fun setValue(value: DoubleArray1D) {
+        requireSameShape(this, value)
+
+        // Anti alias copy
+        val source = if (value is NumerikoDoubleArray && value.backingArray != this.data)
+            value
+        else
+            value.copy()
+
+        source.forEachIndexed { i0, element ->
+            setDouble(i0, element)
+        }
+
     }
 
 }

@@ -2,40 +2,27 @@ package tomasvolker.numeriko.core.interfaces.array1d.double
 
 import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
 
-fun defaultEquals(array1: DoubleArray1D, array2: DoubleArray1D): Boolean {
+fun DoubleArray1D.defaultEquals(other: DoubleArray1D): Boolean {
 
-    if (array1.size != array2.size)
+    if (this.size != other.size)
         return false
 
-    for (i in array1.indices) {
-        if (array1.getDouble(i) != array2.getDouble(i))
+    for (i in indices) {
+        if (this.getDouble(i) != other.getDouble(i))
             return false
     }
 
     return true
 }
 
-fun defaultHashCode(array1: DoubleArray1D): Int {
+fun DoubleArray1D.defaultHashCode(): Int {
 
-    var result = array1.rank.hashCode()
-    result += 31 * result + array1.size.hashCode()
-    for (x in array1) {
+    var result = rank.hashCode()
+    result += 31 * result + size.hashCode()
+    for (x in this) {
         result += 31 * result + x.hashCode()
     }
 
     return result
 }
 
-class DefaultDoubleArray1DIterator(
-        val array: DoubleArray1D
-): DoubleIterator() {
-
-    var index = 0
-
-    override fun hasNext(): Boolean =
-            index < array.size
-
-    override fun nextDouble(): Double =
-            array.getDouble(index).apply { index++ }
-
-}

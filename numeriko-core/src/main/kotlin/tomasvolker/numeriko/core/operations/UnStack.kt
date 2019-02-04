@@ -2,6 +2,8 @@ package tomasvolker.numeriko.core.operations
 
 import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.index.All
+import tomasvolker.numeriko.core.index.Size
+import tomasvolker.numeriko.core.index.until
 import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
@@ -12,47 +14,59 @@ import java.lang.IllegalArgumentException
 
 
 @JvmName("stackN")
-fun stack(arrays: List<DoubleArrayND>, axis: Int = 0): DoubleArrayND {
+fun List<DoubleArrayND>.stack(axis: Int = 0): DoubleArrayND {
 
-    if (arrays.isEmpty())
+    if (isEmpty())
         return doubleZeros(I[0])
 
-    if (arrays.all { it is DoubleArray0D })
-        return doubleArray1D(arrays.size) { i -> arrays[i].as0D().get() }
+    if (all { it is DoubleArray0D })
+        return doubleArray1D(size) { i -> this[i].as0D().get() }
 
-    if (arrays.all { it is DoubleArray1D })
-        return stack(arrays as List<DoubleArray1D>, axis)
+    if (all { it is DoubleArray1D })
+        return (this as List<DoubleArray1D>).stack(axis)
 
-    if (arrays.all { it is DoubleArray2D })
-        return stack(arrays as List<DoubleArray2D>, axis)
+    if (all { it is DoubleArray2D })
+        return (this as List<DoubleArray2D>).stack(axis)
 
-    TODO()
+    val firstShape = first().shape
+    require(all { it.shape == firstShape }) { "All shapes must be the same" }
+
+    val result = doubleZeros(
+            firstShape[0 until axis] concat size concat firstShape[axis until Size]
+    ).asMutable()
+
+    forEachIndexed { i, array ->
+        result.arrayAlongAxis(axis = axis, index = i).setValue(array)
+    }
+
+    return result
 }
 
 @JvmName("stack2")
-fun stack(arrays: List<DoubleArray2D>, axis: Int = 0): DoubleArrayND {
+fun List<DoubleArray2D>.stack(axis: Int = 0): DoubleArrayND {
+    val arrayList = this
 
     require(axis in 0..2) { "Stacking axis must be 0, 1 or 2" }
 
-    if (arrays.isEmpty()) return doubleArrayND(I[0, 0, 0]) { 0.0 }
+    if (isEmpty()) return doubleArrayND(I[0, 0, 0]) { 0.0 }
 
-    val resultShape = arrays.first().shape
-    require(arrays.all { it.shape == resultShape }) { "All shapes must be the same" }
+    val resultShape = first().shape
+    require(all { it.shape == resultShape }) { "All shapes must be the same" }
 
     return when(axis) {
-        0 -> doubleZeros(I[arrays.size, resultShape[0], resultShape[1]]).asMutable().apply {
-            forEach(arrays.size, resultShape[0], resultShape[1]) { i0, i1, i2 ->
-                this[i0, i1, i2] = arrays[i0][i1, i2]
+        0 -> doubleZeros(I[size, resultShape[0], resultShape[1]]).asMutable().apply {
+            forEach(arrayList.size, resultShape[0], resultShape[1]) { i0, i1, i2 ->
+                this[i0, i1, i2] = arrayList[i0][i1, i2]
             }
         }
-        1 -> doubleZeros(I[resultShape[0], arrays.size, resultShape[1]]).asMutable().apply {
-            forEach(resultShape[0], arrays.size, resultShape[1]) { i0, i1, i2 ->
-                this[i0, i1, i2] = arrays[i0][i1, i2]
+        1 -> doubleZeros(I[resultShape[0], arrayList.size, resultShape[1]]).asMutable().apply {
+            forEach(resultShape[0], arrayList.size, resultShape[1]) { i0, i1, i2 ->
+                this[i0, i1, i2] = arrayList[i1][i0, i2]
             }
         }
-        2 -> doubleZeros(I[resultShape[0], resultShape[1], arrays.size]).asMutable().apply {
-            forEach(resultShape[0], resultShape[1], arrays.size) { i0, i1, i2 ->
-                this[i0, i1, i2] = arrays[i0][i1, i2]
+        2 -> doubleZeros(I[resultShape[0], resultShape[1], arrayList.size]).asMutable().apply {
+            forEach(resultShape[0], resultShape[1], arrayList.size) { i0, i1, i2 ->
+                this[i0, i1, i2] = arrayList[i2][i0, i1]
             }
         }
         else -> throw IllegalStateException()
@@ -61,11 +75,8 @@ fun stack(arrays: List<DoubleArray2D>, axis: Int = 0): DoubleArrayND {
 }
 
 
-fun DoubleArray2D.unstack(axis: Int = 0): List<DoubleArray1D> = when(axis) {
-    0 -> List(shape0) { i -> this[i, All] }
-    1 -> List(shape1) { i -> this[All, i] }
-    else -> throw IllegalArgumentException("axis $axis not valid for shape $shape")
-}
+fun DoubleArray2D.unstack(axis: Int = 0): List<DoubleArray1D> =
+        List(shape(axis)) { i -> this.arrayAlongAxis(axis = axis, index = i) }
 
 fun DoubleArrayND.unstack(axis: Int = 0): List<DoubleArrayND> =
-        List(shape(axis)) { i -> this.arrayAlongAxis(axis, i) }
+        List(shape(axis)) { i -> this.arrayAlongAxis(axis = axis, index = i) }

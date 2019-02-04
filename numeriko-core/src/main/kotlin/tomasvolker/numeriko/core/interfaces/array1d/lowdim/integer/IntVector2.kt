@@ -59,7 +59,7 @@ class MutableIntVector2(
 
     override fun hashCode(): Int = defaultHashCode(this)
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 /*
     operator fun component1(): Int = value0
     operator fun component2(): Int = value1

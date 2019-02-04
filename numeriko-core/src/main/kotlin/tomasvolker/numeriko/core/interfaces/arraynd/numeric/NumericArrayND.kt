@@ -46,6 +46,4 @@ interface NumericArrayND<out N: Number>: ArrayND<N> {
 
     override fun asMutable(): MutableNumericArrayND<@UnsafeVariance N> = this as MutableNumericArrayND
 
-    override fun iterator(): Iterator<N> = DefaultArrayNDIterator(this)
-
 }

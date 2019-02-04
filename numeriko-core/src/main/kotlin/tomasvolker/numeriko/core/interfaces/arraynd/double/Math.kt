@@ -15,6 +15,12 @@ import tomasvolker.numeriko.core.primitives.sumDouble
 import kotlin.math.max
 import kotlin.math.min
 
+operator fun DoubleArrayND.plus (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t + o }
+operator fun DoubleArrayND.minus(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t - o }
+operator fun DoubleArrayND.times(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t * o }
+operator fun DoubleArrayND.div  (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t / o }
+
+
 operator fun DoubleArrayND.unaryPlus(): DoubleArrayND = this
 operator fun DoubleArrayND.unaryMinus(): DoubleArrayND = elementWise { -it }
 

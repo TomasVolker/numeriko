@@ -1,22 +1,22 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
+import tomasvolker.numeriko.core.functions.FunctionDtoD
+import tomasvolker.numeriko.core.functions.FunctionIADtoD
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
-import tomasvolker.numeriko.core.operations.concatenate
-import tomasvolker.numeriko.core.operations.reduction.inject
-import tomasvolker.numeriko.core.operations.reduction.remove
-import tomasvolker.numeriko.core.primitives.sumDouble
+import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedElementWise
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEach
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.performance.fastForEachIndexed
+import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.core.view.ElementOrder
-import kotlin.math.max
-import kotlin.math.min
 
 interface DoubleArrayND: NumericArrayND<Double> {
 
@@ -57,7 +57,7 @@ interface DoubleArrayND: NumericArrayND<Double> {
             getView(*indices.computeIndices())
 
     override fun lowerRank(axis: Int): DoubleArrayND =
-            DefaultDoubleArrayNDLowerRankView(this.asMutable(), axis)
+            defaultDoubleArrayNDLowerRankView(this.asMutable(), axis)
 
     override fun higherRank(axis: Int): DoubleArrayND =
             DefaultDoubleArrayNDHigherRankView(this.asMutable(), axis)
@@ -75,13 +75,23 @@ interface DoubleArrayND: NumericArrayND<Double> {
 
     override fun copy(): DoubleArrayND = copy(this)
 
-    override fun iterator(): DoubleIterator = DefaultDoubleArrayNDIterator(this)
+    override fun iterator(): DoubleIterator = arrayIterator()
+    override fun arrayIterator(): DoubleArrayNDIterator = DefaultDoubleArrayNDIterator(this)
 
     override fun asMutable(): MutableDoubleArrayND = this as MutableDoubleArrayND
 
+    fun forEach(function: FunctionDtoD) {
+        inlinedForEach { function(it) }
+    }
+
+    fun forEachIndexed(function: FunctionIADtoD) {
+        inlinedForEachIndexed { indices, value ->  function(indices, value) }
+    }
+
+    fun elementWise(function: FunctionDtoD): DoubleArrayND =
+            inlinedElementWise { function(it) }
+
 }
 
-operator fun DoubleArrayND.plus (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t + o }
-operator fun DoubleArrayND.minus(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t - o }
-operator fun DoubleArrayND.times(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t * o }
-operator fun DoubleArrayND.div  (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t / o }
+
+

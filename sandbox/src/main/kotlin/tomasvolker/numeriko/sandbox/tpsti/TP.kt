@@ -166,7 +166,7 @@ fun independentComponentAnalysis(
     val basis = uncorrelated.independentComponentAnalysis()
     val ortho = basis.orthogonalize()
     println("Basis: ${ortho[0]}, ${ortho[1]}")
-    val W = stack(ortho)
+    val W = ortho.stack()
 
     return uncorrelated.mixSignals(W)
 }

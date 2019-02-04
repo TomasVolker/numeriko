@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.array2d.generic
 
+import tomasvolker.numeriko.core.annotations.*
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
@@ -8,6 +9,8 @@ import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DL
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.defaultArray2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.rankError2DMessage
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
@@ -17,15 +20,22 @@ interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
         setValue(indices[0], indices[1], value)
     }
 
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as0D(): Nothing = rankError(0, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as1D(): Nothing = rankError(1, 2)
+
+    override fun as2D() = this
+
     fun setValue(i0: Int  , i1: Int, value: T)
     fun setValue(value: T, i0: Int  , i1: Index) = setValue(i0.compute(0), i1.compute(1), value)
     fun setValue(value: T, i0: Index, i1: Int  ) = setValue(i0.compute(0), i1.compute(1), value)
     fun setValue(value: T, i0: Index, i1: Index) = setValue(i0.compute(0), i1.compute(1), value)
 
-    fun setValue(other: Array2D<T>) {
-        requireSameShape(other, this)
+    fun setValue(value: Array2D<T>) {
+        requireSameShape(value, this)
         // Anti alias copy
-        val copy = other.copy()
+        val copy = value.copy()
         forEachIndex { i0, i1 ->
             setValue(i0, i1, copy.getValue(i0, i1))
         }

@@ -32,12 +32,12 @@ class DefaultArray2DView<T>(
     override fun equals(other: Any?): Boolean {
         if (other === this) return true
         if (other !is Array2D<*>) return false
-        return defaultEquals(this, other)
+        return this.defaultEquals(other)
     }
 
-    override fun hashCode(): Int = defaultHashCode(this)
+    override fun hashCode(): Int = this.defaultHashCode()
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 
 }
 

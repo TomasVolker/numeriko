@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
+import tomasvolker.numeriko.core.functions.FunctionDtoD
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
@@ -9,9 +10,10 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedApplyElementWise
 import tomasvolker.numeriko.core.performance.fastForEachIndexed
-import tomasvolker.numeriko.core.performance.fastForEachIndices
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.core.view.ElementOrder
 
@@ -41,6 +43,12 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableNumericArrayND<Double> {
 
     fun setDouble(value: Double, vararg indices: Index) = setDouble(indices.computeIndices(), value)
 
+    override fun setValue(value: ArrayND<Double>) =
+            if (value is DoubleArrayND)
+                setValue(value)
+            else
+                super.setValue(value)
+
     fun setValue(value: DoubleArrayND) {
         requireSameShape(this, value)
         // Anti alias copy
@@ -65,7 +73,7 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableNumericArrayND<Double> {
             setView(value, *Array(indices.size) { i -> indices[i].computeProgression(shape[i]) })
 
     override fun lowerRank(axis: Int): MutableDoubleArrayND =
-            DefaultDoubleArrayNDLowerRankView(this, axis)
+            defaultDoubleArrayNDLowerRankView(this, axis)
 
     override fun higherRank(axis: Int): MutableDoubleArrayND =
             DefaultDoubleArrayNDHigherRankView(this, axis)
@@ -80,5 +88,8 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableNumericArrayND<Double> {
 
     override fun linearView(order: ElementOrder): MutableDoubleArray1D =
             DefaultDoubleArrayNDLinearView(this, order)
+
+    fun applyElementWise(function: FunctionDtoD): MutableDoubleArrayND =
+            inlinedApplyElementWise { function(it) }
 
 }

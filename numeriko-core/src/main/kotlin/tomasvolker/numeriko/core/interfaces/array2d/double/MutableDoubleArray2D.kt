@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double
 
+import tomasvolker.numeriko.core.annotations.*
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
@@ -10,7 +11,11 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.view.defaultDoubleArr
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.interfaces.array2d.numeric.MutableNumericArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.rankError2DMessage
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableDoubleArray2D: DoubleArray2D, MutableNumericArray2D<Double>, MutableDoubleArrayND {
@@ -19,12 +24,33 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableNumericArray2D<Double>, Mu
         setDouble(indices, value)
     }
 
-    override fun set(vararg indices: Int, value: Double) = setDouble(indices, value)
-
     override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
         setDouble(indices[0], indices[1], value)
     }
+
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun set(value: Double): Nothing = rankError(0, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, value: Double): Nothing = rankError(1, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, value: Double): Nothing = rankError(3, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, value: Double): Nothing = rankError(4, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, value: Double): Nothing = rankError(5, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, value: Double): Nothing = rankError(6, 2)
+
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun set(vararg indices: Int, value: Double): Nothing = rankError(-1, 2)
+
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as0D(): Nothing = rankError(0, 2)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as1D(): Nothing = rankError(1, 2)
+
+    override fun as2D() = this
 
     override fun setFloat(indices: IntArray, value: Float) = setDouble(indices, value.toDouble())
     override fun setLong (indices: IntArray, value: Long) = setDouble(indices, value.toDouble())
@@ -43,12 +69,24 @@ interface MutableDoubleArray2D: DoubleArray2D, MutableNumericArray2D<Double>, Mu
 
     override fun setValue(i0: Int, i1: Int, value: Double) = set(i0, i1, value)
 
-    fun setValue(other: DoubleArray2D) {
+    override fun setValue(value: ArrayND<Double>) =
+            if (value is DoubleArray2D)
+                setValue(value)
+            else
+                super<MutableDoubleArrayND>.setValue(value)
 
-        requireSameShape(this, other)
+    override fun setValue(value: Array2D<Double>) =
+            if (value is DoubleArray2D)
+                setValue(value)
+            else
+                super<MutableDoubleArrayND>.setValue(value)
 
-        forEachIndex { i0, i1 ->
-            setDouble(i0, i1, other.getDouble(i0, i1))
+    fun setValue(value: DoubleArray2D) {
+
+        requireSameShape(this, value)
+
+        value.copy().inlinedForEachIndexed { i0, i1, element ->
+            setDouble(i0, i1, element)
         }
 
     }

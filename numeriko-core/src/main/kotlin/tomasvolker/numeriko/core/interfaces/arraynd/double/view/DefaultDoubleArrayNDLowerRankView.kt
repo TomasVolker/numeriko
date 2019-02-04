@@ -5,28 +5,23 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.operations.reduction.remove
 import tomasvolker.numeriko.core.view.with
 
-class DefaultDoubleArrayNDLowerRankView(
-        val array: MutableDoubleArrayND,
-        val axis: Int
-) : DefaultMutableDoubleArrayND() {
+fun defaultDoubleArrayNDLowerRankView(
+        array: MutableDoubleArrayND,
+        axis: Int
+): MutableDoubleArrayND {
+    val colapsedAxis = axis
 
-    init {
-        require(array.shape[axis] <= 1)
+    require(array.shape[axis] <= 1)
+
+    return doubleArrayNDView(array, array.shape.remove(axis)) { source, target ->
+
+        source.forEachIndexed { axis, index ->
+            target[axis] = when {
+                axis < colapsedAxis -> source[axis]
+                axis == colapsedAxis -> 1
+                else -> source[axis - 1]
+            }
+        }
+
     }
-
-    override val shape: IntArray1D = array.shape.remove(axis)
-
-    override fun getDouble(indices: IntArray): Double {
-        requireValidIndices(indices)
-        return array.getDouble(convertIndices(indices))
-    }
-
-    override fun setDouble(indices: IntArray, value: Double) {
-        requireValidIndices(indices)
-        array.setDouble(convertIndices(indices), value)
-    }
-
-    private fun convertIndices(indices: IntArray): IntArray =
-            indices.with(index = axis, value = 0)
-
 }

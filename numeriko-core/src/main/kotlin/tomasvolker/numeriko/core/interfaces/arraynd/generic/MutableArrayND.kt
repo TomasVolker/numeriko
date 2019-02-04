@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
+import tomasvolker.numeriko.core.functions.FunctionDtoD
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
@@ -18,6 +19,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArr
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedApplyElementWise
 import tomasvolker.numeriko.core.performance.fastForEachIndexed
 import tomasvolker.numeriko.core.performance.fastForEachIndices
 import tomasvolker.numeriko.core.preconditions.requireSameShape

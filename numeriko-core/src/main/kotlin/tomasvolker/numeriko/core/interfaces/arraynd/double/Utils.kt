@@ -1,7 +1,5 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeGetView
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 import tomasvolker.numeriko.core.performance.fastForEachIndexed
 import tomasvolker.numeriko.core.performance.fastForEachIndices
@@ -31,7 +29,7 @@ inline fun elementWise(
     }
 }
 
-inline fun DoubleArrayND.elementWise(operation: (Double) -> Double): DoubleArrayND {
+inline fun DoubleArrayND.elementWise(operation: (Double)->Double): DoubleArrayND {
     val result = doubleZeros(shape).asMutable()
     elementWise(
             source = this,
@@ -79,8 +77,3 @@ inline fun MutableDoubleArrayND.applyElementWise(
     return this
 }
 
-fun DoubleArrayND.unsafeGetView(vararg indices: Any): DoubleArrayND =
-        (this as ArrayND<Double>).unsafeGetView(*indices) as DoubleArrayND
-
-fun MutableDoubleArrayND.unsafeGetView(vararg indices: Any): MutableDoubleArrayND =
-        (this as DoubleArrayND).unsafeGetView(*indices) as MutableDoubleArrayND

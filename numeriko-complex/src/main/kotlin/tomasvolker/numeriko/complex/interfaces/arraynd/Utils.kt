@@ -4,7 +4,7 @@ import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.factory.complexZeros
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeGetView
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.get
 import tomasvolker.numeriko.core.performance.fastForEachIndices
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
@@ -87,7 +87,7 @@ inline fun MutableComplexArrayND.applyElementWise(
 }
 
 fun ComplexArrayND.unsafeGetView(vararg indices: Any): ComplexArrayND =
-        (this as ArrayND<Complex>).unsafeGetView(*indices) as ComplexArrayND
+        (this as ArrayND<Complex>).get(*indices) as ComplexArrayND
 
 fun MutableComplexArrayND.unsafeGetView(vararg indices: Any): MutableComplexArrayND =
-        (this as ComplexArrayND).unsafeGetView(*indices) as MutableComplexArrayND
+        (this as ComplexArrayND).get(*indices) as MutableComplexArrayND

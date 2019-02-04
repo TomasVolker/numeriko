@@ -1,8 +1,10 @@
 package tomasvolker.numeriko.core.interfaces.array0d.generic
 
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.annotations.*
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.rankError0DMessage
 
 interface MutableArray0D<T>: Array0D<T>, MutableArrayND<T> {
 
@@ -12,6 +14,13 @@ interface MutableArray0D<T>: Array0D<T>, MutableArrayND<T> {
     }
 
     override fun setValue(value: T)
+
+    override fun as0D() = this
+
+    @CompileTimeError(message = rankError0DMessage, level = Level.ERROR)
+    override fun as1D(): Nothing = rankError(1, 0)
+    @CompileTimeError(message = rankError0DMessage, level = Level.ERROR)
+    override fun as2D(): Nothing = rankError(2, 0)
 
     fun setValue(other: Array0D<T>) {
         setValue(other.getValue())
