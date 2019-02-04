@@ -10,6 +10,8 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.view.*
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidAxis
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 import tomasvolker.numeriko.core.preconditions.rankError
@@ -77,9 +79,9 @@ interface Array1D<out T>: ArrayND<T> {
     fun asList(): List<T> = Default1DArrayListView(this)
 
     @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
-    override fun as0D(): Nothing = rankError(0, 1)
+    override fun as0D(): Nothing = rankError(0)
     @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
-    override fun as2D(): Nothing = rankError(2, 1)
+    override fun as2D(): Nothing = rankError(2)
 
     override fun as1D() = this
 

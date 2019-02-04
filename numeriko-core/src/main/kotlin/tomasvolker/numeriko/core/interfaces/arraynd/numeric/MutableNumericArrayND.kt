@@ -3,7 +3,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.numeric
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
-import tomasvolker.numeriko.core.performance.fastForEachIndexed
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableNumericArrayND<N: Number>: NumericArrayND<N>, MutableArrayND<N> {
@@ -31,7 +31,7 @@ interface MutableNumericArrayND<N: Number>: NumericArrayND<N>, MutableArrayND<N>
     fun setValue(value: NumericArrayND<N>) {
         requireSameShape(this, value)
         // Anti alias copy
-        value.copy().fastForEachIndexed { indices, element ->
+        value.copy().inlinedForEachIndexed { indices, element ->
             setValue(indices, element)
         }
     }

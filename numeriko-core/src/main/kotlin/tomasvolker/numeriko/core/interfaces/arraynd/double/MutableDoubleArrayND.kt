@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.functions.FunctionDtoD
+import tomasvolker.numeriko.core.functions.FunctionIAtoD
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
@@ -13,7 +14,8 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedApplyElementWise
-import tomasvolker.numeriko.core.performance.fastForEachIndexed
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedApplyFill
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.core.view.ElementOrder
 
@@ -53,7 +55,7 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableNumericArrayND<Double> {
         requireSameShape(this, value)
         // Anti alias copy
         val copy = value.copy()
-        copy.fastForEachIndexed { indices, element ->
+        copy.inlinedForEachIndexed { indices, element ->
             setDouble(indices, element)
         }
     }
@@ -89,7 +91,11 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableNumericArrayND<Double> {
     override fun linearView(order: ElementOrder): MutableDoubleArray1D =
             DefaultDoubleArrayNDLinearView(this, order)
 
+
     fun applyElementWise(function: FunctionDtoD): MutableDoubleArrayND =
             inlinedApplyElementWise { function(it) }
+
+    fun applyFill(function: FunctionIAtoD): MutableDoubleArrayND =
+            inlinedApplyFill { indices -> function(indices) }
 
 }

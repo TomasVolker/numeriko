@@ -1,8 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.array0d.numeric
 
 import tomasvolker.numeriko.core.interfaces.array0d.generic.MutableArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 
 interface MutableNumericArray0D<N: Number>: NumericArray0D<N>, MutableArray0D<N>, MutableNumericArrayND<N> {

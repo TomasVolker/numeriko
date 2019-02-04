@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.core.performance.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 
 fun ArrayND<*>.defaultEquals(other: ArrayND<*>): Boolean {
 

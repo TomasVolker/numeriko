@@ -10,7 +10,7 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
-import tomasvolker.numeriko.core.performance.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableComplexArrayND: ComplexArrayND, MutableNumericArrayND<Complex> {

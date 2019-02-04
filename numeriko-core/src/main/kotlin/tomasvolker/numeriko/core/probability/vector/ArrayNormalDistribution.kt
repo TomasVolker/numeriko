@@ -1,11 +1,11 @@
 package tomasvolker.numeriko.core.probability.vector
 
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.minus
+import tomasvolker.numeriko.core.functions.minus
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.double.determinant
-import tomasvolker.numeriko.core.interfaces.array2d.double.inverse
-import tomasvolker.numeriko.core.interfaces.array2d.double.quadraticForm
+import tomasvolker.numeriko.core.functions.determinant
+import tomasvolker.numeriko.core.functions.inverse
+import tomasvolker.numeriko.core.functions.quadraticForm
 import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
 import kotlin.math.PI
 import kotlin.math.exp

@@ -4,7 +4,7 @@ import tomasvolker.numeriko.complex.transforms.fht.array1d.fht
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.double.applyTimes
+import tomasvolker.numeriko.core.functions.applyTimes
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros

@@ -6,7 +6,7 @@ import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array2d.numeric.MutableNumericArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.numeric.NumericArray2D
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 
 interface MutableNumericArray1D<N: Number>: NumericArray1D<N>, MutableArray1D<N>, MutableNumericArrayND<N> {

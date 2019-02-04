@@ -2,8 +2,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.toIndexProgression
-import tomasvolker.numeriko.core.performance.fastForEachIndices
-import tomasvolker.numeriko.core.performance.indexIncrement
+import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 
 fun defaultEquals(array1: DoubleArrayND, array2: DoubleArrayND): Boolean {
 

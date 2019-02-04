@@ -9,14 +9,14 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleArr
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleReshapedView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray1DView
-import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidAxis
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
 import tomasvolker.numeriko.core.preconditions.rankError
 import tomasvolker.numeriko.core.preconditions.rankError1DMessage
 import tomasvolker.numeriko.core.preconditions.requireSameSize
@@ -35,24 +35,24 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableNumericArray1D<Double>, Mu
     }
 
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override fun set(value: Double): Nothing = rankError(0, 1)
+    override fun set(value: Double): Nothing = rankError(0)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override operator fun set(i0: Int, i1: Int, value: Double): Nothing = rankError(2, 1)
+    override operator fun set(i0: Int, i1: Int, value: Double): Nothing = rankError(2)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override operator fun set(i0: Int, i1: Int, i2: Int, value: Double): Nothing = rankError(3, 1)
+    override operator fun set(i0: Int, i1: Int, i2: Int, value: Double): Nothing = rankError(3)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, value: Double): Nothing = rankError(4, 1)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, value: Double): Nothing = rankError(4)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, value: Double): Nothing = rankError(5, 1)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, value: Double): Nothing = rankError(5)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, value: Double): Nothing = rankError(6, 1)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, value: Double): Nothing = rankError(6)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override fun set(vararg indices: Int, value: Double): Nothing = rankError(-1, 1)
+    override fun set(vararg indices: Int, value: Double): Nothing = rankError(-1)
 
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override fun as0D(): Nothing = rankError(0, 1)
+    override fun as0D(): Nothing = rankError(0)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override fun as2D(): Nothing = rankError(2, 1)
+    override fun as2D(): Nothing = rankError(2)
 
     override fun as1D() = this
 

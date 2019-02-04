@@ -20,6 +20,15 @@ inline fun DDtoD(crossinline function: (input1: Double, input2: Double)->Double)
             override fun invoke(input1: Double, input2: Double): Double = function(input1, input2)
         }
 
+interface FunctionIAtoD {
+    operator fun invoke(input: IntArray): Double
+}
+
+inline fun IDtoD(crossinline function: (input: IntArray)->Double) =
+        object: FunctionIAtoD {
+            override fun invoke(input: IntArray): Double = function(input)
+        }
+
 interface FunctionIADtoD {
     operator fun invoke(input1: IntArray, input2: Double): Double
 }

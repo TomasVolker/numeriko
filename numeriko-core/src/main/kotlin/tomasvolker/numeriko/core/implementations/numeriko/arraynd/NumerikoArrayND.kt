@@ -1,19 +1,19 @@
 package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 
-import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.*
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultMutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
-import tomasvolker.numeriko.core.view.ElementOrder
+import tomasvolker.numeriko.core.preconditions.requireValidIndexRange
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
+import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex
 
 class NumerikoArrayND<T>(
         override val shape: IntArray1D,
         val data: Array<T>,
-        order: ElementOrder = NumerikoConfig.defaultElementOrder,
         val offset: Int = 0,
-        val strideArray: IntArray = order.strideArray(shape)
+        val strideArray: IntArray = ContiguousLastAxis.strideArray(shape)
 ): DefaultMutableArrayND<T>() {
 
     override val rank: Int

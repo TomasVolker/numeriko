@@ -35,6 +35,13 @@ inline fun MutableDoubleArrayND.inlinedApplyElementWise(function: (Double)->Doub
     return this
 }
 
+inline fun MutableDoubleArrayND.inlinedApplyFill(function: (indices: IntArray)->Double): MutableDoubleArrayND {
+    fastForEachIndices { indices ->
+        setDouble(indices, function(indices))
+    }
+    return this
+}
+
 inline fun DoubleArrayND.inlinedZipIndexed(
         other: DoubleArrayND,
         function: (indices: IntArray, thisValue: Double, otherValue: Double)->Unit
@@ -51,7 +58,8 @@ inline fun DoubleArrayND.inlinedZipIndexed(
 
 inline fun MutableDoubleArrayND.inlinedApplyElementWise(
         other: DoubleArrayND,
-        function: (Double, Double)->Double): MutableDoubleArrayND {
+        function: (Double, Double)->Double
+): MutableDoubleArrayND {
     inlinedZipIndexed(other) { indices, thisValue, otherValue ->
         setDouble(indices, function(thisValue, otherValue))
     }

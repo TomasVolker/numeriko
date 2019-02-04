@@ -53,11 +53,11 @@ operator fun <T> MutableArrayND<T>.set(vararg indices: Any, value: ArrayND<T>): 
 
 
 @CompileTimeError(message = rankError0DMessage, level = Level.ERROR)
-operator fun Array0D<*>.get(vararg indices: Any): Nothing = rankError(-1, 0)
+operator fun Array0D<*>.get(vararg indices: Any): Nothing = rankError(-1)
 
 @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-operator fun Array1D<*>.get(vararg indices: Any): Nothing = rankError(-1, 1)
+operator fun Array1D<*>.get(vararg indices: Any): Nothing = rankError(-1)
 
 @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
-operator fun Array2D<*>.get(vararg indices: Any): Nothing = rankError(-1, 2)
+operator fun Array2D<*>.get(vararg indices: Any): Nothing = rankError(-1)
 

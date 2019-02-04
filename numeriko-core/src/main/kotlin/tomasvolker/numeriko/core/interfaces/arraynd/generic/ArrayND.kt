@@ -10,8 +10,6 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
-import tomasvolker.numeriko.core.interfaces.arraynd.double.DefaultDoubleArrayNDIterator
-import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayNDIterator
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.operations.reduction.product
@@ -212,72 +210,5 @@ interface ArrayND<out T>: Collection<T> {
      */
     fun asMutable(): MutableArrayND<@UnsafeVariance T> = this as MutableArrayND<T>
 
-    fun requireValidIndices(indices: IntArray) {
-
-        if (NumerikoConfig.checkRanges) {
-
-            if (indices.size != rank)
-                throw IllegalArgumentException("Indices [${indices.joinToString()}] are invalid for shape $shape")
-
-            for (axis in 0 until rank) {
-                // Do not use `indices(axis)` as inlining is not working
-                if (indices[axis] !in 0 until shape(axis))
-                    throw IndexOutOfBoundsException("Indices [${indices.joinToString()}] are out of range for shape $shape")
-            }
-
-        }
-
-    }
-
-    fun requireValidIndices(indices: Array<out IntProgression>) {
-
-        if (NumerikoConfig.checkRanges) {
-
-            if (indices.size != rank)
-                throw IllegalArgumentException("Indices [${indices.joinToString()}] are invalid for shape $shape")
-
-            for (axis in 0 until rank) {
-                val indexProgression = indices[axis]
-                // Do not use `indices(axis)` as inlining is not working
-                if (indexProgression.first !in 0 until shape(axis))
-                    throw IndexOutOfBoundsException("Indices [${indexProgression.joinToString()}] are out of range for shape $shape")
-                if (indexProgression.last !in 0 until shape(axis))
-                    throw IndexOutOfBoundsException("Indices [${indexProgression.joinToString()}] are out of range for shape $shape")
-            }
-
-        }
-
-    }
-
-    fun requireValidAxis(axis: Int) {
-
-        if (NumerikoConfig.checkRanges) {
-            // Do not use `axes` as inlining is not working
-            if (axis !in 0 until rank) throw IndexOutOfBoundsException("Axis index $axis invalid for rank $rank")
-
-        }
-
-    }
-
-    fun requireValidIndex(i: Int, axis: Int) {
-
-        if (NumerikoConfig.checkRanges) {
-            // Do not use `indices()` as inlining is not working
-            if (i !in 0 until shape(axis)) throw IndexOutOfBoundsException("Index $i on axis 0 is out of size ${shape(axis)}")
-        }
-
-    }
-
-    fun requireValidIndexRange(i: IntProgression, axis: Int) {
-
-        if (NumerikoConfig.checkRanges) {
-            // Do not use `indices` as inlining is not working
-            if (i.first !in 0 until shape(axis))
-                throw IndexOutOfBoundsException("Index ${i.first} in axis $axis is out of shape $shape")
-            if (i.last  !in 0 until shape(axis))
-                throw IndexOutOfBoundsException("Index ${i.last} in axis $axis is out of shape $shape")
-        }
-
-    }
-
 }
+

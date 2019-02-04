@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.sandbox.tpsti
 
 import org.ejml.dense.row.factory.DecompositionFactory_DDRM
+import tomasvolker.numeriko.core.functions.*
 import tomasvolker.numeriko.core.interfaces.array1d.double.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
@@ -9,7 +10,6 @@ import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleDiagonal
 import tomasvolker.numeriko.core.primitives.squared
 import kotlin.math.abs
-import kotlin.math.tan
 import kotlin.math.tanh
 
 

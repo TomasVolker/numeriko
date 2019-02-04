@@ -3,8 +3,11 @@ package tomasvolker.numeriko.interfaces.array1d
 
 import org.junit.jupiter.api.Test
 import tomasvolker.numeriko.core.dsl.I
+import tomasvolker.numeriko.core.functions.div
+import tomasvolker.numeriko.core.functions.minus
+import tomasvolker.numeriko.core.functions.plus
+import tomasvolker.numeriko.core.functions.times
 import tomasvolker.numeriko.core.index.*
-import tomasvolker.numeriko.core.interfaces.array1d.integer.*
 import tomasvolker.numeriko.core.interfaces.factory.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals

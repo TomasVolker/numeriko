@@ -5,11 +5,10 @@ import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.index.rangeTo
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.double.determinant
+import tomasvolker.numeriko.core.functions.determinant
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
-import tomasvolker.numeriko.core.interfaces.factory.doubleIdentity
 import tomasvolker.numeriko.core.primitives.indicator
 import tomasvolker.numeriko.core.primitives.isEven
 import tomasvolker.numeriko.core.primitives.sumDouble

@@ -1,8 +1,9 @@
-package tomasvolker.numeriko.core.interfaces.array2d.double
+package tomasvolker.numeriko.core.functions
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.interfaces.array2d.double.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2DTransposeView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
@@ -148,7 +149,7 @@ operator fun DoubleArray2D.unaryMinus(): DoubleArray2D = elementWise { -it }
  * @throws IllegalArgumentException  if this and [other] don't have the same [size]
  * @return an array containing the element wise addition with [other].
  */
-operator fun DoubleArray2D.plus(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t + o }
+operator fun DoubleArray2D.plus(other: DoubleArray2D): DoubleArray2D = tomasvolker.numeriko.core.interfaces.array2d.double.elementWise(this, other) { t, o -> t + o }
 
 /**
  * Returns an array with the element wise subtraction with [other].
@@ -156,7 +157,7 @@ operator fun DoubleArray2D.plus(other: DoubleArray2D): DoubleArray2D = elementWi
  * @throws IllegalArgumentException  if this and [other] don't have the same [size]
  * @return an array containing the subtraction wise addition with [other].
  */
-operator fun DoubleArray2D.minus(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t - o }
+operator fun DoubleArray2D.minus(other: DoubleArray2D): DoubleArray2D = tomasvolker.numeriko.core.interfaces.array2d.double.elementWise(this, other) { t, o -> t - o }
 
 /**
  * Returns an array with the element wise multiplication with [other].
@@ -166,7 +167,7 @@ operator fun DoubleArray2D.minus(other: DoubleArray2D): DoubleArray2D = elementW
  * @throws IllegalArgumentException  if this and [other] don't have the same [size]
  * @return an array containing the subtraction wise addition with [other].
  */
-operator fun DoubleArray2D.times(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t * o }
+operator fun DoubleArray2D.times(other: DoubleArray2D): DoubleArray2D = tomasvolker.numeriko.core.interfaces.array2d.double.elementWise(this, other) { t, o -> t * o }
 
 /**
  * Returns an array with the element wise division with [other].
@@ -174,7 +175,7 @@ operator fun DoubleArray2D.times(other: DoubleArray2D): DoubleArray2D = elementW
  * @throws IllegalArgumentException  if this and [other] don't have the same [size]
  * @return an array containing the division wise addition with [other].
  */
-operator fun DoubleArray2D.div(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t / o }
+operator fun DoubleArray2D.div(other: DoubleArray2D): DoubleArray2D = tomasvolker.numeriko.core.interfaces.array2d.double.elementWise(this, other) { t, o -> t / o }
 
 /**
  * Returns an array with the element wise reversed division with [other].
@@ -184,7 +185,7 @@ operator fun DoubleArray2D.div(other: DoubleArray2D): DoubleArray2D = elementWis
  * @throws IllegalArgumentException  if this and [other] don't have the same [size]
  * @return an array containing the reversed division wise addition with [other].
  */
-fun DoubleArray2D.rdiv(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> o / t }
+fun DoubleArray2D.rdiv(other: DoubleArray2D): DoubleArray2D = tomasvolker.numeriko.core.interfaces.array2d.double.elementWise(this, other) { t, o -> o / t }
 
 /**
  * Returns an array with the element wise addition with [other].

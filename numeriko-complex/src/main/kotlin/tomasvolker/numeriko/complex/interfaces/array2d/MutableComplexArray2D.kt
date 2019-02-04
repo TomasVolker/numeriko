@@ -14,10 +14,16 @@ import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.complex.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.array2d.numeric.MutableNumericArray2D
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import kotlin.math.cos
 import kotlin.math.sin
 
 interface MutableComplexArray2D: ComplexArray2D, MutableNumericArray2D<Complex>, MutableComplexArrayND {
+
+    override fun as2D() = this
+
+    override fun as0D(): Nothing = throw IllegalArgumentException("")
+    override fun as1D(): Nothing = TODO("not implemented")
 
     override fun setValue(indices: IntArray, value: Complex) {
         requireValidIndices(indices)

@@ -2,13 +2,11 @@ package tomasvolker.numeriko.core.interfaces.array1d.numeric
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0D
 import tomasvolker.numeriko.core.interfaces.array0d.numeric.NumericArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.DefaultArray1DIterator
-import tomasvolker.numeriko.core.interfaces.array2d.numeric.MutableNumericArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.numeric.NumericArray2D
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 
 interface NumericArray1D<out N: Number>: Array1D<N>, NumericArrayND<N> {

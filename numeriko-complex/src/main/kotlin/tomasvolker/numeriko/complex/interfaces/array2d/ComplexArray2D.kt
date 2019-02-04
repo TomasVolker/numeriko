@@ -12,11 +12,18 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.complex.interfaces.factory.*
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.array2d.numeric.NumericArray2D
+import tomasvolker.numeriko.core.preconditions.requireValidAxis
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import kotlin.math.atan2
 import kotlin.math.hypot
 
 interface ComplexArray2D: NumericArray2D<Complex>, ComplexArrayND {
+
+    override fun as2D() = this
+
+    override fun as0D(): Nothing = throw IllegalArgumentException("")
+    override fun as1D(): Nothing = TODO("not implemented")
 
     override fun real(vararg indices: Int): Double {
         requireValidIndices(indices)

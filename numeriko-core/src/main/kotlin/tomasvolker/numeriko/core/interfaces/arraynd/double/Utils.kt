@@ -1,8 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
-import tomasvolker.numeriko.core.performance.fastForEachIndexed
-import tomasvolker.numeriko.core.performance.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 inline fun elementWise(
@@ -11,7 +11,7 @@ inline fun elementWise(
         operation: (Double) -> Double
 ) {
     requireSameShape(source, destination)
-    source.fastForEachIndexed { indices, value ->
+    source.inlinedForEachIndexed { indices, value ->
         destination.setDouble(indices, operation(value))
     }
 }
@@ -39,7 +39,11 @@ inline fun DoubleArrayND.elementWise(operation: (Double)->Double): DoubleArrayND
     return result
 }
 
-inline fun elementWise(array1: DoubleArrayND, array2: DoubleArrayND, operation: (Double, Double) -> Double): DoubleArrayND {
+inline fun elementWise(
+        array1: DoubleArrayND,
+        array2: DoubleArrayND,
+        operation: (Double, Double) -> Double
+): DoubleArrayND {
     requireSameShape(array1, array2)
     val result = doubleZeros(array1.shape).asMutable()
     elementWise(

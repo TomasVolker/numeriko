@@ -1,11 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.core.index.Index
-import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.index.toIndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
-import tomasvolker.numeriko.core.performance.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 
 val ArrayND<*>.volume get(): Int = size
 val ArrayND<*>.axes get(): IntRange = 0 until rank

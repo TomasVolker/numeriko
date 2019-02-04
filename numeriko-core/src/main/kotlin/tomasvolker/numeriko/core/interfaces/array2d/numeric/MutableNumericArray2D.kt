@@ -6,7 +6,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
-import tomasvolker.numeriko.core.performance.fastForEachIndexed
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableNumericArray2D<N: Number>: NumericArray2D<N>, MutableArray2D<N>, MutableNumericArrayND<N> {
@@ -35,7 +35,7 @@ interface MutableNumericArray2D<N: Number>: NumericArray2D<N>, MutableArray2D<N>
     fun setValue(value: NumericArray2D<N>) {
         requireSameShape(this, value)
         // Anti alias copy
-        value.copy().fastForEachIndexed { indices, element ->
+        value.copy().inlinedForEachIndexed { indices, element ->
             setValue(indices, element)
         }
     }

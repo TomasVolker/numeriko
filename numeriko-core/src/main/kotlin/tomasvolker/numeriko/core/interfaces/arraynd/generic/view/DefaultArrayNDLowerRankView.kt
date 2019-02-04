@@ -3,6 +3,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.generic.view
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.*
 import tomasvolker.numeriko.core.operations.reduction.remove
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.view.with
 
 class DefaultArrayNDLowerRankView<T>(

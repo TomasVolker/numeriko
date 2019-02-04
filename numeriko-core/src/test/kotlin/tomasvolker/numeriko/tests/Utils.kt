@@ -5,7 +5,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.performance.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 import kotlin.math.abs
 
 const val tolerance = 1e-10

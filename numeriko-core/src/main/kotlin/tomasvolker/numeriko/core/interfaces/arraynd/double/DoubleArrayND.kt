@@ -10,12 +10,9 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedElementWise
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEach
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
-import tomasvolker.numeriko.core.performance.fastForEachIndexed
-import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.core.view.ElementOrder
 
 interface DoubleArrayND: NumericArrayND<Double> {

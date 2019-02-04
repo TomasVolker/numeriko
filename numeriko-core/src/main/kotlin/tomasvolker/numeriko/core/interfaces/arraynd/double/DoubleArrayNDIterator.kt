@@ -1,8 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayNDIterator
-import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
-import tomasvolker.numeriko.core.performance.indexIncrement
+import tomasvolker.numeriko.core.interfaces.iteration.indexIncrement
 
 abstract class DoubleArrayNDIterator: DoubleIterator(), ArrayNDIterator<Double>
 

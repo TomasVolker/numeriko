@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.sandbox.tpsti
 
 import tomasvolker.numeriko.core.dsl.D
-import tomasvolker.numeriko.core.interfaces.array2d.double.inverse
+import tomasvolker.numeriko.core.functions.inverse
 import tomasvolker.numeriko.core.primitives.squared
 import tomasvolker.numeriko.core.primitives.sumDouble
 import kotlin.math.sqrt

@@ -2,10 +2,9 @@ package tomasvolker.numeriko.complex.interfaces.arraynd
 
 import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.factory.complexZeros
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.get
-import tomasvolker.numeriko.core.performance.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.slicing.get
+import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 inline fun elementWise(
@@ -86,8 +85,12 @@ inline fun MutableComplexArrayND.applyElementWise(
     return this
 }
 
-fun ComplexArrayND.unsafeGetView(vararg indices: Any): ComplexArrayND =
-        (this as ArrayND<Complex>).get(*indices) as ComplexArrayND
 
-fun MutableComplexArrayND.unsafeGetView(vararg indices: Any): MutableComplexArrayND =
-        (this as ComplexArrayND).get(*indices) as MutableComplexArrayND
+operator fun ComplexArrayND.get(vararg indices: Any): ComplexArrayND =
+        this.get(*indices) as ComplexArrayND
+
+operator fun MutableComplexArrayND.get(vararg indices: Any): MutableComplexArrayND =
+        this.get(*indices).asMutable() as MutableComplexArrayND
+
+operator fun MutableComplexArrayND.set(vararg indices: Any, value: ComplexArrayND): Unit =
+        this.get(*indices).setValue(value)

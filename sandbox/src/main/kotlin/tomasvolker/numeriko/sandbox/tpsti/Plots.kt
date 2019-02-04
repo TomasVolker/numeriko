@@ -2,9 +2,9 @@ package tomasvolker.numeriko.sandbox.tpsti
 
 import tomasvolker.kyplot.dsl.*
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.convolve
+import tomasvolker.numeriko.core.functions.convolve
 import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
-import tomasvolker.numeriko.core.interfaces.array1d.double.times
+import tomasvolker.numeriko.core.functions.times
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
 import tomasvolker.numeriko.core.primitives.indicator

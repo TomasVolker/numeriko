@@ -15,7 +15,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
 import tomasvolker.numeriko.core.operations.reduction.product
-import tomasvolker.numeriko.core.performance.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 import tomasvolker.numeriko.core.primitives.indicator
 import kotlin.random.Random
 
@@ -123,6 +123,7 @@ interface ArrayNDFactory {
             doubleDiagonal(diagonal.size) { i -> diagonal[i] }
 
 }
+
 
 inline fun <T> array1D(size: Int, init: (i: Int)->T): Array1D<T> =
         NumerikoConfig.defaultFactory.array1DOfNulls<T>(size).asMutable().apply {

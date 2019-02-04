@@ -1,5 +1,6 @@
-package tomasvolker.numeriko.core.interfaces.array1d.double
+package tomasvolker.numeriko.core.functions
 
+import tomasvolker.numeriko.core.interfaces.array1d.double.*
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
@@ -29,7 +30,7 @@ operator fun DoubleArray1D.unaryMinus(): DoubleArray1D = elementWise { -it }
  * @throws IllegalArgumentException  if this and [other] don't have the same [size]
  * @return an array containing the element wise addition with [other].
  */
-operator fun DoubleArray1D.plus(other: DoubleArray1D): DoubleArray1D = elementWise(this, other) { t, o -> t + o }
+operator fun DoubleArray1D.plus(other: DoubleArray1D): DoubleArray1D = tomasvolker.numeriko.core.interfaces.array1d.double.elementWise(this, other) { t, o -> t + o }
 
 /**
  * Returns an array with the element wise subtraction with [other].
@@ -37,7 +38,7 @@ operator fun DoubleArray1D.plus(other: DoubleArray1D): DoubleArray1D = elementWi
  * @throws IllegalArgumentException  if this and [other] don't have the same [size]
  * @return an array containing the subtraction wise addition with [other].
  */
-operator fun DoubleArray1D.minus(other: DoubleArray1D): DoubleArray1D = elementWise(this, other) { t, o -> t - o }
+operator fun DoubleArray1D.minus(other: DoubleArray1D): DoubleArray1D = tomasvolker.numeriko.core.interfaces.array1d.double.elementWise(this, other) { t, o -> t - o }
 
 /**
  * Returns an array with the element wise multiplication with [other].
@@ -47,7 +48,7 @@ operator fun DoubleArray1D.minus(other: DoubleArray1D): DoubleArray1D = elementW
  * @throws IllegalArgumentException  if this and [other] don't have the same [size]
  * @return an array containing the subtraction wise addition with [other].
  */
-operator fun DoubleArray1D.times(other: DoubleArray1D): DoubleArray1D = elementWise(this, other) { t, o -> t * o }
+operator fun DoubleArray1D.times(other: DoubleArray1D): DoubleArray1D = tomasvolker.numeriko.core.interfaces.array1d.double.elementWise(this, other) { t, o -> t * o }
 
 /**
  * Returns an array with the element wise division with [other].
@@ -55,7 +56,7 @@ operator fun DoubleArray1D.times(other: DoubleArray1D): DoubleArray1D = elementW
  * @throws IllegalArgumentException  if this and [other] don't have the same [size]
  * @return an array containing the division wise addition with [other].
  */
-operator fun DoubleArray1D.div(other: DoubleArray1D): DoubleArray1D = elementWise(this, other) { t, o -> t / o }
+operator fun DoubleArray1D.div(other: DoubleArray1D): DoubleArray1D = tomasvolker.numeriko.core.interfaces.array1d.double.elementWise(this, other) { t, o -> t / o }
 
 /**
  * Returns an array with the element wise reversed division with [other].
@@ -65,7 +66,7 @@ operator fun DoubleArray1D.div(other: DoubleArray1D): DoubleArray1D = elementWis
  * @throws IllegalArgumentException  if this and [other] don't have the same [size]
  * @return an array containing the reversed division wise addition with [other].
  */
-fun DoubleArray1D.rdiv(other: DoubleArray1D): DoubleArray1D = elementWise(this, other) { t, o -> o / t }
+fun DoubleArray1D.rdiv(other: DoubleArray1D): DoubleArray1D = tomasvolker.numeriko.core.interfaces.array1d.double.elementWise(this, other) { t, o -> o / t }
 
 /**
  * Returns an array with the element wise addition with [other].

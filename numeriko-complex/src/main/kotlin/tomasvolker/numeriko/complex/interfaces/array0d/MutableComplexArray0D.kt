@@ -4,8 +4,16 @@ import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
 import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 interface MutableComplexArray0D: ComplexArray0D, MutableNumericArray0D<Complex>, MutableComplexArrayND {
+
+    override fun as0D() = this
+
+    override fun as1D(): Nothing = rankError(1)
+    override fun as2D(): Nothing = rankError(2)
+
     override fun setReal(value: Double, vararg indices: Int) {
         requireValidIndices(indices)
         setReal(value, indices[0])

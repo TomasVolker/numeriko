@@ -2,8 +2,8 @@ package tomasvolker.numeriko.core.interfaces.array0d.numeric
 
 import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
 import tomasvolker.numeriko.core.interfaces.array0d.generic.DefaultArray0DIterator
-import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 
 interface NumericArray0D<out N: Number>: Array0D<N>, NumericArrayND<N> {

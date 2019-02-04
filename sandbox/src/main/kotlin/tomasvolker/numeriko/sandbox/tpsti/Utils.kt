@@ -22,9 +22,10 @@ import javax.sound.sampled.AudioFileFormat
 import javax.sound.sampled.AudioSystem
 import javax.sound.sampled.AudioInputStream
 import java.io.ByteArrayInputStream
-import org.opencv.core.CvType.channels
+import tomasvolker.numeriko.core.functions.applyPlus
+import tomasvolker.numeriko.core.functions.inner
+import tomasvolker.numeriko.core.functions.norm2
 import tomasvolker.numeriko.core.interfaces.array1d.double.*
-import tomasvolker.numeriko.core.primitives.pow2
 import javax.sound.sampled.AudioFormat
 import kotlin.math.absoluteValue
 

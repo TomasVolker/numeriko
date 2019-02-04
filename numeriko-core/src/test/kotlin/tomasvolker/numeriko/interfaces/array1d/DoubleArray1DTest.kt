@@ -3,8 +3,8 @@ package tomasvolker.numeriko.interfaces.array1d
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.functions.*
 import tomasvolker.numeriko.core.index.*
-import tomasvolker.numeriko.core.interfaces.array1d.double.*
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.tests.*
 import kotlin.math.sqrt

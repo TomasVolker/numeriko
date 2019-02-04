@@ -1,10 +1,12 @@
 package tomasvolker.numeriko.sandbox.tpcontour
 
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.functions.filter2D
+import tomasvolker.numeriko.core.functions.plus
+import tomasvolker.numeriko.core.functions.transpose
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.div
+import tomasvolker.numeriko.core.functions.div
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.double.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.sumBy
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D

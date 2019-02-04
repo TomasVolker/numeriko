@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double.view
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.operations.reduction.inject
 import tomasvolker.numeriko.core.view.without
 

@@ -90,9 +90,6 @@ fun linearIndex(offset: Int, strideArray: IntArray, indices: IntArray): Int {
     return result
 }
 
-fun linearIndex(offset: Int, strideArray: IntArray): Int =
-        offset
-
 fun linearIndex(offset: Int, strideArray: IntArray, i0: Int): Int =
         offset + strideArray[0] * i0
 

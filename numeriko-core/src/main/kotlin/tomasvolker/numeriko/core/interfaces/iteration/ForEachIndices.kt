@@ -1,6 +1,5 @@
-package tomasvolker.numeriko.core.performance
+package tomasvolker.numeriko.core.interfaces.iteration
 
-import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
@@ -54,15 +53,3 @@ inline fun fastForEachIndices(shape: IntArray, block: (indices: IntArray)->Unit)
 
 inline fun ArrayND<*>.fastForEachIndices(block: (indices: IntArray)->Unit) =
         fastForEachIndices(shape.toIntArray(), block)
-
-inline fun <T> ArrayND<T>.fastForEach(block: (value: T)->Unit) =
-        fastForEachIndices { indices -> block(this.getValue(indices)) }
-
-inline fun <T> ArrayND<T>.fastForEachIndexed(block: (indices: IntArray, value: T)->Unit) =
-        fastForEachIndices { indices -> block(indices, this.getValue(indices)) }
-
-inline fun DoubleArrayND.fastForEach(block: (value: Double)->Unit) =
-        fastForEachIndices { indices -> block(this.getDouble(indices)) }
-
-inline fun DoubleArrayND.fastForEachIndexed(block: (indices: IntArray, value: Double)->Unit) =
-        fastForEachIndices { indices -> block(indices, this.getDouble(indices)) }

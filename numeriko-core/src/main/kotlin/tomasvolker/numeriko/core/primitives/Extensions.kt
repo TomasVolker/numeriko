@@ -35,13 +35,7 @@ fun sqrt(value: Long): Double = sqrt(value.toDouble())
 
 fun Boolean.indicator() = if(this) 1.0 else 0.0
 
-fun pow2(power: Int): Int {
-    var x = 1
-    repeat(power){
-        x *= 2
-    }
-    return x
-}
+fun pow2(power: Int): Int = 1 shl power
 
 tailrec fun Int.isPowerOf2(): Boolean = when {
     this == 0 -> false

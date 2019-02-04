@@ -21,9 +21,9 @@ interface MutableArray2D<T>: Array2D<T>, MutableArrayND<T> {
     }
 
     @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
-    override fun as0D(): Nothing = rankError(0, 2)
+    override fun as0D(): Nothing = rankError(0)
     @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
-    override fun as1D(): Nothing = rankError(1, 2)
+    override fun as1D(): Nothing = rankError(1)
 
     override fun as2D() = this
 

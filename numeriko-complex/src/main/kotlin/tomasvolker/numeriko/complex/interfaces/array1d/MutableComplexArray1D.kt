@@ -11,10 +11,13 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import kotlin.math.cos
 import kotlin.math.sin
 
 interface MutableComplexArray1D: MutableNumericArray1D<Complex>, ComplexArray1D, MutableComplexArrayND {
+
+    override fun as1D() = this
 
     override fun as0D(): Nothing = TODO()
     override fun as2D(): Nothing = TODO()

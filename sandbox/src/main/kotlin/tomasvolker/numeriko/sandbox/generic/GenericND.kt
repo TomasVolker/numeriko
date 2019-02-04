@@ -1,9 +1,8 @@
 package tomasvolker.numeriko.sandbox.generic
 
-import tomasvolker.numeriko.core.interfaces.array2d.double.transpose
+import tomasvolker.numeriko.core.functions.transpose
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
-import tomasvolker.numeriko.core.interfaces.slicing.get
 import tomasvolker.numeriko.core.operations.reduction.reduce
 
 

@@ -12,6 +12,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.view.defaultArray1DV
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 import tomasvolker.numeriko.core.preconditions.rankError
 import tomasvolker.numeriko.core.preconditions.rankError2DMessage
@@ -26,9 +27,9 @@ interface MutableArray1D<T>: Array1D<T>, MutableArrayND<T> {
     }
 
     @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
-    override fun as0D(): Nothing = rankError(0, 1)
+    override fun as0D(): Nothing = rankError(0)
     @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
-    override fun as2D(): Nothing = rankError(2, 1)
+    override fun as2D(): Nothing = rankError(2)
 
     override fun as1D() = this
 

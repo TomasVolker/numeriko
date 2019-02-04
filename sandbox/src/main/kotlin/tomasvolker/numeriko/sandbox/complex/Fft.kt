@@ -4,7 +4,7 @@ import tomasvolker.numeriko.complex.primitives.exp
 import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.ComplexArray2D
 import tomasvolker.numeriko.complex.interfaces.arraynd.ComplexArrayND
-import tomasvolker.numeriko.complex.interfaces.arraynd.unsafeGetView
+import tomasvolker.numeriko.complex.interfaces.arraynd.get
 import tomasvolker.numeriko.complex.interfaces.factory.complexArray1D
 import tomasvolker.numeriko.complex.interfaces.factory.complexZeros
 import tomasvolker.numeriko.complex.primitives.j
@@ -17,7 +17,7 @@ import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.core.interfaces.array2d.generic.indices1
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
-import tomasvolker.numeriko.core.performance.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 import tomasvolker.numeriko.core.primitives.modulo
 import kotlin.math.PI
 import kotlin.math.cos
@@ -131,8 +131,8 @@ fun ComplexArrayND.fft(axis: Int): ComplexArrayND {
             val indxs = Array<Any>(rank) { a ->
                 if (a == axis) All else 0
             }
-            result.unsafeGetView(*indxs).setValue(
-                    this.unsafeGetView(*indxs).as1D().fastFourierTransform()
+            result.get(*indxs).setValue(
+                    this.get(*indxs).as1D().fastFourierTransform()
             )
         }
 

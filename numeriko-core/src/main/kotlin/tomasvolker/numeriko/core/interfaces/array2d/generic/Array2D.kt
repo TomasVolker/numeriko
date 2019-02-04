@@ -12,6 +12,7 @@ import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.intVector2
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DLowerRankView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.defaultArray2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.preconditions.rankError
 import tomasvolker.numeriko.core.preconditions.rankError2DMessage
@@ -44,9 +45,9 @@ interface Array2D<out T>: ArrayND<T> {
     }
 
     @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
-    override fun as0D(): Nothing = rankError(0, 2)
+    override fun as0D(): Nothing = rankError(0)
     @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
-    override fun as1D(): Nothing = rankError(1, 2)
+    override fun as1D(): Nothing = rankError(1)
 
     override fun as2D() = this
 

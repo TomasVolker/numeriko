@@ -15,6 +15,8 @@ import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidAxis
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
 import tomasvolker.numeriko.core.preconditions.rankError
@@ -39,25 +41,25 @@ interface DoubleArray1D: NumericArray1D<Double>, DoubleArrayND {
     }
 
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override fun get(): Nothing = rankError(0, 1)
+    override fun get(): Nothing = rankError(0)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override operator fun get(i0: Int, i1: Int): Nothing = rankError(2, 1)
+    override operator fun get(i0: Int, i1: Int): Nothing = rankError(2)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override operator fun get(i0: Int, i1: Int, i2: Int): Nothing = rankError(3, 1)
+    override operator fun get(i0: Int, i1: Int, i2: Int): Nothing = rankError(3)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int): Nothing = rankError(4, 1)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int): Nothing = rankError(4)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): Nothing = rankError(5, 1)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): Nothing = rankError(5)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): Nothing = rankError(6, 1)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): Nothing = rankError(6)
 
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override fun get(vararg indices: Int): Nothing = rankError(-1, 1)
+    override fun get(vararg indices: Int): Nothing = rankError(-1)
 
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override fun as0D(): Nothing = rankError(0, 1)
+    override fun as0D(): Nothing = rankError(0)
     @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
-    override fun as2D(): Nothing = rankError(2, 1)
+    override fun as2D(): Nothing = rankError(2)
 
     override fun as1D() = this
 

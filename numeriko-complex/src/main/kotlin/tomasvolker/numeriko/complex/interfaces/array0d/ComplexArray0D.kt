@@ -5,8 +5,15 @@ import tomasvolker.numeriko.complex.interfaces.arraynd.ComplexArrayND
 import tomasvolker.numeriko.complex.interfaces.factory.copy
 import tomasvolker.numeriko.complex.primitives.toComplex
 import tomasvolker.numeriko.core.interfaces.array0d.numeric.NumericArray0D
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 interface ComplexArray0D: NumericArray0D<Complex>, ComplexArrayND {
+
+    override fun as0D() = this
+
+    override fun as1D(): Nothing = rankError(1)
+    override fun as2D(): Nothing = rankError(2)
 
     override fun real(vararg indices: Int): Double {
         requireValidIndices(indices)
