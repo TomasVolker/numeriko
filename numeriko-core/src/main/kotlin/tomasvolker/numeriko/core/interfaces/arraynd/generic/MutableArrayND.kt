@@ -1,23 +1,16 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndexProgression
-import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array0d.generic.MutableArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND0DView
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND1DView
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.core.view.ElementOrder
 
@@ -54,7 +47,7 @@ interface MutableArrayND<T>: ArrayND<T> {
      * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
-    fun setValue(value: T, vararg indices: Int): Unit
+    fun setValue(indices: IntArray, value: T): Unit
 
     /**
      * Sets [value] to the given indices.
@@ -66,8 +59,8 @@ interface MutableArrayND<T>: ArrayND<T> {
      * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
-    fun setValue(value: T, indices: IntArray1D): Unit =
-            setValue(value, *indices.toIntArray())
+    fun setValue(indices: IntArray1D, value: T): Unit =
+            setValue(indices.toIntArray(), value)
 
     /**
      * Sets [value] to the given indices.
@@ -82,19 +75,17 @@ interface MutableArrayND<T>: ArrayND<T> {
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
     fun setValue(value: T, vararg indices: Index): Unit =
-            setValue(value, *indices.computeIndices())
+            setValue(indices.computeIndices(), value)
 
-    fun setValue(value: T): Unit = setValue(value, *intArrayOf())
+    fun setValue(value: T): Unit = setValue(intArrayOf(), value)
 
     fun setValue(value: ArrayND<T>) {
         requireSameShape(this, value)
         // Anti alias copy
-        val copy = value.copy()
-        unsafeForEachIndices { indices ->
-            setValue(copy.getValue(indices), indices)
+        value.copy().inlinedForEachIndexed { indices, element ->
+            setValue(indices, element)
         }
     }
-
 
     fun setView(value: ArrayND<T>, vararg indices: IntProgression): Unit =
             getView(*indices).asMutable().setValue(value)

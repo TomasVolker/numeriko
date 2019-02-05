@@ -13,10 +13,17 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
+import tomasvolker.numeriko.core.preconditions.requireValidAxis
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import kotlin.math.atan2
 import kotlin.math.hypot
 
 interface ComplexArray1D: NumericArray1D<Complex>, ComplexArrayND {
+
+    override fun as1D() = this
+
+    override fun as0D(): Nothing = throw IllegalArgumentException("")
+    override fun as2D(): Nothing = TODO("not implemented")
 
     override fun getValue(vararg indices: Int): Complex {
         requireValidIndices(indices)

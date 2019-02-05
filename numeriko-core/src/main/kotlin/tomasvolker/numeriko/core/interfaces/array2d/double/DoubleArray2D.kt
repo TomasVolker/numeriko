@@ -1,51 +1,72 @@
 package tomasvolker.numeriko.core.interfaces.array2d.double
 
-import tomasvolker.numeriko.core.config.NumerikoConfig
+import tomasvolker.numeriko.core.annotations.CompileTimeError
+import tomasvolker.numeriko.core.annotations.Level
+import tomasvolker.numeriko.core.functions.matMul
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.view.*
-import tomasvolker.numeriko.core.interfaces.array2d.generic.*
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.MutableDoubleArray2DLowerRankView
+import tomasvolker.numeriko.core.interfaces.array2d.double.view.defaultDoubleArray2DView
 import tomasvolker.numeriko.core.interfaces.array2d.numeric.NumericArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.*
-import tomasvolker.numeriko.core.linearalgebra.DefaultLinearAlgebra
-import tomasvolker.numeriko.core.primitives.indicative
-import tomasvolker.numeriko.core.primitives.numericEqualsTo
-import tomasvolker.numeriko.core.primitives.squared
-import tomasvolker.numeriko.core.primitives.sumDouble
-import kotlin.math.abs
-import kotlin.math.sqrt
+import tomasvolker.numeriko.core.preconditions.requireValidAxis
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
+import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.rankError2DMessage
 
 interface DoubleArray2D: NumericArray2D<Double>, DoubleArrayND {
 
     override fun cast(value: Number): Double = value.toDouble()
 
-    override fun getDouble(vararg indices: Int): Double {
-        requireValidIndices(indices)
-        return getDouble(indices[0], indices[1])
+    override fun getDouble(indices: IntArray): Double {
+        require(indices.size == rank)
+        return get(indices[0], indices[1])
     }
 
-    override fun getFloat(vararg indices: Int): Float = getDouble(*indices).toFloat()
-    override fun getLong (vararg indices: Int): Long  = getDouble(*indices).toLong()
-    override fun getInt  (vararg indices: Int): Int   = getDouble(*indices).toInt()
-    override fun getShort(vararg indices: Int): Short = getDouble(*indices).toShort()
+    override fun getFloat(indices: IntArray): Float = getDouble(indices).toFloat()
+    override fun getLong (indices: IntArray): Long  = getDouble(indices).toLong()
+    override fun getInt  (indices: IntArray): Int   = getDouble(indices).toInt()
+    override fun getShort(indices: IntArray): Short = getDouble(indices).toShort()
 
-    override fun getValue(vararg indices: Int): Double =
-            getDouble(*indices)
+    override fun getValue(indices: IntArray): Double = getDouble(indices)
 
-    override fun getValue(i0: Int, i1: Int): Double =
-            getDouble(i0, i1)
+    override fun getValue(i0: Int, i1: Int): Double = getDouble(i0, i1)
 
     override fun lowerRank(axis: Int): DoubleArray1D =
             MutableDoubleArray2DLowerRankView(this.asMutable(), axis)
 
     override fun getFloat(i0: Int, i1: Int  ): Float = getDouble(i0, i1).toFloat()
 
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun get(): Nothing = rankError(0)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(i0: Int): Nothing = rankError(1)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int): Nothing = rankError(3)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int): Nothing = rankError(4)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): Nothing = rankError(5)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): Nothing = rankError(6)
 
-    override fun getDouble(i0: Int, i1: Int  ): Double
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override operator fun get(vararg indices: Int): Nothing = rankError(rank)
+
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as0D(): Nothing = rankError(0)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as1D(): Nothing = rankError(1)
+
+    override fun as2D() = this
+
+    override fun get(i0: Int, i1: Int): Double
+
+    override fun getDouble(i0: Int, i1: Int  ): Double = get(i0, i1)
     fun getDouble(i0: Int  , i1: Index): Double = getDouble(i0.compute(0), i1.compute(1))
     fun getDouble(i0: Index, i1: Int  ): Double = getDouble(i0.compute(0), i1.compute(1))
     fun getDouble(i0: Index, i1: Index): Double = getDouble(i0.compute(0), i1.compute(1))
@@ -90,7 +111,6 @@ interface DoubleArray2D: NumericArray2D<Double>, DoubleArrayND {
     override fun getView(i0: IndexProgression, i1: IndexProgression): DoubleArray2D = getView(i0.compute(0), i1.compute(1))
 
 
-    operator fun get(i0: Int  , i1: Int  ): Double = getDouble(i0, i1)
     operator fun get(i0: Int  , i1: Index): Double = getDouble(i0, i1)
     operator fun get(i0: Index, i1: Int  ): Double = getDouble(i0, i1)
     operator fun get(i0: Index, i1: Index): Double = getDouble(i0, i1)
@@ -116,120 +136,8 @@ interface DoubleArray2D: NumericArray2D<Double>, DoubleArrayND {
 
     override fun asMutable(): MutableDoubleArray2D = this as MutableDoubleArray2D
 
-    override fun iterator(): DoubleIterator =
-            DefaultDoubleArray2DIterator(this)
-
-    /**
-     * Returns a transposed view of this array.
-     *
-     * The array returned is a view, if a copy is needed call [copy] on the view
-     *
-     * @return a transposed view of this array
-     */
-    fun transpose(): DoubleArray2D =
-            DefaultMutableDoubleArray2DTransposeView(this.asMutable())
-
-    override fun contract(axis0: Int, axis1: Int): DoubleArray0D =
-            if (axis0 == 0 && axis1 == 1 || axis0 == 1 && axis1 == 0)
-                doubleArray0D(trace())
-            else
-                throw IllegalArgumentException()
-
-    fun isIdentity(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean =
-            isSquare() && numericEquals(tolerance) { i0, i1 -> (i0 == i1).indicative() }
-
-    fun isZero(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean =
-            isConstant(0.0, tolerance)
-
-    fun isConstant(value: Double, tolerance: Double = NumerikoConfig.defaultTolerance): Boolean =
-            numericEquals(tolerance) { _, _ -> value }
-
-    fun isSymmetric(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean {
-        if (!isSquare()) return false
-
-        for (i0 in 0 until shape0-1) {
-            for (i1 in i0+1 until shape1) {
-
-                if (!this[i0, i1].numericEqualsTo(this[i1, i0], tolerance))
-                    return false
-
-            }
-        }
-
-        return true
-    }
-
-    fun isDiagonal(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean =
-            isLowerTriangular(tolerance) && isUpperTriangular(tolerance)
-
-    fun isLowerTriangular(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean {
-        if (!isSquare()) return false
-
-        for (i0 in 0 until shape0-1) {
-            for (i1 in i0+1 until shape1) {
-
-                if (!this[i0, i1].numericEqualsTo(0.0, tolerance))
-                    return false
-
-            }
-        }
-
-        return true
-    }
-
-    fun isUpperTriangular(tolerance: Double = NumerikoConfig.defaultTolerance): Boolean {
-        if (!isSquare()) return false
-
-        for (i0 in 1 until shape0) {
-            for (i1 in 0 until i0) {
-
-                if (!this[i0, i1].numericEqualsTo(0.0, tolerance))
-                    return false
-
-            }
-        }
-
-        return true
-    }
-
-    fun trace(): Double {
-        require(isSquare())
-        return sumDouble(0 until this.shape0) { i ->
-            this[i, i]
-        }
-    }
-
-    fun diagonal(offset: Int = 0): DoubleArray1D {
-        require(isSquare())
-        // View? non square matrices?
-        return doubleArray1D(shape0 - abs(offset)) { i ->
-            this[i + offset, i + offset]
-        }
-    }
-
-    fun frobeniusNorm(): Double {
-        var normSquared = 0.0
-        forEachIndex { i0, i1 ->
-            normSquared += this[i0, i1].squared()
-        }
-        return sqrt(normSquared)
-    }
-
-    /**
-     * Computes the max norm, a.k.a. infinity norm.
-     *
-     * The max norm is the maximum absolute value of the array. It is also known as the
-     * infinity norm as it is equivalent to `norm(p)` when `p` tends to infinity.
-     */
-    fun maxNorm(): Double {
-        var result = 0.0
-        forEachIndex { i0, i1 ->
-            val new = abs(this[i0, i1])
-            if (result < new)
-                result = new
-        }
-        return result
-    }
+    override fun iterator(): DoubleIterator = arrayIterator()
+    override fun arrayIterator(): DoubleArray2DIterator = DefaultDoubleArray2DIterator(this)
 
     /**
      * Returns this array unaltered.
@@ -334,136 +242,5 @@ interface DoubleArray2D: NumericArray2D<Double>, DoubleArrayND {
      * Returns an array with the element wise reversed division with [other].
      */
     fun rdiv(other: Int): DoubleArray2D = elementWise { other / it }
-
-    /**
-     * Computes the sum of all its elements.
-     */
-    fun sum(): Double = sumBy { it }
-
-    /**
-     * Computes the average of all its elements.
-     */
-    fun DoubleArray1D.average(): Double = sum() / size
-
-    fun determinant(): Double = DefaultLinearAlgebra.determinant(this)
-
-    /**
-     * Solves the linear system determined by this array and the given [image].
-     *
-     * This is equivalent to solving `this * result = image` in matrix notation with [other] as column vector.
-     *
-     * @param image  the image array of the transformation to invert
-     * @return the result of solving the linear system
-     * @throws IllegalArgumentException  if `this.shape0 != image.size`
-     */
-    fun solve(image: DoubleArray1D): DoubleArray1D = DefaultLinearAlgebra.solve(this, image)
-
-    /**
-     * Computes the matrix inverse of this array.
-     *
-     * @return the matrix inverse of this array
-     * @throws IllegalArgumentException  if this array is not square
-     */
-    fun inverse(): DoubleArray2D = DefaultLinearAlgebra.inverse(this)
-
-    fun rightPseudoInverse(): DoubleArray2D = (this.transpose() matMul this).inverse() matMul this.transpose()
-    fun leftPseudoInverse(): DoubleArray2D = this.transpose() matMul (this.transpose() matMul this).inverse()
-
-    /**
-     * Computes the matrix multiplication between this and [other].
-     *
-     * This is equivalent to `this * other` in matrix notation with [other] as column vector.
-     *
-     * @param other  array to compute the matrix multiplication with
-     * @return the result of the matrix multiplication
-     * @throws IllegalArgumentException  if `this.shape1 != other.size`
-     */
-    infix fun matMul(other: DoubleArray1D): DoubleArray1D {
-        require(this.shape1 == other.size) {
-            "sizes dont match: this.shape0 = ${this.shape1} other.size = ${other.size}"
-        }
-        val contractionIndices = this.indices1
-
-        return doubleArray1D(this.shape0) { i0 ->
-            sumDouble(contractionIndices) { k -> this[i0, k] * other[k] }
-        }
-    }
-
-    /**
-     * Computes the quadratic form of [other] corresponding to this array.
-     *
-     * This is equivalent to `otherT * this * other` in matrix notation with [other] as column vector.
-     *
-     * @param other  first array to compute the quadratic form
-     * @return the result of the quadratic form
-     * @throws IllegalArgumentException  if `this.shape0 != other.size` or `this.shape1 != other.size`
-     */
-    fun quadraticForm(other: DoubleArray1D): Double =
-            bilinearForm(other, other)
-
-    /**
-     * Computes the bilinear form between [other1] and [other2] corresponding to this array.
-     *
-     * This is equivalent to `other1T * this * other2` in matrix notation with [other1] and [other2]
-     * as column vectors.
-     *
-     * @param other1  first array to compute the bilinear form
-     * @param other2  second array to compute the bilinear form
-     * @return the result of the bilinear form
-     * @throws IllegalArgumentException  if `this.shape0 != other0.size` or `this.shape1 != other1.size`
-     */
-    fun bilinearForm(other0: DoubleArray1D, other1: DoubleArray1D): Double {
-        require(this.shape0 == other0.size && this.shape1 == other1.size) {
-            "Sizes dont match"
-        }
-
-        var result = 0.0
-        forEachIndex { i0, i1 ->
-            result += this[i0, i1] * other0[i0] * other1[i1]
-        }
-        return result
-    }
-
-    /**
-     * Computes the matrix multiplication between this and [other]
-     *
-     * This is equivalent to `this * other` in matrix notation with [other] as a column vector
-     *
-     * @param other  array to compute the matrix multiplication with
-     * @return the result of the matrix multiplication
-     * @throws IllegalArgumentException  if `this.shape1 != other.shape0`
-     */
-    infix fun matMul(other: DoubleArray2D): DoubleArray2D {
-        require(this.shape1 == other.shape0) {
-            "sizes dont match"
-        }
-        return doubleArray2D(this.shape0, other.shape1) { i0, i1 ->
-            sumDouble(this.indices1) { k -> this[i0, k] * other[k, i1] }
-        }
-    }
-
-    fun filter2D(filter: DoubleArray2D, padding: Double = 0.0): DoubleArray2D {
-
-        val filterCenter0 = filter.shape0 / 2
-        val filterCenter1 = filter.shape1 / 2
-
-        val filterShape0 = filter.shape0
-        val filterShape1 = filter.shape1
-
-        val resultShape0 = this.shape0
-        val resultShape1 = this.shape1
-
-        return doubleArray2D(resultShape0, resultShape1) { i0, i1 ->
-            sumDouble(0 until filterShape0, 0 until filterShape1) { j0, j1 ->
-                val k0 = i0 + j0 - filterCenter0
-                val k1 = i1 + j1 - filterCenter1
-                if (k0 in 0 until resultShape0 && k1 in 0 until resultShape1) {
-                    this[k0, k1]
-                } else {
-                    padding
-                } * filter[j0, j1]
-            }
-        }
-    }
 
 }

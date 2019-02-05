@@ -6,13 +6,13 @@ abstract class DefaultArrayND<T>: ArrayND<T> {
 
     override fun equals(other: Any?): Boolean = when {
         other === this -> true
-        other is ArrayND<*> -> defaultEquals(this, other)
+        other is ArrayND<*> -> this.defaultEquals(other)
         else -> false
     }
 
-    override fun hashCode(): Int = defaultHashCode(this)
+    override fun hashCode(): Int = this.defaultHashCode()
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 
 }
 

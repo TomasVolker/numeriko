@@ -12,7 +12,7 @@ class DoubleVector3(
         val value2: Double
 ): Vector3<Double>, DoubleArray1D {
 
-    override fun getDouble(i0: Int) = when(i0) {
+    override operator fun get(i0: Int) = when(i0) {
         0 -> value0
         1 -> value1
         2 -> value2
@@ -22,11 +22,11 @@ class DoubleVector3(
     override fun equals(other: Any?): Boolean {
         if (other === this) return true
         if (other !is DoubleArray1D) return false
-        return defaultEquals(this, other)
+        return this.defaultEquals(other)
     }
 
-    override fun hashCode(): Int = defaultHashCode(this)
+    override fun hashCode(): Int = this.defaultHashCode()
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 
 }

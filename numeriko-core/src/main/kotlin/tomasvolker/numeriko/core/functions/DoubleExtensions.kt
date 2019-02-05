@@ -1,4 +1,6 @@
-package tomasvolker.numeriko.core.interfaces.array1d.double
+package tomasvolker.numeriko.core.functions
+
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 
 operator fun Double.times(array: DoubleArray1D): DoubleArray1D = array * this
 

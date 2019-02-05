@@ -99,7 +99,7 @@ fun Random.nextDoubleArray2D(shape0: Int, shape1: Int): DoubleArray2D =
 fun Random.nextDoubleArray2D(shape0: Int, shape1: Int, from: Double, until: Double): DoubleArray2D =
         doubleArray2D(shape0, shape1) { _, _ -> nextDouble(from, until) }
 
-fun Random.nextDoubleArrayND(shape: IntArray1D): DoubleArrayND = doubleArrayND(shape) { nextDouble() }
+fun Random.nextDoubleArrayND(shape: IntArray1D): DoubleArrayND = fastDoubleArrayND(shape) { nextDouble() }
 fun Random.nextDoubleArrayND(shape: IntArray1D, from: Double, until: Double): DoubleArrayND =
         doubleArrayND(shape) { nextDouble(from, until) }
 

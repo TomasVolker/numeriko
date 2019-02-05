@@ -2,12 +2,11 @@ package tomasvolker.numeriko.core.interfaces.array1d.double.view
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultMutableDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultMutableArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidIndexRange
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.view.ElementOrder
 import tomasvolker.numeriko.core.view.linearIndex
@@ -25,14 +24,14 @@ class DefaultDoubleReshapedView(
 
     override val size: Int get() = array.size
 
-    override fun getDouble(vararg indices: Int): Double {
+    override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
         return array.getValue(convertIndices(indices))
     }
 
-    override fun setDouble(value: Double, vararg indices: Int) {
+    override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
-        array.setValue(value, convertIndices(indices))
+        array.setValue(convertIndices(indices), value)
     }
 
     override fun getView(vararg indices: IntProgression): MutableDoubleArrayND {

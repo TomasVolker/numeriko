@@ -13,7 +13,7 @@ class DefaultArray0DHigherRankView<T> (
         return array.getValue()
     }
 
-    override fun setValue(value: T, i0: Int) {
+    override fun setValue(i0: Int, value: T) {
         requireValidIndices(i0)
         setValue(value)
     }

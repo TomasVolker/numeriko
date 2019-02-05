@@ -6,45 +6,45 @@ import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array2d.numeric.MutableNumericArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.numeric.NumericArray2D
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 
 interface MutableNumericArray1D<N: Number>: NumericArray1D<N>, MutableArray1D<N>, MutableNumericArrayND<N> {
 
-    override fun setValue(value: N, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: N) {
         requireValidIndices(indices)
-        setValue(value, *indices)
+        setValue(indices, value)
     }
 
-    fun setDouble(value: Double, i0: Int) = setValue(cast(value), i0)
-    fun setFloat (value: Float , i0: Int) = setValue(cast(value), i0)
-    fun setLong  (value: Long  , i0: Int) = setValue(cast(value), i0)
-    fun setInt   (value: Int   , i0: Int) = setValue(cast(value), i0)
-    fun setShort (value: Short , i0: Int) = setValue(cast(value), i0)
+    fun setDouble(i0: Int, value: Double) = setValue(i0, cast(value))
+    fun setFloat (i0: Int, value: Float) = setValue(i0, cast(value))
+    fun setLong  (i0: Int, value: Long) = setValue(i0, cast(value))
+    fun setInt   (i0: Int, value: Int) = setValue(i0, cast(value))
+    fun setShort (i0: Int, value: Short) = setValue(i0, cast(value))
 
-    override fun setDouble(value: Double, vararg indices: Int) {
+    override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
-        setDouble(value)
+        setDouble(indices, value)
     }
 
-    override fun setFloat(value: Float, vararg indices: Int) {
+    override fun setFloat(indices: IntArray, value: Float) {
         requireValidIndices(indices)
-        setFloat(value)
+        setFloat(indices, value)
     }
 
-    override fun setLong(value: Long, vararg indices: Int) {
+    override fun setLong(indices: IntArray, value: Long) {
         requireValidIndices(indices)
-        setLong(value)
+        setLong(indices, value)
     }
 
-    override fun setInt(value: Int, vararg indices: Int) {
+    override fun setInt(indices: IntArray, value: Int) {
         requireValidIndices(indices)
-        setInt(value)
+        setInt(indices, value)
     }
 
-    override fun setShort(value: Short, vararg indices: Int) {
+    override fun setShort(indices: IntArray, value: Short) {
         requireValidIndices(indices)
-        setShort(value)
+        setShort(indices, value)
     }
 
     override fun getView(vararg indices: IntProgression): MutableNumericArray1D<N> {
@@ -68,7 +68,7 @@ interface MutableNumericArray1D<N: Number>: NumericArray1D<N>, MutableArray1D<N>
 
     fun setValue(other: NumericArray1D<N>) {
         forEachIndex { i0 ->
-            setValue(other.getValue(i0), i0)
+            setValue(i0, other.getValue(i0))
         }
     }
 }

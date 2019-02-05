@@ -18,10 +18,10 @@ class DefaultArrayND2DView<T>(
         get() = array.shape(0)
 
     override fun getValue(i0: Int, i1: Int): T =
-            array.getValue(i0, i1)
+            array.getValue(intArrayOf(i0, i1))
 
-    override fun setValue(value: T, i0: Int, i1: Int) {
-        array.setValue(value, i0, i1)
+    override fun setValue(i0: Int, i1: Int, value: T) {
+        array.setValue(intArrayOf(i0, i1), value)
     }
 
 }

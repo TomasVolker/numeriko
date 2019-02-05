@@ -20,24 +20,24 @@ class DefaultArray2DView<T>(
         )
     }
 
-    override fun setValue(value: T, i0: Int, i1: Int) {
+    override fun setValue(i0: Int, i1: Int, value: T) {
         requireValidIndices(i0, i1)
         array.setValue(
-                value,
                 offset0 + stride0 * i0,
-                offset1 + stride1 * i1
+                offset1 + stride1 * i1,
+                value
         )
     }
 
     override fun equals(other: Any?): Boolean {
         if (other === this) return true
         if (other !is Array2D<*>) return false
-        return defaultEquals(this, other)
+        return this.defaultEquals(other)
     }
 
-    override fun hashCode(): Int = defaultHashCode(this)
+    override fun hashCode(): Int = this.defaultHashCode()
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 
 }
 

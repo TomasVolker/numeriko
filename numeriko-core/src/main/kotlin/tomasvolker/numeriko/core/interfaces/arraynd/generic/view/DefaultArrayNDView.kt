@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.generic.view
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 
 class DefaultArrayNDView<T>(
@@ -21,18 +22,16 @@ class DefaultArrayNDView<T>(
         array.requireValidIndices(convertIndices(IntArray(rank) { i -> shape[i]-1 }))
     }
 
-    override fun getValue(vararg indices: Int): T {
+    override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
-        return array.getValue(
-                *convertIndices(indices)
-        )
+        return array.getValue(convertIndices(indices))
     }
 
-    override fun setValue(value: T, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: T) {
         requireValidIndices(indices)
         array.setValue(
-                value,
-                *convertIndices(indices)
+                convertIndices(indices),
+                value
         )
     }
 

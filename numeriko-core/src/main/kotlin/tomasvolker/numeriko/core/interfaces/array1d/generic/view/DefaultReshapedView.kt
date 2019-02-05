@@ -4,6 +4,8 @@ import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidIndexRange
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultMutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.view.ElementOrder
@@ -22,14 +24,14 @@ class DefaultReshapedView<T>(
 
     override val size: Int get() = array.size
 
-    override fun getValue(vararg indices: Int): T {
+    override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
         return array.getValue(convertIndices(indices))
     }
 
-    override fun setValue(value: T, vararg indices: Int) {
+    override fun setValue(indices: IntArray, value: T) {
         requireValidIndices(indices)
-        array.setValue(value, convertIndices(indices))
+        array.setValue(convertIndices(indices), value)
     }
 
     override fun getView(vararg indices: IntProgression): MutableArrayND<T> {

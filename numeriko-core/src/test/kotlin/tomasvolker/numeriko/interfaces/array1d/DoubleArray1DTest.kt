@@ -3,6 +3,7 @@ package tomasvolker.numeriko.interfaces.array1d
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.functions.*
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.tests.*
@@ -102,9 +103,6 @@ class DoubleArray1DTest {
 
         a1[1..3] = doubleArray1DOf(-2.0, -4.0, -6.0)
         assertNumericEquals(a1[2..4], doubleArrayOf(-4.0, -6.0, 8.0).asDoubleArray1D())
-
-        a1[All] = 0.0
-        assertNumericEquals(0.0, a1[56])
 
     }
 

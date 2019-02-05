@@ -16,12 +16,12 @@ class DefaultArrayNDLinearView<T>(
 
     override fun getValue(i0: Int): T {
         requireValidIndices(i0)
-        return array.getValue(*convertIndices(i0))
+        return array.getValue(convertIndices(i0))
     }
 
-    override fun setValue(value: T, i0: Int) {
+    override fun setValue(i0: Int, value: T) {
         requireValidIndices(i0)
-        array.setValue(value, *convertIndices(i0))
+        array.setValue(convertIndices(i0), value)
     }
 
     fun convertIndices(index: Int): IntArray =

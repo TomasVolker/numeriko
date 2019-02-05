@@ -19,7 +19,7 @@ class DefaultMutableDoubleArray2DView(
         array.requireValidIndices(convertIndex0(lastIndex0), convertIndex1(lastIndex1))
     }
 
-    override fun getDouble(i0: Int, i1: Int): Double {
+    override fun get(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return array.getValue(
                 convertIndex0(i0),
@@ -27,12 +27,12 @@ class DefaultMutableDoubleArray2DView(
         )
     }
 
-    override fun setDouble(value: Double, i0: Int, i1: Int) {
+    override fun set(i0: Int, i1: Int, value: Double) {
         requireValidIndices(i0, i1)
         array.setValue(
-                value,
                 convertIndex0(i0),
-                convertIndex1(i1)
+                convertIndex1(i1),
+                value
         )
     }
 

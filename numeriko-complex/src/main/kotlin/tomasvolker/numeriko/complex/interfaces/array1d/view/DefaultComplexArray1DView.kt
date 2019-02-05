@@ -1,6 +1,8 @@
 package tomasvolker.numeriko.complex.interfaces.array1d.view
 
 import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
+import tomasvolker.numeriko.complex.primitives.Complex
+import tomasvolker.numeriko.core.interfaces.array2d.numeric.MutableNumericArray2D
 
 class DefaultComplexArray1DView (
         val array: MutableComplexArray1D,
@@ -8,6 +10,8 @@ class DefaultComplexArray1DView (
         override val size: Int,
         val stride: Int
 ) : DefaultMutableComplexArray1D() {
+
+    override fun higherRank(axis: Int): MutableNumericArray2D<Complex> = TODO()
 
     override fun real(i0: Int): Double {
         requireValidIndices(i0)

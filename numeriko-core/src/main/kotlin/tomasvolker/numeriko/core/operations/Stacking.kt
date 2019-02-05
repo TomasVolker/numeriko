@@ -12,6 +12,7 @@ import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import java.lang.IllegalArgumentException
 
+
 inline fun <reified T> stack(vararg arrays: Array1D<T>): Array2D<T> {
 
     if (arrays.isEmpty()) return array2D<T>(0, 0) { _, _-> TODO() }
@@ -25,21 +26,21 @@ inline fun <reified T> stack(vararg arrays: Array1D<T>): Array2D<T> {
 
 }
 
-fun stack(arrays: List<DoubleArray1D>, axis: Int = 0): DoubleArray2D {
+fun List<DoubleArray1D>.stack(axis: Int = 0): DoubleArray2D {
 
     if (axis !in 0..1) throw IllegalArgumentException("Stacking axis must be 0 or 1")
 
-    if (arrays.isEmpty()) return doubleArray2D(0, 0) { _, _-> 0.0 }
+    if (isEmpty()) return doubleArray2D(0, 0) { _, _-> 0.0 }
 
-    val firstSize = arrays.first().size
-    require(arrays.all { it.size == firstSize }) { "All sizes must be the same" }
+    val firstSize = first().size
+    require(all { it.size == firstSize }) { "All sizes must be the same" }
 
     return when(axis) {
-        0 -> doubleArray2D(arrays.size, firstSize) { i0, i1 ->
-            arrays[i0][i1]
+        0 -> doubleArray2D(size, firstSize) { i0, i1 ->
+            this[i0][i1]
         }
-        1 -> doubleArray2D(firstSize, arrays.size) { i0, i1 ->
-            arrays[i1][i0]
+        1 -> doubleArray2D(firstSize, size) { i0, i1 ->
+            this[i1][i0]
         }
         else -> throw IllegalStateException()
     }
@@ -49,87 +50,4 @@ fun stack(arrays: List<DoubleArray1D>, axis: Int = 0): DoubleArray2D {
 fun stack(
         vararg arrays: DoubleArray1D,
         axis: Int = 0
-): DoubleArray2D = stack(arrays.toList(), axis)
-
-infix fun DoubleArray1D.concatenate(other: DoubleArray1D): DoubleArray1D =
-        doubleArray1D(this.size + other.size) { i ->
-            if (i < this.size)
-                this[i]
-            else
-                other[i - this.size]
-        }
-
-infix fun IntArray1D.concatenate(other: IntArray1D): IntArray1D =
-        intArray1D(this.size + other.size) { i ->
-            if (i < this.size)
-                this[i]
-            else
-                other[i - this.size]
-        }
-
-infix fun IntArray1D.concatenate(other: Int): IntArray1D =
-        intArray1D(this.size + 1) { i ->
-            if (i < this.size)
-                this[i]
-            else
-                other
-        }
-
-infix fun DoubleArray1D.stack(other: DoubleArray1D): DoubleArray2D {
-    requireSameSize(this, other)
-
-    return doubleArray2D(2, this.size) { i0, i1 ->
-        when(i0) {
-            0 -> this[i1]
-            1 -> other[i1]
-            else -> throw IllegalStateException()
-        }
-    }
-}
-
-fun DoubleArray2D.concatenate(other: DoubleArray1D, axis: Int = 0): DoubleArray2D =
-        when(axis) {
-            0 -> {
-                require(this.shape1 == other.size)
-                doubleArray2D(shape0+1, shape1) { i0, i1 ->
-                    if (i0 < shape0)
-                        this[i0, i1]
-                    else
-                        other[i1]
-                }
-            }
-            1 -> {
-                require(this.shape0 == other.size)
-                doubleArray2D(shape0, shape1+1) { i0, i1 ->
-                    if (i1 < shape1)
-                        this[i0, i1]
-                    else
-                        other[i1]
-                }
-            }
-            else -> throw IndexOutOfBoundsException("$axis")
-        }
-
-
-fun DoubleArray2D.concatenate(other: DoubleArray2D, axis: Int = 0): DoubleArray2D =
-        when(axis) {
-            0 -> {
-                require(this.shape1 == other.size)
-                doubleArray2D(shape0+1, shape1) { i0, i1 ->
-                    if (i0 < shape0)
-                        this[i0, i1]
-                    else
-                        other[i0 - shape0, i1]
-                }
-            }
-            1 -> {
-                require(this.shape0 == other.size)
-                doubleArray2D(shape0, shape1+1) { i0, i1 ->
-                    if (i1 < shape1)
-                        this[i0, i1]
-                    else
-                        other[i0, i1 - shape1]
-                }
-            }
-            else -> throw IndexOutOfBoundsException("$axis")
-        }
+): DoubleArray2D = arrays.toList().stack(axis)

@@ -4,15 +4,16 @@ import tomasvolker.kyplot.dsl.histogram
 import tomasvolker.kyplot.dsl.line
 import tomasvolker.kyplot.dsl.showPlot
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.functions.*
 import tomasvolker.numeriko.core.index.Last
 import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.functions.inner
+import tomasvolker.numeriko.core.functions.outer
+import tomasvolker.numeriko.core.interfaces.array2d.double.*
 import tomasvolker.numeriko.core.interfaces.factory.asDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.linearalgebra.linearSpace
-import tomasvolker.numeriko.core.probability.continuous.ExponentialDistribution
 import tomasvolker.numeriko.core.probability.continuous.NormalDistribution
-import tomasvolker.numeriko.core.probability.continuous.UniformDistribution
 import kotlin.math.absoluteValue
 
 fun main() {

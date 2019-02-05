@@ -15,11 +15,10 @@ class DefaultDoubleArrayND0DView(
     override val size: Int
         get() = 1
 
-    override fun getDouble(): Double =
-            array.getDouble()
+    override fun get(): Double = array.get()
 
-    override fun setDouble(value: Double) {
-        array.setDouble(value)
+    override fun set(value: Double) {
+        array.set(value)
     }
 
 }

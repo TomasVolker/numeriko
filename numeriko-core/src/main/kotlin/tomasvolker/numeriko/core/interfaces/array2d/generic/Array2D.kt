@@ -1,5 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.array2d.generic
 
+import tomasvolker.numeriko.core.annotations.CompileTimeError
+import tomasvolker.numeriko.core.annotations.Level
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
@@ -8,10 +10,12 @@ import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.IntVector2
 import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.intVector2
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DLowerRankView
-import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultArray2DView
 import tomasvolker.numeriko.core.interfaces.array2d.generic.view.defaultArray2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.rankError2DMessage
 
 interface Array2D<out T>: ArrayND<T> {
 
@@ -35,12 +39,19 @@ interface Array2D<out T>: ArrayND<T> {
     override fun lowerRank(axis: Int): Array1D<T> =
             DefaultArray2DLowerRankView(this.asMutable(), axis)
 
-    override fun getValue(vararg indices: Int): T {
+    override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
         return getValue(indices[0], indices[1])
     }
 
-    fun getValue(i0: Int  , i1: Int  ): T
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as0D(): Nothing = rankError(0)
+    @CompileTimeError(message = rankError2DMessage, level = Level.ERROR)
+    override fun as1D(): Nothing = rankError(1)
+
+    override fun as2D() = this
+
+    override fun getValue(i0: Int, i1: Int  ): T
     fun getValue(i0: Int  , i1: Index): T = getValue(i0.compute(0), i1.compute(1))
     fun getValue(i0: Index, i1: Int  ): T = getValue(i0.compute(0), i1.compute(1))
     fun getValue(i0: Index, i1: Index): T = getValue(i0.compute(0), i1.compute(1))
@@ -69,7 +80,8 @@ interface Array2D<out T>: ArrayND<T> {
 
     override fun copy(): Array2D<T> = copy(this)
 
-    override fun iterator(): Iterator<T> = DefaultArray2DIterator(this)
+    override fun iterator(): Iterator<T> = arrayIterator()
+    override fun arrayIterator(): Array2DIterator<T> = DefaultArray2DIterator(this)
 
     override fun asMutable(): MutableArray2D<@UnsafeVariance T> = this as MutableArray2D<T>
 

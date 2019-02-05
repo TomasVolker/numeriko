@@ -8,7 +8,7 @@ class NumerikoArray1D<T>(
 
     override val size: Int get() = data.size
 
-    override fun setValue(value: T, i0: Int) {
+    override fun setValue(i0: Int, value: T) {
         data[i0] = value
     }
 

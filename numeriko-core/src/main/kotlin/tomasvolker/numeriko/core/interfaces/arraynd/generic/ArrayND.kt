@@ -78,13 +78,25 @@ interface ArrayND<out T>: Collection<T> {
 
     override fun isEmpty(): Boolean = size == 0
 
-
     /**
-     * Returns the only value if the array is of rank 0.
+     * Returns the element in the given indices.
      *
-     * @throws IllegalArgumentException  if the [rank] is not 0
+     * The size of [indices] has to be the same as [rank], if not an exception is thrown.
+     *
+     * @param indices  the indices of the element to retrieve, must be of the same size as [rank]
+     * @return the element at the given [indices]
+     * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
+     * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
-    fun getValue(): T = getValue(*intArrayOf())
+    fun getValue(indices: IntArray): T
+
+    fun getValue(): T = getValue(intArrayOf())
+    fun getValue(i0: Int): T = getValue(intArrayOf(i0))
+    fun getValue(i0: Int, i1: Int): T = getValue(intArrayOf(i0, i1))
+    fun getValue(i0: Int, i1: Int, i2: Int): T = getValue(intArrayOf(i0, i1, i2))
+    fun getValue(i0: Int, i1: Int, i2: Int, i3: Int): T = getValue(intArrayOf(i0, i1, i2, i3))
+    fun getValue(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): T = getValue(intArrayOf(i0, i1, i2, i3, i4))
+    fun getValue(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): T = getValue(intArrayOf(i0, i1, i2, i3, i4, i5))
 
     /**
      * Returns the element in the given indices.
@@ -96,19 +108,7 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
-    fun getValue(vararg indices: Int): T
-
-    /**
-     * Returns the element in the given indices.
-     *
-     * The size of [indices] has to be the same as [rank], if not an exception is thrown.
-     *
-     * @param indices  the indices of the element to retrieve, must be of the same size as [rank]
-     * @return the element at the given [indices]
-     * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
-     * @throws IndexOutOfBoundsException  if the indices are out of bounds
-     */
-    fun getValue(indices: IntArray1D): T = getValue(*indices.toIntArray())
+    fun getValue(indices: IntArray1D): T = getValue(indices.toIntArray())
 
     /**
      * Returns the element in the given indices.
@@ -122,7 +122,7 @@ interface ArrayND<out T>: Collection<T> {
      * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
-    fun getValue(vararg indices: Index): T = getValue(*indices.computeIndices())
+    fun getValue(vararg indices: Index): T = getValue(indices.computeIndices())
 
     fun as0D(): Array0D<T> = DefaultArrayND0DView(this.asMutable())
     fun as1D(): Array1D<T> = DefaultArrayND1DView(this.asMutable())
@@ -198,7 +198,8 @@ interface ArrayND<out T>: Collection<T> {
      */
     fun copy(): ArrayND<T> = copy(this)
 
-    override fun iterator(): Iterator<T> = DefaultArrayNDIterator(this)
+    override fun iterator(): Iterator<T> = arrayIterator()
+    fun arrayIterator(): ArrayNDIterator<T> = DefaultArrayNDIterator(this)
 
     /**
      * Provides a mutable view of this array.
@@ -209,72 +210,5 @@ interface ArrayND<out T>: Collection<T> {
      */
     fun asMutable(): MutableArrayND<@UnsafeVariance T> = this as MutableArrayND<T>
 
-    fun requireValidIndices(indices: IntArray) {
-
-        if (NumerikoConfig.checkRanges) {
-
-            if (indices.size != rank)
-                throw IllegalArgumentException("Indices [${indices.joinToString()}] are invalid for shape $shape")
-
-            for (axis in 0 until rank) {
-                // Do not use `indices(axis)` as inlining is not working
-                if (indices[axis] !in 0 until shape(axis))
-                    throw IndexOutOfBoundsException("Indices [${indices.joinToString()}] are out of range for shape $shape")
-            }
-
-        }
-
-    }
-
-    fun requireValidIndices(indices: Array<out IntProgression>) {
-
-        if (NumerikoConfig.checkRanges) {
-
-            if (indices.size != rank)
-                throw IllegalArgumentException("Indices [${indices.joinToString()}] are invalid for shape $shape")
-
-            for (axis in 0 until rank) {
-                val indexProgression = indices[axis]
-                // Do not use `indices(axis)` as inlining is not working
-                if (indexProgression.first !in 0 until shape(axis))
-                    throw IndexOutOfBoundsException("Indices [${indexProgression.joinToString()}] are out of range for shape $shape")
-                if (indexProgression.last !in 0 until shape(axis))
-                    throw IndexOutOfBoundsException("Indices [${indexProgression.joinToString()}] are out of range for shape $shape")
-            }
-
-        }
-
-    }
-
-    fun requireValidAxis(axis: Int) {
-
-        if (NumerikoConfig.checkRanges) {
-            // Do not use `axes` as inlining is not working
-            if (axis !in 0 until rank) throw IndexOutOfBoundsException("Axis index $axis invalid for rank $rank")
-
-        }
-
-    }
-
-    fun requireValidIndex(i: Int, axis: Int) {
-
-        if (NumerikoConfig.checkRanges) {
-            // Do not use `indices()` as inlining is not working
-            if (i !in 0 until shape(axis)) throw IndexOutOfBoundsException("Index $i on axis 0 is out of size ${shape(axis)}")
-        }
-
-    }
-
-    fun requireValidIndexRange(i: IntProgression, axis: Int) {
-
-        if (NumerikoConfig.checkRanges) {
-            // Do not use `indices` as inlining is not working
-            if (i.first !in 0 until shape(axis))
-                throw IndexOutOfBoundsException("Index ${i.first} in axis $axis is out of shape $shape")
-            if (i.last  !in 0 until shape(axis))
-                throw IndexOutOfBoundsException("Index ${i.last} in axis $axis is out of shape $shape")
-        }
-
-    }
-
 }
+

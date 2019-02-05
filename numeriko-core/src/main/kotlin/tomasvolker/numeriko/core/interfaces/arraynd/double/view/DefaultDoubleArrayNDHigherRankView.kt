@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double.view
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.operations.reduction.inject
 import tomasvolker.numeriko.core.view.without
 
@@ -21,12 +22,12 @@ class DefaultDoubleArrayNDHigherRankView(
 
     override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
-        return array.getDouble(*convertIndices(indices))
+        return array.get(*convertIndices(indices))
     }
 
-    override fun setDouble(value: Double, vararg indices: Int) {
+    override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
-        array.setDouble(value,*convertIndices(indices))
+        array.setDouble(convertIndices(indices), value)
     }
 
 }

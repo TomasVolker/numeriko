@@ -43,7 +43,7 @@ class MutableIntVector2(
         else -> throw IndexOutOfBoundsException("$i0")
     }
 
-    override fun setInt(value: Int, i0: Int) = when(i0) {
+    override fun setInt(i0: Int, value: Int) = when(i0) {
         0 -> value0 = value
         1 -> value1 = value
         else -> throw IndexOutOfBoundsException("$i0")
@@ -59,7 +59,7 @@ class MutableIntVector2(
 
     override fun hashCode(): Int = defaultHashCode(this)
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 /*
     operator fun component1(): Int = value0
     operator fun component2(): Int = value1

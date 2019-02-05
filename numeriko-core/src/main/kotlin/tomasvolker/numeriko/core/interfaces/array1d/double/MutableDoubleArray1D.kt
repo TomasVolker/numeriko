@@ -1,52 +1,76 @@
 package tomasvolker.numeriko.core.interfaces.array1d.double
 
+import tomasvolker.numeriko.core.annotations.CompileTimeError
+import tomasvolker.numeriko.core.annotations.Level
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleArray1DHigherRankView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleReshapedView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray0DView
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.defaultDoubleArray1DView
-import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
-import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
-import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultReshapedView
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidAxis
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.rankError1DMessage
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 import tomasvolker.numeriko.core.view.ElementOrder
 
+
 interface MutableDoubleArray1D: DoubleArray1D, MutableNumericArray1D<Double>, MutableDoubleArrayND {
 
-    override fun setValue(value: Double, vararg indices: Int): Unit =
-            setDouble(value, *indices)
+    override fun setValue(indices: IntArray, value: Double): Unit =
+            setDouble(indices, value)
 
-    override fun setDouble(value: Double, vararg indices: Int) {
+
+    override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
-        setDouble(value, indices[0])
+        setDouble(indices[0], value)
     }
 
-    override fun setFloat(value: Float, vararg indices: Int) = setDouble(value.toDouble(), *indices)
-    override fun setLong (value: Long , vararg indices: Int) = setDouble(value.toDouble(), *indices)
-    override fun setInt  (value: Int  , vararg indices: Int) = setDouble(value.toDouble(), *indices)
-    override fun setShort(value: Short, vararg indices: Int) = setDouble(value.toDouble(), *indices)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override fun set(value: Double): Nothing = rankError(0)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, value: Double): Nothing = rankError(2)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, value: Double): Nothing = rankError(3)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, value: Double): Nothing = rankError(4)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, value: Double): Nothing = rankError(5)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, value: Double): Nothing = rankError(6)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override fun set(vararg indices: Int, value: Double): Nothing = rankError(-1)
 
-    override fun setValue(value: Double, i0: Int): Unit = setDouble(value, i0)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override fun as0D(): Nothing = rankError(0)
+    @CompileTimeError(message = rankError1DMessage, level = Level.ERROR)
+    override fun as2D(): Nothing = rankError(2)
 
-    override fun setDouble(value: Double, i0: Int)
-    override fun setFloat (value: Float , i0: Int) = setDouble(value.toDouble(), i0)
-    override fun setLong  (value: Long  , i0: Int) = setDouble(value.toDouble(), i0)
-    override fun setInt   (value: Int   , i0: Int) = setDouble(value.toDouble(), i0)
-    override fun setShort (value: Short , i0: Int) = setDouble(value.toDouble(), i0)
+    override fun as1D() = this
 
-    fun setDouble(value: Double, i0: Index) = setDouble(value, i0.computeValue(size))
+
+    override fun setFloat(indices: IntArray, value: Float) = setDouble(indices, value.toDouble())
+    override fun setLong (indices: IntArray, value: Long) = setDouble(indices, value.toDouble())
+    override fun setInt  (indices: IntArray, value: Int) = setDouble(indices, value.toDouble())
+    override fun setShort(indices: IntArray, value: Short) = setDouble(indices, value.toDouble())
+
+    override fun setValue(i0: Int, value: Double): Unit = setDouble(i0, value)
+
+    override fun setDouble(i0: Int, value: Double) = set(i0, value)
+    override fun setFloat (i0: Int, value: Float) = setDouble(i0, value.toDouble())
+    override fun setLong  (i0: Int, value: Long) = setDouble(i0, value.toDouble())
+    override fun setInt   (i0: Int, value: Int) = setDouble(i0, value.toDouble())
+    override fun setShort (i0: Int, value: Short) = setDouble(i0, value.toDouble())
+
+    fun setDouble(i0: Index, value: Double) = setDouble(i0.computeValue(size), value)
 
     override fun withShape(shape0: Int, shape1: Int, order: ElementOrder): MutableDoubleArray2D =
             withShape(intArray1DOf(shape0, shape1), order).as2D()
@@ -69,22 +93,11 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableNumericArray1D<Double>, Mu
         return DefaultDoubleArray1DHigherRankView(this, axis)
     }
 
-    fun setValue(other: DoubleArray1D) {
-        requireSameSize(other, this)
+    fun setValue(value: DoubleArray1D) {
+        requireSameSize(value, this)
         // Anti alias copy
-        val copy = other.copy()
-        forEachIndex { i ->
-            setDouble(copy.getDouble(i), i)
-        }
-
-    }
-
-    override fun setValue(value: Double) = setDouble(value)
-
-    override fun setDouble(value: Double) {
-
-        for (i in indices) {
-            setDouble(value, i)
+        value.copy().forEachIndexed { i0, element ->
+            setDouble(i0, element)
         }
 
     }
@@ -111,33 +124,12 @@ interface MutableDoubleArray1D: DoubleArray1D, MutableNumericArray1D<Double>, Mu
     fun setView(value: DoubleArray1D, i0: IntProgression): Unit = getView(i0).setValue(value)
     fun setView(value: DoubleArray1D, i0: IndexProgression): Unit = setView(value, i0.compute())
 
-    override fun setView(value: Double, i0: IntProgression): Unit = getView(i0).setDouble(value)
-    override fun setView(value: Double, i0: IndexProgression): Unit = setView(value, i0.compute())
-
-    operator fun set(i0: Int  , value: Double): Unit = setValue(value, i0)
+    override operator fun set(i0: Int, value: Double)
     operator fun set(i0: Index, value: Double): Unit = setValue(value, i0)
-
-    operator fun set(i0: IntProgression  , value: Double): Unit = setView(value, i0)
-    operator fun set(i0: IndexProgression, value: Double): Unit = setView(value, i0)
 
     operator fun set(i0: IntProgression  , value: DoubleArray1D): Unit = setView(value, i0)
     operator fun set(i0: IndexProgression, value: DoubleArray1D): Unit = setView(value, i0)
 
     override fun copy(): MutableDoubleArray1D = copy(this).asMutable()
-
-    fun applyPlus (other: DoubleArray1D): MutableDoubleArray1D = applyElementWise(other) { t, o -> t + o }
-    fun applyMinus(other: DoubleArray1D): MutableDoubleArray1D = applyElementWise(other) { t, o -> t - o }
-    fun applyTimes(other: DoubleArray1D): MutableDoubleArray1D = applyElementWise(other) { t, o -> t * o }
-    fun applyDiv  (other: DoubleArray1D): MutableDoubleArray1D = applyElementWise(other) { t, o -> t / o }
-
-    override fun applyPlus (other: Double): MutableDoubleArray1D = applyElementWise { it + other }
-    override fun applyMinus(other: Double): MutableDoubleArray1D = applyElementWise { it - other }
-    override fun applyTimes(other: Double): MutableDoubleArray1D = applyElementWise { it * other }
-    override fun applyDiv  (other: Double): MutableDoubleArray1D = applyElementWise { it / other }
-
-    override fun applyPlus (other: Int): MutableDoubleArray1D = applyPlus(other.toDouble())
-    override fun applyMinus(other: Int): MutableDoubleArray1D = applyMinus(other.toDouble())
-    override fun applyTimes(other: Int): MutableDoubleArray1D = applyTimes(other.toDouble())
-    override fun applyDiv  (other: Int): MutableDoubleArray1D = applyDiv(other.toDouble())
 
 }

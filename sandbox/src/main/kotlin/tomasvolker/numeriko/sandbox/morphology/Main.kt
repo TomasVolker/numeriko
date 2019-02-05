@@ -3,7 +3,7 @@ package tomasvolker.numeriko.sandbox.morphology
 import tomasvolker.numeriko.core.interfaces.array2d.generic.*
 import tomasvolker.numeriko.core.interfaces.factory.array2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
-import tomasvolker.numeriko.core.primitives.indicative
+import tomasvolker.numeriko.core.primitives.indicator
 import tomasvolker.numeriko.core.primitives.squared
 import tomasvolker.numeriko.sandbox.image.showImage
 import kotlin.random.Random
@@ -84,13 +84,13 @@ fun main(args: Array<String>) {
 
     var state = image
 
-    showImage(state.elementWise { it.indicative() }.toDoubleArray2D())
+    showImage(state.elementWise { it.indicator() }.toDoubleArray2D())
 
     repeat(1) {
 
         state = state.open(mask)
 
-        showImage(state.elementWise { it.indicative() }.toDoubleArray2D())
+        showImage(state.elementWise { it.indicator() }.toDoubleArray2D())
 
     }
 

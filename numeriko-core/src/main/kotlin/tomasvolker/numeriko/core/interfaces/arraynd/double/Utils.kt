@@ -1,16 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
-import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND0DView
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND1DView
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultDoubleArrayND2DView
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeGetView
 import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
+import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 inline fun elementWise(
@@ -19,8 +11,8 @@ inline fun elementWise(
         operation: (Double) -> Double
 ) {
     requireSameShape(source, destination)
-    source.unsafeForEachIndices { indices ->
-        destination[indices] = operation(source[indices])
+    source.inlinedForEachIndexed { indices, value ->
+        destination.setDouble(indices, operation(value))
     }
 }
 
@@ -32,12 +24,12 @@ inline fun elementWise(
 ) {
     requireSameShape(source1, source2)
     requireSameShape(source1, destination)
-    source1.unsafeForEachIndices { indices ->
-        destination[indices] = operation(source1[indices], source2[indices])
+    source1.fastForEachIndices { indices ->
+        destination.setDouble(indices, operation(source1.getDouble(indices), source2.getDouble(indices)))
     }
 }
 
-inline fun DoubleArrayND.elementWise(operation: (Double) -> Double): DoubleArrayND {
+inline fun DoubleArrayND.elementWise(operation: (Double)->Double): DoubleArrayND {
     val result = doubleZeros(shape).asMutable()
     elementWise(
             source = this,
@@ -47,7 +39,11 @@ inline fun DoubleArrayND.elementWise(operation: (Double) -> Double): DoubleArray
     return result
 }
 
-inline fun elementWise(array1: DoubleArrayND, array2: DoubleArrayND, operation: (Double, Double) -> Double): DoubleArrayND {
+inline fun elementWise(
+        array1: DoubleArrayND,
+        array2: DoubleArrayND,
+        operation: (Double, Double) -> Double
+): DoubleArrayND {
     requireSameShape(array1, array2)
     val result = doubleZeros(array1.shape).asMutable()
     elementWise(
@@ -85,8 +81,3 @@ inline fun MutableDoubleArrayND.applyElementWise(
     return this
 }
 
-fun DoubleArrayND.unsafeGetView(vararg indices: Any): DoubleArrayND =
-        (this as ArrayND<Double>).unsafeGetView(*indices) as DoubleArrayND
-
-fun MutableDoubleArrayND.unsafeGetView(vararg indices: Any): MutableDoubleArrayND =
-        (this as DoubleArrayND).unsafeGetView(*indices) as MutableDoubleArrayND

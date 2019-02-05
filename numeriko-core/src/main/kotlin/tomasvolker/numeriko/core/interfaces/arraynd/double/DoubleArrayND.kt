@@ -1,42 +1,47 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
+import tomasvolker.numeriko.core.functions.FunctionDtoD
+import tomasvolker.numeriko.core.functions.FunctionIADtoD
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
-import tomasvolker.numeriko.core.operations.concatenate
-import tomasvolker.numeriko.core.operations.reduction.inject
-import tomasvolker.numeriko.core.operations.reduction.remove
-import tomasvolker.numeriko.core.primitives.sumDouble
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedElementWise
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEach
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
 import tomasvolker.numeriko.core.view.ElementOrder
-import kotlin.math.max
-import kotlin.math.min
 
 interface DoubleArrayND: NumericArrayND<Double> {
 
     override fun cast(value: Number): Double = value.toDouble()
 
-    override fun getValue(vararg indices: Int): Double = getDouble(*indices)
+    operator fun get(vararg indices: Int): Double = getDouble(indices)
 
-    override fun getDouble(vararg indices: Int): Double
-    override fun getFloat (vararg indices: Int): Float  = getDouble(*indices).toFloat()
-    override fun getLong  (vararg indices: Int): Long   = getDouble(*indices).toLong()
-    override fun getInt   (vararg indices: Int): Int    = getDouble(*indices).toInt()
-    override fun getShort (vararg indices: Int): Short  = getDouble(*indices).toShort()
+    override fun getValue(indices: IntArray): Double = getDouble(indices)
 
-    fun getDouble(): Double = getDouble(*intArrayOf())
-    fun getDouble(vararg indices: Index): Double = getDouble(*indices.computeIndices())
+    override fun getDouble(indices: IntArray): Double
+    override fun getFloat (indices: IntArray): Float  = getDouble(indices).toFloat()
+    override fun getLong  (indices: IntArray): Long   = getDouble(indices).toLong()
+    override fun getInt   (indices: IntArray): Int    = getDouble(indices).toInt()
+    override fun getShort (indices: IntArray): Short  = getDouble(indices).toShort()
+
+    fun get(): Double = getDouble(intArrayOf())
+    operator fun get(i0: Int): Double = getDouble(intArrayOf(i0))
+    operator fun get(i0: Int, i1: Int): Double = getDouble(intArrayOf(i0, i1))
+    operator fun get(i0: Int, i1: Int, i2: Int): Double = getDouble(intArrayOf(i0, i1, i2))
+    operator fun get(i0: Int, i1: Int, i2: Int, i3: Int): Double = getDouble(intArrayOf(i0, i1, i2, i3))
+    operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): Double = getDouble(intArrayOf(i0, i1, i2, i3, i4))
+    operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): Double = getDouble(intArrayOf(i0, i1, i2, i3, i4, i5))
+
+    fun getDouble(vararg indices: Index): Double = getDouble(indices.computeIndices())
 
     override fun toDoubleArrayND(): DoubleArrayND = copy()
 
-    operator fun get(indices: IntArray1D): Double =
-            getDouble(indices)
+    operator fun get(indices: IntArray1D): Double = getDouble(indices)
 
     override fun as0D(): DoubleArray0D = DefaultDoubleArrayND0DView(this.asMutable())
     override fun as1D(): DoubleArray1D = DefaultDoubleArrayND1DView(this.asMutable())
@@ -49,7 +54,7 @@ interface DoubleArrayND: NumericArrayND<Double> {
             getView(*indices.computeIndices())
 
     override fun lowerRank(axis: Int): DoubleArrayND =
-            DefaultDoubleArrayNDLowerRankView(this.asMutable(), axis)
+            defaultDoubleArrayNDLowerRankView(this.asMutable(), axis)
 
     override fun higherRank(axis: Int): DoubleArrayND =
             DefaultDoubleArrayNDHigherRankView(this.asMutable(), axis)
@@ -57,7 +62,7 @@ interface DoubleArrayND: NumericArrayND<Double> {
     override fun arrayAlongAxis(axis: Int, index: Int): DoubleArrayND =
             getView(*Array(rank) { ax ->
                 if (ax == axis)
-                    IntRange(index, index).toIndexProgression()
+                    (index..index).toIndexProgression()
                 else
                     All
             }).lowerRank(axis = axis)
@@ -67,9 +72,27 @@ interface DoubleArrayND: NumericArrayND<Double> {
 
     override fun copy(): DoubleArrayND = copy(this)
 
-    override fun iterator(): DoubleIterator = DefaultDoubleArrayNDIterator(this)
+    override fun iterator(): DoubleIterator = arrayIterator()
+    override fun arrayIterator(): DoubleArrayNDIterator = DefaultDoubleArrayNDIterator(this)
 
     override fun asMutable(): MutableDoubleArrayND = this as MutableDoubleArrayND
+
+    fun forEach(function: FunctionDtoD) {
+        inlinedForEach { function(it) }
+    }
+
+    fun forEachIndexed(function: FunctionIADtoD) {
+        inlinedForEachIndexed { indices, value ->  function(indices, value) }
+    }
+
+    fun elementWise(function: FunctionDtoD): DoubleArrayND =
+            inlinedElementWise { function(it) }
+
+    operator fun plus (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t + o }
+    operator fun minus(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t - o }
+    operator fun times(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t * o }
+    operator fun div  (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t / o }
+
 
     operator fun unaryPlus(): DoubleArrayND = this
     operator fun unaryMinus(): DoubleArrayND = elementWise { -it }
@@ -83,42 +106,8 @@ interface DoubleArrayND: NumericArrayND<Double> {
     operator fun minus(other: Int): DoubleArrayND = elementWise { it - other }
     operator fun times(other: Int): DoubleArrayND = elementWise { it * other }
     operator fun div  (other: Int): DoubleArrayND = elementWise { it / other }
-
-    infix fun outer(other: DoubleArrayND): DoubleArrayND =
-            doubleArrayND(this.shape concatenate other.shape) { indices ->
-                val thisIndices = indices[0 until this.rank]
-                val otherIndices = indices[this.rank until Size]
-                this[thisIndices] * other[otherIndices]
-            }
-
-    fun contract(axis0: Int, axis1: Int): DoubleArrayND {
-        val minAxis = min(axis0, axis1)
-        val maxAxis = max(axis0, axis1)
-        require(minAxis != maxAxis && shape(minAxis) == shape(maxAxis))
-        val newShape = shape.remove(minAxis).remove(maxAxis-1)
-        return doubleArrayND(newShape) { indices ->
-            sumDouble(indices(minAxis)) { r ->
-                this[indices.inject(index = minAxis, value = r).inject(index = maxAxis, value = r)]
-            }
-        }
-    }
-
-    fun contract(other: DoubleArrayND, thisAxis: Int, otherAxis: Int): DoubleArrayND {
-        this.requireValidAxis(thisAxis)
-        other.requireValidAxis(otherAxis)
-        require(this.shape(thisAxis) == other.shape(otherAxis))
-        val resultShape = this.shape.remove(thisAxis) concatenate other.shape.remove(otherAxis)
-        return doubleArrayND(resultShape) { indices ->
-            sumDouble(indices(thisAxis)) { r ->
-                this[indices[0 until this.rank-1].inject(index = thisAxis, value = r)] *
-                other[indices[this.rank-1 until Size].inject(index = otherAxis, value = r)]
-            }
-        }
-    }
-
+    
 }
 
-operator fun DoubleArrayND.plus (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t + o }
-operator fun DoubleArrayND.minus(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t - o }
-operator fun DoubleArrayND.times(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t * o }
-operator fun DoubleArrayND.div  (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t / o }
+
+

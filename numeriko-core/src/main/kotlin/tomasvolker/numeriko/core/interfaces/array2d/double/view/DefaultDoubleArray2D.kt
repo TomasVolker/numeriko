@@ -14,16 +14,16 @@ abstract class DefaultDoubleArray2D: DoubleArray2D {
 
     override fun equals(other: Any?): Boolean = when {
         other === this -> true
-        other is DoubleArray2D -> defaultEquals(this, other)
-        other is DoubleArrayND -> other.rank == 2 && defaultEquals(this, other.as2D())
-        other is Array2D<*> -> defaultEquals(this, other)
-        other is ArrayND<*> -> other.rank == 2 && defaultEquals(this, other.as2D())
+        other is DoubleArray2D -> this.defaultEquals(other)
+        other is DoubleArrayND -> other.rank == 2 && this.defaultEquals(other.as2D())
+        other is Array2D<*> -> this.defaultEquals(other)
+        other is ArrayND<*> -> other.rank == 2 && this.defaultEquals(other.as2D())
         else -> false
     }
 
-    override fun hashCode(): Int = defaultHashCode(this)
+    override fun hashCode(): Int = this.defaultHashCode()
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 
 }
 

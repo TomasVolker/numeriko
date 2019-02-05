@@ -35,11 +35,11 @@ class DefaultArray1DHigherRankView<T> (
         }
     }
 
-    override fun setValue(value: T, i0: Int, i1: Int) {
+    override fun setValue(i0: Int, i1: Int, value: T) {
         requireValidIndices(i0, i1)
         when (axis) {
-            0 -> array.setValue(value, i1)
-            1 -> array.setValue(value, i0)
+            0 -> array.setValue(i1, value)
+            1 -> array.setValue(i0, value)
             else -> error("requireValidIndices should fail")
         }
     }

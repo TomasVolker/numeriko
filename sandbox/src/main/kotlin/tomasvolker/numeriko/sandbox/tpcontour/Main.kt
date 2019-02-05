@@ -1,14 +1,17 @@
 package tomasvolker.numeriko.sandbox.tpcontour
 
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.functions.filter2D
+import tomasvolker.numeriko.core.functions.plus
+import tomasvolker.numeriko.core.functions.transpose
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.core.functions.div
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.sumBy
-import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
-import tomasvolker.numeriko.core.primitives.indicative
+import tomasvolker.numeriko.core.primitives.indicator
 import tomasvolker.numeriko.core.primitives.squared
 import tomasvolker.numeriko.core.probability.continuous.NormalDistribution
 import tomasvolker.numeriko.sandbox.image.*
@@ -65,12 +68,12 @@ inline fun dynamicArray2DView(
     override val shape1: Int
         get() = shape1
 
-    override fun getDouble(i0: Int, i1: Int): Double {
+    override fun get(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return getter(i0, i1)
     }
 
-    override fun setDouble(value: Double, i0: Int, i1: Int) {
+    override fun set(i0: Int, i1: Int, value: Double) {
         requireValidIndices(i0, i1)
         setter(value, i0, i1)
     }
@@ -79,7 +82,7 @@ inline fun dynamicArray2DView(
 
 val view = dynamicArray2DView(
         4, 2,
-        getter = { i0, i1 ->  (i0==i1).indicative() },
+        getter = { i0, i1 ->  (i0==i1).indicator() },
         setter = { value, i0, i1 -> TODO() }
 )
 

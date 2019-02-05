@@ -11,14 +11,20 @@ import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import kotlin.math.cos
 import kotlin.math.sin
 
 interface MutableComplexArray1D: MutableNumericArray1D<Complex>, ComplexArray1D, MutableComplexArrayND {
 
-    override fun setValue(value: Complex, vararg indices: Int) {
+    override fun as1D() = this
+
+    override fun as0D(): Nothing = TODO()
+    override fun as2D(): Nothing = TODO()
+
+    override fun setValue(indices: IntArray, value: Complex) {
         requireValidIndices(indices)
-        setValue(value, indices[0])
+        setValue(indices[0], value)
     }
 
     override fun setReal(value: Double, vararg indices: Int) {
@@ -56,7 +62,7 @@ interface MutableComplexArray1D: MutableNumericArray1D<Complex>, ComplexArray1D,
     override fun arrayAlongAxis(axis: Int, index: Int): MutableComplexArray0D =
             super<ComplexArray1D>.arrayAlongAxis(axis, index).asMutable()
 
-    operator fun set(i0: Int, value: Complex): Unit = setValue(value, i0)
+    operator fun set(i0: Int, value: Complex): Unit = setValue(i0, value)
     operator fun set(i0: Index, value: Complex): Unit = setValue(value, i0)
 
     fun setValue(value: ComplexArray1D) {
@@ -66,7 +72,7 @@ interface MutableComplexArray1D: MutableNumericArray1D<Complex>, ComplexArray1D,
         }
     }
 
-    override fun setValue(value: Complex, i0: Int) {
+    override fun setValue(i0: Int, value: Complex) {
         setReal(value.real, i0)
         setImag(value.imag, i0)
     }

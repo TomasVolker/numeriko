@@ -4,8 +4,10 @@ import tomasvolker.kyplot.dsl.*
 import tomasvolker.kyplot.model.Color
 import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.index.All
+import tomasvolker.numeriko.core.functions.minus
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
+import tomasvolker.numeriko.core.functions.transpose
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
 import tomasvolker.numeriko.core.operations.stack
 import tomasvolker.numeriko.core.probability.continuous.NormalDistribution
@@ -164,7 +166,7 @@ fun independentComponentAnalysis(
     val basis = uncorrelated.independentComponentAnalysis()
     val ortho = basis.orthogonalize()
     println("Basis: ${ortho[0]}, ${ortho[1]}")
-    val W = stack(ortho)
+    val W = ortho.stack()
 
     return uncorrelated.mixSignals(W)
 }

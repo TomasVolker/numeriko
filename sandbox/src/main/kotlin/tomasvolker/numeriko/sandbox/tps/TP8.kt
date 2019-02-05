@@ -4,6 +4,9 @@ import tomasvolker.kyplot.dsl.line
 import tomasvolker.kyplot.dsl.showLine
 import tomasvolker.kyplot.dsl.showPlot
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.functions.matMul
+import tomasvolker.numeriko.core.functions.plus
+import tomasvolker.numeriko.core.functions.transpose
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.*
 import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D

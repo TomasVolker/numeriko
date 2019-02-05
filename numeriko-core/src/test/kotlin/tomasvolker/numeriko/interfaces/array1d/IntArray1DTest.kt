@@ -3,9 +3,9 @@ package tomasvolker.numeriko.interfaces.array1d
 
 import org.junit.jupiter.api.Test
 import tomasvolker.numeriko.core.dsl.I
+import tomasvolker.numeriko.core.functions.times
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.factory.*
-import tomasvolker.numeriko.core.interfaces.array1d.integer.times
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
@@ -82,9 +82,6 @@ class IntArray1DTest {
 
         a1[1..3] = intArray1DOf(-2, -4, -6)
         assertEquals(a1[2..4], intArrayOf(-4, -6, 8).asIntArray1D())
-
-        a1[All] = 0
-        assertEquals(a1[56], 0)
 
     }
 

@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(group = "tomasvolker", name = "numeriko-core", version = "0.0.1")
+    implementation(project(":numeriko-core"))
 
     testImplementation("junit:junit:4.12")
     testImplementation(kotlin("test"))

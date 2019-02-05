@@ -100,9 +100,6 @@ class GenericArray1DTest {
         a1[1..3] = array1DOf(-2, -4, -6)
         assertEquals(a1[2..4], arrayOf(-4, -6, 8).asArray1D())
 
-        a1[All] = 0
-        assertEquals(a1[56], 0)
-
     }
 
 }

@@ -23,10 +23,10 @@ class DefaultArray2DLowerRankView<T>(
         }
     }
 
-    override fun setValue(value: T, i0: Int) {
+    override fun setValue(i0: Int, value: T) {
         when(axis) {
-            0 -> array.setValue(value, 0, i0)
-            1 -> array.setValue(value, i0, 0)
+            0 -> array.setValue(0, i0, value)
+            1 -> array.setValue(i0, 0, value)
             else -> throw IllegalStateException()
         }
     }

@@ -2,9 +2,9 @@ package tomasvolker.numeriko.complex.interfaces.arraynd
 
 import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.factory.complexZeros
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeForEachIndices
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.unsafeGetView
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
+import tomasvolker.numeriko.core.interfaces.slicing.get
+import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 inline fun elementWise(
@@ -13,8 +13,8 @@ inline fun elementWise(
         operation: (Complex) -> Complex
 ) {
     requireSameShape(source, destination)
-    source.unsafeForEachIndices { indices ->
-        destination[indices] = operation(source[indices])
+    source.fastForEachIndices { indices ->
+        destination.setValue(indices, operation(source.getValue(*indices)))
     }
 }
 
@@ -26,7 +26,7 @@ inline fun elementWise(
 ) {
     requireSameShape(source1, source2)
     requireSameShape(source1, destination)
-    source1.unsafeForEachIndices { indices ->
+    source1.forEachIndices { indices ->
         destination[indices] = operation(source1[indices], source2[indices])
     }
 }
@@ -85,8 +85,12 @@ inline fun MutableComplexArrayND.applyElementWise(
     return this
 }
 
-fun ComplexArrayND.unsafeGetView(vararg indices: Any): ComplexArrayND =
-        (this as ArrayND<Complex>).unsafeGetView(*indices) as ComplexArrayND
 
-fun MutableComplexArrayND.unsafeGetView(vararg indices: Any): MutableComplexArrayND =
-        (this as ComplexArrayND).unsafeGetView(*indices) as MutableComplexArrayND
+operator fun ComplexArrayND.get(vararg indices: Any): ComplexArrayND =
+        this.get(*indices) as ComplexArrayND
+
+operator fun MutableComplexArrayND.get(vararg indices: Any): MutableComplexArrayND =
+        this.get(*indices).asMutable() as MutableComplexArrayND
+
+operator fun MutableComplexArrayND.set(vararg indices: Any, value: ComplexArrayND): Unit =
+        this.get(*indices).setValue(value)

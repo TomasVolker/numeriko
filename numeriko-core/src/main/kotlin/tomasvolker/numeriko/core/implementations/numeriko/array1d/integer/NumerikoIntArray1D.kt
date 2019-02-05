@@ -12,7 +12,7 @@ class NumerikoIntArray1D(
 
     override fun getInt(i0: Int): Int = data[i0]
 
-    override fun setInt(value: Int, i0: Int) {
+    override fun setInt(i0: Int, value: Int) {
         data[i0] = value
     }
 
@@ -45,7 +45,7 @@ class NumerikoMutableIntArray1DView(
         return data[convertIndex(i0)]
     }
 
-    override fun setInt(value: Int, i0: Int) {
+    override fun setInt(i0: Int, value: Int) {
         requireValidIndices(i0)
         data[convertIndex(i0)] = value
     }

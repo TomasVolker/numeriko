@@ -13,13 +13,11 @@ import tomasvolker.numeriko.core.primitives.sumInt
 
 interface IntArray1D: Array1D<Int> {
 
-    override fun getValue(i0: Int): Int =
-            getInt(i0)
+    override fun getValue(i0: Int): Int = getInt(i0)
 
     fun getInt(i0: Int): Int
 
-    fun getInt(i0: Index): Int =
-            getInt(i0.computeValue(size))
+    fun getInt(i0: Index): Int = getInt(i0.computeValue(size))
 
     override fun getView(i0: IntProgression): IntArray1D = defaultIntArray1DView(this.asMutable(), i0)
     override fun getView(i0: IndexProgression): IntArray1D = getView(i0.compute())
@@ -34,6 +32,10 @@ interface IntArray1D: Array1D<Int> {
     operator fun get(index: IntProgression): IntArray1D = getView(index)
     operator fun get(index: IndexProgression): IntArray1D = getView(index)
 
+    override fun asMutable(): MutableIntArray1D = this as MutableIntArray1D
+
+    fun toIntArray(): IntArray = IntArray(size) { i -> this[i] }
+
     operator fun unaryPlus(): IntArray1D = this
     operator fun unaryMinus(): IntArray1D = elementWise { -it }
 
@@ -46,21 +48,5 @@ interface IntArray1D: Array1D<Int> {
     operator fun minus(other: Int): IntArray1D = elementWise { it - other }
     operator fun times(other: Int): IntArray1D = elementWise { it * other }
     operator fun div  (other: Int): IntArray1D = elementWise { it / other }
-
-    fun sum(): Int = sumBy { it }
-
-    fun average(): Double = sum().toDouble() / size
-
-    infix fun convolve(other: IntArray1D): IntArray1D {
-        requireSameSize(this, other)
-
-        return intArray1D(this.size) { i ->
-            sumInt(other.indices) { j ->
-                this[(i - j) modulo size] * other[j]
-            }
-        }
-    }
-
-    override fun asMutable(): MutableIntArray1D = this as MutableIntArray1D
-
+    
 }

@@ -2,6 +2,8 @@ package tomasvolker.numeriko.complex.interfaces.array2d.view
 
 import tomasvolker.numeriko.complex.interfaces.array1d.view.DefaultMutableComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
+import tomasvolker.numeriko.complex.primitives.Complex
+import tomasvolker.numeriko.core.interfaces.array2d.numeric.MutableNumericArray2D
 
 class MutableComplexArray2DLowerRankView(
         val array: MutableComplexArray2D,
@@ -49,6 +51,8 @@ class MutableComplexArray2DLowerRankView(
             else -> throw IllegalStateException()
         }
     }
+
+    override fun higherRank(axis: Int): MutableNumericArray2D<Complex> = TODO()
 
 }
 

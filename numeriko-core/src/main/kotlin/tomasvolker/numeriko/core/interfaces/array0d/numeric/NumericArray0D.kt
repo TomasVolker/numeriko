@@ -2,8 +2,8 @@ package tomasvolker.numeriko.core.interfaces.array0d.numeric
 
 import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
 import tomasvolker.numeriko.core.interfaces.array0d.generic.DefaultArray0DIterator
-import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 
 interface NumericArray0D<out N: Number>: Array0D<N>, NumericArrayND<N> {
@@ -16,27 +16,27 @@ interface NumericArray0D<out N: Number>: Array0D<N>, NumericArrayND<N> {
     fun getInt   (): Int    = getValue().toInt()
     fun getShort (): Short  = getValue().toShort()
 
-    override fun getDouble(vararg indices: Int): Double {
+    override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
         return getDouble()
     }
 
-    override fun getFloat(vararg indices: Int): Float {
+    override fun getFloat(indices: IntArray): Float {
         requireValidIndices(indices)
         return getFloat()
     }
 
-    override fun getLong(vararg indices: Int): Long {
+    override fun getLong(indices: IntArray): Long {
         requireValidIndices(indices)
         return getLong()
     }
 
-    override fun getInt(vararg indices: Int): Int {
+    override fun getInt(indices: IntArray): Int {
         requireValidIndices(indices)
         return getInt()
     }
 
-    override fun getShort(vararg indices: Int): Short {
+    override fun getShort(indices: IntArray): Short {
         requireValidIndices(indices)
         return getShort()
     }

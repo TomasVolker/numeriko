@@ -1,11 +1,12 @@
 package tomasvolker.numeriko.core.interfaces.array1d.generic
 
 import tomasvolker.numeriko.core.interfaces.factory.array1DOfNulls
+import tomasvolker.numeriko.core.performance.forEach
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 
 inline fun <T> Array1D<T>.forEachIndex(operation: (i0: Int) -> Unit) {
 
-    for (i0 in 0 until shape0) {
+    forEach(shape0) { i0 ->
         operation(i0)
     }
 
@@ -13,16 +14,16 @@ inline fun <T> Array1D<T>.forEachIndex(operation: (i0: Int) -> Unit) {
 
 inline fun <T, R> elementWise(source: Array1D<T>, destination: MutableArray1D<R>, operation: (T) -> R) {
     requireSameSize(source, destination)
-    for (i in source.indices) {
-        destination.setValue(operation(source.getValue(i)), i)
+    forEach(source.shape0) { i0 ->
+        destination.setValue(i0, operation(source.getValue(i0)))
     }
 }
 
 inline fun <T1, T2, R> elementWise(source1: Array1D<T1>, source2: Array1D<T2>, destination: MutableArray1D<R>, operation: (T1, T2) -> R) {
     requireSameSize(source1, source2)
     requireSameSize(source1, destination)
-    for (i in source1.indices) {
-        destination.setValue(operation(source1.getValue(i), source2.getValue(i)), i)
+    forEach(source1.shape0) { i0 ->
+        destination.setValue(i0, operation(source1.getValue(i0), source2.getValue(i0)))
     }
 }
 

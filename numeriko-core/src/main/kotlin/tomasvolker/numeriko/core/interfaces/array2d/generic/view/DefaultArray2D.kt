@@ -7,14 +7,14 @@ abstract class DefaultArray2D<out T>: Array2D<T> {
 
     override fun equals(other: Any?): Boolean = when {
         other === this -> true
-        other is Array2D<*> -> defaultEquals(this, other)
-        other is ArrayND<*> -> other.rank == this.rank && defaultEquals(this, other.as2D())
+        other is Array2D<*> -> this.defaultEquals(other)
+        other is ArrayND<*> -> other.rank == this.rank && this.defaultEquals(other.as2D())
         else -> false
     }
 
-    override fun hashCode(): Int = defaultHashCode(this)
+    override fun hashCode(): Int = this.defaultHashCode()
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 
 }
 

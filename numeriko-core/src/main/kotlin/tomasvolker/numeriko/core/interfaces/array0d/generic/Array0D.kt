@@ -1,12 +1,16 @@
 package tomasvolker.numeriko.core.interfaces.array0d.generic
 
-import tomasvolker.numeriko.core.interfaces.array0d.double.DefaultDoubleArray0DHigherRankView
-import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultDoubleArray1DHigherRankView
+import tomasvolker.numeriko.core.annotations.CompileTimeError
+import tomasvolker.numeriko.core.annotations.Level
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidAxis
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.factory.intArray1DOf
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.rankError0DMessage
 
 interface Array0D<out T>: ArrayND<T> {
 
@@ -22,7 +26,14 @@ interface Array0D<out T>: ArrayND<T> {
 
     override val size: Int get() = 1
 
-    override fun getValue(vararg indices: Int): T {
+    override fun as0D() = this
+
+    @CompileTimeError(message = rankError0DMessage, level = Level.ERROR)
+    override fun as1D(): Nothing = rankError(1)
+    @CompileTimeError(message = rankError0DMessage, level = Level.ERROR)
+    override fun as2D(): Nothing = rankError(2)
+
+    override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
         return getValue()
     }

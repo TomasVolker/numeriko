@@ -1,20 +1,26 @@
 package tomasvolker.numeriko.core.implementations.numeriko.array1d.double
 
+import tomasvolker.numeriko.core.implementations.numeriko.NumerikoDoubleArray
 import tomasvolker.numeriko.core.implementations.numeriko.array0d.double.NumerikoDoubleArray0DView
 import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
+import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.lastIndex
+import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 class NumerikoDoubleArray1D(
         val data: DoubleArray
-): DefaultMutableDoubleArray1D() {
+): DefaultMutableDoubleArray1D(), NumerikoDoubleArray {
 
     override val size: Int get() = data.size
 
-    override fun getDouble(i0: Int): Double = data[i0]
+    override val backingArray: DoubleArray
+        get() = data
 
-    override fun setDouble(value: Double, i0: Int) {
+    override operator fun get(i0: Int): Double = data[i0]
+
+    override operator fun set(i0: Int, value: Double) {
         data[i0] = value
     }
 
@@ -33,6 +39,21 @@ class NumerikoDoubleArray1D(
         return NumerikoDoubleArray0DView(data, 0)
     }
 
+    override fun setValue(value: DoubleArray1D) {
+        requireSameShape(this, value)
+
+        // Anti alias copy
+        val source = if (value is NumerikoDoubleArray && value.backingArray != this.data)
+            value
+        else
+            value.copy()
+
+        source.forEachIndexed { i0, element ->
+            setDouble(i0, element)
+        }
+
+    }
+
 }
 
 
@@ -48,12 +69,12 @@ class NumerikoMutableDoubleArray1DView(
         require(convertIndex(lastIndex) in 0 until data.size)
     }
 
-    override fun getDouble(i0: Int): Double {
+    override operator fun get(i0: Int): Double {
         requireValidIndices(i0)
         return data[convertIndex(i0)]
     }
 
-    override fun setDouble(value: Double, i0: Int) {
+    override operator fun set(i0: Int, value: Double) {
         requireValidIndices(i0)
         data[convertIndex(i0)] = value
     }

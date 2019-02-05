@@ -12,17 +12,15 @@ class DefaultMutableDoubleArray2DTransposeView(
     override val shape1: Int
         get() = array.shape0
 
-    override fun getDouble(i0: Int, i1: Int): Double {
+    override operator fun get(i0: Int, i1: Int): Double {
         requireValidIndices(i0, i1)
         return array.getDouble(i1, i0)
     }
 
-    override fun setDouble(value: Double, i0: Int, i1: Int) {
+    override operator fun set(i0: Int, i1: Int, value: Double) {
         requireValidIndices(i0, i1)
-        return array.setDouble(value, i1, i0)
+        return array.setDouble(i1, i0, value)
     }
-
-    override fun transpose(): MutableDoubleArray2D = array
 
 }
 

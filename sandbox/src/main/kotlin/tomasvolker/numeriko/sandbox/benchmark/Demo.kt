@@ -5,6 +5,9 @@ import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.inverse.InvertMatrix
 import tomasvolker.kyplot.dsl.*
 import tomasvolker.numeriko.core.config.NumerikoConfig
+import tomasvolker.numeriko.core.functions.inverse
+import tomasvolker.numeriko.core.functions.matMul
+import tomasvolker.numeriko.core.functions.solve
 import tomasvolker.numeriko.core.interfaces.factory.doubleRandom
 import tomasvolker.numeriko.core.interfaces.factory.nextDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.nextDoubleArray2D

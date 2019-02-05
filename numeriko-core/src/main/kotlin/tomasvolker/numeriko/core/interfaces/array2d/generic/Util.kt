@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.array2d.generic
 
 import tomasvolker.numeriko.core.interfaces.factory.array2DOfNulls
+import tomasvolker.numeriko.core.performance.forEach
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 fun <T> Array2D<T>.toListOfLists(): List<List<T>> =
@@ -10,10 +11,8 @@ fun <T> Array2D<T>.toListOfLists(): List<List<T>> =
 
 inline fun <T> Array2D<T>.forEachIndex(operation: (i0: Int, i1: Int) -> Unit) {
 
-    for (i0 in 0 until shape0) {
-        for (i1 in 0 until shape1) {
-            operation(i0, i1)
-        }
+    forEach(shape0, shape1) { i0, i1 ->
+        operation(i0, i1)
     }
 
 }
@@ -21,7 +20,7 @@ inline fun <T> Array2D<T>.forEachIndex(operation: (i0: Int, i1: Int) -> Unit) {
 inline fun <T, R> elementWise(source: Array2D<T>, destination: MutableArray2D<R>, operation: (T) -> R) {
     requireSameShape(source, destination)
     source.forEachIndex { i0, i1 ->
-        destination.setValue(operation(source.getValue(i0, i1)), i0, i1)
+        destination.setValue(i0, i1, operation(source.getValue(i0, i1)))
     }
 
 }
@@ -30,7 +29,7 @@ inline fun <T1, T2, R> elementWise(source1: Array2D<T1>, source2: Array2D<T2>, d
     requireSameShape(source1, source2)
     requireSameShape(source1, destination)
     source1.forEachIndex { i0, i1 ->
-        destination.setValue(operation(source1.getValue(i0, i1), source2.getValue(i0, i1)), i0, i1)
+        destination.setValue(i0, i1, operation(source1.getValue(i0, i1), source2.getValue(i0, i1)))
     }
 }
 

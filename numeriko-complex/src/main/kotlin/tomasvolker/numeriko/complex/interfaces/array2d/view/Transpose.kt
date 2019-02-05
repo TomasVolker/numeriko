@@ -1,11 +1,12 @@
 package tomasvolker.numeriko.complex.interfaces.array2d.view
 
 import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
+import tomasvolker.numeriko.complex.primitives.Complex
+import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 
 class DefaultMutableComplexArray2DTransposeView(
         val array: MutableComplexArray2D
 ) : DefaultMutableComplexArray2D() {
-
     override val shape0: Int
         get() = array.shape1
 
@@ -33,6 +34,8 @@ class DefaultMutableComplexArray2DTransposeView(
     }
 
     override fun transpose(): MutableComplexArray2D = array
+
+    override fun higherRank(axis: Int): MutableNumericArrayND<Complex> = TODO()
 
 }
 

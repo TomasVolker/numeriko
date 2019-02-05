@@ -9,7 +9,7 @@ plugins {
 dependencies {
 
     implementation(kotlin("stdlib"))
-    implementation(group = "tomasvolker", name = "numeriko-core", version = "0.0.1")
+    implementation(project(":numeriko-core"))
     implementation(group = "tomasvolker", name = "kyscript", version = "0.0.1")
 
     testImplementation("junit", "junit", "4.12")

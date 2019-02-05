@@ -17,9 +17,9 @@ class DefaultArray2DTransposeView<T>(
         return array.getValue(i1, i0)
     }
 
-    override fun setValue(value: T, i0: Int, i1: Int) {
+    override fun setValue(i0: Int, i1: Int, value: T) {
         requireValidIndices(i0, i1)
-        return array.setValue(value, i1, i0)
+        return array.setValue(i1, i0, value)
     }
 
 }
