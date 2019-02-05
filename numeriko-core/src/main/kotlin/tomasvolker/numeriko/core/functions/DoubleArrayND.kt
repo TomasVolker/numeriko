@@ -16,25 +16,6 @@ import tomasvolker.numeriko.core.primitives.sumDouble
 import kotlin.math.max
 import kotlin.math.min
 
-operator fun DoubleArrayND.plus (other: DoubleArrayND): DoubleArrayND = tomasvolker.numeriko.core.interfaces.arraynd.double.elementWise(this, other) { t, o -> t + o }
-operator fun DoubleArrayND.minus(other: DoubleArrayND): DoubleArrayND = tomasvolker.numeriko.core.interfaces.arraynd.double.elementWise(this, other) { t, o -> t - o }
-operator fun DoubleArrayND.times(other: DoubleArrayND): DoubleArrayND = tomasvolker.numeriko.core.interfaces.arraynd.double.elementWise(this, other) { t, o -> t * o }
-operator fun DoubleArrayND.div  (other: DoubleArrayND): DoubleArrayND = tomasvolker.numeriko.core.interfaces.arraynd.double.elementWise(this, other) { t, o -> t / o }
-
-
-operator fun DoubleArrayND.unaryPlus(): DoubleArrayND = this
-operator fun DoubleArrayND.unaryMinus(): DoubleArrayND = elementWise { -it }
-
-operator fun DoubleArrayND.plus (other: Double): DoubleArrayND = elementWise { it + other }
-operator fun DoubleArrayND.minus(other: Double): DoubleArrayND = elementWise { it - other }
-operator fun DoubleArrayND.times(other: Double): DoubleArrayND = elementWise { it * other }
-operator fun DoubleArrayND.div  (other: Double): DoubleArrayND = elementWise { it / other }
-
-operator fun DoubleArrayND.plus (other: Int): DoubleArrayND = elementWise { it + other }
-operator fun DoubleArrayND.minus(other: Int): DoubleArrayND = elementWise { it - other }
-operator fun DoubleArrayND.times(other: Int): DoubleArrayND = elementWise { it * other }
-operator fun DoubleArrayND.div  (other: Int): DoubleArrayND = elementWise { it / other }
-
 fun MutableDoubleArrayND.applyPlus (other: Double): MutableDoubleArrayND = applyElementWise { it + other }
 fun MutableDoubleArrayND.applyMinus(other: Double): MutableDoubleArrayND = applyElementWise { it - other }
 fun MutableDoubleArrayND.applyTimes(other: Double): MutableDoubleArrayND = applyElementWise { it * other }

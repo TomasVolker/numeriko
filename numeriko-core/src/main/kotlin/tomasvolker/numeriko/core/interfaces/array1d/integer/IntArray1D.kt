@@ -36,4 +36,17 @@ interface IntArray1D: Array1D<Int> {
 
     fun toIntArray(): IntArray = IntArray(size) { i -> this[i] }
 
+    operator fun unaryPlus(): IntArray1D = this
+    operator fun unaryMinus(): IntArray1D = elementWise { -it }
+
+    operator fun plus (other: IntArray1D): IntArray1D = elementWise(this, other) { t, o -> t + o }
+    operator fun minus(other: IntArray1D): IntArray1D = elementWise(this, other) { t, o -> t - o }
+    operator fun times(other: IntArray1D): IntArray1D = elementWise(this, other) { t, o -> t * o }
+    operator fun div  (other: IntArray1D): IntArray1D = elementWise(this, other) { t, o -> t / o }
+
+    operator fun plus (other: Int): IntArray1D = elementWise { it + other }
+    operator fun minus(other: Int): IntArray1D = elementWise { it - other }
+    operator fun times(other: Int): IntArray1D = elementWise { it * other }
+    operator fun div  (other: Int): IntArray1D = elementWise { it / other }
+    
 }

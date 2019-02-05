@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.sandbox.generic
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
+import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.functions.FunctionDtoD
 import tomasvolker.numeriko.core.functions.DtoD

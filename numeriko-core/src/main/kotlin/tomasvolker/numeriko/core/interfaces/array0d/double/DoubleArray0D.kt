@@ -75,4 +75,22 @@ interface DoubleArray0D: NumericArray0D<Double>, DoubleArrayND {
 
     override fun iterator(): DoubleIterator = DefaultDoubleArray0DIterator(this)
 
+    override operator fun unaryPlus(): DoubleArray0D = this
+    override operator fun unaryMinus(): DoubleArray0D = elementWise { -it }
+
+    operator fun plus (other: DoubleArray0D): DoubleArray0D = elementWise(this, other) { t, o -> t + o }
+    operator fun minus(other: DoubleArray0D): DoubleArray0D = elementWise(this, other) { t, o -> t - o }
+    operator fun times(other: DoubleArray0D): DoubleArray0D = elementWise(this, other) { t, o -> t * o }
+    operator fun div  (other: DoubleArray0D): DoubleArray0D = elementWise(this, other) { t, o -> t / o }
+
+    override operator fun plus (other: Double): DoubleArray0D = elementWise { it + other }
+    override operator fun minus(other: Double): DoubleArray0D = elementWise { it - other }
+    override operator fun times(other: Double): DoubleArray0D = elementWise { it * other }
+    override operator fun div  (other: Double): DoubleArray0D = elementWise { it / other }
+
+    override operator fun plus (other: Int): DoubleArray0D = elementWise { it + other }
+    override operator fun minus(other: Int): DoubleArray0D = elementWise { it - other }
+    override operator fun times(other: Int): DoubleArray0D = elementWise { it * other }
+    override operator fun div  (other: Int): DoubleArray0D = elementWise { it / other }
+    
 }

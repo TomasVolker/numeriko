@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.array2d.double
 
 import tomasvolker.numeriko.core.annotations.CompileTimeError
 import tomasvolker.numeriko.core.annotations.Level
+import tomasvolker.numeriko.core.functions.matMul
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
@@ -137,5 +138,109 @@ interface DoubleArray2D: NumericArray2D<Double>, DoubleArrayND {
 
     override fun iterator(): DoubleIterator = arrayIterator()
     override fun arrayIterator(): DoubleArray2DIterator = DefaultDoubleArray2DIterator(this)
+
+    /**
+     * Returns this array unaltered.
+     */
+    override operator fun unaryPlus(): DoubleArray2D = this
+
+    /**
+     * Returns a copy of this array with element wise negation.
+     */
+    override operator fun unaryMinus(): DoubleArray2D = elementWise { -it }
+
+    /**
+     * Returns an array with the element wise addition with [other].
+     *
+     * @throws IllegalArgumentException  if this and [other] don't have the same [size]
+     * @return an array containing the element wise addition with [other].
+     */
+    operator fun plus(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t + o }
+
+    /**
+     * Returns an array with the element wise subtraction with [other].
+     *
+     * @throws IllegalArgumentException  if this and [other] don't have the same [size]
+     * @return an array containing the subtraction wise addition with [other].
+     */
+    operator fun minus(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t - o }
+
+    /**
+     * Returns an array with the element wise multiplication with [other].
+     *
+     * For matrix multiplication see [matMul].
+     *
+     * @throws IllegalArgumentException  if this and [other] don't have the same [size]
+     * @return an array containing the subtraction wise addition with [other].
+     */
+    operator fun times(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t * o }
+
+    /**
+     * Returns an array with the element wise division with [other].
+     *
+     * @throws IllegalArgumentException  if this and [other] don't have the same [size]
+     * @return an array containing the division wise addition with [other].
+     */
+    operator fun div(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> t / o }
+
+    /**
+     * Returns an array with the element wise reversed division with [other].
+     *
+     * The reversed division is [other] / this.
+     *
+     * @throws IllegalArgumentException  if this and [other] don't have the same [size]
+     * @return an array containing the reversed division wise addition with [other].
+     */
+    fun rdiv(other: DoubleArray2D): DoubleArray2D = elementWise(this, other) { t, o -> o / t }
+
+    /**
+     * Returns an array with the element wise addition with [other].
+     */
+    override operator fun plus(other: Double): DoubleArray2D = elementWise { it + other }
+
+    /**
+     * Returns an array with the element wise subtraction with [other].
+     */
+    override operator fun minus(other: Double): DoubleArray2D = elementWise { it - other }
+
+    /**
+     * Returns an array with the element wise multiplication with [other].
+     */
+    override operator fun times(other: Double): DoubleArray2D = elementWise { it * other }
+
+    /**
+     * Returns an array with the element wise division with [other].
+     */
+    override operator fun div(other: Double): DoubleArray2D = elementWise { it / other }
+
+    /**
+     * Returns an array with the element wise reversed division with [other].
+     */
+    fun rdiv(other: Double): DoubleArray2D = elementWise { other / it }
+
+    /**
+     * Returns an array with the element wise addition with [other].
+     */
+    override operator fun plus(other: Int): DoubleArray2D = plus(other.toDouble())
+
+    /**
+     * Returns an array with the element wise subtraction with [other].
+     */
+    override operator fun minus(other: Int): DoubleArray2D = minus(other.toDouble())
+
+    /**
+     * Returns an array with the element wise multiplication with [other].
+     */
+    override operator fun times(other: Int): DoubleArray2D = times(other.toDouble())
+
+    /**
+     * Returns an array with the element wise division with [other].
+     */
+    override operator fun div(other: Int): DoubleArray2D = div(other.toDouble())
+
+    /**
+     * Returns an array with the element wise reversed division with [other].
+     */
+    fun rdiv(other: Int): DoubleArray2D = elementWise { other / it }
 
 }

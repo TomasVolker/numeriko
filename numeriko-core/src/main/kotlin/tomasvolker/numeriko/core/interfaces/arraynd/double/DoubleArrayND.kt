@@ -88,6 +88,25 @@ interface DoubleArrayND: NumericArrayND<Double> {
     fun elementWise(function: FunctionDtoD): DoubleArrayND =
             inlinedElementWise { function(it) }
 
+    operator fun plus (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t + o }
+    operator fun minus(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t - o }
+    operator fun times(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t * o }
+    operator fun div  (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t / o }
+
+
+    operator fun unaryPlus(): DoubleArrayND = this
+    operator fun unaryMinus(): DoubleArrayND = elementWise { -it }
+
+    operator fun plus (other: Double): DoubleArrayND = elementWise { it + other }
+    operator fun minus(other: Double): DoubleArrayND = elementWise { it - other }
+    operator fun times(other: Double): DoubleArrayND = elementWise { it * other }
+    operator fun div  (other: Double): DoubleArrayND = elementWise { it / other }
+
+    operator fun plus (other: Int): DoubleArrayND = elementWise { it + other }
+    operator fun minus(other: Int): DoubleArrayND = elementWise { it - other }
+    operator fun times(other: Int): DoubleArrayND = elementWise { it * other }
+    operator fun div  (other: Int): DoubleArrayND = elementWise { it / other }
+    
 }
 
 
