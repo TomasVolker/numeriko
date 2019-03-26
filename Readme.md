@@ -6,9 +6,6 @@ Modules:
 
 - numeriko-core: ArrayND interfaces and operation definitions along with a basic backend
 - numeriko-complex: Complex number implementation
-- kyscript: Utility library to generate and execute python scripts
-- kyplot: Plotting module backed by python's matplotlib
-- sandbox: Examples of use cases and experimental playground
 
 ## Build instructions
 
@@ -41,9 +38,7 @@ dependencies {
     
     // Complex arrays
     implementation group: "tomasvolker", name: "numeriko-complex", version: "0.0.1"
-        
-    // Plotting
-    implementation group: "tomasvolker", name: "kyplot", version: "0.0.1"
+    
 }
 
 ```
@@ -56,8 +51,6 @@ dependencies {
     // Complex arrays
     implementation(group = "tomasvolker", name = "numeriko-complex", version = "0.0.1")
     
-    // Plotting
-    implementation(group = "tomasvolker", name = "kyplot", version = "0.0.1")
 }
 ```
 

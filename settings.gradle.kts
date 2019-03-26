@@ -5,4 +5,4 @@ pluginManagement {
     }
 }
 
-include("numeriko-core", "numeriko-complex", "kyscript", "kyplot", "sandbox")
+include("numeriko-core", "numeriko-complex")
