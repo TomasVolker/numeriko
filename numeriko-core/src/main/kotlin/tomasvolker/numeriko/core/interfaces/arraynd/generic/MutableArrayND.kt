@@ -4,11 +4,11 @@ import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndexProgression
-import tomasvolker.numeriko.core.interfaces.array0d.generic.MutableArray0D
+import tomasvolker.numeriko.lowrank.interfaces.array0d.generic.MutableArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.MutableArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.MutableDoubleArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.MutableArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
 import tomasvolker.numeriko.core.preconditions.requireSameShape

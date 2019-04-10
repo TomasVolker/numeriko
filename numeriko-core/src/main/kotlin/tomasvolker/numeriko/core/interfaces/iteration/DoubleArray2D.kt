@@ -1,9 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.iteration
 
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
-import tomasvolker.numeriko.core.interfaces.factory.array2DOfNulls
-import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
 
 inline fun DoubleArray2D.inlinedForEachIndexed(function: (i0: Int, i1: Int, value: Double)->Unit) {
     val iterator = arrayIterator()

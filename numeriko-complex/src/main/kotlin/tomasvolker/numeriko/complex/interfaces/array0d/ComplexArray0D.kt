@@ -4,7 +4,7 @@ import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.arraynd.ComplexArrayND
 import tomasvolker.numeriko.complex.interfaces.factory.copy
 import tomasvolker.numeriko.complex.primitives.toComplex
-import tomasvolker.numeriko.core.interfaces.array0d.numeric.NumericArray0D
+import tomasvolker.numeriko.lowrank.interfaces.array0d.numeric.NumericArray0D
 import tomasvolker.numeriko.core.preconditions.rankError
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 

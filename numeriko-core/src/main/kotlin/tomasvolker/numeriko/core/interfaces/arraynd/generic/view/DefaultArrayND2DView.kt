@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic.view
 
-import tomasvolker.numeriko.core.interfaces.array2d.generic.view.DefaultMutableArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.view.DefaultMutableArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 
 class DefaultArrayND2DView<T>(

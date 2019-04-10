@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double.view
 
-import tomasvolker.numeriko.core.interfaces.array2d.double.view.DefaultMutableDoubleArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.view.DefaultMutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 
 class DefaultDoubleArrayND2DView(

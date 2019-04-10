@@ -1,12 +1,9 @@
 package tomasvolker.numeriko.core.functions
 
-import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
-import java.lang.IllegalArgumentException
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 
 fun DoubleArray1D.argmax(): Int {
     var resultIndex = 0

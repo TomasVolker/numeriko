@@ -2,7 +2,7 @@ package tomasvolker.numeriko.complex.interfaces.array0d
 
 import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
-import tomasvolker.numeriko.core.interfaces.array0d.numeric.MutableNumericArray0D
+import tomasvolker.numeriko.lowrank.interfaces.array0d.numeric.MutableNumericArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
 import tomasvolker.numeriko.core.preconditions.rankError
 import tomasvolker.numeriko.core.preconditions.requireValidIndices

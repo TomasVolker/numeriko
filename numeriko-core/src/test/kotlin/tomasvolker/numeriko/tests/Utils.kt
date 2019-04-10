@@ -2,8 +2,8 @@ package tomasvolker.numeriko.tests
 
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.forEachIndex
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 import kotlin.math.abs

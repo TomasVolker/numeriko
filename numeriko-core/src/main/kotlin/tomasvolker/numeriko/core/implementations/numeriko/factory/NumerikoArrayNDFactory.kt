@@ -1,24 +1,23 @@
 package tomasvolker.numeriko.core.implementations.numeriko.factory
 
-import tomasvolker.numeriko.core.implementations.numeriko.array0d.double.NumerikoDoubleArray0D
-import tomasvolker.numeriko.core.implementations.numeriko.array0d.generic.NumerikoArray0D
+import tomasvolker.numeriko.lowrank.implementations.array0d.double.NumerikoDoubleArray0D
+import tomasvolker.numeriko.lowrank.implementations.array0d.generic.NumerikoArray0D
 import tomasvolker.numeriko.core.implementations.numeriko.array1d.double.NumerikoDoubleArray1D
 import tomasvolker.numeriko.core.implementations.numeriko.array1d.generic.NumerikoArray1D
 import tomasvolker.numeriko.core.implementations.numeriko.array1d.integer.NumerikoIntArray1D
-import tomasvolker.numeriko.core.implementations.numeriko.array2d.double.NumerikoDoubleArray2D
-import tomasvolker.numeriko.core.implementations.numeriko.array2d.generic.NumerikoArray2D
+import tomasvolker.numeriko.lowrank.implementations.array2d.double.NumerikoDoubleArray2D
+import tomasvolker.numeriko.lowrank.implementations.array2d.generic.NumerikoArray2D
 import tomasvolker.numeriko.core.implementations.numeriko.arraynd.NumerikoArrayND
 import tomasvolker.numeriko.core.implementations.numeriko.arraynd.NumerikoDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
-import tomasvolker.numeriko.core.interfaces.array0d.generic.Array0D
+import tomasvolker.numeriko.lowrank.interfaces.array0d.double.DoubleArray0D
+import tomasvolker.numeriko.lowrank.interfaces.array0d.generic.Array0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
 
 

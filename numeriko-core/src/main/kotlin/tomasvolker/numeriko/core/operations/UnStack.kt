@@ -1,16 +1,14 @@
 package tomasvolker.numeriko.core.operations
 
 import tomasvolker.numeriko.core.dsl.I
-import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Size
 import tomasvolker.numeriko.core.index.until
-import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
+import tomasvolker.numeriko.lowrank.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.performance.forEach
-import java.lang.IllegalArgumentException
 
 
 @JvmName("stackN")

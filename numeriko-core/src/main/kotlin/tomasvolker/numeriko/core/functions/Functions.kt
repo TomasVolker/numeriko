@@ -4,10 +4,8 @@ import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
 import tomasvolker.numeriko.core.interfaces.array1d.double.sumBy
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.double.elementWise
-import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import kotlin.math.*
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.elementWise
 
 typealias RealFunction1 = (Double) -> Double
 

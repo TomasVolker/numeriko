@@ -6,10 +6,10 @@ import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndexProgression
-import tomasvolker.numeriko.core.interfaces.array0d.double.MutableDoubleArray0D
+import tomasvolker.numeriko.lowrank.interfaces.array0d.double.MutableDoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND

@@ -5,7 +5,7 @@ import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
 import tomasvolker.numeriko.complex.interfaces.array2d.view.DefaultMutableComplexArray2D
 import tomasvolker.numeriko.complex.primitives.Complex
-import tomasvolker.numeriko.core.interfaces.array2d.double.MutableDoubleArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.core.preconditions.requireValidAxis
 import tomasvolker.numeriko.core.preconditions.requireValidIndex
 import tomasvolker.numeriko.core.preconditions.requireValidIndexRange

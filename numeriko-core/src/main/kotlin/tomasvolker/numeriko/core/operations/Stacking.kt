@@ -2,14 +2,10 @@ package tomasvolker.numeriko.core.operations
 
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.factory.array2D
-import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
-import tomasvolker.numeriko.core.preconditions.requireSameSize
 import java.lang.IllegalArgumentException
 
 

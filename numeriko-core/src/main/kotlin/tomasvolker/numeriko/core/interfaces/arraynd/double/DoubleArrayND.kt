@@ -3,10 +3,10 @@ package tomasvolker.numeriko.core.interfaces.arraynd.double
 import tomasvolker.numeriko.core.functions.FunctionDtoD
 import tomasvolker.numeriko.core.functions.FunctionIADtoD
 import tomasvolker.numeriko.core.index.*
-import tomasvolker.numeriko.core.interfaces.array0d.double.DoubleArray0D
+import tomasvolker.numeriko.lowrank.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy

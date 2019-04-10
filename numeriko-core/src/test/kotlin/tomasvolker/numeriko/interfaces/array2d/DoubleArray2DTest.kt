@@ -3,10 +3,9 @@ package tomasvolker.numeriko.interfaces.array2d
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import tomasvolker.numeriko.core.dsl.D
-import tomasvolker.numeriko.core.functions.*
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.factory.*
-import tomasvolker.numeriko.core.interfaces.array2d.generic.isSquare
+import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.isSquare
 import tomasvolker.numeriko.tests.*
 import kotlin.random.Random
 import kotlin.test.assertFailsWith

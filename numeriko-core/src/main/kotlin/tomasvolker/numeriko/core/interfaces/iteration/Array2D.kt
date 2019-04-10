@@ -1,7 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.iteration
 
-import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
-import tomasvolker.numeriko.core.interfaces.factory.array2DOfNulls
+import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
 
 inline fun <T> Array2D<T>.inlinedForEachIndexed(function: (i0: Int, i1: Int, value: T)->Unit) {
     val iterator = arrayIterator()

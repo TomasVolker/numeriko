@@ -1,10 +1,8 @@
 package tomasvolker.numeriko.complex.interfaces.array2d.view
 
 import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
-import tomasvolker.numeriko.complex.primitives.Complex
-import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex0
-import tomasvolker.numeriko.core.interfaces.array2d.generic.lastIndex1
-import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
+import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.lastIndex0
+import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.lastIndex1
 
 class DefaultComplexArray2DView(
         val array: MutableComplexArray2D,
