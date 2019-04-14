@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double.view
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
-import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.view.ElementOrder
 

@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultMutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D

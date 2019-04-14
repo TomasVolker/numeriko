@@ -1,8 +1,8 @@
 package tomasvolker.numeriko.core.functions
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.forEachIndex
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 
 fun DoubleArray1D.argmax(): Int {

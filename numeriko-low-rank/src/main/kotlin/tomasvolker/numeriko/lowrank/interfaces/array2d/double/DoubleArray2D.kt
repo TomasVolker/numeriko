@@ -7,7 +7,7 @@ import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.lowrank.interfaces.array0d.double.DoubleArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.view.MutableDoubleArray2DLowerRankView
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.view.defaultDoubleArray2DView
 import tomasvolker.numeriko.lowrank.interfaces.array2d.numeric.NumericArray2D

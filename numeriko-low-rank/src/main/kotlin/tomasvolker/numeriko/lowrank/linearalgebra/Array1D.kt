@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.lowrank.linearalgebra
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.sumBy
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.sumBy
 import tomasvolker.numeriko.core.interfaces.factory.*
 import kotlin.math.abs
 import kotlin.math.pow

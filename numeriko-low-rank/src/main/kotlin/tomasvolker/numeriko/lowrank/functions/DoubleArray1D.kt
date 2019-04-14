@@ -1,8 +1,8 @@
 package tomasvolker.numeriko.lowrank.functions
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.*
-import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
-import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.*
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.forEachIndex
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.isNotEmpty
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 
 /**

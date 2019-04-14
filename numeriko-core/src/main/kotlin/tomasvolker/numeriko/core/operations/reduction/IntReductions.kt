@@ -1,7 +1,6 @@
 package tomasvolker.numeriko.core.operations.reduction
 
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 
 fun IntArray1D.product(): Int = fold(1) { acc, next -> acc * next }
 

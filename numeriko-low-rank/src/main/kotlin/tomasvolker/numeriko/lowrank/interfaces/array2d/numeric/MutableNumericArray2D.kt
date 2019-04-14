@@ -2,8 +2,8 @@ package tomasvolker.numeriko.lowrank.interfaces.array2d.numeric
 
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.lowrank.interfaces.array0d.numeric.MutableNumericArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.numeric.MutableNumericArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.MutableArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed

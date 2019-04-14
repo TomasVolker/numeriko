@@ -5,8 +5,8 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndexProgression
 import tomasvolker.numeriko.lowrank.interfaces.array0d.generic.MutableArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.MutableArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.MutableArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
@@ -26,10 +26,6 @@ import tomasvolker.numeriko.core.view.ElementOrder
  * @see ArrayND
  */
 interface MutableArrayND<T>: ArrayND<T> {
-
-    override fun as0D(): MutableArray0D<T> = DefaultArrayND0DView(this)
-    override fun as1D(): MutableArray1D<T> = DefaultArrayND1DView(this)
-    override fun as2D(): MutableArray2D<T> = DefaultArrayND2DView(this)
 
     override fun getView(vararg indices: IntProgression): MutableArrayND<T> =
             defaultArrayNDView(this, indices)
@@ -92,22 +88,5 @@ interface MutableArrayND<T>: ArrayND<T> {
 
     fun setView(value: ArrayND<T>, vararg indices: IndexProgression): Unit =
             setView(value, *Array(indices.size) { i -> indices[i].computeProgression(shape[i]) })
-
-    override fun lowerRank(axis: Int): MutableArrayND<T> =
-            DefaultArrayNDLowerRankView(this, axis)
-
-    override fun higherRank(axis: Int): MutableArrayND<T> =
-            DefaultArrayNDHigherRankView(this, axis)
-
-    override fun arrayAlongAxis(axis: Int, index: Int): MutableArrayND<T> =
-            getView(*Array(rank) { ax ->
-                if (ax == axis)
-                    IntRange(index, index).toIndexProgression()
-                else
-                    All
-            }).lowerRank(axis = axis)
-
-    override fun linearView(order: ElementOrder): MutableArray1D<T> =
-            DefaultArrayNDLinearView(this, order)
 
 }

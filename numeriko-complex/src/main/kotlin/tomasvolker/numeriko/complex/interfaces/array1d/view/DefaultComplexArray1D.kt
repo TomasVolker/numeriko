@@ -2,10 +2,10 @@ package tomasvolker.numeriko.complex.interfaces.array1d.view
 
 import tomasvolker.numeriko.complex.interfaces.array1d.ComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultEquals
-import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultHashCode
-import tomasvolker.numeriko.core.interfaces.array1d.generic.defaultToString
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.defaultEquals
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.defaultHashCode
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.defaultToString
 
 abstract class DefaultComplexArray1D: ComplexArray1D {
 

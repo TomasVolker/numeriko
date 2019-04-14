@@ -3,15 +3,12 @@ package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 import tomasvolker.numeriko.core.functions.DtoD
 import tomasvolker.numeriko.core.functions.FunctionDtoD
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoDoubleArray
-import tomasvolker.numeriko.core.implementations.numeriko.factory.NumerikoArrayNDFactory
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultMutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
-import tomasvolker.numeriko.core.operations.reduction.product
-import tomasvolker.numeriko.core.operations.reduction.remove
 import tomasvolker.numeriko.core.preconditions.*
 import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex

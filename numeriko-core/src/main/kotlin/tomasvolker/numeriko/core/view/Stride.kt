@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.core.view
 
-import tomasvolker.numeriko.core.interfaces.array1d.generic.lastIndex
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.lastIndex
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 
 
 sealed class ElementOrder {

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.factory.*
-import tomasvolker.numeriko.core.interfaces.array1d.generic.*
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 

@@ -8,9 +8,9 @@ import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
 import tomasvolker.numeriko.complex.interfaces.factory.copy
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
-import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.forEachIndex
+import tomasvolker.numeriko.lowrank.interfaces.array1d.numeric.MutableNumericArray1D
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import kotlin.math.cos
 import kotlin.math.sin

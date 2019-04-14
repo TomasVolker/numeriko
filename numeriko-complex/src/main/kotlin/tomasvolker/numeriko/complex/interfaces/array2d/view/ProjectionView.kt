@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.complex.interfaces.array2d.view
 
 import tomasvolker.numeriko.complex.interfaces.array2d.MutableComplexArray2D
-import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.view.DefaultMutableDoubleArray2D
 
 

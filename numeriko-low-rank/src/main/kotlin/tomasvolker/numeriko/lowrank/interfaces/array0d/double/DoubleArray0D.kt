@@ -3,7 +3,7 @@ package tomasvolker.numeriko.lowrank.interfaces.array0d.double
 import tomasvolker.numeriko.core.annotations.CompileTimeError
 import tomasvolker.numeriko.core.annotations.*
 import tomasvolker.numeriko.lowrank.interfaces.array0d.numeric.NumericArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.copy

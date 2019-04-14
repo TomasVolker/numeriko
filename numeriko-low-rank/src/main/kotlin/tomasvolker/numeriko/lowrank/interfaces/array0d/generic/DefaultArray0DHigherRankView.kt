@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.lowrank.interfaces.array0d.generic
 
-import tomasvolker.numeriko.core.interfaces.array1d.generic.view.DefaultMutableArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.view.DefaultMutableArray1D
 
 class DefaultArray0DHigherRankView<T> (
         val array: MutableArray0D<T>

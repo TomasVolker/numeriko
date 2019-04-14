@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.probability.vector
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.isSquare
 import kotlin.math.PI

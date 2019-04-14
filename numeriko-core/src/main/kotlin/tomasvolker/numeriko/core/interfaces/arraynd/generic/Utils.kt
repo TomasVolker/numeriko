@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
 import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 

@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.lowrank.interfaces.array0d.numeric
 
 import tomasvolker.numeriko.lowrank.interfaces.array0d.generic.MutableArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.numeric.MutableNumericArray1D
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 

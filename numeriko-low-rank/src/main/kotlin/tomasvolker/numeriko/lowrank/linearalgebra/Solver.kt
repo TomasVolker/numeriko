@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.lowrank.linearalgebra
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.indices0

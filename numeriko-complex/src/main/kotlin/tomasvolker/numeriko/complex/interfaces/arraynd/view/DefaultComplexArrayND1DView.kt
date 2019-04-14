@@ -3,7 +3,7 @@ package tomasvolker.numeriko.complex.interfaces.arraynd.view
 import tomasvolker.numeriko.complex.interfaces.array1d.view.DefaultMutableComplexArray1D
 import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
 import tomasvolker.numeriko.complex.primitives.Complex
-import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.numeric.MutableNumericArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.numeric.MutableNumericArray2D
 
 class DefaultComplexArrayND1DView(

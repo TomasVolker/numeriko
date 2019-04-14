@@ -1,9 +1,9 @@
 package tomasvolker.numeriko.core.functions
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.elementWise
-import tomasvolker.numeriko.core.interfaces.array1d.double.sumBy
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.elementWise
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.sumBy
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.elementWise
 

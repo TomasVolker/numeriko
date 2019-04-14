@@ -4,10 +4,12 @@ import tomasvolker.numeriko.core.functions.FunctionDtoD
 import tomasvolker.numeriko.core.functions.FunctionIADtoD
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.lowrank.interfaces.array0d.double.DoubleArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedElementWise
@@ -15,19 +17,12 @@ import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEach
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
 import tomasvolker.numeriko.core.view.ElementOrder
 
-interface DoubleArrayND: NumericArrayND<Double> {
-
-    override fun cast(value: Number): Double = value.toDouble()
+interface DoubleArrayND: ArrayND<Double> {
 
     operator fun get(vararg indices: Int): Double = getDouble(indices)
 
     override fun getValue(indices: IntArray): Double = getDouble(indices)
 
-    override fun getDouble(indices: IntArray): Double
-    override fun getFloat (indices: IntArray): Float  = getDouble(indices).toFloat()
-    override fun getLong  (indices: IntArray): Long   = getDouble(indices).toLong()
-    override fun getInt   (indices: IntArray): Int    = getDouble(indices).toInt()
-    override fun getShort (indices: IntArray): Short  = getDouble(indices).toShort()
 
     fun get(): Double = getDouble(intArrayOf())
     operator fun get(i0: Int): Double = getDouble(intArrayOf(i0))
@@ -41,11 +36,7 @@ interface DoubleArrayND: NumericArrayND<Double> {
 
     override fun toDoubleArrayND(): DoubleArrayND = copy()
 
-    operator fun get(indices: IntArray1D): Double = getDouble(indices)
-
-    override fun as0D(): DoubleArray0D = DefaultDoubleArrayND0DView(this.asMutable())
-    override fun as1D(): DoubleArray1D = DefaultDoubleArrayND1DView(this.asMutable())
-    override fun as2D(): DoubleArray2D = DefaultDoubleArrayND2DView(this.asMutable())
+    operator fun get(indices: IntArrayND): Double = getDouble(indices)
 
     override fun getView(vararg indices: IntProgression): DoubleArrayND =
             defaultDoubleArrayNDView(this.asMutable(), indices)

@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.core.preconditions
 
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.isNotEmpty
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.isNotEmpty
 
 internal const val rankError1DMessage = "Array is known to be rank 1D in compile time"
 

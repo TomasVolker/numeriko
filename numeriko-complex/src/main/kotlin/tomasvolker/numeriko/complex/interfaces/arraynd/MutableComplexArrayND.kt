@@ -8,7 +8,7 @@ import tomasvolker.numeriko.complex.interfaces.arraynd.view.*
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndexProgression
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.MutableNumericArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 import tomasvolker.numeriko.core.preconditions.requireSameShape

@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.core.operations
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.Array1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.factory.array2D

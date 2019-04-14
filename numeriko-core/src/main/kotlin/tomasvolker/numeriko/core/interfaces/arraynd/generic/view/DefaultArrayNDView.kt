@@ -1,15 +1,16 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic.view
 
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 
 class DefaultArrayNDView<T>(
         val array: MutableArrayND<T>,
-        val offset: IntArray1D,
-        override val shape: IntArray1D,
-        val stride: IntArray1D
+        val offset: IntArrayND,
+        override val shape: IntArrayND,
+        val stride: IntArrayND
 ) : DefaultMutableArrayND<T>() {
 
     init {

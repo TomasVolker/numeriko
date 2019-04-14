@@ -1,9 +1,8 @@
 package tomasvolker.numeriko.core.operations
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 
 
 infix fun DoubleArray1D.concat(other: DoubleArray1D) = concatenate(other)

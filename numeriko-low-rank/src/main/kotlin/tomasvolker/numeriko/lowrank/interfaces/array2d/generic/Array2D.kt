@@ -6,9 +6,9 @@ import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.lowrank.interfaces.array0d.generic.Array0D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.IntVector2
-import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.intVector2
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.lowdim.integer.IntVector2
+import tomasvolker.numeriko.lowrank.interfaces.array1d.lowdim.integer.intVector2
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.view.DefaultArray2DLowerRankView
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.view.defaultArray2DView
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND

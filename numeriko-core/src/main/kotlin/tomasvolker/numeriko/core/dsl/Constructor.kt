@@ -1,10 +1,10 @@
 package tomasvolker.numeriko.core.dsl
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.IntVector2
-import tomasvolker.numeriko.core.interfaces.array1d.lowdim.integer.MutableIntVector2
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.lowdim.integer.IntVector2
+import tomasvolker.numeriko.lowrank.interfaces.array1d.lowdim.integer.MutableIntVector2
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.factory.*

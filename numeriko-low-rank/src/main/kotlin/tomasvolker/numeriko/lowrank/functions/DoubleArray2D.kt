@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.lowrank.functions
 
 import tomasvolker.numeriko.lowrank.interfaces.array0d.double.DoubleArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.*
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.view.DefaultMutableDoubleArray2DTransposeView
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.forEachIndex

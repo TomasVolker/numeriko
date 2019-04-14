@@ -8,7 +8,7 @@ import tomasvolker.numeriko.complex.interfaces.arraynd.view.*
 import tomasvolker.numeriko.complex.interfaces.factory.copy
 import tomasvolker.numeriko.complex.primitives.toComplex
 import tomasvolker.numeriko.core.index.*
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
 import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND

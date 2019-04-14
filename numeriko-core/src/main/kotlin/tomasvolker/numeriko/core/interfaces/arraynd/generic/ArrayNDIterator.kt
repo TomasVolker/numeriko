@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.asIntArray1D
 import tomasvolker.numeriko.core.interfaces.iteration.indexIncrement
 
@@ -9,7 +9,7 @@ interface ArrayNDIterator<out T>: Iterator<T> {
     var currentIndexArray: IntArray
     val shapeArray: IntArray
 
-    var currentIndex: IntArray1D
+    var currentIndex: IntArrayND
         get() = currentIndexArray.asIntArray1D()
         set(value) { currentIndexArray = value.toIntArray() }
 

@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.lowrank.interfaces.array0d.double
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
 
 class DefaultDoubleArray0DHigherRankView (
         val array: MutableDoubleArray0D

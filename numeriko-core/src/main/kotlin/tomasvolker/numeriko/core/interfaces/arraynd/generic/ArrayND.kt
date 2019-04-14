@@ -1,19 +1,10 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.core.config.NumerikoConfig
-import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.index.toIndexProgression
-import tomasvolker.numeriko.lowrank.interfaces.array0d.generic.Array0D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.operations.reduction.product
-import tomasvolker.numeriko.core.view.ElementOrder
 
 /**
  * The parent interface of all N-dimensional arrays.
@@ -48,7 +39,7 @@ interface ArrayND<out T>: Collection<T> {
      * `D[D[1, 2, 3], D[4, 5, 6]].shape == I[2, 3]`
      *
      */
-    val shape: IntArray1D
+    val shape: IntArrayND
 
     /**
      * Gets the shape on the given [axis].
@@ -65,8 +56,7 @@ interface ArrayND<out T>: Collection<T> {
      *
      * This is equivalent to the product of the elements of the [shape].
      */
-    override val size: Int get() = shape.product()
-
+    override val size: Int get() = shape.fold(1) { acc, next -> acc * next}
 
     override fun contains(element: @UnsafeVariance T): Boolean =
             any { it == element }
@@ -98,105 +88,19 @@ interface ArrayND<out T>: Collection<T> {
     fun getValue(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): T = getValue(intArrayOf(i0, i1, i2, i3, i4))
     fun getValue(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): T = getValue(intArrayOf(i0, i1, i2, i3, i4, i5))
 
-    /**
-     * Returns the element in the given indices.
-     *
-     * The size of [indices] has to be the same as [rank], if not an exception is thrown.
-     *
-     * @param indices  the indices of the element to retrieve, must be of the same size as [rank]
-     * @return the element at the given [indices]
-     * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
-     * @throws IndexOutOfBoundsException  if the indices are out of bounds
-     */
-    fun getValue(indices: IntArray1D): T = getValue(indices.toIntArray())
-
-    /**
-     * Returns the element in the given indices.
-     *
-     * The size of [indices] has to be the same as [rank], if not an exception is thrown.
-     * This indices are instances of the class [Index] which can represent relative positions such
-     * as [First], [Last] or [Size].
-     *
-     * @param indices  the indices of the element to retrieve, must be of the same size as [rank]
-     * @return the element at the given [indices]
-     * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
-     * @throws IndexOutOfBoundsException  if the indices are out of bounds
-     */
-    fun getValue(vararg indices: Index): T = getValue(indices.computeIndices())
-
-    fun as0D(): Array0D<T> = DefaultArrayND0DView(this.asMutable())
-    fun as1D(): Array1D<T> = DefaultArrayND1DView(this.asMutable())
-    fun as2D(): Array2D<T> = DefaultArrayND2DView(this.asMutable())
-
-    /**
-     * Returns a view of the array on the given index progressions.
-     *
-     * The size of [indices] has to be the same as [rank], if not an exception is thrown.
-     * This indices are instances of the class [IntProgression] which can represent ranges with a certain step.
-     * The returned [ArrayND] has the same rank as this one.
-     *
-     * @param indices  the index progressions of the view to retrieve, must be of the same size as [rank]
-     * @return an [ArrayND] instance representing a view to the given index progressions
-     * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
-     * @throws IndexOutOfBoundsException  if some of the progressions are out of bounds
-     */
-    fun getView(vararg indices: IntProgression): ArrayND<T> =
-            defaultArrayNDView<T>(this.asMutable(), indices)
-
-    /**
-     * Returns a view of the array on the given index progressions.
-     *
-     * The size of [indices] has to be the same as [rank], if not an exception is thrown.
-     * This indices are instances of the class [IndexProgression] which can represent relative ranges with a certain
-     * step, such as `Size/2..Last` or `All`.
-     * The returned [ArrayND] has the same rank as this one.
-     *
-     * @param indices  the index progressions of the view to retrieve, must be of the same size as [rank]
-     * @return an [ArrayND] instance representing a view to the given index progressions
-     * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
-     * @throws IndexOutOfBoundsException  if some of the progressions are out of bounds
-     */
-    fun getView(vararg indices: IndexProgression): ArrayND<T> = getView(*indices.computeIndices())
-
-    fun linearView(order: ElementOrder = NumerikoConfig.defaultElementOrder): Array1D<T> =
-            DefaultArrayNDLinearView(this.asMutable(), order)
-
-    /**
-     * Returns a view of this array without the given [axis].
-     *
-     * The [axis] parameter must correspond to an axis with size <= 1 (`shape(axis) <= 1)`.
-     */
-    fun lowerRank(axis: Int = 0): ArrayND<T> =
-            DefaultArrayNDLowerRankView(this.asMutable(), axis)
-
-    /**
-     * Returns a higher rank view with size 1 on [axis].
-     *
-     * The [axis] parameter must be between 0 and size (inclusive)
-     */
-    fun higherRank(axis: Int = 0): ArrayND<T> =
-            DefaultArrayNDHigherRankView(this.asMutable(), axis)
-
-    fun arrayAlongAxis(axis: Int, index: Int): ArrayND<T> =
-            getView(*Array(rank) { ax ->
-                if (ax == axis) IntRange(index, index).toIndexProgression() else All
-            }).lowerRank(axis = axis)
-
-    fun Array<out Index>.computeIndices(): IntArray =
-            IntArray(size) { i -> this[i].computeValue(shape(i)) }
-
-    fun Array<out IndexProgression>.computeIndices(): Array<IntProgression> =
-            Array(size) { i -> this[i].computeProgression(shape(i)) }
-
-    fun Int.compute(axis: Int): Int = this
-    fun IntProgression.compute(axis: Int): IntProgression = this
-    fun Index.compute(axis: Int): Int = this.computeValue(shape(axis))
-    fun IndexProgression.compute(axis: Int): IntProgression = this.computeProgression(shape(axis))
+    fun getSlice(
+            start: IntArray,
+            end: IntArray,
+            stride: IntArray,
+            newAxisMask: BooleanArray,
+            ellipsisMask: BooleanArray,
+            shrinkMask: BooleanArray
+    ): ArrayND<T>
 
     /**
      * Returns a copy of this [ArrayND].
      */
-    fun copy(): ArrayND<T> = copy(this)
+    fun copy(): ArrayND<T> = TODO() //copy(this)
 
     override fun iterator(): Iterator<T> = arrayIterator()
     fun arrayIterator(): ArrayNDIterator<T> = DefaultArrayNDIterator(this)

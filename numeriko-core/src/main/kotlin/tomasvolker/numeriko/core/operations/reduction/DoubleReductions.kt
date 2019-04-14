@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.core.operations.reduction
 
 import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.indices0
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.indices1

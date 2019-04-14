@@ -3,7 +3,7 @@ package tomasvolker.numeriko.complex.interfaces.arraynd.view
 import tomasvolker.numeriko.complex.interfaces.array0d.DefaultMutableComplexArray0D
 import tomasvolker.numeriko.complex.interfaces.arraynd.MutableComplexArrayND
 import tomasvolker.numeriko.complex.primitives.Complex
-import tomasvolker.numeriko.core.interfaces.array1d.numeric.MutableNumericArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.numeric.MutableNumericArray1D
 
 class DefaultComplexArrayND0DView(
         val array: MutableComplexArrayND

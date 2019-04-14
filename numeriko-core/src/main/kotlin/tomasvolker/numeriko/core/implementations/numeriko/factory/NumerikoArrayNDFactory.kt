@@ -11,9 +11,9 @@ import tomasvolker.numeriko.core.implementations.numeriko.arraynd.NumerikoArrayN
 import tomasvolker.numeriko.core.implementations.numeriko.arraynd.NumerikoDoubleArrayND
 import tomasvolker.numeriko.lowrank.interfaces.array0d.double.DoubleArray0D
 import tomasvolker.numeriko.lowrank.interfaces.array0d.generic.Array0D
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND

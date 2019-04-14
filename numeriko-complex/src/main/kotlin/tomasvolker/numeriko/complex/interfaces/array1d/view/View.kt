@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.complex.interfaces.array1d.view
 
 import tomasvolker.numeriko.complex.interfaces.array1d.MutableComplexArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.view.DefaultMutableDoubleArray1D
 
 class ComplexArray1DRealView(
         val array: MutableComplexArray1D

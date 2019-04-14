@@ -2,7 +2,7 @@ package tomasvolker.numeriko.lowrank.implementations.array2d.double
 
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoDoubleArray
 import tomasvolker.numeriko.core.implementations.numeriko.array1d.double.NumerikoMutableDoubleArray1DView
-import tomasvolker.numeriko.core.interfaces.array1d.double.MutableDoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.MutableDoubleArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.MutableDoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.view.DefaultMutableDoubleArray2D

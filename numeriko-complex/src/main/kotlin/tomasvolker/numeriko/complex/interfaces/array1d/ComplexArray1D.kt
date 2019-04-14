@@ -11,8 +11,8 @@ import tomasvolker.numeriko.complex.interfaces.factory.copy
 import tomasvolker.numeriko.complex.transforms.fft.array1d.fft
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.numeric.NumericArray1D
 import tomasvolker.numeriko.core.preconditions.requireValidAxis
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import kotlin.math.atan2

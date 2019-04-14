@@ -1,0 +1,87 @@
+package tomasvolker.numeriko.core.interfaces.arraynd.integer
+
+import tomasvolker.numeriko.core.functions.FunctionDtoD
+import tomasvolker.numeriko.core.functions.FunctionIADtoD
+import tomasvolker.numeriko.core.index.*
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.lowrank.interfaces.array0d.double.DoubleArray0D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.view.*
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.numeric.NumericArrayND
+import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedElementWise
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEach
+import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.view.ElementOrder
+
+interface IntArrayND: ArrayND<Int> {
+
+    operator fun get(vararg indices: Int): Double = getInt(indices)
+
+    override fun getValue(indices: IntArray): Int = getInt(indices)
+
+    fun get(): Int = getInt(intArrayOf())
+    operator fun get(i0: Int): Int = getInt(intArrayOf(i0))
+    operator fun get(i0: Int, i1: Int): Int = getInt(intArrayOf(i0, i1))
+    operator fun get(i0: Int, i1: Int, i2: Int): Int = getInt(intArrayOf(i0, i1, i2))
+    operator fun get(i0: Int, i1: Int, i2: Int, i3: Int): Int = getInt(intArrayOf(i0, i1, i2, i3))
+    operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): Int = getInt(intArrayOf(i0, i1, i2, i3, i4))
+    operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): Int = getInt(intArrayOf(i0, i1, i2, i3, i4, i5))
+
+    fun getInt(vararg indices: Index): Double = getInt(indices.computeIndices())
+
+    operator fun get(indices: IntArrayND): Double = getInt(indices)
+
+    override fun getView(vararg indices: IntProgression): IntArrayND =
+            defaultDoubleArrayNDView(this.asMutable(), indices)
+
+    override fun getView(vararg indices: IndexProgression): IntArrayND =
+            getView(*indices.computeIndices())
+
+    override fun linearView(order: ElementOrder): IntArrayND =
+            DefaultDoubleArrayNDLinearView(this.asMutable(), order)
+
+    override fun copy(): DoubleArrayND = copy(this)
+
+    override fun iterator(): DoubleIterator = arrayIterator()
+    override fun arrayIterator(): IntArrayNDIterator = DefaultIntArrayNDIterator(this)
+
+    override fun asMutable(): MutableDoubleArrayND = this as MutableDoubleArrayND
+
+    fun forEach(function: FunctionDtoD) {
+        inlinedForEach { function(it) }
+    }
+
+    fun forEachIndexed(function: FunctionIADtoD) {
+        inlinedForEachIndexed { indices, value ->  function(indices, value) }
+    }
+
+    fun elementWise(function: FunctionDtoD): DoubleArrayND =
+            inlinedElementWise { function(it) }
+
+    operator fun plus (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t + o }
+    operator fun minus(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t - o }
+    operator fun times(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t * o }
+    operator fun div  (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t / o }
+
+
+    operator fun unaryPlus(): DoubleArrayND = this
+    operator fun unaryMinus(): DoubleArrayND = elementWise { -it }
+
+    operator fun plus (other: Double): DoubleArrayND = elementWise { it + other }
+    operator fun minus(other: Double): DoubleArrayND = elementWise { it - other }
+    operator fun times(other: Double): DoubleArrayND = elementWise { it * other }
+    operator fun div  (other: Double): DoubleArrayND = elementWise { it / other }
+
+    operator fun plus (other: Int): DoubleArrayND = elementWise { it + other }
+    operator fun minus(other: Int): DoubleArrayND = elementWise { it - other }
+    operator fun times(other: Int): DoubleArrayND = elementWise { it * other }
+    operator fun div  (other: Int): DoubleArrayND = elementWise { it / other }
+    
+}
+
+
+

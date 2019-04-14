@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.probability.continuous
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
 import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
 import kotlin.random.Random
 

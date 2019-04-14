@@ -2,7 +2,7 @@ package tomasvolker.numeriko.lowrank.interfaces.array2d.numeric
 
 import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.lowrank.interfaces.array0d.numeric.NumericArray0D
-import tomasvolker.numeriko.core.interfaces.array1d.numeric.NumericArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.numeric.NumericArray1D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
 import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
 import tomasvolker.numeriko.core.preconditions.requireValidIndices

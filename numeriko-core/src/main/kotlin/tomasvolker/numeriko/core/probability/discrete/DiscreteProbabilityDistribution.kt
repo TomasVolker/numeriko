@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.probability.discrete
 
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.factory.intArray1D
 import kotlin.math.floor
 import kotlin.math.roundToInt

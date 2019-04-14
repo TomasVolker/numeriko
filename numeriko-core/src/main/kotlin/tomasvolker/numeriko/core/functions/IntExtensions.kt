@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.core.functions
 
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.elementWise
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.elementWise
 
 operator fun Int.times(array: IntArray1D): IntArray1D = array * this
 

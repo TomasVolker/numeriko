@@ -2,8 +2,8 @@ package tomasvolker.numeriko.lowrank.interfaces.array0d.generic
 
 import tomasvolker.numeriko.core.annotations.CompileTimeError
 import tomasvolker.numeriko.core.annotations.Level
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.preconditions.requireValidAxis
 import tomasvolker.numeriko.core.preconditions.requireValidIndices

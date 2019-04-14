@@ -3,8 +3,8 @@ package tomasvolker.numeriko.complex.interfaces.array1d
 import tomasvolker.numeriko.complex.primitives.Complex
 import tomasvolker.numeriko.complex.interfaces.factory.complexZeros
 import tomasvolker.numeriko.complex.primitives.toComplex
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
+import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
+import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.indices
 import tomasvolker.numeriko.core.preconditions.requireSameSize
 
 inline fun ComplexArray1D.elementWise(
