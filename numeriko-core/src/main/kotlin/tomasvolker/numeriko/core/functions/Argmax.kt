@@ -1,10 +1,6 @@
 package tomasvolker.numeriko.core.functions
 
-import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.forEachIndex
-import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
-
+/*
 fun DoubleArray1D.argmax(): Int {
     var resultIndex = 0
     var resultValue = Double.NEGATIVE_INFINITY
@@ -24,3 +20,4 @@ fun DoubleArray2D.reduceArgmax(axis: Int = 0): IntArray1D = when(axis) {
     1 -> intArray1D(shape0) { i -> this[i, All].argmax() }
     else -> throw IllegalArgumentException("axis out of bounds")
 }
+*/

@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
 import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 
 fun ArrayND<*>.defaultEquals(other: ArrayND<*>): Boolean {
 
@@ -42,3 +43,13 @@ fun ArrayND<*>.defaultToString(): String =
                             postfix = " ]"
                     )
         }
+
+fun <T> ArrayND<T>.arrayAlongAxis(axis: Int, index: Int): ArrayND<T> =
+        getPermutationSlice(
+                PermutedSlice(
+                        permutation = IntArray(rank-1) { a -> if (a < axis) a else a+1 },
+                        shape = IntArray(rank-1) { a -> if (a < axis) shape(a) else shape(a+1) },
+                        strides = IntArray(rank-1) { 1 },
+                        origin = IntArray(rank) { a -> if (a == axis) index else 0 }
+                )
+        )

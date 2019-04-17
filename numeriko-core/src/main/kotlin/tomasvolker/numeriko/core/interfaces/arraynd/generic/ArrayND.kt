@@ -1,10 +1,9 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.core.index.Index
-import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 
 /**
  * The parent interface of all N-dimensional arrays.
@@ -80,6 +79,8 @@ interface ArrayND<out T>: Collection<T> {
      */
     fun getValue(indices: IntArray): T
 
+    fun getValue(indices: IntArrayND): T = getValue(indices.toIntArray())
+
     fun getValue(): T = getValue(intArrayOf())
     fun getValue(i0: Int): T = getValue(intArrayOf(i0))
     fun getValue(i0: Int, i1: Int): T = getValue(intArrayOf(i0, i1))
@@ -88,19 +89,29 @@ interface ArrayND<out T>: Collection<T> {
     fun getValue(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int): T = getValue(intArrayOf(i0, i1, i2, i3, i4))
     fun getValue(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): T = getValue(intArrayOf(i0, i1, i2, i3, i4, i5))
 
-    fun getSlice(
-            start: IntArray,
-            end: IntArray,
-            stride: IntArray,
-            newAxisMask: BooleanArray,
-            ellipsisMask: BooleanArray,
-            shrinkMask: BooleanArray
-    ): ArrayND<T>
+    /**
+     * Low level array permutation.
+     *
+     * This function returns a view implementing an arbitrary permutation and slicing.
+     *
+     * @param array The backing array
+     * @param permutation Array of size `shape.size` containing the axes on the backing array corresponding to the axes
+     * on the view. If `permutation[a] < 0` then `shape[a] == 1`.
+     * @param shape The shape of the resulting view
+     * @param strides Array of size `shape.size` containing the stride corresponding to each dimension.
+     * @param origin Array of size `array.rank` containing the indices on `array` corresponding to all zeros in the view
+     */
+    fun getPermutationSlice(
+            permutation: PermutedSlice
+    ): ArrayND<T> = DefaultPermutedSliceArrayND(
+            array = this.asMutable(),
+            permutedSlice = permutation
+    )
 
     /**
      * Returns a copy of this [ArrayND].
      */
-    fun copy(): ArrayND<T> = TODO() //copy(this)
+    fun copy(): ArrayND<T> = copy(this)
 
     override fun iterator(): Iterator<T> = arrayIterator()
     fun arrayIterator(): ArrayNDIterator<T> = DefaultArrayNDIterator(this)

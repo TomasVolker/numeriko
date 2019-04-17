@@ -1,13 +1,13 @@
-package tomasvolker.numeriko.core.interfaces.arraynd.double
+package tomasvolker.numeriko.core.interfaces.arraynd.integer
 
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayNDIterator
 import tomasvolker.numeriko.core.interfaces.iteration.indexIncrement
 
-abstract class DoubleArrayNDIterator: DoubleIterator(), ArrayNDIterator<Double>
+abstract class IntArrayNDIterator: IntIterator(), ArrayNDIterator<Int>
 
-class DefaultDoubleArrayNDIterator(
-        val array: DoubleArrayND
-): DoubleArrayNDIterator() {
+class DefaultIntArrayNDIterator(
+        val array: IntArrayND
+): IntArrayNDIterator() {
 
     override var currentIndexArray = IntArray(array.rank) { 0 }
     override var shapeArray = IntArray(array.rank) { i -> array.shape(i) }
@@ -16,8 +16,8 @@ class DefaultDoubleArrayNDIterator(
 
     override fun hasNext(): Boolean = !overflow
 
-    override fun nextDouble(): Double =
-            array.getDouble(currentIndexArray).also {
+    override fun nextInt(): Int =
+            array.getInt(currentIndexArray).also {
                 overflow = currentIndexArray.indexIncrement(shapeArray)
             }
 

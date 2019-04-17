@@ -3,21 +3,20 @@ package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 import tomasvolker.numeriko.core.functions.DtoD
 import tomasvolker.numeriko.core.functions.FunctionDtoD
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoDoubleArray
-import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultMutableDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.operations.reduction.product
 import tomasvolker.numeriko.core.preconditions.*
 import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex
 
 class NumerikoDoubleArrayND(
-        override val shape: IntArray1D,
+        override val shape: IntArrayND,
         val data: DoubleArray,
         val offset: Int = 0,
-        val strideArray: IntArray = ContiguousLastAxis.strideArray(shape)
+        val strideArray: IntArray = ContiguousLastAxis.strideArray(shape.toIntArray())
 ): DefaultMutableDoubleArrayND(), NumerikoDoubleArray {
 
     override val backingArray: DoubleArray
@@ -112,29 +111,6 @@ class NumerikoDoubleArrayND(
     override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, value: Double) {
         requireValidIndices(i0, i1, i2, i3, i4, i5)
         data[convertIndices(i0, i1, i2, i3, i4, i5)] = value
-    }
-
-    override fun getView(vararg indices: IntProgression): MutableDoubleArrayND {
-        requireRank(indices.size)
-        for (axis in 0 until rank) {
-            requireValidIndexRange(indices[axis], axis = axis)
-        }
-        return NumerikoDoubleArrayND(
-                shape = intArray1D(rank) { axis -> indices[axis].count() },
-                data = data,
-                offset = convertIndices(IntArray(rank) { axis -> indices[axis].first }),
-                strideArray = IntArray(rank) { axis -> indices[axis].step * strideArray[axis] }
-        )
-    }
-
-    override fun lowerRank(axis: Int): MutableDoubleArrayND {
-        require(shape(axis) <= 1)
-        return NumerikoDoubleArrayND(
-                shape = shape.remove(axis),
-                data = data,
-                offset = convertIndices(IntArray(rank) { 0 }),
-                strideArray = IntArray(rank-1) { i -> if (i < axis) strideArray[i] else strideArray[i+1] }
-        )
     }
 
     private fun convertIndices(indices: IntArray): Int =

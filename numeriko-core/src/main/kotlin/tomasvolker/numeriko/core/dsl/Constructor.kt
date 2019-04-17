@@ -1,48 +1,38 @@
 package tomasvolker.numeriko.core.dsl
 
-import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.lowrank.interfaces.array1d.lowdim.integer.IntVector2
-import tomasvolker.numeriko.lowrank.interfaces.array1d.lowdim.integer.MutableIntVector2
-import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.operations.stack
 
 object A {
 
-    operator fun <T> get(vararg values: T): Array1D<T> =
-            values.asArray1D()
+    operator fun <T> get(vararg values: T): ArrayND<T> =
+            values.asArrayND()
 
-    inline operator fun <reified T> get(vararg values: Array1D<T>): Array2D<T> =
-            stack(*values)
+    operator fun get(vararg values: Int): IntArrayND =
+            values.asIntArrayND()
 
-    operator fun get(vararg values: Int): IntArray1D =
-            values.asIntArray1D()
+    operator fun get(vararg values: Double): DoubleArrayND =
+            values.asDoubleArrayND()
 
-    operator fun get(vararg values: Double): DoubleArray1D =
-            values.asDoubleArray1D()
-
-    operator fun get(vararg values: DoubleArray1D): DoubleArray2D =
-            stack(*values, axis = 0)
+    operator fun <T> get(vararg values: ArrayND<T>): ArrayND<T> = values.toList().stack()
 
 }
 
 object D {
 
-    operator fun get(vararg values: Number): DoubleArray1D = values.asDoubleArray1D()
+    operator fun get(vararg values: Number): DoubleArrayND =
+            values.map { it.toDouble() }.toDoubleArray().asDoubleArrayND()
 
-    operator fun get(vararg values: DoubleArray1D): DoubleArray2D = stack(*values)
+    //operator fun get(vararg values: DoubleArrayND): DoubleArrayND = values.toList().stack()
 
 }
 
 object I {
 
-    operator fun get(value0: Int, value1: Int): IntVector2 =
-            MutableIntVector2(value0, value1)
-
-    operator fun get(vararg values: Int): IntArray1D =
-            values.asIntArray1D()
+    operator fun get(vararg values: Int): IntArrayND =
+            values.asIntArrayND()
 
 }

@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 
 val ArrayND<*>.volume get(): Int = size
@@ -16,6 +16,6 @@ fun ArrayND<*>.indices(axis: Int): IntRange = 0 until shape(axis)
  * This function provides a copy of each index on each iteration.
  * For faster iteration use [unsafeForEachIndices].
  */
-inline fun ArrayND<*>.forEachIndices(block: (indices: IntArray1D)->Unit) =
-        fastForEachIndices { indices -> block(indices.toIntArray1D()) }
+inline fun ArrayND<*>.forEachIndices(block: (indices: IntArrayND)->Unit) =
+        fastForEachIndices { indices -> block(indices.toIntArrayND()) }
 

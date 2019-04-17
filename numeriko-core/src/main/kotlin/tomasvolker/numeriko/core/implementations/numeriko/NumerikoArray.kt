@@ -11,3 +11,9 @@ interface NumerikoDoubleArray {
     val backingArray: DoubleArray
 
 }
+
+interface NumerikoIntArray {
+
+    val backingArray: IntArray
+
+}

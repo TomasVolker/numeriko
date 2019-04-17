@@ -1,9 +1,34 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic.view
 
+import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
+import tomasvolker.numeriko.core.interfaces.slicing.*
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
+
+
+class DefaultPermutedSliceArrayND<T>(
+        val array: MutableArrayND<T>,
+        val permutedSlice: PermutedSlice
+): DefaultMutableArrayND<T>() {
+
+
+    override val shape: IntArrayND = permutedSlice.shape.toIntArrayND()
+
+    override fun getValue(indices: IntArray): T {
+        requireValidIndices(indices)
+        return array.getValue(permutedSlice.convert(indices))
+    }
+
+    override fun setValue(indices: IntArray, value: T) {
+        requireValidIndices(indices)
+        array.setValue(permutedSlice.convert(indices), value)
+    }
+
+}
+
 
 // Non parallelizable
 inline fun <T> arrayNDView(
@@ -29,64 +54,26 @@ inline fun <T> arrayNDView(
 
 }
 
-sealed class SliceEntry
-
-object NewAxis: SliceEntry()
-
-class Shrink(
-        val axis: Int,
-        val index: Int
-): SliceEntry()
-
-class Range(
-        val axis: Int,
-        val start: Int,
-        val end: Int,
-        val stride: Int = 1
-): SliceEntry() {
-
-    val count get() = (start - end) / stride
-
-}
 
 fun <T> defaultArrayNDSlice(
         array: MutableArrayND<T>,
         first: List<SliceEntry>,
         last: List<SliceEntry>
 ): ArrayND<T> {
+    val accessedAxes = first.count { it !is NewAxis } + last.count { it !is NewAxis }
+    val remaining = accessedAxes - array.rank
+    return defaultArrayNDSlice(
+            array = array,
+            entries = first + List(remaining) { Range(All) } + last
+    )
+}
 
-    val resultShape =  mutableListOf<Int>()
-
-    val axisList = MutableList(array.rank) { i -> i }
-
-    (first + last).forEach { entry ->
-        when(entry) {
-            is Shrink -> axisList.remove(entry.axis)
-            is Range -> axisList.remove(entry.axis)
-        }
-    }
-
-    first.forEach { entry ->
-        when(entry) {
-            is NewAxis -> 1
-            is Shrink -> null
-            is Range -> entry.count
-        }?.let { resultShape.add(it) }
-    }
-
-    axisList.forEach {
-        resultShape.add(array.shape(it))
-    }
-
-    last.forEach { entry ->
-        when(entry) {
-            is NewAxis -> 1
-            is Shrink -> null
-            is Range -> entry.count
-        }?.let { resultShape.add(it) }
-    }
-
-    return arrayNDView(array, resultShape.toIntArray()) { indices ->
-
-    }
+fun <T> defaultArrayNDSlice(
+        array: MutableArrayND<T>,
+        entries: List<SliceEntry>
+): ArrayND<T> {
+    return DefaultPermutedSliceArrayND(
+            array = array,
+            permutedSlice = permutedSlice(array, entries)
+    )
 }

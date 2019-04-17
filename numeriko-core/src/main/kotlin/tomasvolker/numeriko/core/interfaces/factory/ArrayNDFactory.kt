@@ -3,195 +3,80 @@
 package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
-import tomasvolker.numeriko.lowrank.interfaces.array0d.double.DoubleArray0D
-import tomasvolker.numeriko.lowrank.interfaces.array0d.generic.Array0D
-import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.*
-import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
-import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.forEachIndex
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
-import tomasvolker.numeriko.core.primitives.indicator
-import kotlin.random.Random
+import tomasvolker.numeriko.core.operations.reduction.product
 
 interface ArrayNDFactory {
 
-    fun <T> array0D(value: T): Array0D<T>
-
-    fun <T> array1D(data: Array<T>): Array1D<T>
-
-    fun <T> array2D(shape0: Int, shape1: Int, data: Array<T>): Array2D<T>
-
-    fun <T> arrayND(shape: IntArray1D, data: Array<T>): ArrayND<T>
-
-    // Copy
-
-    fun <T> copy(array: Array0D<T>): Array0D<T> =
-            array0D(array.getValue())
-
-    fun <T> copy(array: Array1D<T>): Array1D<T> =
-            array1D(array.size) { i -> array.getValue(i) }
-
-    fun <T> copy(array: Array2D<T>): Array2D<T> =
-            array2D(array.shape0, array.shape1) { i0, i1 -> array.getValue(i0, i1) }
+    fun <T> arrayND(shape: IntArray, data: Array<T>): ArrayND<T>
 
     fun <T> copy(array: ArrayND<T>): ArrayND<T> =
             arrayND(array.shape) { indices -> array.getValue(indices) }
 
-    // Array Of Nulls
-
-    fun <T> array0DOfNull(): Array0D<T?> = array0D(null)
-
-    fun <T> array1DOfNulls(size: Int): Array1D<T?> =
-            array1D(arrayOfNulls<Any?>(size) as Array<T?>)
-
-    fun <T> array2DOfNulls(shape0: Int, shape1: Int): Array2D<T?> =
-            array2D(shape0, shape1, arrayOfNulls<Any?>(shape0*shape1) as Array<T?>)
-
-    fun <T> arrayNDOfNulls(shape: IntArray1D): ArrayND<T?> =
-            arrayND(shape, arrayOfNulls<Any?>(shape.product()) as Array<T?>)
-
-    // Int
-
-    fun intArray1D(data: IntArray): IntArray1D
-
-    fun copy(array: IntArray1D): IntArray1D =
-            intArray1D(array.size) { i -> array[i] }
-
-    fun intZeros(size: Int): IntArray1D =
-            intArray1D(IntArray(size) { 0 })
+    fun <T> arrayNDOfNulls(shape: IntArrayND): ArrayND<T?> =
+            arrayND(shape.toIntArray(), arrayOfNulls<Any?>(shape.product()) as Array<T?>)
 
     // Double
 
-    fun doubleArray0D(value: Double): DoubleArray0D
+    fun doubleArrayND(shape: IntArray, data: DoubleArray): DoubleArrayND
 
-    fun doubleArray1D(data: DoubleArray): DoubleArray1D
-
-    fun doubleArray2D(shape0: Int, shape1: Int, data: DoubleArray): DoubleArray2D
-
-    fun doubleArrayND(shape: IntArray1D, data: DoubleArray): DoubleArrayND
+    fun intArrayND(shape: IntArray, data: IntArray): IntArrayND
 
     // Copy
-
-    fun copy(array: DoubleArray0D): DoubleArray0D =
-            doubleArray0D(array.get())
-
-    fun copy(array: DoubleArray1D): DoubleArray1D =
-            doubleArray1D(array.size) { i -> array[i] }
-
-    fun copy(array: DoubleArray2D): DoubleArray2D =
-            doubleArray2D(array.shape0, array.shape1) { i0, i1 -> array[i0, i1] }
 
     fun copy(array: DoubleArrayND): DoubleArrayND =
             fastDoubleArrayND(array.shape) { indices -> array.getDouble(indices) }
 
+    fun copy(array: IntArrayND): IntArrayND =
+            intArrayND(array.shape) { indices -> array.getInt(indices) }
+
     // Zeros
 
-    fun doubleZeros(): DoubleArray0D =
-            doubleArray0D(0.0)
+    fun doubleZeros(shape: IntArrayND): DoubleArrayND =
+            doubleArrayND(shape.toIntArray(), DoubleArray(shape.product()) { 0.0 })
 
-    fun doubleZeros(size: Int): DoubleArray1D =
-            doubleArray1D(DoubleArray(size) { 0.0 })
-
-    fun doubleZeros(shape0: Int, shape1: Int): DoubleArray2D =
-            doubleArray2D(shape0, shape1, DoubleArray(shape0*shape1) { 0.0 })
-
-    fun doubleZeros(shape: IntArray1D): DoubleArrayND =
-            doubleArrayND(shape, DoubleArray(shape.product()) { 0.0 })
-
-    // Math
-
-    fun doubleIdentity(size: Int): DoubleArray2D = doubleArray2D(size, size) { i0, i1 ->
-        (i0 == i1).indicator()
-    }
-
-    fun doubleRandom(size: Int): DoubleArray1D =
-            doubleArray1D(size) { Random.nextDouble() }
-
-    fun doubleRandom(shape0: Int, shape1: Int): DoubleArray2D =
-            doubleArray2D(shape0, shape1) { _, _ -> Random.nextDouble() }
-
-    fun doubleRandom(shape: IntArray1D): DoubleArrayND =
-            fastDoubleArrayND(shape) { Random.nextDouble() }
-
-    fun doubleDiagonal(diagonal: DoubleArray1D): DoubleArray2D =
-            doubleDiagonal(diagonal.size) { i -> diagonal[i] }
+    fun intZeros(shape: IntArrayND): IntArrayND =
+            intArrayND(shape.toIntArray(), IntArray(shape.product()) { 0 })
 
 }
 
-
-inline fun <T> array1D(size: Int, init: (i: Int)->T): Array1D<T> =
-        NumerikoConfig.defaultFactory.array1DOfNulls<T>(size).asMutable().apply {
-            forEachIndex { i0 ->
-                setValue(i0, init(i0))
-            }
-        } as Array1D<T>
-
-inline fun <T> array2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->T): Array2D<T> =
-        NumerikoConfig.defaultFactory.array2DOfNulls<T>(shape0, shape1).asMutable().apply {
-            forEachIndex { i0, i1 ->
-                setValue(i0, i1, init(i0, i1))
-            }
-        } as Array2D<T>
-
-inline fun <T> arrayND(shape: IntArray1D, init: (indices: IntArray1D)->T): ArrayND<T> =
-        NumerikoConfig.defaultFactory.arrayNDOfNulls<T>(shape).asMutable().apply {
+inline fun <T> arrayND(shape: IntArrayND, init: (indices: IntArrayND)->T): ArrayND<T> =
+        tomasvolker.numeriko.core.config.NumerikoConfig.defaultFactory.arrayNDOfNulls<T>(shape).asMutable().apply {
             forEachIndices { indices ->
                 setValue(indices, init(indices))
             }
         } as ArrayND<T>
 
-inline fun <T> arrayND(vararg shape: Int, init: (indices: IntArray1D)->T): ArrayND<T> =
-        arrayND(shape.asIntArray1D(), init)
+inline fun <T> arrayND(vararg shape: Int, init: (indices: IntArrayND)->T): ArrayND<T> =
+        arrayND(shape.asIntArrayND(), init)
 
-
-inline fun intArray1D(size: Int, init: (i: Int)->Int): IntArray1D =
-        NumerikoConfig.defaultFactory.intZeros(size).asMutable().apply {
-            forEachIndex { i ->
-                this[i] = init(i)
-            }
-        }
-
-
-inline fun doubleArray1D(size: Int, init: (i: Int)->Number): DoubleArray1D =
-        NumerikoConfig.defaultFactory.doubleZeros(size).asMutable().apply {
-            forEachIndex { i ->
-                this[i] = init(i).toDouble()
-            }
-        }
-
-
-inline fun doubleArray2D(shape0: Int, shape1: Int, init: (i0: Int, i1: Int)->Number): DoubleArray2D =
-        NumerikoConfig.defaultFactory.doubleZeros(shape0, shape1).asMutable().apply {
-            forEachIndex { i0, i1 ->
-                this[i0, i1] = init(i0, i1).toDouble()
-            }
-        }
-
-inline fun doubleArray2D(shape0: Int, shape1: Int, init: ()->Double): DoubleArray2D =
-        NumerikoConfig.defaultFactory.doubleZeros(shape0, shape1).asMutable().apply {
-            forEachIndex { i0, i1 ->
-                this[i0, i1] = init()
-            }
-        }
-
-inline fun doubleArrayND(shape: IntArray1D, init: (indices: IntArray1D)->Number): DoubleArrayND =
-        NumerikoConfig.defaultFactory.doubleZeros(shape).asMutable().apply {
+inline fun doubleArrayND(shape: IntArrayND, init: (indices: IntArrayND)->Number): DoubleArrayND =
+        tomasvolker.numeriko.core.config.NumerikoConfig.defaultFactory.doubleZeros(shape).asMutable().apply {
             forEachIndices { indices ->
-                this[indices] = init(indices).toDouble()
+                this.setValue(indices, init(indices).toDouble())
             }
         }
 
-inline fun fastDoubleArrayND(shape: IntArray1D, init: (indices: IntArray)->Double): DoubleArrayND =
-        NumerikoConfig.defaultFactory.doubleZeros(shape).asMutable().apply {
+inline fun intArrayND(shape: IntArrayND, init: (indices: IntArrayND)->Int): IntArrayND =
+        tomasvolker.numeriko.core.config.NumerikoConfig.defaultFactory.intZeros(shape).asMutable().apply {
+            forEachIndices { indices ->
+                this.setValue(indices, init(indices))
+            }
+        }
+
+inline fun fastDoubleArrayND(shape: IntArrayND, init: (indices: IntArray)->Double): DoubleArrayND =
+        tomasvolker.numeriko.core.config.NumerikoConfig.defaultFactory.doubleZeros(shape).asMutable().apply {
             fastForEachIndices { indices ->
                 this.setDouble(indices, init(indices))
             }
         }
 
-inline fun doubleArrayND(vararg shape: Int, init: (indices: IntArray1D)->Number): DoubleArrayND =
-        doubleArrayND(shape.asIntArray1D(), init)
+inline fun doubleArrayND(vararg shape: Int, init: (indices: IntArrayND)->Number): DoubleArrayND =
+        doubleArrayND(shape.asIntArrayND(), init)
+
+inline fun intArrayND(vararg shape: Int, init: (indices: IntArrayND)->Int): IntArrayND =
+        intArrayND(shape.asIntArrayND(), init)

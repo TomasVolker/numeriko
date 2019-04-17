@@ -1,7 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
-import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.index.toIndexProgression
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.arrayAlongAxis
 import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 
 fun defaultEquals(array1: DoubleArrayND, array2: DoubleArrayND): Boolean {
@@ -28,9 +27,6 @@ fun defaultHashCode(array1: DoubleArrayND): Int {
     return result
 }
 
-fun DoubleArrayND.subArray(i: Int): DoubleArrayND =
-        getView(*Array(rank) { axis -> if (axis==0) (i..i).toIndexProgression() else All }).lowerRank(0)
-
 fun defaultToString(array: DoubleArrayND): String =
         when(array.rank) {
             0 -> array.get().toString()
@@ -40,7 +36,7 @@ fun defaultToString(array: DoubleArrayND): String =
                     postfix = " ]"
             )
             else -> (0 until array.shape[0])
-                    .map { array.subArray(it) }
+                    .map { array.arrayAlongAxis(axis = 0, index = it) }
                     .joinToString(
                             separator = ", \n",
                             prefix = "[ ",

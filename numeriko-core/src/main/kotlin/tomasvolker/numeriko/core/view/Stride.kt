@@ -1,12 +1,9 @@
 package tomasvolker.numeriko.core.view
 
-import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.lastIndex
-import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
-
 
 sealed class ElementOrder {
 
-    abstract fun strideArray(shape: IntArray1D): IntArray
+    abstract fun strideArray(shape: IntArray): IntArray
 
     abstract fun linearToIndices(linearIndex: Int, strideArray: IntArray): IntArray
 
@@ -14,7 +11,7 @@ sealed class ElementOrder {
 
 object ContiguousFirstAxis: ElementOrder() {
 
-    override fun strideArray(shape: IntArray1D): IntArray =
+    override fun strideArray(shape: IntArray): IntArray =
             IntArray(shape.size).apply {
                 this[0] = 1
                 for (axis in 1 until shape.size) {
@@ -35,7 +32,7 @@ object ContiguousFirstAxis: ElementOrder() {
 
 object ContiguousLastAxis: ElementOrder() {
 
-    override fun strideArray(shape: IntArray1D): IntArray =
+    override fun strideArray(shape: IntArray): IntArray =
             IntArray(shape.size).apply {
                 val lastAxis = shape.lastIndex
                 this[lastAxis] = 1

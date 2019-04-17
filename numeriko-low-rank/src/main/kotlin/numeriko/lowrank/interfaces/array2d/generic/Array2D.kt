@@ -1,0 +1,100 @@
+package numeriko.lowrank.interfaces.array2d.generic
+
+import tomasvolker.numeriko.core.annotations.CompileTimeError
+import tomasvolker.numeriko.core.annotations.Level
+import tomasvolker.numeriko.core.config.NumerikoConfig
+import tomasvolker.core.index.Index
+import tomasvolker.core.index.IndexProgression
+import numeriko.lowrank.interfaces.array0d.generic.Array0D
+import numeriko.lowrank.interfaces.array1d.generic.Array1D
+import numeriko.lowrank.interfaces.array1d.lowdim.integer.IntVector2
+import numeriko.lowrank.interfaces.array1d.lowdim.integer.intVector2
+import numeriko.lowrank.interfaces.array2d.generic.view.DefaultArray2DLowerRankView
+import numeriko.lowrank.interfaces.array2d.generic.view.defaultArray2DView
+import tomasvolker.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.core.preconditions.requireValidIndices
+import tomasvolker.core.interfaces.factory.copy
+import tomasvolker.core.preconditions.rankError
+import tomasvolker.core.preconditions.rankError2DMessage
+
+interface Array2D<out T>: ArrayND<T> {
+
+    override val rank: Int get() = 2
+
+    override val shape: IntVector2 get() = intVector2(shape0, shape1)
+
+    val shape0: Int
+    val shape1: Int
+
+    override fun shape(axis: Int): Int =
+            when(axis) {
+                0 -> shape0
+                1 -> shape1
+                else -> throw IndexOutOfBoundsException("$axis")
+            }
+
+    override val size: Int
+        get() = shape0 * shape1
+
+    override fun lowerRank(axis: Int): Array1D<T> =
+            DefaultArray2DLowerRankView(this.asMutable(), axis)
+
+    override fun getValue(indices: IntArray): T {
+        requireValidIndices(indices)
+        return getValue(indices[0], indices[1])
+    }
+
+    @tomasvolker.numeriko.core.annotations.CompileTimeError(message = rankError2DMessage, level = tomasvolker.numeriko.core.annotations.Level.ERROR)
+    override fun as0D(): Nothing = rankError(0)
+    @tomasvolker.numeriko.core.annotations.CompileTimeError(message = rankError2DMessage, level = tomasvolker.numeriko.core.annotations.Level.ERROR)
+    override fun as1D(): Nothing = rankError(1)
+
+    override fun as2D() = this
+
+    override fun getValue(i0: Int, i1: Int  ): T
+    fun getValue(i0: Int  , i1: Index): T = getValue(i0.compute(0), i1.compute(1))
+    fun getValue(i0: Index, i1: Int  ): T = getValue(i0.compute(0), i1.compute(1))
+    fun getValue(i0: Index, i1: Index): T = getValue(i0.compute(0), i1.compute(1))
+
+    fun getView(i0: Int  , i1: Int  ): Array0D<T> = defaultArray2DView(this.asMutable(), i0, i1)
+    fun getView(i0: Index, i1: Int  ): Array0D<T> = getView(i0.compute(0), i1.compute(1))
+    fun getView(i0: Int, i1: Index  ): Array0D<T> = getView(i0.compute(0), i1.compute(1))
+    fun getView(i0: Index, i1: Index): Array0D<T> = getView(i0.compute(0), i1.compute(1))
+
+    fun getView(i0: Int  , i1: IntProgression  ): Array1D<T> = defaultArray2DView(this.asMutable(), i0, i1)
+    fun getView(i0: Int  , i1: IndexProgression): Array1D<T> = getView(i0.compute(0), i1.compute(1))
+    fun getView(i0: Index, i1: IntProgression  ): Array1D<T> = getView(i0.compute(0), i1.compute(1))
+    fun getView(i0: Index, i1: IndexProgression): Array1D<T> = getView(i0.compute(0), i1.compute(1))
+
+    fun getView(i0: IntProgression  , i1: Int  ): Array1D<T> = defaultArray2DView(this.asMutable(), i0, i1)
+    fun getView(i0: IntProgression  , i1: Index): Array1D<T> = getView(i0.compute(0), i1.compute(1))
+    fun getView(i0: IndexProgression, i1: Int  ): Array1D<T> = getView(i0.compute(0), i1.compute(1))
+    fun getView(i0: IndexProgression, i1: Index): Array1D<T> = getView(i0.compute(0), i1.compute(1))
+
+
+    fun getView(i0: IntProgression  , i1: IntProgression  ): Array2D<T> = defaultArray2DView(this.asMutable(), i0, i1)
+    fun getView(i0: IntProgression  , i1: IndexProgression): Array2D<T> = getView(i0.compute(0), i1.compute(1))
+    fun getView(i0: IndexProgression, i1: IndexProgression): Array2D<T> = getView(i0.compute(0), i1.compute(1))
+    fun getView(i0: IndexProgression, i1: IntProgression  ): Array2D<T> = getView(i0.compute(0), i1.compute(1))
+
+
+    override fun copy(): Array2D<T> = copy(this)
+
+    override fun iterator(): Iterator<T> = arrayIterator()
+    override fun arrayIterator(): Array2DIterator<T> = DefaultArray2DIterator(this)
+
+    override fun asMutable(): MutableArray2D<@UnsafeVariance T> = this as MutableArray2D<T>
+
+    fun requireValidIndices(i0: Int, i1: Int) {
+
+        if (tomasvolker.numeriko.core.config.NumerikoConfig.checkRanges) {
+            // Do not use `indices0` and `indices1` as inlining is not working
+            if (i0 !in 0 until shape0) throw IndexOutOfBoundsException("Index $i0 on axis 0 is out of shape $shape")
+            if (i1 !in 0 until shape1) throw IndexOutOfBoundsException("Index $i1 on axis 1 is out of shape $shape")
+        }
+
+    }
+
+}
+
+operator fun <T> Array2D<T>.get(i0: Int, i1: Int): T = getValue(i0, i1)

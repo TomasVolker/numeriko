@@ -1,49 +1,33 @@
 package tomasvolker.numeriko.core.operations
 
-import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.lowrank.interfaces.array1d.generic.Array1D
-import tomasvolker.numeriko.lowrank.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.lowrank.interfaces.array2d.generic.Array2D
-import tomasvolker.numeriko.core.interfaces.factory.array2D
-import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
-import java.lang.IllegalArgumentException
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.arrayAlongAxis
+import tomasvolker.numeriko.core.interfaces.factory.arrayND
+import tomasvolker.numeriko.core.interfaces.factory.arrayNDOfNulls
+import tomasvolker.numeriko.core.interfaces.factory.intArrayND
 
 
-inline fun <reified T> stack(vararg arrays: Array1D<T>): Array2D<T> {
+fun <T> List<ArrayND<T>>.stack(axis: Int = 0): ArrayND<T> {
 
-    if (arrays.isEmpty()) return array2D<T>(0, 0) { _, _-> TODO() }
+    if (isEmpty())
+        return arrayND(intArrayOf(0), arrayOf<Any>() as Array<T>)
 
-    val firstSize = arrays.first().size
-    require(arrays.all { it.size == firstSize }) { "All sizes must be the same" }
+    val firstShape = first().shape
+    require(all { it.shape == firstShape }) { "All shapes must be the same" }
 
-    return array2D(arrays.size, firstSize) { i0, i1 ->
-        arrays[i0].getValue(i1)
+    val result = arrayNDOfNulls<T>(
+            intArrayND(firstShape.size+1) { (a0) ->
+                when {
+                    a0 < axis -> firstShape[a0]
+                    a0 == axis -> size
+                    else -> firstShape[a0-1]
+                }
+            }
+    ).asMutable()
+
+    forEachIndexed { i, array ->
+        result.arrayAlongAxis(axis = axis, index = i).asMutable().setValue(array)
     }
 
+    return result as ArrayND<T>
 }
-
-fun List<DoubleArray1D>.stack(axis: Int = 0): DoubleArray2D {
-
-    if (axis !in 0..1) throw IllegalArgumentException("Stacking axis must be 0 or 1")
-
-    if (isEmpty()) return doubleArray2D(0, 0) { _, _-> 0.0 }
-
-    val firstSize = first().size
-    require(all { it.size == firstSize }) { "All sizes must be the same" }
-
-    return when(axis) {
-        0 -> doubleArray2D(size, firstSize) { i0, i1 ->
-            this[i0][i1]
-        }
-        1 -> doubleArray2D(firstSize, size) { i0, i1 ->
-            this[i1][i0]
-        }
-        else -> throw IllegalStateException()
-    }
-
-}
-
-fun stack(
-        vararg arrays: DoubleArray1D,
-        axis: Int = 0
-): DoubleArray2D = arrays.toList().stack(axis)

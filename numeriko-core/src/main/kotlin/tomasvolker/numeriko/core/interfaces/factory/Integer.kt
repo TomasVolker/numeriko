@@ -1,28 +1,20 @@
 package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
-import tomasvolker.numeriko.lowrank.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.lowrank.interfaces.array1d.integer.IntArray1D
-import kotlin.random.Random
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 
-fun IntArray.asIntArray1D(): IntArray1D = intArray1D(this)
+fun IntArray.asIntArrayND(): IntArrayND = intArrayND(intArrayOf(size), this)
+fun IntArray.toIntArrayND(): IntArrayND = intArrayND(intArrayOf(size), this.copyOf())
 
-fun IntArray.toIntArray1D(): IntArray1D = intArray1D(this.copyOf())
+fun intArrayND(shape: IntArray, data: IntArray) =
+        tomasvolker.numeriko.core.config.NumerikoConfig.defaultFactory.intArrayND(shape, data)
 
-fun intArray1DOf(vararg values: Int) = intArray1D(values)
-
-
-fun intArray1D(data: IntArray): IntArray1D =
-        NumerikoConfig.defaultFactory.intArray1D(data)
+fun copy(array: IntArrayND): IntArrayND =
+        tomasvolker.numeriko.core.config.NumerikoConfig.defaultFactory.copy(array)
 
 
-fun copy(array: IntArray1D): IntArray1D =
-        NumerikoConfig.defaultFactory.copy(array)
+fun intZeros(shape: IntArrayND): IntArrayND =
+        tomasvolker.numeriko.core.config.NumerikoConfig.defaultFactory.intZeros(shape)
 
-
-fun intZeros(size: Int): IntArray1D =
-        NumerikoConfig.defaultFactory.intZeros(size)
-
-fun Random.nextIntArray1D(size: Int): IntArray1D = intArray1D(size) { nextInt() }
-fun Random.nextIntArray1D(size: Int, until: Int): IntArray1D = intArray1D(size) { nextInt(until) }
-fun Random.nextIntArray1D(size: Int, from: Int, until: Int): IntArray1D = intArray1D(size) { nextInt(from, until) }
+fun intZeros(vararg shape: Int): IntArrayND =
+        tomasvolker.numeriko.core.config.NumerikoConfig.defaultFactory.intZeros(shape.toIntArrayND())

@@ -1,10 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.iteration
 
-import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.factory.arrayNDOfNulls
-import tomasvolker.numeriko.core.interfaces.factory.doubleZeros
 
 inline fun <T> ArrayND<T>.inlinedForEach(function: (T)->T) {
     val iterator = arrayIterator()
