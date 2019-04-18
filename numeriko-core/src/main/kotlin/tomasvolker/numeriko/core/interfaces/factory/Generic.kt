@@ -5,6 +5,7 @@ import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.forEachIndex
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
 
 fun <T> Array<T>.asArrayND(
         shape: IntArrayND = I[size]
@@ -37,3 +38,9 @@ inline fun <T> arrayND(shape: IntArrayND, init: (indices: IntArrayND)->T): Array
 inline fun <T> arrayND(vararg shape: Int, init: (indices: IntArrayND)->T): ArrayND<T> =
         arrayND(shape.asIntArrayND(), init)
 
+inline fun <T> unsafeArrayND(shape: IntArrayND, init: (indices: IntArray)->T): ArrayND<T> =
+        NumerikoConfig.defaultFactory.arrayNDOfNulls<T>(shape).asMutable().apply {
+            unsafeForEachIndex { indices ->
+                this.setValue(indices, init(indices))
+            }
+        } as ArrayND<T>
