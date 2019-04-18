@@ -9,7 +9,6 @@ class DefaultDoubleArrayNDIterator(
         val array: DoubleArrayND
 ): DoubleArrayNDIterator() {
 
-    override var previousIndexArray = IntArray(array.rank) { a -> array.shape(a)-1 }
     override var nextIndexArray = IntArray(array.rank) { 0 }
     override var shapeArray = IntArray(array.rank) { i -> array.shape(i) }
 
@@ -17,9 +16,9 @@ class DefaultDoubleArrayNDIterator(
 
     override fun hasNext(): Boolean = !overflow
 
-    override fun nextDouble(): Double {
-        nextIndexArray.copyInto(previousIndexArray)
-        overflow = nextIndexArray.indexIncrement(shapeArray)
-        return array.getDouble(previousIndexArray)
-    }
+    override fun nextDouble(): Double =
+            array.getDouble(nextIndexArray).also {
+                overflow = nextIndexArray.indexIncrement(shapeArray)
+            }
+
 }

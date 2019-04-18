@@ -1,15 +1,13 @@
 package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoIntArray
-import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.defaultEquals
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.integer.view.DefaultMutableIntArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.DefaultMutableIntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
 import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
-import tomasvolker.numeriko.core.operations.reduction.product
 import tomasvolker.numeriko.core.preconditions.*
 import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex
@@ -157,7 +155,7 @@ class NumerikoIntArrayND(
         else
             value.copy()
 
-        source.inlinedForEachIndexed { indices, element ->
+        source.unsafeForEachIndexed { indices, element ->
             setInt(indices, element)
         }
 

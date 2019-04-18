@@ -1,11 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
-import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
 import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
-import tomasvolker.numeriko.core.interfaces.slicing.get
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 /**
@@ -50,7 +47,7 @@ interface MutableArrayND<T>: ArrayND<T> {
         requireSameShape(this, value)
         // Anti alias copy
         val copy = value.copy()
-        copy.fastForEachIndices { indices ->
+        copy.unsafeForEachIndex { indices ->
             setValue(indices, copy.getValue(indices))
         }
     }

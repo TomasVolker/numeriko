@@ -1,6 +1,5 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice

@@ -5,10 +5,10 @@ import tomasvolker.numeriko.core.functions.FunctionDtoD
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoDoubleArray
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultMutableDoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DefaultMutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
 import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 import tomasvolker.numeriko.core.operations.reduction.product
 import tomasvolker.numeriko.core.preconditions.*
@@ -157,7 +157,7 @@ class NumerikoDoubleArrayND(
         else
             value.copy()
 
-        source.inlinedForEachIndexed { indices, element ->
+        source.unsafeForEachIndexed { indices, element ->
             setDouble(indices, element)
         }
 
@@ -173,7 +173,7 @@ class NumerikoDoubleArrayND(
                 )
             else
                 super.copy()
-
+/*
     override fun elementWise(function: FunctionDtoD) =
             inlineElementWise { function(it) }
 
@@ -188,5 +188,5 @@ class NumerikoDoubleArrayND(
                 )
             else
                 super.elementWise(DtoD(function))
-
+*/
 }

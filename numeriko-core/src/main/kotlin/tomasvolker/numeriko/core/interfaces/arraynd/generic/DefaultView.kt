@@ -1,8 +1,5 @@
-package tomasvolker.numeriko.core.interfaces.arraynd.generic.view
+package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.core.index.*
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
 import tomasvolker.numeriko.core.interfaces.slicing.*

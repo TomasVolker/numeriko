@@ -9,7 +9,6 @@ class DefaultIntArrayNDIterator(
         val array: IntArrayND
 ): IntArrayNDIterator() {
 
-    override var previousIndexArray = IntArray(array.rank) { a -> array.shape(a)-1 }
     override var nextIndexArray = IntArray(array.rank) { 0 }
     override var shapeArray = IntArray(array.rank) { i -> array.shape(i) }
 
@@ -17,9 +16,9 @@ class DefaultIntArrayNDIterator(
 
     override fun hasNext(): Boolean = !overflow
 
-    override fun nextInt(): Int {
-        nextIndexArray.copyInto(previousIndexArray)
-        overflow = nextIndexArray.indexIncrement(shapeArray)
-        return array.getInt(previousIndexArray)
-    }
+    override fun nextInt(): Int =
+            array.getInt(nextIndexArray).also {
+                overflow = nextIndexArray.indexIncrement(shapeArray)
+            }
+
 }

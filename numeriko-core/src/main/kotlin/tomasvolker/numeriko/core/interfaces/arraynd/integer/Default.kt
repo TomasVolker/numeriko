@@ -1,7 +1,26 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.integer
 
-import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.defaultEquals
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
 import tomasvolker.numeriko.core.interfaces.slicing.arrayAlongAxis
+
+abstract class DefaultIntArrayND: IntArrayND {
+
+    override fun equals(other: Any?): Boolean = when {
+        other === this -> true
+        other is IntArrayND -> this.defaultEquals(other)
+        other is ArrayND<*> -> this.defaultEquals(other)
+        else -> false
+    }
+
+    override fun hashCode(): Int = this.defaultHashCode()
+
+    override fun toString(): String = this.defaultToString()
+
+}
+
+abstract class DefaultMutableIntArrayND: DefaultIntArrayND(), MutableIntArrayND
 
 fun IntArrayND.defaultEquals(other: IntArrayND): Boolean {
 
@@ -12,7 +31,7 @@ fun IntArrayND.defaultEquals(other: IntArrayND): Boolean {
         if(this.shape != other.shape) return false
     }
 
-    fastForEachIndices { indices ->
+    unsafeForEachIndex { indices ->
         if (this.get(*indices) != other.get(*indices))
             return false
     }

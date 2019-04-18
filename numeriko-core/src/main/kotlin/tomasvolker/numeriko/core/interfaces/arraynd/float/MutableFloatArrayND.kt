@@ -1,10 +1,9 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.float
 
-import tomasvolker.numeriko.core.interfaces.arraynd.float.view.DefaultPermutedSliceFloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
 import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
@@ -34,7 +33,7 @@ interface MutableFloatArrayND: FloatArrayND, MutableArrayND<Float> {
         requireSameShape(this, value)
         // Anti alias copy
         val copy = value.copy()
-        copy.inlinedForEachIndexed { indices, element ->
+        copy.unsafeForEachIndexed { indices, element ->
             setFloat(indices, element)
         }
     }

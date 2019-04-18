@@ -1,7 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.iteration
 
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.forEachIndices
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.indices
 
 fun IntArray.indexIncrement(shape: IntArray): Boolean {
@@ -36,10 +35,10 @@ fun IntArray.indexIncrement(shape: IntArray): Boolean {
  * On each iteration, it provides the same [IntArray] instance, so if a reference
  * to it is kept, the array will change on later iterations.
  *
- * This function is available for fast iteration, for a safe version use [forEachIndices].
+ * This function is available for fast iteration, for a safe version use [forEachIndex].
  *
  */
-inline fun fastForEachIndices(shape: IntArray, block: (indices: IntArray)->Unit) {
+inline fun unsafeForEachIndex(shape: IntArray, block: (indices: IntArray)->Unit) {
 
     if (shape.isEmpty()) return
 
@@ -51,5 +50,5 @@ inline fun fastForEachIndices(shape: IntArray, block: (indices: IntArray)->Unit)
 
 }
 
-inline fun ArrayND<*>.fastForEachIndices(block: (indices: IntArray)->Unit) =
-        fastForEachIndices(shape.toIntArray(), block)
+inline fun ArrayND<*>.unsafeForEachIndex(block: (indices: IntArray)->Unit) =
+        unsafeForEachIndex(shape.toIntArray(), block)

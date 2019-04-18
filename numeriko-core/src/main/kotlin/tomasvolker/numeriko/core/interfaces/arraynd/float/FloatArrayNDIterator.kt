@@ -9,7 +9,6 @@ class DefaultFloatArrayNDIterator(
         val array: FloatArrayND
 ): FloatArrayNDIterator() {
 
-    override var previousIndexArray = IntArray(array.rank) { a -> array.shape(a)-1 }
     override var nextIndexArray = IntArray(array.rank) { 0 }
     override var shapeArray = IntArray(array.rank) { i -> array.shape(i) }
 
@@ -17,9 +16,8 @@ class DefaultFloatArrayNDIterator(
 
     override fun hasNext(): Boolean = !overflow
 
-    override fun nextFloat(): Float {
-        nextIndexArray.copyInto(previousIndexArray)
-        overflow = nextIndexArray.indexIncrement(shapeArray)
-        return array.getFloat(previousIndexArray)
-    }
+    override fun nextFloat(): Float =
+            array.getFloat(nextIndexArray).also {
+                overflow = nextIndexArray.indexIncrement(shapeArray)
+            }
 }

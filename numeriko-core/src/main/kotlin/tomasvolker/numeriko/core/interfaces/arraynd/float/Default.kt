@@ -1,14 +1,33 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.float
 
-import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.defaultEquals
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
 import tomasvolker.numeriko.core.interfaces.slicing.arrayAlongAxis
+
+abstract class DefaultFloatArrayND: FloatArrayND {
+
+    override fun equals(other: Any?): Boolean = when {
+        other === this -> true
+        other is FloatArrayND -> this.defaultEquals(other)
+        other is ArrayND<*> -> this.defaultEquals(other)
+        else -> false
+    }
+
+    override fun hashCode(): Int = this.defaultHashCode()
+
+    override fun toString(): String = this.defaultToString()
+
+}
+
+abstract class DefaultMutableFloatArrayND: DefaultFloatArrayND(), MutableFloatArrayND
 
 fun FloatArrayND.defaultEquals(other: FloatArrayND): Boolean {
 
     if(this.shape != other.shape)
         return false
 
-    fastForEachIndices { indices ->
+    unsafeForEachIndex { indices ->
         if (get(*indices) != other.get(*indices))
             return false
     }

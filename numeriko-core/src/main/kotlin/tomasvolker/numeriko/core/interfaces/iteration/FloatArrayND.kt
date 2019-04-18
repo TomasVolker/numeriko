@@ -1,8 +1,8 @@
-package tomasvolker.numeriko.core.interfaces.arraynd.float
+package tomasvolker.numeriko.core.interfaces.iteration
 
+import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.float.MutableFloatArrayND
 import tomasvolker.numeriko.core.interfaces.factory.floatZeros
-import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 inline fun elementWise(
@@ -11,21 +11,8 @@ inline fun elementWise(
         operation: (Float) -> Float
 ) {
     requireSameShape(source, destination)
-    source.inlinedForEachIndexed { indices, value ->
-        destination.setFloat(indices, operation(value))
-    }
-}
-
-inline fun elementWise(
-        source1: FloatArrayND,
-        source2: FloatArrayND,
-        destination: MutableFloatArrayND,
-        operation: (Float, Float) -> Float
-) {
-    requireSameShape(source1, source2)
-    requireSameShape(source1, destination)
-    source1.fastForEachIndices { indices ->
-        destination.setFloat(indices, operation(source1.getFloat(indices), source2.getFloat(indices)))
+    source.unsafeForEachIndexed { index, value ->
+        destination.setFloat(index, operation(value))
     }
 }
 
@@ -37,23 +24,6 @@ inline fun FloatArrayND.elementWise(operation: (Float)->Float): FloatArrayND {
             operation = operation
     )
     return result
-}
-
-inline fun elementWise(
-        array1: FloatArrayND,
-        array2: FloatArrayND,
-        operation: (Float, Float) -> Float
-): FloatArrayND {
-    requireSameShape(array1, array2)
-    val result = floatZeros(array1.shape).asMutable()
-    elementWise(
-            source1 = array1,
-            source2 = array2,
-            destination = result,
-            operation = operation
-    )
-    return result
-
 }
 
 inline fun MutableFloatArrayND.applyElementWise(
@@ -79,5 +49,35 @@ inline fun MutableFloatArrayND.applyElementWise(
             operation = operation
     )
     return this
+}
+
+inline fun elementWise(
+        source1: FloatArrayND,
+        source2: FloatArrayND,
+        destination: MutableFloatArrayND,
+        operation: (Float, Float) -> Float
+) {
+    requireSameShape(source1, source2)
+    requireSameShape(source1, destination)
+    source1.unsafeForEachIndex { index ->
+        destination.setFloat(index, operation(source1.getFloat(index), source2.getFloat(index)))
+    }
+}
+
+inline fun elementWise(
+        array1: FloatArrayND,
+        array2: FloatArrayND,
+        operation: (Float, Float) -> Float
+): FloatArrayND {
+    requireSameShape(array1, array2)
+    val result = floatZeros(array1.shape).asMutable()
+    elementWise(
+            source1 = array1,
+            source2 = array2,
+            destination = result,
+            operation = operation
+    )
+    return result
+
 }
 

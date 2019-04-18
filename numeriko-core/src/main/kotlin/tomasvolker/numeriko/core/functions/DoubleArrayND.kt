@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.core.functions
 
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.double.applyElementWise
+import tomasvolker.numeriko.core.interfaces.iteration.applyElementWise
 
 fun MutableDoubleArrayND.applyPlus (other: Double): MutableDoubleArrayND = applyElementWise { it + other }
 fun MutableDoubleArrayND.applyMinus(other: Double): MutableDoubleArrayND = applyElementWise { it - other }

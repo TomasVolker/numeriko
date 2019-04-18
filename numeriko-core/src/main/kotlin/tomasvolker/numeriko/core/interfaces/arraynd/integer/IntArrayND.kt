@@ -1,8 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.integer
 
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.integer.view.DefaultPermutedSliceIntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.interfaces.iteration.elementWise
 import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 
 interface IntArrayND: ArrayND<Int> {
@@ -42,18 +42,7 @@ interface IntArrayND: ArrayND<Int> {
     override fun arrayIterator(): IntArrayNDIterator = DefaultIntArrayNDIterator(this)
 
     override fun asMutable(): MutableIntArrayND = this as MutableIntArrayND
-/*
-    fun forEach(function: FunctionDtoD) {
-        inlinedForEach { function(it) }
-    }
 
-    fun forEachIndexed(function: FunctionIADtoD) {
-        inlinedForEachIndexed { indices, value ->  function(indices, value) }
-    }
-
-    fun elementWise(function: FunctionDtoD): IntArrayND =
-            inlinedElementWise { function(it) }
-*/
     operator fun plus (other: IntArrayND): IntArrayND = elementWise(this, other) { t, o -> t + o }
     operator fun minus(other: IntArrayND): IntArrayND = elementWise(this, other) { t, o -> t - o }
     operator fun times(other: IntArrayND): IntArrayND = elementWise(this, other) { t, o -> t * o }

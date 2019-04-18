@@ -6,7 +6,6 @@ import tomasvolker.numeriko.core.interfaces.iteration.indexIncrement
 
 interface ArrayNDIterator<out T>: Iterator<T> {
 
-    var previousIndexArray: IntArray
     var nextIndexArray: IntArray
     val shapeArray: IntArray
 
@@ -20,7 +19,6 @@ class DefaultArrayNDIterator<out T>(
         val array: ArrayND<T>
 ): ArrayNDIterator<T> {
 
-    override var previousIndexArray = IntArray(array.rank) { a -> array.shape(a)-1 }
     override var nextIndexArray = IntArray(array.rank) { 0 }
     override var shapeArray = IntArray(array.rank) { i -> array.shape(i) }
 
@@ -28,11 +26,10 @@ class DefaultArrayNDIterator<out T>(
 
     override fun hasNext(): Boolean = !overflow
 
-    override fun next(): T {
-        nextIndexArray.copyInto(previousIndexArray)
-        overflow = nextIndexArray.indexIncrement(shapeArray)
-        return array.getValue(previousIndexArray)
-    }
+    override fun next(): T =
+            array.getValue(nextIndexArray).also {
+                overflow = nextIndexArray.indexIncrement(shapeArray)
+            }
 
 }
 

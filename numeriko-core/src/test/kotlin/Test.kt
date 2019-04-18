@@ -1,18 +1,18 @@
-import tomasvolker.numeriko.core.dsl.A
-import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.index.Last
-import tomasvolker.numeriko.core.interfaces.slicing.`~`
-import tomasvolker.numeriko.core.interfaces.slicing.get
+import tomasvolker.numeriko.core.dsl.I
+import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
+import tomasvolker.numeriko.core.interfaces.slicing.*
 
 fun main() {
 
-    val array = A[
-            A[A[1, 2, 3],
-              A[4, 5, 6]],
-            A[A[1, 5, 3],
-              A[4, 5, 6]]
-    ]
+    val matrix = intArrayOf(
+            1, 2, 3,
+            4, 6, 5,
+            7, 8, 8,
+            7, 8, 8
+    ).toIntArrayND(I[4, 3]).asMutable()
 
-
+    println(
+            matrix.expandDim(2)
+    )
 
 }

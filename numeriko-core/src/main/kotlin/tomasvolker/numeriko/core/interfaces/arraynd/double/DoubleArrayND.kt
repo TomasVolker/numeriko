@@ -1,16 +1,9 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
-import tomasvolker.numeriko.core.functions.FunctionDtoD
-import tomasvolker.numeriko.core.functions.FunctionIADtoD
-import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultPermutedSliceDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultPermutedSliceArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedElementWise
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEach
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.interfaces.iteration.elementWise
 import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 
 interface DoubleArrayND: ArrayND<Double> {
@@ -45,17 +38,6 @@ interface DoubleArrayND: ArrayND<Double> {
             permutedSlice = slice
     )
 
-    fun forEach(function: FunctionDtoD) {
-        inlinedForEach { function(it) }
-    }
-
-    fun forEachIndexed(function: FunctionIADtoD) {
-        inlinedForEachIndexed { indices, value ->  function(indices, value) }
-    }
-
-    fun elementWise(function: FunctionDtoD): DoubleArrayND =
-            inlinedElementWise { function(it) }
-
     operator fun plus (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t + o }
     operator fun minus(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t - o }
     operator fun times(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t * o }
@@ -74,6 +56,9 @@ interface DoubleArrayND: ArrayND<Double> {
     operator fun minus(other: Int): DoubleArrayND = elementWise { it - other }
     operator fun times(other: Int): DoubleArrayND = elementWise { it * other }
     operator fun div  (other: Int): DoubleArrayND = elementWise { it / other }
+
+    fun rdiv (other: Double): DoubleArrayND = elementWise { other / it }
+    fun rdiv (other: Int): DoubleArrayND = elementWise { other / it }
 
 }
 

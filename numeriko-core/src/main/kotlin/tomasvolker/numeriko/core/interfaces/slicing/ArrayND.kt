@@ -4,8 +4,6 @@ import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
 import tomasvolker.numeriko.core.index.toIndex
 import tomasvolker.numeriko.core.index.toIndexProgression
-import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 

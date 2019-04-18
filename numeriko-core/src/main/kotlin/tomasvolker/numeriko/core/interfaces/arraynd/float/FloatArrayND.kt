@@ -1,14 +1,9 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.float
 
-import tomasvolker.numeriko.core.functions.FunctionDtoD
-import tomasvolker.numeriko.core.functions.FunctionIADtoD
-import tomasvolker.numeriko.core.interfaces.arraynd.float.view.DefaultPermutedSliceFloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedElementWise
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEach
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.interfaces.iteration.elementWise
 import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 
 interface FloatArrayND: ArrayND<Float> {
@@ -42,18 +37,7 @@ interface FloatArrayND: ArrayND<Float> {
             array = this.asMutable(),
             permutedSlice = slice
     )
-/*
-    fun forEach(function: FunctionDtoD) {
-        inlinedForEach { function(it) }
-    }
 
-    fun forEachIndexed(function: FunctionIADtoD) {
-        inlinedForEachIndexed { indices, value ->  function(indices, value) }
-    }
-
-    fun elementWise(function: FunctionDtoD): FloatArrayND =
-            inlinedElementWise { function(it) }
-*/
     operator fun plus (other: FloatArrayND): FloatArrayND = elementWise(this, other) { t, o -> t + o }
     operator fun minus(other: FloatArrayND): FloatArrayND = elementWise(this, other) { t, o -> t - o }
     operator fun times(other: FloatArrayND): FloatArrayND = elementWise(this, other) { t, o -> t * o }

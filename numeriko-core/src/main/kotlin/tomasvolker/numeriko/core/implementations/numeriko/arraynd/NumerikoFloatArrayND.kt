@@ -3,10 +3,10 @@ package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoFloatArray
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.MutableFloatArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.float.view.DefaultMutableFloatArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.float.DefaultMutableFloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
-import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
 import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 import tomasvolker.numeriko.core.operations.reduction.product
 import tomasvolker.numeriko.core.preconditions.*
@@ -155,7 +155,7 @@ class NumerikoFloatArrayND(
         else
             value.copy()
 
-        source.inlinedForEachIndexed { indices, element ->
+        source.unsafeForEachIndexed { indices, element ->
             setFloat(indices, element)
         }
 
