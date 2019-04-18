@@ -2,33 +2,49 @@ package tomasvolker.numeriko.core.interfaces.slicing
 
 import tomasvolker.numeriko.core.index.Index
 import tomasvolker.numeriko.core.index.IndexProgression
+import tomasvolker.numeriko.core.index.toIndex
 import tomasvolker.numeriko.core.index.toIndexProgression
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 
-private fun Array<out Any>.convertToIndicesProgression(): Array<IndexProgression> =
-        map { index ->
-            when (index) {
-                is Int -> (index..index).toIndexProgression()
-                is Index -> (index..index)
-                is IntProgression -> index.toIndexProgression()
-                is IndexProgression -> index
-                else -> throw IllegalArgumentException("index is not of type Int, Index, IntProgression or IndexProgression")
-            }
-        }.toTypedArray()
+fun permutedSliceFromIndices(array: ArrayND<*>, indices: Array<out Any>): PermutedSlice {
+    val indexList = indices.toList()
 
+    if (indexList.count { it is Ellipsis } > 1)
+        throw IllegalArgumentException("More than one Ellipsis used in slicing")
 
+    val ellipsis = indexList.indexOf(Ellipsis).let { if (it < 0) indexList.size else it }
 
-operator fun <T> ArrayND<T>.get(vararg indices: Any): ArrayND<T> {
-    TODO()
+    val processed = indices.mapNotNull {
+        when(it) {
+            is Int -> Shrink(it.toIndex())
+            is Index -> Shrink(it)
+            is IntProgression -> Range(it.toIndexProgression())
+            is IndexProgression -> Range(it)
+            is NewAxis -> NewAxis
+            is Ellipsis -> null
+            else -> throw IllegalArgumentException("all entries must one of these types: Int, Index, IntProgression, IndexProgression, NewAxis or Ellipsis")
+        }
+    }
+
+    return permutedSlice(
+            array,
+            computeAbsoluteEntries(
+                    array = array,
+                    first = processed.subList(0, ellipsis),
+                    last = processed.subList(ellipsis, processed.size)
+            )
+    )
 }
 
+operator fun <T> ArrayND<T>.get(vararg indices: Any): ArrayND<T> =
+        getPermutedSlice(permutedSliceFromIndices(this, indices))
 
 operator fun <T> MutableArrayND<T>.get(vararg indices: Any): MutableArrayND<T> =
-        (this as ArrayND<T>).get(*indices).asMutable()
+        getPermutedSlice(permutedSliceFromIndices(this, indices))
 
 operator fun <T> MutableArrayND<T>.set(vararg indices: Any, value: ArrayND<T>): Unit =
         this.get(*indices).setValue(value)
-
-
 

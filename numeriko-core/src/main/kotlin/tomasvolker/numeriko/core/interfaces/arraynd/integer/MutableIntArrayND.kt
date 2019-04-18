@@ -2,8 +2,10 @@ package tomasvolker.numeriko.core.interfaces.arraynd.integer
 
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.view.DefaultPermutedSliceIntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableIntArrayND: IntArrayND, MutableArrayND<Int> {
@@ -20,6 +22,8 @@ interface MutableIntArrayND: IntArrayND, MutableArrayND<Int> {
 
     fun setInt(indices: IntArray, value: Int)
 
+    fun setInt(indices: IntArrayND, value: Int) = setInt(indices.toIntArray(), value)
+
     override fun setValue(value: ArrayND<Int>) =
             if (value is IntArrayND)
                 setValue(value)
@@ -34,6 +38,13 @@ interface MutableIntArrayND: IntArrayND, MutableArrayND<Int> {
             setValue(indices, copy.getValue(indices))
         }
     }
+
+    override fun getPermutedSlice(
+            slice: PermutedSlice
+    ): MutableIntArrayND = DefaultPermutedSliceIntArrayND(
+            array = this,
+            permutedSlice = slice
+    )
 
     override fun setValue(indices: IntArray, value: Int) = setInt(indices, value)
 /*

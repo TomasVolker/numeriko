@@ -16,7 +16,7 @@ inline fun DoubleArrayND.inlinedForEachIndexed(function: (indices: IntArray, val
     val iterator = arrayIterator()
     while (iterator.hasNext()) {
         val value = iterator.nextDouble()
-        function(iterator.currentIndexArray, value)
+        function(iterator.previousIndexArray, value)
     }
 }
 
@@ -52,7 +52,7 @@ inline fun DoubleArrayND.inlinedZipIndexed(
     while (thisIterator.hasNext()) {
         val thisValue = thisIterator.nextDouble()
         val otherValue = otherIterator.nextDouble()
-        function(thisIterator.currentIndexArray, thisValue, otherValue)
+        function(thisIterator.previousIndexArray, thisValue, otherValue)
     }
 }
 

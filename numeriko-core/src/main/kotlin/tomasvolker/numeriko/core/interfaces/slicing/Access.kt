@@ -21,7 +21,7 @@ sealed class SliceEntry
 
 object NewAxis: SliceEntry()
 
-class Shrink(
+data class Shrink(
         val index: Index
 ): SliceEntry() {
 
@@ -29,7 +29,7 @@ class Shrink(
 
 }
 
-class Range(
+data class Range(
         val progression: IndexProgression
 ): SliceEntry() {
 
@@ -46,3 +46,9 @@ class Range(
 
     val step: Int get() = progression.step
 }
+
+object Ellipsis {
+    override fun toString(): String = "..."
+}
+
+val `~` = Ellipsis

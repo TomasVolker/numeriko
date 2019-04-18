@@ -4,9 +4,12 @@ import tomasvolker.numeriko.core.functions.DtoD
 import tomasvolker.numeriko.core.functions.FunctionDtoD
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoDoubleArray
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultMutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 import tomasvolker.numeriko.core.operations.reduction.product
 import tomasvolker.numeriko.core.preconditions.*
 import tomasvolker.numeriko.core.view.ContiguousLastAxis
@@ -31,7 +34,18 @@ class NumerikoDoubleArrayND(
 
     override fun shape(axis: Int): Int = arrayShape[axis]
 
-    override val size: Int get() = data.size
+    override val size: Int get() = shape.product()
+
+    override fun getPermutedSlice(slice: PermutedSlice): MutableDoubleArrayND =
+            NumerikoDoubleArrayND(
+                shape = slice.shape.toIntArrayND(),
+                data = data,
+                offset = convertIndices(slice.origin),
+                strideArray = IntArray(slice.shape.size) { a ->
+                    val permuted = slice.permutation[a]
+                    if (permuted < 0) 1 else  slice.strides[a] * strideArray[slice.permutation[a]]
+                }
+            )
 
     override fun get(): Double {
         requireRank(0)
@@ -138,7 +152,7 @@ class NumerikoDoubleArrayND(
         requireSameShape(this, value)
 
         // Anti alias copy
-        val source = if (value is NumerikoDoubleArray && value.backingArray != this.data)
+        val source = if (value is NumerikoDoubleArray && value.backingArray !== this.data)
             value
         else
             value.copy()

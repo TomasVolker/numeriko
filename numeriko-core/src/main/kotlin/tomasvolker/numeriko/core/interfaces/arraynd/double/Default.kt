@@ -1,42 +1,42 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.arrayAlongAxis
 import tomasvolker.numeriko.core.interfaces.iteration.fastForEachIndices
+import tomasvolker.numeriko.core.interfaces.slicing.arrayAlongAxis
 
-fun defaultEquals(array1: DoubleArrayND, array2: DoubleArrayND): Boolean {
+fun DoubleArrayND.defaultEquals(other: DoubleArrayND): Boolean {
 
-    if(array1.shape != array2.shape)
+    if(this.shape != other.shape)
         return false
 
-    array1.fastForEachIndices { indices ->
-        if (array1.get(*indices) != array2.get(*indices))
+    fastForEachIndices { indices ->
+        if (get(*indices) != other.get(*indices))
             return false
     }
 
     return true
 }
 
-fun defaultHashCode(array1: DoubleArrayND): Int {
+fun DoubleArrayND.defaultHashCode(): Int {
 
-    var result = array1.rank.hashCode()
-    result += 31 * result + array1.shape.hashCode()
-    for (x in array1) {
+    var result = rank.hashCode()
+    result += 31 * result + shape.hashCode()
+    for (x in this) {
         result += 31 * result + x.hashCode()
     }
 
     return result
 }
 
-fun defaultToString(array: DoubleArrayND): String =
-        when(array.rank) {
-            0 -> array.get().toString()
-            1 -> array.joinToString(
+fun DoubleArrayND.defaultToString(): String =
+        when(rank) {
+            0 -> get().toString()
+            1 -> joinToString(
                     separator = ", ",
                     prefix = "[ ",
                     postfix = " ]"
             )
-            else -> (0 until array.shape[0])
-                    .map { array.arrayAlongAxis(axis = 0, index = it) }
+            else -> (0 until shape[0])
+                    .map { arrayAlongAxis(axis = 0, index = it) }
                     .joinToString(
                             separator = ", \n",
                             prefix = "[ ",

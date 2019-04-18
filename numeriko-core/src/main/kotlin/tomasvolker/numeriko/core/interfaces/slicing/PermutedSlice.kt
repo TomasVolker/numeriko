@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.slicing
 
+import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 
 /**
@@ -64,39 +65,44 @@ fun permutedSlice(
     val origin = IntArray(array.rank)
     val entryInputAxis = IntArray(entries.size)
 
-    var axis = 0
+    var inputAxis = 0
+    var outputAxis = 0
     entries.forEachIndexed { i, entry ->
         when(entry) {
             is Range -> {
-                entryInputAxis[i] = axis
-                origin[axis] = entry.start(array.shape(axis))
-                axis++
+                entryInputAxis[i] = inputAxis
+                origin[inputAxis] = entry.start(array.shape(inputAxis))
+                inputAxis++
+                outputAxis++
             }
             is Shrink -> {
-                origin[axis] = entry.index(array.shape(axis))
-                axis++
+                origin[inputAxis] = entry.index(array.shape(inputAxis))
+                inputAxis++
+            }
+            is NewAxis -> {
+                outputAxis++
             }
         }
     }
-    val resultRank = axis
+    val resultRank = outputAxis
 
     val shape = IntArray(resultRank)
     val strides = IntArray(resultRank)
     val permutation = IntArray(resultRank)
-    axis = 0
+    outputAxis = 0
     entries.forEachIndexed { i, entry ->
         when(entry) {
             is NewAxis -> {
-                shape[axis] = 1
-                strides[axis] = 1
-                permutation[axis] = -1
-                axis++
+                shape[outputAxis] = 1
+                strides[outputAxis] = 1
+                permutation[outputAxis] = -1
+                outputAxis++
             }
             is Range -> {
-                shape[axis] = entry.length(array.shape(entryInputAxis[i]))
-                strides[axis] = entry.step
-                permutation[axis] = entryInputAxis[i]
-                axis++
+                shape[outputAxis] = entry.length(array.shape(entryInputAxis[i]))
+                strides[outputAxis] = entry.step
+                permutation[outputAxis] = entryInputAxis[i]
+                outputAxis++
             }
         }
     }
@@ -107,4 +113,14 @@ fun permutedSlice(
             strides = strides,
             origin = origin
     )
+}
+
+fun computeAbsoluteEntries(
+        array: ArrayND<*>,
+        first: List<SliceEntry>,
+        last: List<SliceEntry>
+): List<SliceEntry> {
+    val accessedAxes = first.count { it !is NewAxis } + last.count { it !is NewAxis }
+    val remaining = array.rank - accessedAxes
+    return first + List(remaining) { Range(All) } + last
 }

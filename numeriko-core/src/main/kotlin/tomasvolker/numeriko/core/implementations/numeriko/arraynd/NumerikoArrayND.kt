@@ -2,6 +2,9 @@ package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.DefaultMutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
+import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
+import tomasvolker.numeriko.core.operations.reduction.product
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex
@@ -16,7 +19,7 @@ class NumerikoArrayND<T>(
     override val rank: Int
         get() = shape.size
 
-    override val size: Int get() = data.size
+    override val size: Int get() = shape.product()
 
     override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
@@ -27,6 +30,17 @@ class NumerikoArrayND<T>(
         requireValidIndices(indices)
         data[convertIndices(indices)] = value
     }
+
+    override fun getPermutedSlice(slice: PermutedSlice): NumerikoArrayND<T> =
+            NumerikoArrayND(
+                    shape = slice.shape.toIntArrayND(),
+                    data = data,
+                    offset = convertIndices(slice.origin),
+                    strideArray = IntArray(slice.shape.size) { a ->
+                        val permuted = slice.permutation[a]
+                        if (permuted < 0) 1 else  slice.strides[a] * strideArray[slice.permutation[a]]
+                    }
+            )
 
     private fun convertIndices(indices: IntArray): Int =
             linearIndex(offset, strideArray, indices)

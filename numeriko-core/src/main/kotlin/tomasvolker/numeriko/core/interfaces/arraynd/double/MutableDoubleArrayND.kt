@@ -1,9 +1,11 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
+import tomasvolker.numeriko.core.interfaces.arraynd.double.view.DefaultPermutedSliceDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.inlinedForEachIndexed
+import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
@@ -36,6 +38,13 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
             setDouble(indices, element)
         }
     }
+
+    override fun getPermutedSlice(
+            slice: PermutedSlice
+    ): MutableDoubleArrayND = DefaultPermutedSliceDoubleArrayND(
+            array = this,
+            permutedSlice = slice
+    )
 
     override fun setValue(indices: IntArray, value: Double) = setDouble(indices, value)
 /*

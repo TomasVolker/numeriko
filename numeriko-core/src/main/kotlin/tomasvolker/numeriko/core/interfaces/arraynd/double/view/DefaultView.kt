@@ -1,6 +1,8 @@
-package tomasvolker.numeriko.core.interfaces.arraynd.generic.view
+package tomasvolker.numeriko.core.interfaces.arraynd.double.view
 
 import tomasvolker.numeriko.core.index.*
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
@@ -9,19 +11,19 @@ import tomasvolker.numeriko.core.interfaces.slicing.*
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 
-class DefaultPermutedSliceArrayND<T>(
-        val array: MutableArrayND<T>,
+class DefaultPermutedSliceDoubleArrayND(
+        val array: MutableDoubleArrayND,
         val permutedSlice: PermutedSlice
-): DefaultMutableArrayND<T>() {
+): DefaultMutableDoubleArrayND() {
 
     override val shape: IntArrayND = permutedSlice.shape.toIntArrayND()
 
-    override fun getValue(indices: IntArray): T {
+    override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
         return array.getValue(permutedSlice.convert(indices))
     }
 
-    override fun setValue(indices: IntArray, value: T) {
+    override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
         array.setValue(permutedSlice.convert(indices), value)
     }
@@ -29,20 +31,20 @@ class DefaultPermutedSliceArrayND<T>(
 }
 
 
-inline fun <T> arrayNDView(
-        array: MutableArrayND<T>,
+inline fun doubleArrayNDView(
+        array: MutableDoubleArrayND,
         shape: IntArrayND,
         crossinline convertIndices: (source: IntArray)->IntArray
-): MutableArrayND<T> = object: DefaultMutableArrayND<T>() {
+): MutableDoubleArrayND = object: DefaultMutableDoubleArrayND() {
 
     override val shape: IntArrayND = shape
 
-    override fun getValue(indices: IntArray): T {
+    override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
         return array.getValue(convertIndices(indices))
     }
 
-    override fun setValue(indices: IntArray, value: T) {
+    override fun setDouble(indices: IntArray, value: Double) {
         requireValidIndices(indices)
         array.setValue(
                 convertIndices(indices),
@@ -52,12 +54,11 @@ inline fun <T> arrayNDView(
 
 }
 
-
-fun <T> defaultArrayNDSlice(
-        array: MutableArrayND<T>,
+fun defaultDoubleArrayNDSlice(
+        array: MutableDoubleArrayND,
         entries: List<SliceEntry>
-): ArrayND<T> {
-    return DefaultPermutedSliceArrayND(
+): DoubleArrayND {
+    return DefaultPermutedSliceDoubleArrayND(
             array = array,
             permutedSlice = permutedSlice(array, entries)
     )

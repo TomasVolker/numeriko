@@ -8,12 +8,12 @@ fun DoubleArray.asDoubleArrayND(): DoubleArrayND = doubleArrayND(intArrayOf(size
 fun DoubleArray.toDoubleArrayND(): DoubleArrayND = doubleArrayND(intArrayOf(size), this.copyOf())
 
 fun doubleArrayND(shape: IntArray, data: DoubleArray): DoubleArrayND =
-        tomasvolker.numeriko.core.config.NumerikoConfig.defaultFactory.doubleArrayND(shape, data)
+        NumerikoConfig.defaultFactory.doubleArrayND(shape, data)
 
 
 fun copy(array: DoubleArrayND): DoubleArrayND =
-        tomasvolker.numeriko.core.config.NumerikoConfig.defaultFactory.copy(array)
+        NumerikoConfig.defaultFactory.copy(array)
 
 fun doubleZeros(shape: IntArrayND): DoubleArrayND =
-        tomasvolker.numeriko.core.config.NumerikoConfig.defaultFactory.doubleZeros(shape)
+        NumerikoConfig.defaultFactory.doubleZeros(shape)
 

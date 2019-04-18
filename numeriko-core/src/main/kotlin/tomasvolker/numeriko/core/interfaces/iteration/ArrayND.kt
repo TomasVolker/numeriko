@@ -15,7 +15,7 @@ inline fun <T> ArrayND<T>.inlinedForEachIndexed(function: (indices: IntArray, va
     val iterator = arrayIterator()
     while (iterator.hasNext()) {
         val value = iterator.next()
-        function(iterator.currentIndexArray, value)
+        function(iterator.previousIndexArray, value)
     }
 }
 

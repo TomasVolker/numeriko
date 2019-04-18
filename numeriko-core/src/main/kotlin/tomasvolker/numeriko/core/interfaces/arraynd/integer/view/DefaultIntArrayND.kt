@@ -17,9 +17,9 @@ abstract class DefaultIntArrayND: IntArrayND {
         else -> false
     }
 
-    override fun hashCode(): Int = defaultHashCode(this)
+    override fun hashCode(): Int = this.defaultHashCode()
 
-    override fun toString(): String = defaultToString(this)
+    override fun toString(): String = this.defaultToString()
 
 }
 

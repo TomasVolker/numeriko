@@ -1,7 +1,9 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.integer
 
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.view.DefaultPermutedSliceIntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
 
 interface IntArrayND: ArrayND<Int> {
 
@@ -27,6 +29,13 @@ interface IntArrayND: ArrayND<Int> {
 
     fun getInt(indices: IntArrayND): Int = getInt(indices.toIntArray())
 
+    override fun getPermutedSlice(
+            slice: PermutedSlice
+    ): IntArrayND = DefaultPermutedSliceIntArrayND(
+            array = this.asMutable(),
+            permutedSlice = slice
+    )
+
     override fun copy(): IntArrayND = copy(this)
 
     override fun iterator(): IntIterator = arrayIterator()
@@ -44,7 +53,7 @@ interface IntArrayND: ArrayND<Int> {
 
     fun elementWise(function: FunctionDtoD): IntArrayND =
             inlinedElementWise { function(it) }
-
+*/
     operator fun plus (other: IntArrayND): IntArrayND = elementWise(this, other) { t, o -> t + o }
     operator fun minus(other: IntArrayND): IntArrayND = elementWise(this, other) { t, o -> t - o }
     operator fun times(other: IntArrayND): IntArrayND = elementWise(this, other) { t, o -> t * o }
@@ -58,5 +67,5 @@ interface IntArrayND: ArrayND<Int> {
     operator fun minus(other: Int): IntArrayND = elementWise { it - other }
     operator fun times(other: Int): IntArrayND = elementWise { it * other }
     operator fun div  (other: Int): IntArrayND = elementWise { it / other }
-    */
+
 }

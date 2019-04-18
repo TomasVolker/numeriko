@@ -1,13 +1,13 @@
-package tomasvolker.numeriko.core.interfaces.arraynd.integer
+package tomasvolker.numeriko.core.interfaces.arraynd.float
 
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayNDIterator
 import tomasvolker.numeriko.core.interfaces.iteration.indexIncrement
 
-abstract class IntArrayNDIterator: IntIterator(), ArrayNDIterator<Int>
+abstract class FloatArrayNDIterator: FloatIterator(), ArrayNDIterator<Float>
 
-class DefaultIntArrayNDIterator(
-        val array: IntArrayND
-): IntArrayNDIterator() {
+class DefaultFloatArrayNDIterator(
+        val array: FloatArrayND
+): FloatArrayNDIterator() {
 
     override var previousIndexArray = IntArray(array.rank) { a -> array.shape(a)-1 }
     override var nextIndexArray = IntArray(array.rank) { 0 }
@@ -17,9 +17,9 @@ class DefaultIntArrayNDIterator(
 
     override fun hasNext(): Boolean = !overflow
 
-    override fun nextInt(): Int {
+    override fun nextFloat(): Float {
         nextIndexArray.copyInto(previousIndexArray)
         overflow = nextIndexArray.indexIncrement(shapeArray)
-        return array.getInt(previousIndexArray)
+        return array.getFloat(previousIndexArray)
     }
 }

@@ -1,27 +1,28 @@
-package tomasvolker.numeriko.core.interfaces.arraynd.generic.view
+package tomasvolker.numeriko.core.interfaces.arraynd.float.view
 
-import tomasvolker.numeriko.core.index.*
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.float.MutableFloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
-import tomasvolker.numeriko.core.interfaces.slicing.*
+import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
+import tomasvolker.numeriko.core.interfaces.slicing.SliceEntry
+import tomasvolker.numeriko.core.interfaces.slicing.permutedSlice
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 
-class DefaultPermutedSliceArrayND<T>(
-        val array: MutableArrayND<T>,
+class DefaultPermutedSliceFloatArrayND(
+        val array: MutableFloatArrayND,
         val permutedSlice: PermutedSlice
-): DefaultMutableArrayND<T>() {
+): DefaultMutableFloatArrayND() {
 
     override val shape: IntArrayND = permutedSlice.shape.toIntArrayND()
 
-    override fun getValue(indices: IntArray): T {
+    override fun getFloat(indices: IntArray): Float {
         requireValidIndices(indices)
         return array.getValue(permutedSlice.convert(indices))
     }
 
-    override fun setValue(indices: IntArray, value: T) {
+    override fun setFloat(indices: IntArray, value: Float) {
         requireValidIndices(indices)
         array.setValue(permutedSlice.convert(indices), value)
     }
@@ -29,20 +30,20 @@ class DefaultPermutedSliceArrayND<T>(
 }
 
 
-inline fun <T> arrayNDView(
-        array: MutableArrayND<T>,
+inline fun floatArrayNDView(
+        array: MutableFloatArrayND,
         shape: IntArrayND,
         crossinline convertIndices: (source: IntArray)->IntArray
-): MutableArrayND<T> = object: DefaultMutableArrayND<T>() {
+): MutableFloatArrayND = object: DefaultMutableFloatArrayND() {
 
     override val shape: IntArrayND = shape
 
-    override fun getValue(indices: IntArray): T {
+    override fun getFloat(indices: IntArray): Float {
         requireValidIndices(indices)
         return array.getValue(convertIndices(indices))
     }
 
-    override fun setValue(indices: IntArray, value: T) {
+    override fun setFloat(indices: IntArray, value: Float) {
         requireValidIndices(indices)
         array.setValue(
                 convertIndices(indices),
@@ -52,12 +53,11 @@ inline fun <T> arrayNDView(
 
 }
 
-
-fun <T> defaultArrayNDSlice(
-        array: MutableArrayND<T>,
+fun defaultFloatArrayNDSlice(
+        array: MutableFloatArrayND,
         entries: List<SliceEntry>
-): ArrayND<T> {
-    return DefaultPermutedSliceArrayND(
+): FloatArrayND {
+    return DefaultPermutedSliceFloatArrayND(
             array = array,
             permutedSlice = permutedSlice(array, entries)
     )

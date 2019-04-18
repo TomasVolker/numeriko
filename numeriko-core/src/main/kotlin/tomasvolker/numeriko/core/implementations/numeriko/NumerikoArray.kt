@@ -12,6 +12,12 @@ interface NumerikoDoubleArray {
 
 }
 
+interface NumerikoFloatArray {
+
+    val backingArray: FloatArray
+
+}
+
 interface NumerikoIntArray {
 
     val backingArray: IntArray

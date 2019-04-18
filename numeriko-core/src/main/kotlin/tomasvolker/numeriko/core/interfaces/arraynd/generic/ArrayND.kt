@@ -4,6 +4,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.view.*
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
+import tomasvolker.numeriko.core.operations.reduction.product
 
 /**
  * The parent interface of all N-dimensional arrays.
@@ -55,7 +56,7 @@ interface ArrayND<out T>: Collection<T> {
      *
      * This is equivalent to the product of the elements of the [shape].
      */
-    override val size: Int get() = shape.fold(1) { acc, next -> acc * next}
+    override val size: Int get() = shape.product()
 
     override fun contains(element: @UnsafeVariance T): Boolean =
             any { it == element }
@@ -101,11 +102,11 @@ interface ArrayND<out T>: Collection<T> {
      * @param strides Array of size `shape.size` containing the stride corresponding to each dimension.
      * @param origin Array of size `array.rank` containing the indices on `array` corresponding to all zeros in the view
      */
-    fun getPermutationSlice(
-            permutation: PermutedSlice
+    fun getPermutedSlice(
+            slice: PermutedSlice
     ): ArrayND<T> = DefaultPermutedSliceArrayND(
             array = this.asMutable(),
-            permutedSlice = permutation
+            permutedSlice = slice
     )
 
     /**

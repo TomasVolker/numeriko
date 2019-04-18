@@ -20,6 +20,8 @@ open class IndexProgression(
                     step = -step
             )
 
+    override fun toString(): String = "$first..$last step $step"
+
 }
 
 operator fun Int.rangeTo(index: Index) =

@@ -55,11 +55,11 @@ interface MutableArrayND<T>: ArrayND<T> {
         }
     }
 
-    override fun getPermutationSlice(
-            permutation: PermutedSlice
+    override fun getPermutedSlice(
+            slice: PermutedSlice
     ): MutableArrayND<T> = DefaultPermutedSliceArrayND(
             array = this,
-            permutedSlice = permutation
+            permutedSlice = slice
     )
 
 }

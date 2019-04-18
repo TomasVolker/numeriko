@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.dsl
 
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
@@ -26,7 +27,16 @@ object D {
     operator fun get(vararg values: Number): DoubleArrayND =
             values.map { it.toDouble() }.toDoubleArray().asDoubleArrayND()
 
-    //operator fun get(vararg values: DoubleArrayND): DoubleArrayND = values.toList().stack()
+    operator fun get(vararg values: DoubleArrayND): DoubleArrayND = values.toList().stack()
+
+}
+
+object F {
+
+    operator fun get(vararg values: Number): FloatArrayND =
+            values.map { it.toFloat() }.toFloatArray().asFloatArrayND()
+
+    operator fun get(vararg values: FloatArrayND): FloatArrayND = values.toList().stack()
 
 }
 
@@ -34,5 +44,14 @@ object I {
 
     operator fun get(vararg values: Int): IntArrayND =
             values.asIntArrayND()
+
+    operator fun get(vararg values: IntArrayND): IntArrayND = values.toList().stack()
+
+}
+
+object B {
+
+    operator fun get(vararg values: Boolean): ArrayND<Boolean> =
+            arrayND(intArrayOf(values.size), values.toTypedArray())
 
 }

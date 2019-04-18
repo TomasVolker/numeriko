@@ -62,6 +62,8 @@ open class LiteralIndex(val value: Int): Index {
 
     operator fun div(other: LiteralIndex) = LiteralIndex(this.value / other.value)
 
+    override fun toString(): String = value.toString()
+
 }
 
 object First: LiteralIndex(0)
