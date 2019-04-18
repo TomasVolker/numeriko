@@ -35,17 +35,17 @@ fun <T> ArrayND<T>.expandDim(axis: Int = 0): ArrayND<T> =
         )
 
 
-fun DoubleArrayND.arrayAlongAxis(axis: Int = 0): DoubleArrayND =
+fun DoubleArrayND.expandDim(axis: Int = 0): DoubleArrayND =
         getPermutedSlice(
                 expandDimPermutedSlice(this, axis)
         )
 
-fun IntArrayND.arrayAlongAxis(axis: Int = 0): IntArrayND =
+fun IntArrayND.expandDim(axis: Int = 0): IntArrayND =
         getPermutedSlice(
                 expandDimPermutedSlice(this, axis)
         )
 
-fun FloatArrayND.arrayAlongAxis(axis: Int = 0): FloatArrayND =
+fun FloatArrayND.expandDim(axis: Int = 0): FloatArrayND =
         getPermutedSlice(
                 expandDimPermutedSlice(this, axis)
         )

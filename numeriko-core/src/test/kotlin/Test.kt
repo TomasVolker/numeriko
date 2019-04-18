@@ -1,6 +1,8 @@
 import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
 import tomasvolker.numeriko.core.interfaces.slicing.*
+import tomasvolker.numeriko.core.operations.concat
+import tomasvolker.numeriko.core.operations.concatenate
 
 fun main() {
 
@@ -11,8 +13,10 @@ fun main() {
             7, 8, 8
     ).toIntArrayND(I[4, 3]).asMutable()
 
+    val vector = I[1, 2, 3 ,4].expandDim(1)
+
     println(
-            matrix.expandDim(2)
+            I[1] concat I[8, 2, 3, 4, 6]
     )
 
 }
