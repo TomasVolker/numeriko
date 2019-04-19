@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.operations
 
 import tomasvolker.numeriko.core.dsl.I
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
@@ -20,10 +21,10 @@ private fun resultShape(
         array1: ArrayND<*>,
         array2: ArrayND<*>,
         axis: Int
-): IntArrayND {
+): IntArray1D {
     requireSameRank(array1, array2)
     array1.requireValidAxis(axis)
-    return unsafeIntArrayND(I[array1.rank]) { (a) ->
+    return intArray1D(array1.rank) { a ->
         when {
             a == axis -> array1.shape(a) + array2.shape(a)
             else -> array1.shape(a)

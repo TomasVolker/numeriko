@@ -1,12 +1,13 @@
 package tomasvolker.numeriko.core.interfaces.slicing
 
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.preconditions.requireValidAxis
 
-fun ArrayND<*>.permutationSlice(permutation: IntArrayND): ArraySlice {
+fun ArrayND<*>.permutationSlice(permutation: IntArray1D): ArraySlice {
     require(permutation.size == rank) {
         "permutation array must be the same size (${permutation.size}) as array rank ($rank)"
     }
@@ -24,7 +25,7 @@ fun ArrayND<*>.permutationSlice(permutation: IntArrayND): ArraySlice {
 }
 
 
-fun <T> ArrayND<T>.permutation(permutation: IntArrayND): ArrayND<T>    = getSlice(permutationSlice(permutation))
-fun IntArrayND    .permutation(permutation: IntArrayND): IntArrayND    = getSlice(permutationSlice(permutation))
-fun DoubleArrayND .permutation(permutation: IntArrayND): DoubleArrayND = getSlice(permutationSlice(permutation))
-fun FloatArrayND  .permutation(permutation: IntArrayND): FloatArrayND  = getSlice(permutationSlice(permutation))
+fun <T> ArrayND<T>.permutation(permutation: IntArray1D): ArrayND<T>    = getSlice(permutationSlice(permutation))
+fun IntArrayND    .permutation(permutation: IntArray1D): IntArrayND    = getSlice(permutationSlice(permutation))
+fun DoubleArrayND .permutation(permutation: IntArray1D): DoubleArrayND = getSlice(permutationSlice(permutation))
+fun FloatArrayND  .permutation(permutation: IntArray1D): FloatArrayND  = getSlice(permutationSlice(permutation))

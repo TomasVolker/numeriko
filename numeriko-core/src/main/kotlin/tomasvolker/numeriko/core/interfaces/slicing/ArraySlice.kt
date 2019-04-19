@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.slicing
 
 import tomasvolker.numeriko.core.index.All
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 
@@ -60,10 +61,10 @@ data class ArraySlice(
 }
 
 fun arraySlice(
-        origin: IntArrayND,
-        shape: IntArrayND,
-        strides: IntArrayND,
-        permutation: IntArrayND
+        origin: IntArray1D,
+        shape: IntArray1D,
+        strides: IntArray1D,
+        permutation: IntArray1D
 ): ArraySlice =
         ArraySlice(
                 origin = origin.toIntArray(),

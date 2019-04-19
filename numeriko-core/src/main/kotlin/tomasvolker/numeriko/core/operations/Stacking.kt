@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.operations
 
 import tomasvolker.numeriko.core.dsl.I
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
@@ -8,15 +9,15 @@ import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.slicing.alongAxis
 
-private fun List<ArrayND<*>>.resultShape(axis: Int): IntArrayND {
+private fun List<ArrayND<*>>.resultShape(axis: Int): IntArray1D {
     val firstShape = first().shape
     require(all { it.shape == firstShape }) { "All shapes must be the same" }
 
-    return intArrayND(firstShape.size+1) { (a0) ->
+    return intArray1D(firstShape.size+1) { a ->
         when {
-            a0 < axis -> firstShape[a0]
-            a0 == axis -> size
-            else -> firstShape[a0-1]
+            a < axis -> firstShape[a]
+            a == axis -> size
+            else -> firstShape[a-1]
         }
     }
 }

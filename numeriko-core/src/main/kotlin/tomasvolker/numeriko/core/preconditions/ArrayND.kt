@@ -2,7 +2,6 @@ package tomasvolker.numeriko.core.preconditions
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import java.lang.IllegalArgumentException
 
 fun requireSameRank(array1: ArrayND<*>, array2: ArrayND<*>) =
         require(array1.rank == array2.rank) {

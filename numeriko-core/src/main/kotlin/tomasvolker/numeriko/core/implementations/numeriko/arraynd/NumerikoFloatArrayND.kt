@@ -2,11 +2,12 @@ package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 
 import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoFloatArray
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.MutableFloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.DefaultMutableFloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
-import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.*
@@ -14,7 +15,7 @@ import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex
 
 class NumerikoFloatArrayND(
-        override val shape: IntArrayND,
+        override val shape: IntArray1D,
         val data: FloatArray,
         val offset: Int = 0,
         val strideArray: IntArray = ContiguousLastAxis.strideArray(shape.toIntArray())
@@ -28,7 +29,7 @@ class NumerikoFloatArrayND(
 
     private val arrayShape = shape.toIntArray()
 
-    val fullData: Boolean = shape.product() == data.size
+    val fullData: Boolean = size == data.size
 
     override fun shape(axis: Int): Int = arrayShape[axis]
 
@@ -36,7 +37,7 @@ class NumerikoFloatArrayND(
 
     override fun getSlice(slice: ArraySlice): MutableFloatArrayND =
             NumerikoFloatArrayND(
-                shape = slice.shape.toIntArrayND(),
+                shape = slice.shape.toIntArray1D(),
                 data = data,
                 offset = convertIndices(slice.origin),
                 strideArray = IntArray(slice.shape.size) { a ->

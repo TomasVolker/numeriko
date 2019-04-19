@@ -3,6 +3,7 @@
 package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.functions.product
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
@@ -18,15 +19,21 @@ interface ArrayNDFactory {
     fun <T> arrayNDOfNulls(shape: IntArrayND): ArrayND<T?> =
             arrayND(shape.toIntArray(), arrayOfNulls<Any?>(shape.product()) as Array<T?>)
 
-    // Double
-
     fun doubleArrayND(shape: IntArray, data: DoubleArray): DoubleArrayND
 
     fun floatArrayND(shape: IntArray, data: FloatArray): FloatArrayND
 
     fun intArrayND(shape: IntArray, data: IntArray): IntArrayND
 
+    fun intArray1D(data: IntArray): IntArray1D
+
     // Copy
+
+    fun copy(array: IntArray1D): IntArray1D =
+            intArray1D(array.size) { i -> array[i] }
+
+    fun copy(array: IntArrayND): IntArrayND =
+            unsafeIntArrayND(array.shape) { indices -> array.getInt(indices) }
 
     fun copy(array: DoubleArrayND): DoubleArrayND =
             unsafeDoubleArrayND(array.shape) { indices -> array.getDouble(indices) }
@@ -34,18 +41,15 @@ interface ArrayNDFactory {
     fun copy(array: FloatArrayND): FloatArrayND =
             unsafeFloatArrayND(array.shape) { indices -> array.getFloat(indices) }
 
-    fun copy(array: IntArrayND): IntArrayND =
-            unsafeIntArrayND(array.shape) { indices -> array.getInt(indices) }
-
     // Zeros
 
-    fun doubleZeros(shape: IntArrayND): DoubleArrayND =
+    fun doubleZeros(shape: IntArray1D): DoubleArrayND =
             doubleArrayND(shape.toIntArray(), DoubleArray(shape.product()) { 0.0 })
 
-    fun floatZeros(shape: IntArrayND): FloatArrayND =
+    fun floatZeros(shape: IntArray1D): FloatArrayND =
             floatArrayND(shape.toIntArray(), FloatArray(shape.product()) { 0.0f })
 
-    fun intZeros(shape: IntArrayND): IntArrayND =
+    fun intZeros(shape: IntArray1D): IntArrayND =
             intArrayND(shape.toIntArray(), IntArray(shape.product()) { 0 })
 
 }

@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
@@ -38,7 +39,7 @@ interface ArrayND<out T>: Collection<T> {
      * `D[D[1, 2, 3], D[4, 5, 6]].shape == I[2, 3]`
      *
      */
-    val shape: IntArrayND
+    val shape: IntArray1D
 
     /**
      * Gets the shape on the given [axis].
@@ -79,7 +80,7 @@ interface ArrayND<out T>: Collection<T> {
      */
     fun getValue(indices: IntArray): T
 
-    fun getValue(indices: IntArrayND): T = getValue(indices.toIntArray())
+    fun getValue(indices: IntArray1D): T = getValue(indices.toIntArray())
 
     fun getValue(): T = getValue(intArrayOf())
     fun getValue(i0: Int): T = getValue(intArrayOf(i0))

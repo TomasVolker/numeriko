@@ -1,11 +1,13 @@
 package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 
+import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoIntArray
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.defaultEquals
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.DefaultMutableIntArrayND
-import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.*
@@ -13,14 +15,11 @@ import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex
 
 class NumerikoIntArrayND(
-        private val arrayShape: IntArray,
+        override val shape: IntArray1D,
         val data: IntArray,
         val offset: Int = 0,
-        val strideArray: IntArray = ContiguousLastAxis.strideArray(arrayShape)
+        val strideArray: IntArray = ContiguousLastAxis.strideArray(shape.toIntArray())
 ): DefaultMutableIntArrayND(), NumerikoIntArray {
-
-    override val shape: IntArrayND
-        get() = arrayShape.toIntArrayND()
 
     override val backingArray: IntArray
         get() = data
@@ -28,11 +27,11 @@ class NumerikoIntArrayND(
     override val rank: Int
         get() = shape.size
 
-    val fullData: Boolean = arrayShape.fold(1) { acc, next -> acc * next } == data.size
+    val fullData: Boolean = size == data.size
 
     override fun getSlice(slice: ArraySlice): NumerikoIntArrayND =
             NumerikoIntArrayND(
-                    arrayShape = slice.shape,
+                    shape = slice.shape.toIntArray1D(),
                     data = data,
                     offset = convertIndices(slice.origin),
                     strideArray = IntArray(slice.shape.size) { a ->
@@ -41,9 +40,9 @@ class NumerikoIntArrayND(
                     }
             )
 
-    override fun shape(axis: Int): Int = arrayShape[axis]
+    override fun shape(axis: Int): Int = shape[axis]
 
-    override val size: Int get() = arrayShape.fold(1) { acc, next -> acc * next }
+    override val size: Int get() = shape.product()
 
     override fun get(): Int {
         requireRank(0)
@@ -161,19 +160,10 @@ class NumerikoIntArrayND(
 
     }
 
-    override fun equals(other: Any?): Boolean = when {
-        other === this -> true
-        other is NumerikoIntArrayND ->
-            other.arrayShape.contentEquals(this.arrayShape) && other.data.contentEquals(this.data)
-        other is IntArrayND -> this.defaultEquals(other)
-        other is ArrayND<*> -> this.defaultEquals(other)
-        else -> false
-    }
-
     override fun copy(): IntArrayND =
             if (fullData)
                 NumerikoIntArrayND(
-                        arrayShape = arrayShape.copyOf(),
+                        shape = shape.copy(),
                         data = data.copyOf(),
                         offset = offset,
                         strideArray = strideArray.copyOf()

@@ -1,10 +1,11 @@
 package tomasvolker.numeriko.core.interfaces.iteration
 
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.arrayNDOfNulls
-import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
 import tomasvolker.numeriko.core.performance.forEach
 import tomasvolker.numeriko.core.preconditions.requireRank
 import tomasvolker.numeriko.core.preconditions.requireSameShape
@@ -15,8 +16,8 @@ import tomasvolker.numeriko.core.preconditions.requireSameShape
  * This function provides a copy of each index on each iteration.
  * For faster iteration use [unsafeForEachIndex].
  */
-inline fun ArrayND<*>.forEachIndex(block: (indices: IntArrayND)->Unit) =
-        unsafeForEachIndex { indices -> block(indices.toIntArrayND()) }
+inline fun ArrayND<*>.forEachIndex(block: (indices: IntArray1D)->Unit) =
+        unsafeForEachIndex { indices -> block(indices.toIntArray1D()) }
 
 inline fun <T> ArrayND<T>.unsafeForEachIndexed(function: (index: IntArray, value: T)->Unit) {
     unsafeForEachIndex { index ->

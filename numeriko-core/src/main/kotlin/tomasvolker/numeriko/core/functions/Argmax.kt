@@ -2,7 +2,7 @@ package tomasvolker.numeriko.core.functions
 
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
-import tomasvolker.numeriko.core.interfaces.factory.asIntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.asIntArray1D
 import tomasvolker.numeriko.core.interfaces.iteration.forEachIndex1
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
 
@@ -32,5 +32,5 @@ fun DoubleArrayND.argMaxND(): IntArrayND {
             resultValue = value
         }
     }
-    return resultIndex.asIntArrayND()
+    return resultIndex.asIntArray1D()
 }

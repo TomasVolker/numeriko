@@ -1,5 +1,11 @@
+package test
+
 import tomasvolker.numeriko.core.dsl.D
+import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
+import tomasvolker.numeriko.core.operations.stack
+import tomasvolker.numeriko.core.operations.unstack
 
 object Einsum {
 
@@ -21,7 +27,7 @@ object Einsum {
     val y = "y"
     val z = "z"
 
-    operator fun DoubleArrayND.get(vararg indices: String) = Expression.Tensor(this, indices.toList())
+    operator fun DoubleArrayND.get(vararg indices: String) = Einsum.Expression.Tensor(this, indices.toList())
 
     sealed class Expression {
 
@@ -78,14 +84,16 @@ fun einsum(block: Einsum.(String)-> Einsum.Expression): DoubleArrayND {
 
     val references = freeIndices.map { freeIndex ->
 
-        val pairs = list.withIndex().flatMap { (t, tensor) ->
+        val (tensor, index) = list.withIndex().flatMap { (t, tensor) ->
             tensor.indices.mapIndexedNotNull { i, index ->
-                if (index == freeIndex) t to i else null
+                if (index == freeIndex) I[t, i] else null
             }
-        }
+        }.stack(0).unstack(1).map { it.toIntArray() }
 
-        pairs.map { it.first }.toIntArray() to pairs.map { it.second }.toIntArray()
-    }
+        Pair(tensor, index)
+    }.toTypedArray()
+
+
 
     TODO()
 

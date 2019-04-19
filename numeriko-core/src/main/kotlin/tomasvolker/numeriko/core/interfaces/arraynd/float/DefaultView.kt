@@ -1,7 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.float
 
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
-import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.interfaces.slicing.SliceEntry
 import tomasvolker.numeriko.core.interfaces.slicing.arraySlice
@@ -13,7 +14,7 @@ class DefaultSliceFloatArrayND(
         val slice: ArraySlice
 ): DefaultMutableFloatArrayND() {
 
-    override val shape: IntArrayND = slice.shape.toIntArrayND()
+    override val shape: IntArray1D = slice.shape.toIntArray1D()
 
     override fun getFloat(indices: IntArray): Float {
         requireValidIndices(indices)
@@ -30,11 +31,11 @@ class DefaultSliceFloatArrayND(
 
 inline fun floatArrayNDView(
         array: MutableFloatArrayND,
-        shape: IntArrayND,
+        shape: IntArray1D,
         crossinline convertIndices: (source: IntArray)->IntArray
 ): MutableFloatArrayND = object: DefaultMutableFloatArrayND() {
 
-    override val shape: IntArrayND = shape
+    override val shape: IntArray1D = shape
 
     override fun getFloat(indices: IntArray): Float {
         requireValidIndices(indices)

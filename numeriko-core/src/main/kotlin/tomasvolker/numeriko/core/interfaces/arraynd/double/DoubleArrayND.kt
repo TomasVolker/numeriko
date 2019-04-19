@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
@@ -22,7 +23,7 @@ interface DoubleArrayND: ArrayND<Double> {
 
     fun getDouble(indices: IntArray): Double
 
-    fun getDouble(indices: IntArrayND): Double = getDouble(indices.toIntArray())
+    fun getDouble(indices: IntArray1D): Double = getDouble(indices.toIntArray())
 
     override fun copy(): DoubleArrayND = copy(this)
 

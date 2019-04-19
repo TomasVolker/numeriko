@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
@@ -21,7 +22,7 @@ interface MutableDoubleArrayND: DoubleArrayND, MutableArrayND<Double> {
 
     fun setDouble(indices: IntArray, value: Double)
 
-    fun setDouble(indices: IntArrayND, value: Double) = setDouble(indices.toIntArray(), value)
+    fun setDouble(indices: IntArray1D, value: Double) = setDouble(indices.toIntArray(), value)
 
     override fun setValue(value: ArrayND<Double>) =
             if (value is DoubleArrayND)

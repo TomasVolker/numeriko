@@ -16,6 +16,7 @@ fun ArrayND<*>.splitSlices(axis: Int, index: Int): Pair<ArraySlice, ArraySlice> 
     return arraySlice(
             shape = IntArray(rank) { a -> if (a == axis) index else shape(a) }
     ) to arraySlice(
+            origin = IntArray(rank) { a -> if (a == axis) index else 0 },
             shape = IntArray(rank) { a -> if (a == axis) shape(a) - index else shape(a) }
     )
 }

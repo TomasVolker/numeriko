@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
@@ -30,6 +31,14 @@ interface MutableArrayND<T>: ArrayND<T> {
      */
     fun setValue(indices: IntArray, value: T): Unit
 
+    fun setValue(value: T) = setValue(intArrayOf(), value)
+    fun setValue(i0: Int, value: T) = setValue(intArrayOf(i0), value)
+    fun setValue(i0: Int, i1: Int, value: T) = setValue(intArrayOf(i0, i1), value)
+    fun setValue(i0: Int, i1: Int, i2: Int, value: T) = setValue(intArrayOf(i0, i1, i2), value)
+    fun setValue(i0: Int, i1: Int, i2: Int, i3: Int, value: T) = setValue(intArrayOf(i0, i1, i2, i3), value)
+    fun setValue(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, value: T) = setValue(intArrayOf(i0, i1, i2, i3, i4), value)
+    fun setValue(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, value: T) = setValue(intArrayOf(i0, i1, i2, i3, i4, i5), value)
+
     /**
      * Sets [value] to the given indices.
      *
@@ -40,7 +49,7 @@ interface MutableArrayND<T>: ArrayND<T> {
      * @throws IllegalArgumentException  if the size of [indices] does not match [rank]
      * @throws IndexOutOfBoundsException  if the indices are out of bounds
      */
-    fun setValue(indices: IntArrayND, value: T): Unit =
+    fun setValue(indices: IntArray1D, value: T): Unit =
             setValue(indices.toIntArray(), value)
 
     fun setValue(value: ArrayND<T>) {

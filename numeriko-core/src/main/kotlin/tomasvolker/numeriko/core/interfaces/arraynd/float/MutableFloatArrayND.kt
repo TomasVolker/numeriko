@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.float
 
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
@@ -21,7 +22,7 @@ interface MutableFloatArrayND: FloatArrayND, MutableArrayND<Float> {
 
     fun setFloat(indices: IntArray, value: Float)
 
-    fun setFloat(indices: IntArrayND, value: Float) = setFloat(indices.toIntArray(), value)
+    fun setFloat(indices: IntArray1D, value: Float) = setFloat(indices.toIntArray(), value)
 
     override fun setValue(value: ArrayND<Float>) =
             if (value is FloatArrayND)

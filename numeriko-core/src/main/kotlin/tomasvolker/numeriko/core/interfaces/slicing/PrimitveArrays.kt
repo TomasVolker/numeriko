@@ -17,8 +17,7 @@ operator fun MutableDoubleArrayND.set(vararg indices: Any, value: MutableDoubleA
         this.get(*indices).setValue(value)
 
 
-operator fun FloatArrayND.get(vararg indices: Any): FloatArrayND =
-        getSlice(sliceFromIndices(this, indices))
+operator fun FloatArrayND.get(vararg indices: Any): FloatArrayND = getSlice(sliceFromIndices(this, indices))
 
 operator fun MutableFloatArrayND.get(vararg indices: Any): MutableFloatArrayND =
         getSlice(sliceFromIndices(this, indices))

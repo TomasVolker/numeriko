@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.float
 
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
@@ -22,7 +23,7 @@ interface FloatArrayND: ArrayND<Float> {
 
     fun getFloat(indices: IntArray): Float
 
-    fun getFloat(indices: IntArrayND): Float = getFloat(indices.toIntArray())
+    fun getFloat(indices: IntArray1D): Float = getFloat(indices.toIntArray())
 
     override fun copy(): FloatArrayND = copy(this)
 

@@ -1,7 +1,8 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
-import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
 import tomasvolker.numeriko.core.interfaces.slicing.*
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
@@ -11,7 +12,7 @@ class DefaultSliceDoubleArrayND(
         val slice: ArraySlice
 ): DefaultMutableDoubleArrayND() {
 
-    override val shape: IntArrayND = slice.shape.toIntArrayND()
+    override val shape: IntArray1D = slice.shape.toIntArray1D()
 
     override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)
@@ -28,11 +29,11 @@ class DefaultSliceDoubleArrayND(
 
 inline fun doubleArrayNDView(
         array: MutableDoubleArrayND,
-        shape: IntArrayND,
+        shape: IntArray1D,
         crossinline convertIndices: (source: IntArray)->IntArray
 ): MutableDoubleArrayND = object: DefaultMutableDoubleArrayND() {
 
-    override val shape: IntArrayND = shape
+    override val shape: IntArray1D = shape
 
     override fun getDouble(indices: IntArray): Double {
         requireValidIndices(indices)

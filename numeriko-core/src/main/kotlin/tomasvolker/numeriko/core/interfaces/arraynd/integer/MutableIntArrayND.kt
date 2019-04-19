@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.integer
 
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
@@ -20,7 +21,7 @@ interface MutableIntArrayND: IntArrayND, MutableArrayND<Int> {
 
     fun setInt(indices: IntArray, value: Int)
 
-    fun setInt(indices: IntArrayND, value: Int) = setInt(indices.toIntArray(), value)
+    fun setInt(indices: IntArray1D, value: Int) = setInt(indices.toIntArray(), value)
 
     override fun setValue(value: ArrayND<Int>) =
             if (value is IntArrayND)

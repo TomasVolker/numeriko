@@ -2,11 +2,12 @@ package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 
 import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoDoubleArray
+import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DefaultMutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
-import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.*
@@ -14,7 +15,7 @@ import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex
 
 class NumerikoDoubleArrayND(
-        override val shape: IntArrayND,
+        override val shape: IntArray1D,
         val data: DoubleArray,
         val offset: Int = 0,
         val strideArray: IntArray = ContiguousLastAxis.strideArray(shape.toIntArray())
@@ -36,7 +37,7 @@ class NumerikoDoubleArrayND(
 
     override fun getSlice(slice: ArraySlice): MutableDoubleArrayND =
             NumerikoDoubleArrayND(
-                shape = slice.shape.toIntArrayND(),
+                shape = slice.shape.toIntArray1D(),
                 data = data,
                 offset = convertIndices(slice.origin),
                 strideArray = IntArray(slice.shape.size) { a ->
@@ -171,20 +172,5 @@ class NumerikoDoubleArrayND(
                 )
             else
                 super.copy()
-/*
-    override fun elementWise(function: FunctionDtoD) =
-            inlineElementWise { function(it) }
 
-    // TODO reimplement for views
-    inline fun inlineElementWise(crossinline function: (Double)->Double) =
-            if (fullData)
-                NumerikoDoubleArrayND(
-                        shape = shape.copy(),
-                        data = DoubleArray(data.size) { i -> function(data[i]) },
-                        offset = offset,
-                        strideArray = strideArray.copyOf()
-                )
-            else
-                super.elementWise(DtoD(function))
-*/
 }
