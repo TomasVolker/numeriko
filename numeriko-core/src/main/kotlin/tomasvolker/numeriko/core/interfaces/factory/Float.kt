@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.dsl.I
+import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.forEachIndex
@@ -27,6 +28,9 @@ fun copy(array: FloatArrayND): FloatArrayND =
 
 fun floatZeros(shape: IntArrayND): FloatArrayND =
         NumerikoConfig.defaultFactory.floatZeros(shape)
+
+fun floatFill(shape: IntArrayND, value: Float): FloatArrayND =
+        floatArrayND(shape, FloatArray(shape.product()) { value })
 
 inline fun floatArrayND(vararg shape: Int, init: (indices: IntArrayND)->Number): FloatArrayND =
         floatArrayND(shape.asIntArrayND(), init)

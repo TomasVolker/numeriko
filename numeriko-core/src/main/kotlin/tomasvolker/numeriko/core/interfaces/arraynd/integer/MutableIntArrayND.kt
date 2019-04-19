@@ -3,7 +3,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.integer
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
-import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableIntArrayND: IntArrayND, MutableArrayND<Int> {
@@ -37,11 +37,11 @@ interface MutableIntArrayND: IntArrayND, MutableArrayND<Int> {
         }
     }
 
-    override fun getPermutedSlice(
-            slice: PermutedSlice
-    ): MutableIntArrayND = DefaultPermutedSliceIntArrayND(
+    override fun getSlice(
+            slice: ArraySlice
+    ): MutableIntArrayND = DefaultSliceIntArrayND(
             array = this,
-            permutedSlice = slice
+            slice = slice
     )
 
     override fun setValue(indices: IntArray, value: Int) = setInt(indices, value)

@@ -4,6 +4,11 @@ import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import java.lang.IllegalArgumentException
 
+fun requireSameRank(array1: ArrayND<*>, array2: ArrayND<*>) =
+        require(array1.rank == array2.rank) {
+            "Arrays must have the same rank (${array1.rank} != ${array2.rank})"
+        }
+
 fun requireSameShape(array1: ArrayND<*>, array2: ArrayND<*>) =
         require(array1.shape == array2.shape) {
             "Arrays must have the same shape (${array1.shape} != ${array2.shape})"

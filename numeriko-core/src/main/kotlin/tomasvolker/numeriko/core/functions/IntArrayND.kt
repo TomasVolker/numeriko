@@ -1,13 +1,24 @@
 package tomasvolker.numeriko.core.functions
 
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
+import tomasvolker.numeriko.core.primitives.productInt
+import tomasvolker.numeriko.core.primitives.sumInt
+
+fun IntArrayND.sum(): Int = when(rank) {
+    1 -> sumInt(0 until rank) { i -> this[i] }
+    else -> fold(0) { acc, next -> acc + next }
+}
+
+fun IntArrayND.product(): Int = when(rank) {
+    1 -> productInt(0 until size) { i -> this[i] }
+    else -> fold(1) { acc, next -> acc * next }
+}
+
+fun IntArrayND.average(): Double = sum().toDouble() / size
 /*
-fun IntArray1D.sum(): Int = sumBy { it }
-
-fun IntArray1D.average(): Double = sum().toDouble() / size
-
-infix fun IntArray1D.convolve(other: IntArray1D): IntArray1D {
+infix fun IntArrayND.convolve(other: IntArrayND): IntArrayND {
     requireSameSize(this, other)
-    return intArray1D(this.size) { i ->
+    return intArrayND(this.size) { i ->
         sumInt(other.indices) { j ->
             this[(i - j) modulo size] * other[j]
         }

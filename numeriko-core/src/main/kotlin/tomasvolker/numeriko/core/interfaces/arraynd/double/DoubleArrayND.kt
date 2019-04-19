@@ -4,7 +4,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.iteration.elementWise
-import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 
 interface DoubleArrayND: ArrayND<Double> {
 
@@ -31,11 +31,11 @@ interface DoubleArrayND: ArrayND<Double> {
 
     override fun asMutable(): MutableDoubleArrayND = this as MutableDoubleArrayND
 
-    override fun getPermutedSlice(
-            slice: PermutedSlice
-    ): DoubleArrayND = DefaultPermutedSliceDoubleArrayND(
+    override fun getSlice(
+            slice: ArraySlice
+    ): DoubleArrayND = DefaultSliceDoubleArrayND(
             array = this.asMutable(),
-            permutedSlice = slice
+            slice = slice
     )
 
     operator fun plus (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t + o }

@@ -1,7 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
-import tomasvolker.numeriko.core.interfaces.slicing.arrayAlongAxis
+import tomasvolker.numeriko.core.interfaces.slicing.alongAxis
 
 abstract class DefaultArrayND<T>: ArrayND<T> {
 
@@ -52,7 +52,7 @@ fun ArrayND<*>.defaultToString(): String =
                     postfix = " ]"
             )
             else -> (0 until shape(0))
-                    .map { i -> arrayAlongAxis(axis = 0, index = i) }
+                    .map { i -> alongAxis(axis = 0, index = i) }
                     .joinToString(
                             separator = ", \n",
                             prefix = "[ ",

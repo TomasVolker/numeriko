@@ -8,12 +8,21 @@ import tomasvolker.numeriko.core.interfaces.factory.unsafeArrayND
 import tomasvolker.numeriko.core.interfaces.factory.unsafeDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.unsafeFloatArrayND
 import tomasvolker.numeriko.core.interfaces.factory.unsafeIntArrayND
-import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
-import tomasvolker.numeriko.core.interfaces.slicing.reduceDim
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
+import tomasvolker.numeriko.core.interfaces.slicing.reduceRank
 import tomasvolker.numeriko.core.preconditions.requireValidAxis
+
+fun reduceSlice(array: ArrayND<*>, axis: Int, index: IntArray): ArraySlice =
+        ArraySlice(
+            permutation = intArrayOf(axis),
+            shape = intArrayOf(array.shape(axis)),
+            strides = intArrayOf(1),
+            origin = index
+        )
 
 inline fun <T, R> ArrayND<T>.reduce(
         axis: Int = 0,
+        keepAxis: Boolean = false,
         reduction: (acc: ArrayND<T>)->R
 ): ArrayND<R> {
     requireValidAxis(axis)
@@ -21,23 +30,15 @@ inline fun <T, R> ArrayND<T>.reduce(
     val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
 
     val result = unsafeArrayND(partialShape) { index ->
-        reduction(
-                getPermutedSlice(
-                        PermutedSlice(
-                                permutation = IntArray(1) { axis },
-                                shape = IntArray(1) { shape(axis) },
-                                strides = IntArray(1) { 1 },
-                                origin = index
-                        )
-                )
-        )
+        reduction(getSlice(reduceSlice(this, axis, index)))
     }
 
-    return result.reduceDim(axis)
+    return if(keepAxis) result else result.reduceRank(axis)
 }
 
 inline fun IntArrayND.reduce(
         axis: Int = 0,
+        keepAxis: Boolean = false,
         reduction: (acc: IntArrayND)->Int
 ): IntArrayND {
     requireValidAxis(axis)
@@ -45,24 +46,16 @@ inline fun IntArrayND.reduce(
     val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
 
     val result = unsafeIntArrayND(partialShape) { index ->
-        reduction(
-                getPermutedSlice(
-                        PermutedSlice(
-                                permutation = IntArray(1) { axis },
-                                shape = IntArray(1) { shape(axis) },
-                                strides = IntArray(1) { 1 },
-                                origin = index
-                        )
-                )
-        )
+        reduction(getSlice(reduceSlice(this, axis, index)))
     }
 
-    return result.reduceDim(axis)
+    return if(keepAxis) result else result.reduceRank(axis)
 }
 
 
 inline fun DoubleArrayND.reduce(
         axis: Int = 0,
+        keepAxis: Boolean = false,
         reduction: (acc: DoubleArrayND)->Double
 ): DoubleArrayND {
     requireValidAxis(axis)
@@ -70,24 +63,16 @@ inline fun DoubleArrayND.reduce(
     val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
 
     val result = unsafeDoubleArrayND(partialShape) { index ->
-        reduction(
-                getPermutedSlice(
-                    PermutedSlice(
-                            permutation = IntArray(1) { axis },
-                            shape = IntArray(1) { shape(axis) },
-                            strides = IntArray(1) { 1 },
-                            origin = index
-                    )
-                )
-        )
+        reduction(getSlice(reduceSlice(this, axis, index)))
     }
 
-    return result.reduceDim(axis)
+    return if(keepAxis) result else result.reduceRank(axis)
 }
 
 
 inline fun FloatArrayND.reduce(
         axis: Int = 0,
+        keepAxis: Boolean = false,
         reduction: (acc: FloatArrayND)->Float
 ): FloatArrayND {
     requireValidAxis(axis)
@@ -95,18 +80,9 @@ inline fun FloatArrayND.reduce(
     val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
 
     val result = unsafeFloatArrayND(partialShape) { index ->
-        reduction(
-                getPermutedSlice(
-                        PermutedSlice(
-                                permutation = IntArray(1) { axis },
-                                shape = IntArray(1) { shape(axis) },
-                                strides = IntArray(1) { 1 },
-                                origin = index
-                        )
-                )
-        )
+        reduction(getSlice(reduceSlice(this, axis, index)))
     }
 
-    return result.reduceDim(axis)
+    return if(keepAxis) result else result.reduceRank(axis)
 }
 

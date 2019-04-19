@@ -3,7 +3,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.integer
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.defaultEquals
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
-import tomasvolker.numeriko.core.interfaces.slicing.arrayAlongAxis
+import tomasvolker.numeriko.core.interfaces.slicing.alongAxis
 
 abstract class DefaultIntArrayND: IntArrayND {
 
@@ -42,7 +42,7 @@ fun IntArrayND.defaultEquals(other: IntArrayND): Boolean {
 fun IntArrayND.defaultHashCode(): Int {
 
     var result = rank.hashCode()
-    result += 31 * result + shape.hashCode()
+    result += 31 * result + shape.toIntArray().hashCode()
     for (x in this) {
         result += 31 * result + x.hashCode()
     }
@@ -59,7 +59,7 @@ fun IntArrayND.defaultToString(): String =
                     postfix = " ]"
             )
             else -> (0 until shape[0])
-                    .map { arrayAlongAxis(axis = 0, index = it) }
+                    .map { alongAxis(axis = 0, index = it) }
                     .joinToString(
                             separator = ", \n",
                             prefix = "[ ",

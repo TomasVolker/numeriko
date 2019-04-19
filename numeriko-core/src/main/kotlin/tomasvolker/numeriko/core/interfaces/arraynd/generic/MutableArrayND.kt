@@ -2,7 +2,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
-import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 /**
@@ -52,11 +52,11 @@ interface MutableArrayND<T>: ArrayND<T> {
         }
     }
 
-    override fun getPermutedSlice(
-            slice: PermutedSlice
-    ): MutableArrayND<T> = DefaultPermutedSliceArrayND(
+    override fun getSlice(
+            slice: ArraySlice
+    ): MutableArrayND<T> = DefaultSliceArrayND(
             array = this,
-            permutedSlice = slice
+            slice = slice
     )
 
 }

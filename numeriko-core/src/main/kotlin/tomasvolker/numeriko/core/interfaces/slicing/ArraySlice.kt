@@ -2,11 +2,12 @@ package tomasvolker.numeriko.core.interfaces.slicing
 
 import tomasvolker.numeriko.core.index.All
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 
 /**
- * Low level array permutation.
+ * Low level array slicing.
  *
- * This function returns a default view implementing an arbitrary permutation and slicing.
+ * This function returns a default view implementing an arbitrary permuted strided slicing.
  *
  * @param array The backing array
  * @param permutation Array of size `shape.size` containing the axes on the backing array corresponding to the axes
@@ -15,18 +16,18 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
  * @param strides Array of size `shape.size` containing the stride corresponding to each dimension.
  * @param origin Array of size `array.rank` containing the indices on `array` corresponding to all zeros in the view
  */
-data class PermutedSlice(
-        val permutation: IntArray,
+data class ArraySlice(
+        val origin: IntArray,
         val shape: IntArray,
         val strides: IntArray,
-        val origin: IntArray
+        val permutation: IntArray
 ) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as PermutedSlice
+        other as ArraySlice
 
         if (!permutation.contentEquals(other.permutation)) return false
         if (!shape.contentEquals(other.shape)) return false
@@ -58,11 +59,39 @@ data class PermutedSlice(
 
 }
 
-fun permutedSlice(
-        array: ArrayND<*>,
+fun arraySlice(
+        origin: IntArrayND,
+        shape: IntArrayND,
+        strides: IntArrayND,
+        permutation: IntArrayND
+): ArraySlice =
+        ArraySlice(
+                origin = origin.toIntArray(),
+                shape = shape.toIntArray(),
+                strides = strides.toIntArray(),
+                permutation = permutation.toIntArray()
+        )
+
+/**
+ * Defaults to identity slice
+ */
+fun ArrayND<*>.arraySlice(
+        origin: IntArray = IntArray(rank) { a -> 0 },
+        shape: IntArray = IntArray(rank) { a -> shape(a) },
+        strides: IntArray = IntArray(rank) { a -> 1 },
+        permutation: IntArray = IntArray(rank) { a -> a }
+): ArraySlice =
+        ArraySlice(
+                origin = origin,
+                shape = shape,
+                strides = strides,
+                permutation = permutation
+        )
+
+fun ArrayND<*>.arraySlice(
         entries: List<SliceEntry>
-): PermutedSlice {
-    val origin = IntArray(array.rank)
+): ArraySlice {
+    val origin = IntArray(rank)
     val entryInputAxis = IntArray(entries.size)
 
     var inputAxis = 0
@@ -71,12 +100,12 @@ fun permutedSlice(
         when(entry) {
             is Range -> {
                 entryInputAxis[i] = inputAxis
-                origin[inputAxis] = entry.start(array.shape(inputAxis))
+                origin[inputAxis] = entry.start(shape(inputAxis))
                 inputAxis++
                 outputAxis++
             }
             is Shrink -> {
-                origin[inputAxis] = entry.index(array.shape(inputAxis))
+                origin[inputAxis] = entry.index(shape(inputAxis))
                 inputAxis++
             }
             is NewAxis -> {
@@ -99,7 +128,7 @@ fun permutedSlice(
                 outputAxis++
             }
             is Range -> {
-                shape[outputAxis] = entry.length(array.shape(entryInputAxis[i]))
+                shape[outputAxis] = entry.length(shape(entryInputAxis[i]))
                 strides[outputAxis] = entry.step
                 permutation[outputAxis] = entryInputAxis[i]
                 outputAxis++
@@ -107,11 +136,11 @@ fun permutedSlice(
         }
     }
 
-    return PermutedSlice(
-            permutation = permutation,
+    return ArraySlice(
+            origin = origin,
             shape = shape,
             strides = strides,
-            origin = origin
+            permutation = permutation
     )
 }
 

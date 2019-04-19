@@ -6,21 +6,21 @@ import tomasvolker.numeriko.core.interfaces.slicing.*
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 
-class DefaultPermutedSliceArrayND<T>(
+class DefaultSliceArrayND<T>(
         val array: MutableArrayND<T>,
-        val permutedSlice: PermutedSlice
+        val slice: ArraySlice
 ): DefaultMutableArrayND<T>() {
 
-    override val shape: IntArrayND = permutedSlice.shape.toIntArrayND()
+    override val shape: IntArrayND = slice.shape.toIntArrayND()
 
     override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
-        return array.getValue(permutedSlice.convert(indices))
+        return array.getValue(slice.convert(indices))
     }
 
     override fun setValue(indices: IntArray, value: T) {
         requireValidIndices(indices)
-        array.setValue(permutedSlice.convert(indices), value)
+        array.setValue(slice.convert(indices), value)
     }
 
 }
@@ -54,8 +54,8 @@ fun <T> defaultArrayNDSlice(
         array: MutableArrayND<T>,
         entries: List<SliceEntry>
 ): ArrayND<T> {
-    return DefaultPermutedSliceArrayND(
+    return DefaultSliceArrayND(
             array = array,
-            permutedSlice = permutedSlice(array, entries)
+            slice = array.arraySlice(entries)
     )
 }

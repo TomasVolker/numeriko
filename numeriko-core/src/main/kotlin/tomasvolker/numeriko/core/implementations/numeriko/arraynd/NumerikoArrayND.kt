@@ -3,8 +3,7 @@ package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.DefaultMutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
-import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
-import tomasvolker.numeriko.core.operations.reduction.product
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex
@@ -19,8 +18,6 @@ class NumerikoArrayND<T>(
     override val rank: Int
         get() = shape.size
 
-    override val size: Int get() = shape.product()
-
     override fun getValue(indices: IntArray): T {
         requireValidIndices(indices)
         return data[convertIndices(indices)]
@@ -31,7 +28,7 @@ class NumerikoArrayND<T>(
         data[convertIndices(indices)] = value
     }
 
-    override fun getPermutedSlice(slice: PermutedSlice): NumerikoArrayND<T> =
+    override fun getSlice(slice: ArraySlice): NumerikoArrayND<T> =
             NumerikoArrayND(
                     shape = slice.shape.toIntArrayND(),
                     data = data,

@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 
+import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoFloatArray
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.MutableFloatArrayND
@@ -7,8 +8,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.float.DefaultMutableFloatArr
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
-import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
-import tomasvolker.numeriko.core.operations.reduction.product
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.*
 import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex
@@ -34,7 +34,7 @@ class NumerikoFloatArrayND(
 
     override val size: Int get() = shape.product()
 
-    override fun getPermutedSlice(slice: PermutedSlice): MutableFloatArrayND =
+    override fun getSlice(slice: ArraySlice): MutableFloatArrayND =
             NumerikoFloatArrayND(
                 shape = slice.shape.toIntArrayND(),
                 data = data,

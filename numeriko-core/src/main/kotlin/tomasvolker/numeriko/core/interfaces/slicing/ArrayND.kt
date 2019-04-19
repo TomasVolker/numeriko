@@ -7,7 +7,7 @@ import tomasvolker.numeriko.core.index.toIndexProgression
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 
-fun permutedSliceFromIndices(array: ArrayND<*>, indices: Array<out Any>): PermutedSlice {
+fun sliceFromIndices(array: ArrayND<*>, indices: Array<out Any>): ArraySlice {
     val indexList = indices.toList()
 
     if (indexList.count { it is Ellipsis } > 1)
@@ -27,8 +27,7 @@ fun permutedSliceFromIndices(array: ArrayND<*>, indices: Array<out Any>): Permut
         }
     }
 
-    return permutedSlice(
-            array,
+    return array.arraySlice(
             computeAbsoluteEntries(
                     array = array,
                     first = processed.subList(0, ellipsis),
@@ -38,10 +37,10 @@ fun permutedSliceFromIndices(array: ArrayND<*>, indices: Array<out Any>): Permut
 }
 
 operator fun <T> ArrayND<T>.get(vararg indices: Any): ArrayND<T> =
-        getPermutedSlice(permutedSliceFromIndices(this, indices))
+        getSlice(sliceFromIndices(this, indices))
 
 operator fun <T> MutableArrayND<T>.get(vararg indices: Any): MutableArrayND<T> =
-        getPermutedSlice(permutedSliceFromIndices(this, indices))
+        getSlice(sliceFromIndices(this, indices))
 
 operator fun <T> MutableArrayND<T>.set(vararg indices: Any, value: ArrayND<T>): Unit =
         this.get(*indices).setValue(value)

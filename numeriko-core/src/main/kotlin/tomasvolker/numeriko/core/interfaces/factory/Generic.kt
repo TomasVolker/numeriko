@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.dsl.I
+import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.forEachIndex
@@ -27,6 +28,9 @@ fun <T> copy(array: ArrayND<T>): ArrayND<T> =
 
 fun <T> arrayNDOfNulls(shape: IntArrayND): ArrayND<T?> =
         NumerikoConfig.defaultFactory.arrayNDOfNulls(shape)
+
+inline fun <reified T> arrayFill(shape: IntArrayND, value: T): ArrayND<T> =
+        arrayND(shape, Array(shape.product()) { value })
 
 inline fun <T> arrayND(shape: IntArrayND, init: (indices: IntArrayND)->T): ArrayND<T> =
         NumerikoConfig.defaultFactory.arrayNDOfNulls<T>(shape).asMutable().apply {

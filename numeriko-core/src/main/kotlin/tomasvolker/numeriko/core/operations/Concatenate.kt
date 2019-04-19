@@ -7,33 +7,36 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.slicing.split
+import tomasvolker.numeriko.core.preconditions.requireSameRank
+import tomasvolker.numeriko.core.preconditions.requireSameShape
+import tomasvolker.numeriko.core.preconditions.requireValidAxis
 
-infix fun <T> ArrayND<T>.concat(other: ArrayND<T>): ArrayND<T> =
-        concatenate(this, other, axis = 0)
+infix fun <T> ArrayND<T>.concat(other: ArrayND<T>   ): ArrayND<T>    = concatenate(this, other, axis = 0)
+infix fun IntArrayND    .concat(other: IntArrayND   ): IntArrayND    = concatenate(this, other, axis = 0)
+infix fun DoubleArrayND .concat(other: DoubleArrayND): DoubleArrayND = concatenate(this, other, axis = 0)
+infix fun FloatArrayND  .concat(other: FloatArrayND ): FloatArrayND  = concatenate(this, other, axis = 0)
 
-infix fun IntArrayND.concat(other: IntArrayND): IntArrayND =
-        concatenate(this, other, axis = 0)
-
-infix fun DoubleArrayND.concat(other: DoubleArrayND): DoubleArrayND =
-        concatenate(this, other, axis = 0)
-
-infix fun FloatArrayND.concat(other: FloatArrayND): FloatArrayND =
-        concatenate(this, other, axis = 0)
+private fun resultShape(
+        array1: ArrayND<*>,
+        array2: ArrayND<*>,
+        axis: Int
+): IntArrayND {
+    requireSameRank(array1, array2)
+    array1.requireValidAxis(axis)
+    return unsafeIntArrayND(I[array1.rank]) { (a) ->
+        when {
+            a == axis -> array1.shape(a) + array2.shape(a)
+            else -> array1.shape(a)
+        }
+    }
+}
 
 fun <T> concatenate(
         array1: ArrayND<T>,
         array2: ArrayND<T>,
         axis: Int = 0
 ): ArrayND<T> {
-    require(array1.rank == array2.rank) { "arrays are not of the same rank (${array1.rank} and ${array2.rank})" }
-    require(axis in 0 until array1.rank) { "axis $axis is out of bound for rank ${array1.rank}" }
-
-    val resultShape = unsafeIntArrayND(I[array1.rank]) { (a) ->
-        when {
-            a == axis -> array1.shape(a) + array2.shape(a)
-            else -> array1.shape(a)
-        }
-    }
+    val resultShape = resultShape(array1, array2, axis)
 
     val result = arrayNDOfNulls<T>(resultShape)
 
@@ -50,15 +53,7 @@ fun concatenate(
         array2: IntArrayND,
         axis: Int = 0
 ): IntArrayND {
-    require(array1.rank == array2.rank) { "arrays are not of the same rank (${array1.rank} and ${array2.rank})" }
-    require(axis in 0 until array1.rank) { "axis $axis is out of bound for rank ${array1.rank}" }
-
-    val resultShape = unsafeIntArrayND(I[array1.rank]) { (a) ->
-        when {
-            a == axis -> array1.shape(a) + array2.shape(a)
-            else -> array1.shape(a)
-        }
-    }
+    val resultShape = resultShape(array1, array2, axis)
 
     val result = intZeros(resultShape)
 
@@ -75,15 +70,7 @@ fun concatenate(
         array2: DoubleArrayND,
         axis: Int = 0
 ): DoubleArrayND {
-    require(array1.rank == array2.rank) { "arrays are not of the same rank (${array1.rank} and ${array2.rank})" }
-    require(axis in 0 until array1.rank) { "axis $axis is out of bound for rank ${array1.rank}" }
-
-    val resultShape = unsafeIntArrayND(I[array1.rank]) { (a) ->
-        when {
-            a == axis -> array1.shape(a) + array2.shape(a)
-            else -> array1.shape(a)
-        }
-    }
+    val resultShape = resultShape(array1, array2, axis)
 
     val result = doubleZeros(resultShape)
 
@@ -100,15 +87,7 @@ fun concatenate(
         array2: FloatArrayND,
         axis: Int = 0
 ): FloatArrayND {
-    require(array1.rank == array2.rank) { "arrays are not of the same rank (${array1.rank} and ${array2.rank})" }
-    require(axis in 0 until array1.rank) { "axis $axis is out of bound for rank ${array1.rank}" }
-
-    val resultShape = unsafeIntArrayND(I[array1.rank]) { (a) ->
-        when {
-            a == axis -> array1.shape(a) + array2.shape(a)
-            else -> array1.shape(a)
-        }
-    }
+    val resultShape = resultShape(array1, array2, axis)
 
     val result = floatZeros(resultShape)
 

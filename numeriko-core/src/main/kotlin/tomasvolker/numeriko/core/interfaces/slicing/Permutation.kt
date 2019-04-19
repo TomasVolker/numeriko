@@ -4,44 +4,27 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
+import tomasvolker.numeriko.core.preconditions.requireValidAxis
 
-fun permutationPermutedSlice(array: ArrayND<*>, permutation: IntArrayND): PermutedSlice {
-    require(permutation.size == array.rank) {
-        "permutation array must be the same size (${permutation.size}) as array rank (${array.rank})"
+fun ArrayND<*>.permutationSlice(permutation: IntArrayND): ArraySlice {
+    require(permutation.size == rank) {
+        "permutation array must be the same size (${permutation.size}) as array rank ($rank)"
     }
-    val visited = BooleanArray(array.rank) { false }
+    val visited = BooleanArray(rank) { false }
     permutation.forEach { axis ->
-        require(axis in 0 until array.rank) { "axis $axis out of bounds of rank ${array.rank}" }
+        requireValidAxis(axis)
         require(!visited[axis]) { "axis $axis inserted twice in the permutation" }
         visited[axis] = true
     }
     require(visited.all { it }) { "" }
-    return PermutedSlice(
-            permutation = IntArray(array.rank) { a -> permutation[a] },
-            shape = IntArray(array.rank) { a -> array.shape(permutation[a]) },
-            strides = IntArray(array.rank) { 1 },
-            origin = IntArray(array.rank) { 0 }
+    return arraySlice(
+            shape = IntArray(rank) { a -> shape(permutation[a]) },
+            permutation = IntArray(rank) { a -> permutation[a] }
     )
 }
 
 
-fun <T> ArrayND<T>.permutation(permutation: IntArrayND): ArrayND<T> =
-        getPermutedSlice(
-                permutationPermutedSlice(this, permutation)
-        )
-
-
-fun DoubleArrayND.permutation(permutation: IntArrayND): DoubleArrayND =
-        getPermutedSlice(
-                permutationPermutedSlice(this, permutation)
-        )
-
-fun IntArrayND.permutation(permutation: IntArrayND): IntArrayND =
-        getPermutedSlice(
-                permutationPermutedSlice(this, permutation)
-        )
-
-fun FloatArrayND.permutation(permutation: IntArrayND): FloatArrayND =
-        getPermutedSlice(
-                permutationPermutedSlice(this, permutation)
-        )
+fun <T> ArrayND<T>.permutation(permutation: IntArrayND): ArrayND<T>    = getSlice(permutationSlice(permutation))
+fun IntArrayND    .permutation(permutation: IntArrayND): IntArrayND    = getSlice(permutationSlice(permutation))
+fun DoubleArrayND .permutation(permutation: IntArrayND): DoubleArrayND = getSlice(permutationSlice(permutation))
+fun FloatArrayND  .permutation(permutation: IntArrayND): FloatArrayND  = getSlice(permutationSlice(permutation))

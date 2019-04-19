@@ -6,8 +6,20 @@ import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
-import tomasvolker.numeriko.core.interfaces.slicing.arrayAlongAxis
+import tomasvolker.numeriko.core.interfaces.slicing.alongAxis
 
+private fun List<ArrayND<*>>.resultShape(axis: Int): IntArrayND {
+    val firstShape = first().shape
+    require(all { it.shape == firstShape }) { "All shapes must be the same" }
+
+    return intArrayND(firstShape.size+1) { (a0) ->
+        when {
+            a0 < axis -> firstShape[a0]
+            a0 == axis -> size
+            else -> firstShape[a0-1]
+        }
+    }
+}
 
 fun <T> List<ArrayND<T>>.stack(axis: Int = 0): ArrayND<T> {
 
@@ -17,18 +29,10 @@ fun <T> List<ArrayND<T>>.stack(axis: Int = 0): ArrayND<T> {
     val firstShape = first().shape
     require(all { it.shape == firstShape }) { "All shapes must be the same" }
 
-    val result = arrayNDOfNulls<T>(
-            intArrayND(firstShape.size+1) { (a0) ->
-                when {
-                    a0 < axis -> firstShape[a0]
-                    a0 == axis -> size
-                    else -> firstShape[a0-1]
-                }
-            }
-    ).asMutable()
+    val result = arrayNDOfNulls<T>(resultShape(axis)).asMutable()
 
     forEachIndexed { i, array ->
-        result.arrayAlongAxis(axis = axis, index = i).asMutable().setValue(array)
+        result.alongAxis(axis = axis, index = i).asMutable().setValue(array)
     }
 
     return result as ArrayND<T>
@@ -42,18 +46,10 @@ fun List<DoubleArrayND>.stack(axis: Int = 0): DoubleArrayND {
     val firstShape = first().shape
     require(all { it.shape == firstShape }) { "All shapes must be the same" }
 
-    val result = doubleZeros(
-            intArrayND(firstShape.size+1) { (a0) ->
-                when {
-                    a0 < axis -> firstShape[a0]
-                    a0 == axis -> size
-                    else -> firstShape[a0-1]
-                }
-            }
-    ).asMutable()
+    val result = doubleZeros(resultShape(axis)).asMutable()
 
     forEachIndexed { i, array ->
-        result.arrayAlongAxis(axis = axis, index = i).asMutable().setValue(array)
+        result.alongAxis(axis = axis, index = i).asMutable().setValue(array)
     }
 
     return result
@@ -67,18 +63,10 @@ fun List<FloatArrayND>.stack(axis: Int = 0): FloatArrayND {
     val firstShape = first().shape
     require(all { it.shape == firstShape }) { "All shapes must be the same" }
 
-    val result = floatZeros(
-            intArrayND(firstShape.size+1) { (a0) ->
-                when {
-                    a0 < axis -> firstShape[a0]
-                    a0 == axis -> size
-                    else -> firstShape[a0-1]
-                }
-            }
-    ).asMutable()
+    val result = floatZeros(resultShape(axis)).asMutable()
 
     forEachIndexed { i, array ->
-        result.arrayAlongAxis(axis = axis, index = i).asMutable().setValue(array)
+        result.alongAxis(axis = axis, index = i).asMutable().setValue(array)
     }
 
     return result
@@ -92,18 +80,10 @@ fun List<IntArrayND>.stack(axis: Int = 0): IntArrayND {
     val firstShape = first().shape
     require(all { it.shape == firstShape }) { "All shapes must be the same" }
 
-    val result = intZeros(
-            intArrayND(firstShape.size+1) { (a0) ->
-                when {
-                    a0 < axis -> firstShape[a0]
-                    a0 == axis -> size
-                    else -> firstShape[a0-1]
-                }
-            }
-    ).asMutable()
+    val result = intZeros(resultShape(axis)).asMutable()
 
     forEachIndexed { i, array ->
-        result.arrayAlongAxis(axis = axis, index = i).asMutable().setValue(array)
+        result.alongAxis(axis = axis, index = i).asMutable().setValue(array)
     }
 
     return result

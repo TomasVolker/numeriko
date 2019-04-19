@@ -2,8 +2,8 @@ package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
-import tomasvolker.numeriko.core.operations.reduction.product
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
+import tomasvolker.numeriko.core.primitives.productInt
 
 /**
  * The parent interface of all N-dimensional arrays.
@@ -55,7 +55,7 @@ interface ArrayND<out T>: Collection<T> {
      *
      * This is equivalent to the product of the elements of the [shape].
      */
-    override val size: Int get() = shape.product()
+    override val size: Int get() = productInt(0 until rank) { i -> shape(i) }
 
     override fun contains(element: @UnsafeVariance T): Boolean =
             any { it == element }
@@ -90,9 +90,9 @@ interface ArrayND<out T>: Collection<T> {
     fun getValue(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): T = getValue(intArrayOf(i0, i1, i2, i3, i4, i5))
 
     /**
-     * Low level array permutation.
+     * Low level array slicing.
      *
-     * This function returns a view implementing an arbitrary permutation and slicing.
+     * This function returns a view implementing an arbitrary permuted strided slicing.
      *
      * @param array The backing array
      * @param permutation Array of size `shape.size` containing the axes on the backing array corresponding to the axes
@@ -101,11 +101,11 @@ interface ArrayND<out T>: Collection<T> {
      * @param strides Array of size `shape.size` containing the stride corresponding to each dimension.
      * @param origin Array of size `array.rank` containing the indices on `array` corresponding to all zeros in the view
      */
-    fun getPermutedSlice(
-            slice: PermutedSlice
-    ): ArrayND<T> = DefaultPermutedSliceArrayND(
+    fun getSlice(
+            slice: ArraySlice
+    ): ArrayND<T> = DefaultSliceArrayND(
             array = this.asMutable(),
-            permutedSlice = slice
+            slice = slice
     )
 
     /**

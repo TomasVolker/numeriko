@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.dsl.I
+import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.forEachIndex
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
@@ -32,6 +33,9 @@ fun intZeros(shape: IntArrayND): IntArrayND =
 
 fun intZeros(vararg shape: Int): IntArrayND =
         NumerikoConfig.defaultFactory.intZeros(shape.toIntArrayND())
+
+fun intFill(shape: IntArrayND, value: Int): IntArrayND =
+        intArrayND(shape, IntArray(shape.product()) { value })
 
 inline fun intArrayND(vararg shape: Int, init: (indices: IntArrayND)->Int): IntArrayND =
         intArrayND(shape.asIntArrayND(), init)

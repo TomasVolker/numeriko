@@ -3,7 +3,7 @@ package tomasvolker.numeriko.core.interfaces.arraynd.float
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.defaultEquals
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
-import tomasvolker.numeriko.core.interfaces.slicing.arrayAlongAxis
+import tomasvolker.numeriko.core.interfaces.slicing.alongAxis
 
 abstract class DefaultFloatArrayND: FloatArrayND {
 
@@ -55,7 +55,7 @@ fun FloatArrayND.defaultToString(): String =
                     postfix = " ]"
             )
             else -> (0 until shape[0])
-                    .map { arrayAlongAxis(axis = 0, index = it) }
+                    .map { alongAxis(axis = 0, index = it) }
                     .joinToString(
                             separator = ", \n",
                             prefix = "[ ",

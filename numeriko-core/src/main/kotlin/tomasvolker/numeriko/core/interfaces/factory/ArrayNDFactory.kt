@@ -2,11 +2,11 @@
 
 package tomasvolker.numeriko.core.interfaces.factory
 
+import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
-import tomasvolker.numeriko.core.operations.reduction.product
 
 interface ArrayNDFactory {
 

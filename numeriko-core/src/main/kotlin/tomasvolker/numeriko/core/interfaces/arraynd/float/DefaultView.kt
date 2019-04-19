@@ -2,27 +2,27 @@ package tomasvolker.numeriko.core.interfaces.arraynd.float
 
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
-import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.interfaces.slicing.SliceEntry
-import tomasvolker.numeriko.core.interfaces.slicing.permutedSlice
+import tomasvolker.numeriko.core.interfaces.slicing.arraySlice
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 
-class DefaultPermutedSliceFloatArrayND(
+class DefaultSliceFloatArrayND(
         val array: MutableFloatArrayND,
-        val permutedSlice: PermutedSlice
+        val slice: ArraySlice
 ): DefaultMutableFloatArrayND() {
 
-    override val shape: IntArrayND = permutedSlice.shape.toIntArrayND()
+    override val shape: IntArrayND = slice.shape.toIntArrayND()
 
     override fun getFloat(indices: IntArray): Float {
         requireValidIndices(indices)
-        return array.getValue(permutedSlice.convert(indices))
+        return array.getValue(slice.convert(indices))
     }
 
     override fun setFloat(indices: IntArray, value: Float) {
         requireValidIndices(indices)
-        array.setValue(permutedSlice.convert(indices), value)
+        array.setValue(slice.convert(indices), value)
     }
 
 }
@@ -55,8 +55,8 @@ fun defaultFloatArrayNDSlice(
         array: MutableFloatArrayND,
         entries: List<SliceEntry>
 ): FloatArrayND {
-    return DefaultPermutedSliceFloatArrayND(
+    return DefaultSliceFloatArrayND(
             array = array,
-            permutedSlice = permutedSlice(array, entries)
+            slice = array.arraySlice(entries)
     )
 }

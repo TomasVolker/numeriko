@@ -7,7 +7,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.DefaultMutableIntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
-import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.*
 import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex
@@ -30,7 +30,7 @@ class NumerikoIntArrayND(
 
     val fullData: Boolean = arrayShape.fold(1) { acc, next -> acc * next } == data.size
 
-    override fun getPermutedSlice(slice: PermutedSlice): NumerikoIntArrayND =
+    override fun getSlice(slice: ArraySlice): NumerikoIntArrayND =
             NumerikoIntArrayND(
                     arrayShape = slice.shape,
                     data = data,

@@ -4,7 +4,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
-import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 
 interface MutableFloatArrayND: FloatArrayND, MutableArrayND<Float> {
@@ -38,11 +38,11 @@ interface MutableFloatArrayND: FloatArrayND, MutableArrayND<Float> {
         }
     }
 
-    override fun getPermutedSlice(
-            slice: PermutedSlice
-    ): MutableFloatArrayND = DefaultPermutedSliceFloatArrayND(
+    override fun getSlice(
+            slice: ArraySlice
+    ): MutableFloatArrayND = DefaultSliceFloatArrayND(
             array = this,
-            permutedSlice = slice
+            slice = slice
     )
 
     override fun setValue(indices: IntArray, value: Float) = setFloat(indices, value)

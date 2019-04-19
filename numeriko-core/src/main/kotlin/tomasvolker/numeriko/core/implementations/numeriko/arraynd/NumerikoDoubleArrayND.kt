@@ -1,7 +1,6 @@
 package tomasvolker.numeriko.core.implementations.numeriko.arraynd
 
-import tomasvolker.numeriko.core.functions.DtoD
-import tomasvolker.numeriko.core.functions.FunctionDtoD
+import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.implementations.numeriko.NumerikoDoubleArray
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
@@ -9,8 +8,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.double.DefaultMutableDoubleA
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.toIntArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
-import tomasvolker.numeriko.core.interfaces.slicing.PermutedSlice
-import tomasvolker.numeriko.core.operations.reduction.product
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.*
 import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.linearIndex
@@ -36,7 +34,7 @@ class NumerikoDoubleArrayND(
 
     override val size: Int get() = shape.product()
 
-    override fun getPermutedSlice(slice: PermutedSlice): MutableDoubleArrayND =
+    override fun getSlice(slice: ArraySlice): MutableDoubleArrayND =
             NumerikoDoubleArrayND(
                 shape = slice.shape.toIntArrayND(),
                 data = data,
