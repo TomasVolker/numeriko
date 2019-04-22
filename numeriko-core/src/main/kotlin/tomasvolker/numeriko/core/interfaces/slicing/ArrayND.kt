@@ -1,21 +1,17 @@
 package tomasvolker.numeriko.core.interfaces.slicing
 
-import tomasvolker.numeriko.core.index.Index
-import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.index.toIndex
-import tomasvolker.numeriko.core.index.toIndexProgression
+import tomasvolker.numeriko.core.index.*
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 
 fun sliceFromIndices(array: ArrayND<*>, indices: Array<out Any>): ArraySlice {
     val indexList = indices.toList()
 
-    if (indexList.count { it is Ellipsis } > 1)
-        throw IllegalArgumentException("More than one Ellipsis used in slicing")
+    require(indexList.count { it is Ellipsis } <= 1) { "More than one Ellipsis used in slicing" }
 
-    val ellipsis = indexList.indexOf(Ellipsis).let { if (it < 0) indexList.size else it }
+    val ellipsis = indexList.indexOf(Ellipsis)
 
-    val processed = indices.mapNotNull {
+    val entries = indices.mapNotNull {
         when(it) {
             is Int -> Shrink(it.toIndex())
             is Index -> Shrink(it)
@@ -23,17 +19,34 @@ fun sliceFromIndices(array: ArrayND<*>, indices: Array<out Any>): ArraySlice {
             is IndexProgression -> Range(it)
             is NewAxis -> NewAxis
             is Ellipsis -> null
-            else -> throw IllegalArgumentException("all entries must one of these types: Int, Index, IntProgression, IndexProgression, NewAxis or Ellipsis")
+            else -> throw IllegalArgumentException(
+                    "all entries must one of these types: Int, Index, IntProgression, IndexProgression, NewAxis or Ellipsis"
+            )
         }
     }
+    val accessedAxes = entries.count { it !is NewAxis }
 
-    return array.arraySlice(
-            computeAbsoluteEntries(
-                    array = array,
-                    first = processed.subList(0, ellipsis),
-                    last = processed.subList(ellipsis, processed.size)
-            )
-    )
+    if (ellipsis < 0) {
+
+        require(accessedAxes == array.rank) {
+            "Trying to access $accessedAxes axes in a rank ${array.rank} array"
+        }
+
+        return array.arraySlice(entries)
+
+    } else {
+
+        require(accessedAxes <= array.rank) {
+            "Trying to access $accessedAxes axes in a rank ${array.rank} array"
+        }
+
+        val first = entries.subList(0, ellipsis)
+        val remaining = List(array.rank - accessedAxes) { Range(All) }
+        val last = entries.subList(ellipsis, entries.size)
+
+        return array.arraySlice(first + remaining + last)
+    }
+
 }
 
 operator fun <T> ArrayND<T>.get(vararg indices: Any): ArrayND<T> =

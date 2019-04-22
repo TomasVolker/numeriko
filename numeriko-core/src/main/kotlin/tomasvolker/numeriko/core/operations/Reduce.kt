@@ -52,6 +52,38 @@ inline fun IntArrayND.reduce(
     return if(keepAxis) result else result.reduceRank(axis)
 }
 
+inline fun IntArrayND.reduceDouble(
+        axis: Int = 0,
+        keepAxis: Boolean = false,
+        reduction: (acc: IntArrayND)->Double
+): DoubleArrayND {
+    requireValidAxis(axis)
+
+    val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
+
+    val result = unsafeDoubleArrayND(partialShape) { index ->
+        reduction(getSlice(reduceSlice(this, axis, index)))
+    }
+
+    return if(keepAxis) result else result.reduceRank(axis)
+}
+
+inline fun IntArrayND.reduceFloat(
+        axis: Int = 0,
+        keepAxis: Boolean = false,
+        reduction: (acc: IntArrayND)->Float
+): FloatArrayND {
+    requireValidAxis(axis)
+
+    val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
+
+    val result = unsafeFloatArrayND(partialShape) { index ->
+        reduction(getSlice(reduceSlice(this, axis, index)))
+    }
+
+    return if(keepAxis) result else result.reduceRank(axis)
+}
+
 
 inline fun DoubleArrayND.reduce(
         axis: Int = 0,

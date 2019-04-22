@@ -14,7 +14,7 @@ fun IntArray.asIntArrayND(
         shape: IntArray1D
 ): IntArrayND = intArrayND(shape, this)
 
-fun IntArray.toIntArray1D(
+fun IntArray.toIntArrayND(
         shape: IntArray1D
 ): IntArrayND = intArrayND(shape, this.copyOf())
 
@@ -35,6 +35,9 @@ fun copy(array: IntArrayND): IntArrayND =
 
 fun intZeros(shape: IntArray1D): IntArrayND =
         NumerikoConfig.defaultFactory.intZeros(shape)
+
+fun intZeros(size: Int): IntArray1D =
+        NumerikoConfig.defaultFactory.intArray1D(IntArray(size) { 0 })
 
 fun intZeros(vararg shape: Int): IntArrayND =
         NumerikoConfig.defaultFactory.intZeros(shape.toIntArray1D())

@@ -144,13 +144,3 @@ fun ArrayND<*>.arraySlice(
             permutation = permutation
     )
 }
-
-fun computeAbsoluteEntries(
-        array: ArrayND<*>,
-        first: List<SliceEntry>,
-        last: List<SliceEntry>
-): List<SliceEntry> {
-    val accessedAxes = first.count { it !is NewAxis } + last.count { it !is NewAxis }
-    val remaining = array.rank - accessedAxes
-    return first + List(remaining) { Range(All) } + last
-}

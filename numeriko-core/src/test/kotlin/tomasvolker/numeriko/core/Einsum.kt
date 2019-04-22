@@ -1,9 +1,8 @@
-package test
+package tomasvolker.numeriko.core
 
 import tomasvolker.numeriko.core.dsl.D
 import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.doubleArrayND
 import tomasvolker.numeriko.core.operations.stack
 import tomasvolker.numeriko.core.operations.unstack
 

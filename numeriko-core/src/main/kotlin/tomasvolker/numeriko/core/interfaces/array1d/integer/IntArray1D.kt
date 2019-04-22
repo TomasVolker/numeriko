@@ -5,6 +5,7 @@ import tomasvolker.numeriko.core.annotations.Level
 import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.*
 import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.interfaces.iteration.elementWise
 import tomasvolker.numeriko.core.preconditions.rankError
 
 internal const val rankError1DMessage = "Array is known to be rank 1D in compile time"
@@ -59,19 +60,19 @@ interface IntArray1D: IntArrayND {
     override fun arrayIterator(): IntArrayNDIterator = DefaultIntArrayNDIterator(this)
 
     override fun asMutable(): MutableIntArray1D = this as MutableIntArray1D
-/*
-    operator fun plus (other: IntArrayND): IntArrayND = elementWise(this, other) { t, o -> t + o }
-    operator fun minus(other: IntArrayND): IntArrayND = elementWise(this, other) { t, o -> t - o }
-    operator fun times(other: IntArrayND): IntArrayND = elementWise(this, other) { t, o -> t * o }
-    operator fun div  (other: IntArrayND): IntArrayND = elementWise(this, other) { t, o -> t / o }
+
+    operator fun plus (other: IntArray1D): IntArray1D = elementWise(this, other) { t, o -> t + o }
+    operator fun minus(other: IntArray1D): IntArray1D = elementWise(this, other) { t, o -> t - o }
+    operator fun times(other: IntArray1D): IntArray1D = elementWise(this, other) { t, o -> t * o }
+    operator fun div  (other: IntArray1D): IntArray1D = elementWise(this, other) { t, o -> t / o }
 
 
-    operator fun unaryPlus(): IntArrayND = this
-    operator fun unaryMinus(): IntArrayND = elementWise { -it }
+    override operator fun unaryPlus(): IntArray1D = this
+    override operator fun unaryMinus(): IntArray1D = elementWise { -it }
 
-    operator fun plus (other: Int): IntArrayND = elementWise { it + other }
-    operator fun minus(other: Int): IntArrayND = elementWise { it - other }
-    operator fun times(other: Int): IntArrayND = elementWise { it * other }
-    operator fun div  (other: Int): IntArrayND = elementWise { it / other }
-*/
+    override operator fun plus (other: Int): IntArray1D = elementWise { it + other }
+    override operator fun minus(other: Int): IntArray1D = elementWise { it - other }
+    override operator fun times(other: Int): IntArray1D = elementWise { it * other }
+    override operator fun div  (other: Int): IntArray1D = elementWise { it / other }
+
 }

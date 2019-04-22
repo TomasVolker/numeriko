@@ -20,7 +20,7 @@ tasks.test {
 
 val projectGroup   = "tomasvolker"
 val projectName    = "numeriko-core"
-val projectVersion = "0.0.3"
+val projectVersion = "0.1.0"
 
 version = projectVersion
 
