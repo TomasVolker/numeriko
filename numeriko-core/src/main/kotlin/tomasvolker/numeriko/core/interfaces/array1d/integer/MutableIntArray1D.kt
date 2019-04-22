@@ -1,57 +1,68 @@
 package tomasvolker.numeriko.core.interfaces.array1d.integer
 
-import tomasvolker.numeriko.core.index.Index
-import tomasvolker.numeriko.core.index.IndexProgression
-import tomasvolker.numeriko.core.interfaces.array1d.generic.MutableArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
-import tomasvolker.numeriko.core.interfaces.array1d.integer.view.DefaultMutableIntArray1DView
-import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.preconditions.requireSameSize
+import tomasvolker.numeriko.core.annotations.CompileTimeError
+import tomasvolker.numeriko.core.annotations.Level
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.DefaultSliceIntArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.MutableIntArrayND
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
+import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
+import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.requireSameShape
 
-interface MutableIntArray1D: IntArray1D, MutableArray1D<Int> {
+interface MutableIntArray1D: IntArray1D, MutableIntArrayND {
 
-    fun setInt(i0: Int, value: Int)
+    override operator fun set(i0: Int, value: Int)
 
-    fun setInt(i0: Index, value: Int) = setInt(i0.computeValue(size), value)
+    @CompileTimeError(rankError1DMessage, level = Level.ERROR)
+    override fun set(value: Int): Nothing = rankError(1)
+    @CompileTimeError(rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, value: Int): Nothing = rankError(1)
+    @CompileTimeError(rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, value: Int): Nothing = rankError(1)
+    @CompileTimeError(rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, value: Int): Nothing = rankError(1)
+    @CompileTimeError(rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, value: Int): Nothing = rankError(1)
+    @CompileTimeError(rankError1DMessage, level = Level.ERROR)
+    override operator fun set(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, value: Int): Nothing = rankError(1)
 
-    override fun setValue(i0: Int, value: Int) = setInt(i0, value)
+    @CompileTimeError(rankError1DMessage, level = Level.ERROR)
+    override operator fun set(vararg indices: Int, value: Int) = setInt(indices, value)
 
-    fun setValue(other: IntArray1D) {
-        requireSameSize(other, this)
-        // Anti alias copy
-        val copy = other.copy()
-        for (i in indices) {
-            setInt(i, copy.getInt(i))
-        }
-
+    override fun setInt(indices: IntArray, value: Int) {
+        require(indices.size == 1) { "passed ${indices.size} indices when 1 was required" }
+        set(indices[0], value)
     }
 
-    override fun getView(i0: IntProgression): MutableIntArray1D =
-            DefaultMutableIntArray1DView(
-                    array = this,
-                    offset = i0.first,
-                    size = i0.count(),
-                    stride = i0.step
-            )
+    override fun setInt(indices: IntArray1D, value: Int) {
+        require(indices.size == 1) { "passed ${indices.size} indices when 1 was required" }
+        set(indices[0], value)
+    }
 
-    override fun getView(i0: IndexProgression): MutableIntArray1D =
-            getView(i0.computeProgression(size))
+    override fun setValue(value: ArrayND<Int>) =
+            if (value is IntArrayND)
+                setValue(value)
+            else
+                super.setValue(value)
 
-    fun setView(value: IntArray1D, indexRange: IndexProgression) =
-            setView(value, indexRange.computeProgression(size))
+    override fun setValue(value: IntArrayND) {
+        requireSameShape(this, value)
+        // Anti alias copy
+        val copy = value.copy()
+        copy.unsafeForEachIndex { indices ->
+            setValue(indices, copy.getValue(indices))
+        }
+    }
 
-    fun setView(value: IntArray1D, indexRange: IntProgression) =
-            getView(indexRange).setValue(value)
+    override fun getSlice(
+            slice: ArraySlice
+    ): MutableIntArrayND = DefaultSliceIntArrayND(
+            array = this,
+            slice = slice
+    )
 
-    override fun copy(): MutableIntArray1D = copy(this).asMutable()
-
-    override operator fun get(index: IntProgression): MutableIntArray1D = getView(index)
-    override operator fun get(index: IndexProgression): MutableIntArray1D = getView(index)
-
-    operator fun set(index: Int, value: Int) = setValue(index, value)
-    operator fun set(index: Index, value: Int) = setValue(index, value)
-
-    operator fun set(index: IntProgression, value: IntArray1D) = setView(value, index)
-    operator fun set(index: IndexProgression, value: IntArray1D) = setView(value, index)
+    override fun setValue(indices: IntArray, value: Int) = setInt(indices, value)
 
 }

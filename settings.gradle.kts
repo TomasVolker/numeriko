@@ -5,4 +5,4 @@ pluginManagement {
     }
 }
 
-include("numeriko-core", "numeriko-complex")
+include("numeriko-core", "numeriko-complex", "numeriko-low-rank")

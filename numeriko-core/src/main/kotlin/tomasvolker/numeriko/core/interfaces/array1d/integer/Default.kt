@@ -1,41 +1,44 @@
 package tomasvolker.numeriko.core.interfaces.array1d.integer
 
-import tomasvolker.numeriko.core.interfaces.array1d.generic.indices
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.array1d.integer.defaultEquals
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.defaultEquals
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.defaultEquals
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.defaultHashCode
 
-fun defaultEquals(array1: IntArray1D, array2: IntArray1D): Boolean {
+abstract class DefaultIntArray1D: IntArray1D {
 
-    if (array1.size != array2.size)
-        return false
+    override fun equals(other: Any?): Boolean = when {
+        other === this -> true
+        other is IntArray1D -> this.defaultEquals(other)
+        other is IntArrayND -> this.defaultEquals(other)
+        other is ArrayND<*> -> this.defaultEquals(other)
+        else -> false
+    }
 
-    for (i in array1.indices) {
-        if (array1.getInt(i) != array2.getInt(i))
-            return false
+    override fun hashCode(): Int = this.defaultHashCode()
+
+    override fun toString(): String = this.defaultToString()
+
+}
+
+abstract class DefaultMutableIntArray1D: DefaultIntArray1D(), MutableIntArray1D
+
+fun IntArray1D.defaultEquals(other: IntArray1D): Boolean {
+
+    if(this.size != other.size) return false
+
+    for(i in 0 until size) {
+        if (this[i] != other[i]) return false
     }
 
     return true
 }
 
-fun defaultHashCode(array1: IntArray1D): Int {
-
-    var result = array1.rank.hashCode()
-    result += 31 * result + array1.size.hashCode()
-    for (x in array1) {
-        result += 31 * result + x.hashCode()
-    }
-
-    return result
-}
-
-class DefaultIntArray1DIterator(
-        val array: IntArray1D
-): IntIterator() {
-
-    var index = 0
-
-    override fun hasNext(): Boolean =
-            index < array.size
-
-    override fun nextInt(): Int =
-            array.getInt(index).apply { index++ }
-
-}
+fun IntArray1D.defaultToString(): String =
+        joinToString(
+                separator = ", ",
+                prefix = "[ ",
+                postfix = " ]"
+        )

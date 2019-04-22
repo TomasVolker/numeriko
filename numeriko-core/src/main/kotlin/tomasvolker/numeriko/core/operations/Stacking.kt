@@ -1,53 +1,91 @@
 package tomasvolker.numeriko.core.operations
 
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.Array1D
+import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.array2d.generic.Array2D
-import tomasvolker.numeriko.core.interfaces.factory.array2D
-import tomasvolker.numeriko.core.interfaces.factory.doubleArray1D
-import tomasvolker.numeriko.core.interfaces.factory.doubleArray2D
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
-import tomasvolker.numeriko.core.preconditions.requireSameSize
-import java.lang.IllegalArgumentException
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.*
+import tomasvolker.numeriko.core.interfaces.slicing.alongAxis
 
+private fun List<ArrayND<*>>.resultShape(axis: Int): IntArray1D {
+    val firstShape = first().shape
+    require(all { it.shape == firstShape }) { "All shapes must be the same" }
 
-inline fun <reified T> stack(vararg arrays: Array1D<T>): Array2D<T> {
-
-    if (arrays.isEmpty()) return array2D<T>(0, 0) { _, _-> TODO() }
-
-    val firstSize = arrays.first().size
-    require(arrays.all { it.size == firstSize }) { "All sizes must be the same" }
-
-    return array2D(arrays.size, firstSize) { i0, i1 ->
-        arrays[i0].getValue(i1)
+    return intArray1D(firstShape.size+1) { a ->
+        when {
+            a < axis -> firstShape[a]
+            a == axis -> size
+            else -> firstShape[a-1]
+        }
     }
-
 }
 
-fun List<DoubleArray1D>.stack(axis: Int = 0): DoubleArray2D {
+fun <T> List<ArrayND<T>>.stack(axis: Int = 0): ArrayND<T> {
 
-    if (axis !in 0..1) throw IllegalArgumentException("Stacking axis must be 0 or 1")
+    if (isEmpty())
+        return arrayND(intArrayOf(0), arrayOf<Any>() as Array<T>)
 
-    if (isEmpty()) return doubleArray2D(0, 0) { _, _-> 0.0 }
+    val firstShape = first().shape
+    require(all { it.shape == firstShape }) { "All shapes must be the same" }
 
-    val firstSize = first().size
-    require(all { it.size == firstSize }) { "All sizes must be the same" }
+    val result = arrayNDOfNulls<T>(resultShape(axis)).asMutable()
 
-    return when(axis) {
-        0 -> doubleArray2D(size, firstSize) { i0, i1 ->
-            this[i0][i1]
-        }
-        1 -> doubleArray2D(firstSize, size) { i0, i1 ->
-            this[i1][i0]
-        }
-        else -> throw IllegalStateException()
+    forEachIndexed { i, array ->
+        result.alongAxis(axis = axis, index = i).asMutable().setValue(array)
     }
 
+    return result as ArrayND<T>
 }
 
-fun stack(
-        vararg arrays: DoubleArray1D,
-        axis: Int = 0
-): DoubleArray2D = arrays.toList().stack(axis)
+fun List<DoubleArrayND>.stack(axis: Int = 0): DoubleArrayND {
+
+    if (isEmpty())
+        return doubleZeros(I[0])
+
+    val firstShape = first().shape
+    require(all { it.shape == firstShape }) { "All shapes must be the same" }
+
+    val result = doubleZeros(resultShape(axis)).asMutable()
+
+    forEachIndexed { i, array ->
+        result.alongAxis(axis = axis, index = i).asMutable().setValue(array)
+    }
+
+    return result
+}
+
+fun List<FloatArrayND>.stack(axis: Int = 0): FloatArrayND {
+
+    if (isEmpty())
+        return floatZeros(I[0])
+
+    val firstShape = first().shape
+    require(all { it.shape == firstShape }) { "All shapes must be the same" }
+
+    val result = floatZeros(resultShape(axis)).asMutable()
+
+    forEachIndexed { i, array ->
+        result.alongAxis(axis = axis, index = i).asMutable().setValue(array)
+    }
+
+    return result
+}
+
+fun List<IntArrayND>.stack(axis: Int = 0): IntArrayND {
+
+    if (isEmpty())
+        return intZeros(I[0])
+
+    val firstShape = first().shape
+    require(all { it.shape == firstShape }) { "All shapes must be the same" }
+
+    val result = intZeros(resultShape(axis)).asMutable()
+
+    forEachIndexed { i, array ->
+        result.alongAxis(axis = axis, index = i).asMutable().setValue(array)
+    }
+
+    return result
+}

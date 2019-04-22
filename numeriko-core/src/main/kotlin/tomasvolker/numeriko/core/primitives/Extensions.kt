@@ -22,7 +22,7 @@ fun Double.cubed(): Double = this * this * this
 infix fun Double.numericEqualsTo(
         other: Double
 ): Boolean =
-        numericEqualsTo(other, NumerikoConfig.defaultTolerance)
+        numericEqualsTo(other, tomasvolker.numeriko.core.config.NumerikoConfig.defaultTolerance)
 
 fun Double.numericEqualsTo(
         other: Double,

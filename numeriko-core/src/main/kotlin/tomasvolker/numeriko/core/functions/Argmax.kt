@@ -1,18 +1,17 @@
 package tomasvolker.numeriko.core.functions
 
-import tomasvolker.numeriko.core.index.All
-import tomasvolker.numeriko.core.interfaces.array1d.double.DoubleArray1D
-import tomasvolker.numeriko.core.interfaces.array1d.generic.forEachIndex
-import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.array2d.double.DoubleArray2D
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
-import java.lang.IllegalArgumentException
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.asIntArray1D
+import tomasvolker.numeriko.core.interfaces.iteration.forEachIndex1
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
 
-fun DoubleArray1D.argmax(): Int {
+
+fun DoubleArrayND.argMax(): Int {
     var resultIndex = 0
     var resultValue = Double.NEGATIVE_INFINITY
 
-    forEachIndex { i ->
+    forEachIndex1 { i ->
         val value = this[i]
         if (value > resultValue) {
             resultIndex = i
@@ -22,8 +21,16 @@ fun DoubleArray1D.argmax(): Int {
     return resultIndex
 }
 
-fun DoubleArray2D.reduceArgmax(axis: Int = 0): IntArray1D = when(axis) {
-    0 -> intArray1D(shape1) { i -> this[All, i].argmax() }
-    1 -> intArray1D(shape0) { i -> this[i, All].argmax() }
-    else -> throw IllegalArgumentException("axis out of bounds")
+fun DoubleArrayND.argMaxND(): IntArrayND {
+    var resultIndex = IntArray(rank) { 0 }
+    var resultValue = Double.NEGATIVE_INFINITY
+
+    unsafeForEachIndex { index ->
+        val value = this.getValue(index)
+        if (value > resultValue) {
+            resultIndex = index.copyInto(resultIndex)
+            resultValue = value
+        }
+    }
+    return resultIndex.asIntArray1D()
 }
