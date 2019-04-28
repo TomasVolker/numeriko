@@ -8,14 +8,14 @@ plugins {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(project(":numeriko-core"))
+    implementation(project(":array-core"))
 
     testImplementation("junit:junit:4.12")
     testImplementation(kotlin("test"))
 }
 
 val projectGroup   = "tomasvolker"
-val projectName    = "numeriko-complex"
+val projectName    = "array-complex"
 val projectVersion = "0.0.2"
 
 version = projectVersion
@@ -48,7 +48,7 @@ bintray {
         repo = "maven"
         name = projectName
         userOrg = projectGroup
-        vcsUrl = "https://github.com/tomasvolker/numeriko/gradle-bintray-plugin.git"
+        vcsUrl = "https://github.com/tomasvolker/array/gradle-bintray-plugin.git"
         description = "N-dimensional complex array library for Kotlin"
         setLabels("kotlin")
         setLicenses("Apache-2.0")

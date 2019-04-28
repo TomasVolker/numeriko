@@ -7,6 +7,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.integer.*
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.iteration.elementWise
 import tomasvolker.numeriko.core.preconditions.rankError
+import tomasvolker.numeriko.core.preconditions.requireValidIndices
 
 internal const val rankError1DMessage = "Array is known to be rank 1D in compile time"
 
@@ -14,8 +15,12 @@ interface IntArray1D: IntArrayND {
 
     override val size: Int
 
-    override val shape: IntArray1D
-        get() = I[size]
+    override val rank: Int get() = 1
+
+    override val shape: IntArray1D get() = I[size]
+
+    override fun shape(axis: Int): Int =
+            if (axis == 0) size else throw IndexOutOfBoundsException("Axis $axis is out of bounds for rank 1")
 
     @CompileTimeError(rankError1DMessage, level = Level.ERROR)
     override operator fun get(vararg indices: Int): Int = getInt(indices)
@@ -45,7 +50,7 @@ interface IntArray1D: IntArrayND {
     override operator fun get(i0: Int, i1: Int, i2: Int, i3: Int, i4: Int, i5: Int): Nothing = rankError(1)
 
     override fun getInt(indices: IntArray): Int {
-        require(indices.size == 1) { "passed ${indices.size} indices when 1 was required" }
+        requireValidIndices(indices)
         return get(indices[0])
     }
 

@@ -34,10 +34,10 @@ Then add the following dependencies:
 ```groovy
 dependencies {
     // Core library
-    implementation group: "tomasvolker", name: "numeriko-core", version: "0.0.2"
+    implementation group: "tomasvolker", name: array, version: "0.0.2"
     
     // Complex arrays
-    implementation group: "tomasvolker", name: "numeriko-complex", version: "0.0.1"
+    implementation group: "tomasvolker", name: array, version: "0.0.1"
     
 }
 
@@ -46,10 +46,10 @@ dependencies {
 ```kotlin
 dependencies {
     // Core library
-    implementation(group = "tomasvolker", name = "numeriko-core", version = "0.0.2")
+    implementation(group = "tomasvolker", name = "array", version = "0.0.2")
     
     // Complex arrays
-    implementation(group = "tomasvolker", name = "numeriko-complex", version = "0.0.1")
+    implementation(group = "tomasvolker", name = "array", version = "0.0.1")
     
 }
 ```

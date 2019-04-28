@@ -1,6 +1,6 @@
 package tomasvolker.numeriko.core.config
 
-import tomasvolker.numeriko.core.implementations.numeriko.factory.NumerikoArrayNDFactory
+import tomasvolker.numeriko.core.implementations.array.factory.ArrayArrayNDFactory
 import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
 import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.ElementOrder
@@ -16,7 +16,7 @@ object NumerikoConfig {
      * To use another backend, set this variable to the corresponding matrix factory.
      * A matrix factory must implement [ArrayNDFactory] interface.
      */
-    var defaultFactory: ArrayNDFactory = NumerikoArrayNDFactory()
+    var defaultFactory: ArrayNDFactory = ArrayArrayNDFactory()
 
     /**
      * Default tolerance for numeric equality.

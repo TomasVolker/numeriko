@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core
 
+import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.dsl.F
 import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
@@ -7,6 +8,7 @@ import tomasvolker.numeriko.core.interfaces.factory.unsafeDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.unsafeFloatArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.forEachIndex2
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
+import tomasvolker.numeriko.core.interfaces.slicing.expandRank
 import tomasvolker.numeriko.core.primitives.d
 import tomasvolker.numeriko.core.primitives.sumFloat
 import kotlin.system.measureTimeMillis
@@ -31,43 +33,48 @@ fun main() {
         F[0, 0, 1]
     ]
 
-    val n = 10000
+    repeat(10) {
 
-    var a = 0.0
+        val n = 10000
 
-    val array = unsafeDoubleArrayND(I[n, n])  { (i0, i1) -> i0.d * i1.d }
+        var a = 0.0
 
-    measureTimeMillis {
-        a = 0.0
-        array.unsafeForEachIndex { index ->
-            a += array.getDouble(index)
-        }
-    }.also { println("unsafe: $it") }
+        val array = unsafeDoubleArrayND(I[n, n])  { (i0, i1) -> i0.d * i1.d }
 
-    measureTimeMillis {
-        a = 0.0
-        array.forEachIndex2 { i0, i1 ->
-            a += array[i0, i1]
-        }
-    }.also { println("doubleFor: $it") }
+        measureTimeMillis {
+            a = 0.0
+            array.unsafeForEachIndex { index ->
+                a += array.getDouble(index)
+            }
+        }.also { println("unsafe: $it") }
 
-    val raw = DoubleArray(n * n) { i -> (i / n).d * (i % n).d }
+        measureTimeMillis {
+            a = 0.0
+            array.forEachIndex2 { i0, i1 ->
+                a += array[i0, i1]
+            }
+        }.also { println("doubleFor: $it") }
 
-    measureTimeMillis {
-        a = 0.0
-        val index = IntArray(1) { 0 }
-        for (i in 0 until raw.size) {
-            a += raw[index[0]]
-        }
-    }.also { println("raw: $it") }
+        val raw = DoubleArray(n * n) { i -> (i / n).d * (i % n).d }
 
-    /*
-    measureTimeMillis {
-        a = 0.0
-        array.forEachIndex { index ->
-            a += array.getDouble(index)
-        }
-    }.also { println("safe: $it") }
-    */
+        measureTimeMillis {
+            a = 0.0
+            val index = IntArray(1) { 0 }
+            for (i in 0 until raw.size) {
+                a += raw[i]
+            }
+        }.also { println("raw: $it") }
+
+        /*
+        measureTimeMillis {
+            a = 0.0
+            array.forEachIndex { index ->
+                a += array.getDouble(index)
+            }
+        }.also { println("safe: $it") }
+        */
+
+    }
+
 
 }
