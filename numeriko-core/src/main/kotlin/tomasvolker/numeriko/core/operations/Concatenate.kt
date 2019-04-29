@@ -6,6 +6,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
+import tomasvolker.numeriko.core.interfaces.slicing.set
 import tomasvolker.numeriko.core.interfaces.slicing.split
 import tomasvolker.numeriko.core.preconditions.requireSameRank
 import tomasvolker.numeriko.core.preconditions.requireValidAxis
@@ -14,6 +15,8 @@ infix fun <T> ArrayND<T>.concat(other: ArrayND<T>   ): ArrayND<T>    = concatena
 infix fun IntArrayND    .concat(other: IntArrayND   ): IntArrayND    = concatenate(this, other, axis = 0)
 infix fun DoubleArrayND .concat(other: DoubleArrayND): DoubleArrayND = concatenate(this, other, axis = 0)
 infix fun FloatArrayND  .concat(other: FloatArrayND ): FloatArrayND  = concatenate(this, other, axis = 0)
+
+infix fun IntArray1D    .concat(other: IntArray1D   ): IntArray1D    = concatenate(this, other)
 
 private fun resultShape(
         array1: ArrayND<*>,
@@ -45,6 +48,16 @@ fun <T> concatenate(
     second.asMutable().setValue(array2)
 
     return result as ArrayND<T>
+}
+
+fun concatenate(
+        array1: IntArray1D,
+        array2: IntArray1D
+): IntArray1D {
+    val result = intZeros(array1.size + array2.size).asMutable()
+    result[0 until array1.size] = array1
+    result[array1.size until result.size] = array2
+    return result
 }
 
 fun concatenate(

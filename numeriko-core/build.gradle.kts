@@ -11,11 +11,6 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
-}
-
-tasks.test {
-    useJUnitPlatform()
 }
 
 val projectGroup   = "tomasvolker"

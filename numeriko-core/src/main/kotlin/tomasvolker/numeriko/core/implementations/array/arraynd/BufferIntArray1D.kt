@@ -5,11 +5,13 @@ import tomasvolker.numeriko.core.implementations.array.LinearlyBackedMutableIntA
 import tomasvolker.numeriko.core.implementations.array.buffer.IntBuffer
 import tomasvolker.numeriko.core.interfaces.array1d.integer.DefaultMutableIntArray1D
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.DefaultMutableIntArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
 import tomasvolker.numeriko.core.interfaces.iteration.forEachIndex1
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.*
+import java.lang.IndexOutOfBoundsException
 
 class BufferIntArray1D(
         override val buffer: IntBuffer,
@@ -55,41 +57,37 @@ class BufferIntArray1D(
     override operator fun get(vararg indices: Int): Int = getInt(indices)
 
     override operator fun get(i0: Int): Int {
-        require(i0 in 0 until size) { "Index $i0 on axis 0 is out of size $size" }
+        if(i0 !in 0 until size) throw IndexOutOfBoundsException("Index $i0 on axis 0 is out of size $size")
         return buffer[convertIndices(i0)]
     }
 
     override operator fun set(i0: Int, value: Int) {
-        require(i0 in 0 until size) { "Index $i0 on axis 0 is out of size $size" }
+        if(i0 !in 0 until size) throw IndexOutOfBoundsException("Index $i0 on axis 0 is out of size $size")
         buffer[convertIndices(i0)] = value
     }
 
     override fun convertIndices(i0: Int): Int = offset + stride * i0
 
-    override fun setValue(value: IntArrayND) {
-        requireSameShape(this, value)
-
-        // Anti alias copy
-        val source = if (value is LinearlyBackedIntArrayND<*> && value.buffer !== this.buffer)
-            value
-        else
-            value.copy()
-
-        source.forEachIndex1 { i0 ->
-            set(i0, value[i0])
-        }
-
-    }
+    override fun setValue(value: IntArrayND) =
+            super<LinearlyBackedMutableIntArrayND>.setValue(value)
 
     override fun copy(): IntArray1D =
-            if (fullData)
-                BufferIntArray1D(
-                        buffer = buffer.copy(),
-                        size = size,
-                        offset = offset,
-                        stride = stride
-                )
-            else
-                super<DefaultMutableIntArray1D>.copy()
+            when {
+                fullData ->
+                    BufferIntArray1D(
+                            size = size,
+                            buffer = buffer.copy(),
+                            offset = offset,
+                            stride = stride
+                    )
+                isContiguous ->
+                    BufferIntArray1D(
+                            size = size,
+                            buffer = buffer.copy(offset, size),
+                            offset = 0,
+                            stride = stride
+                    )
+                else ->super<DefaultMutableIntArray1D>.copy()
+            }
 
 }
