@@ -1,9 +1,14 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
+import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
+import tomasvolker.numeriko.core.interfaces.factory.intArray1D
+import tomasvolker.numeriko.core.interfaces.factory.intZeros
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
+import tomasvolker.numeriko.core.interfaces.slicing.arraySlice
+import tomasvolker.numeriko.core.preconditions.illegalArgument
 import tomasvolker.numeriko.core.primitives.productInt
 
 /**
@@ -108,7 +113,53 @@ interface ArrayND<out T>: Collection<T> {
             array = this.asMutable(),
             slice = slice
     )
+/*
+    fun canReshapeTo(shape: IntArray1D): Boolean {
+        if (this.size != shape.product()) return false
 
+        if (this.size == 0) return true
+
+        return this.shape.filter { it != 1 } == shape.filter { it != 1 }
+    }
+
+    fun reshape(shape: IntArray1D, copyIfNecessary: Boolean = true): ArrayND<T> {
+
+        if (canReshapeTo(shape)) {
+
+            val thisIndices = this.shape.withIndex().filter { it.value != 1 }.map { it.index }
+            val shapeIndices = shape.withIndex().filter { it.value != 1 }.map { it.index }
+
+            val permutation = IntArray(shape.size) { -1 }
+
+            shapeIndices.zip(thisIndices) { shapeIndex, thisIndex ->
+                permutation[shapeIndex] = thisIndex
+            }
+
+            return getSlice(
+                    arraySlice(
+                            origin = IntArray(rank) { 0 },
+                            shape = shape.toIntArray(),
+                            strides = IntArray(shape.size) { 1 },
+                            permutation = permutation
+                    )
+            )
+
+        } else {
+
+            val copy = if (copyIfNecessary)
+                copy()
+            else
+                illegalArgument("Cannot reshape to $shape without copying")
+
+            if (!copy.canReshapeTo(shape))
+                error("Cannot reshape a copy of the array")
+
+            return copy.reshape(shape, copyIfNecessary = false)
+
+        }
+
+    }
+*/
     /**
      * Returns a copy of this [ArrayND].
      */

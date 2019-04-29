@@ -7,7 +7,7 @@ import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-fun DoubleArrayND.rawBytes(order: ByteOrder = ByteOrder.LITTLE_ENDIAN): ByteBuffer {
+fun DoubleArrayND.rawBytes(order: ByteOrder = ByteOrder.nativeOrder()): ByteBuffer {
     val buffer = ByteBuffer.allocate(size * 8).order(order)
     unsafeForEachIndex { indices ->
         buffer.putDouble(getDouble(indices))
@@ -16,7 +16,7 @@ fun DoubleArrayND.rawBytes(order: ByteOrder = ByteOrder.LITTLE_ENDIAN): ByteBuff
     return buffer
 }
 
-fun FloatArrayND.rawBytes(order: ByteOrder = ByteOrder.LITTLE_ENDIAN): ByteBuffer {
+fun FloatArrayND.rawBytes(order: ByteOrder = ByteOrder.nativeOrder()): ByteBuffer {
     val buffer = ByteBuffer.allocate(size * 4).order(order)
     unsafeForEachIndex { indices ->
         buffer.putFloat(getFloat(indices))
@@ -25,7 +25,7 @@ fun FloatArrayND.rawBytes(order: ByteOrder = ByteOrder.LITTLE_ENDIAN): ByteBuffe
     return buffer
 }
 
-fun IntArrayND.rawBytes(order: ByteOrder = ByteOrder.LITTLE_ENDIAN): ByteBuffer {
+fun IntArrayND.rawBytes(order: ByteOrder = ByteOrder.nativeOrder()): ByteBuffer {
     val buffer = ByteBuffer.allocate(size * 4).order(order)
     unsafeForEachIndex { indices ->
         buffer.putInt(getInt(indices))

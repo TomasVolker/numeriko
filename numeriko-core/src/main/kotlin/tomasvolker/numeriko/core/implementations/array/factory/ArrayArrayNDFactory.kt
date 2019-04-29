@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.implementations.array.factory
 
 import tomasvolker.numeriko.core.implementations.array.arraynd.*
+import tomasvolker.numeriko.core.implementations.array.buffer.*
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
@@ -12,19 +13,19 @@ import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
 class ArrayArrayNDFactory: ArrayNDFactory {
 
     override fun intArray1D(data: IntArray): IntArray1D =
-            ArrayIntArray1D(data)
+            ArrayIntArray1D(IntArrayBuffer(data))
 
     override fun <T> arrayND(shape: IntArray, data: Array<T>): ArrayND<T> =
-            ArrayGenericArrayND(intArray1D(shape), data)
+            ArrayGenericArrayND(intArray1D(shape), ArrayBuffer(data))
 
     override fun doubleArrayND(shape: IntArray, data: DoubleArray): DoubleArrayND =
-            ArrayDoubleArrayND(intArray1D(shape), data)
+            ArrayDoubleArrayND(intArray1D(shape), DoubleArrayBuffer(data))
 
     override fun floatArrayND(shape: IntArray, data: FloatArray): FloatArrayND =
-            ArrayFloatArrayND(intArray1D(shape), data)
+            ArrayFloatArrayND(intArray1D(shape), FloatArrayBuffer(data))
 
     override fun intArrayND(shape: IntArray, data: IntArray): IntArrayND =
-            ArrayIntArrayND(intArray1D(shape), data)
+            ArrayIntArrayND(intArray1D(shape), IntArrayBuffer(data))
 
 
 }

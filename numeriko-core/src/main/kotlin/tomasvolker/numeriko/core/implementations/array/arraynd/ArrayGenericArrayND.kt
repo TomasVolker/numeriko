@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.implementations.array.arraynd
 
 import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.implementations.array.LinearlyBackedMutableArrayND
+import tomasvolker.numeriko.core.implementations.array.buffer.Buffer
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.DefaultMutableArrayND
@@ -13,28 +14,24 @@ import tomasvolker.numeriko.core.view.ContiguousLastAxis
 
 class ArrayGenericArrayND<T>(
         override val shape: IntArray1D,
-        override val data: Array<T>,
+        override val buffer: Buffer<T>,
         override val offset: Int = 0,
         override val strideArray: IntArray = ContiguousLastAxis.strideArray(shape.toIntArray())
-): DefaultMutableArrayND<T>(), LinearlyBackedMutableArrayND<T, Array<T>> {
+): DefaultMutableArrayND<T>(), LinearlyBackedMutableArrayND<T, Buffer<T>> {
 
     override val rank: Int
         get() = shape.size
 
-    val fullData: Boolean = shape.product() == data.size
+    val fullData: Boolean = shape.product() == buffer.size
 
     // Performance
     private val arrayShape: IntArray = shape.toIntArray()
     override fun shape(axis: Int): Int = arrayShape[axis]
 
-    override fun linearGetValue(i: Int): T = data[i]
-    override fun linearSetValue(i: Int, value: T) { data[i] = value }
-    override val dataSize: Int get() = data.size
-
     override fun getSlice(slice: ArraySlice): ArrayGenericArrayND<T> =
             ArrayGenericArrayND(
                     shape = slice.shape.toIntArray1D(),
-                    data = data,
+                    buffer = buffer,
                     offset = convertIndices(slice.origin),
                     strideArray = IntArray(slice.shape.size) { a ->
                         val permuted = slice.permutation[a]
@@ -48,7 +45,7 @@ class ArrayGenericArrayND<T>(
             if (fullData)
                 ArrayGenericArrayND(
                         shape = shape.copy(),
-                        data = data.copyOf(),
+                        buffer = buffer.copy(),
                         offset = offset,
                         strideArray = strideArray.copyOf()
                 )
