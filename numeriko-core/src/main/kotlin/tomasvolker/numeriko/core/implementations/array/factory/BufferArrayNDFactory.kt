@@ -10,7 +10,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
 
 
-class ArrayArrayNDFactory: ArrayNDFactory {
+class BufferArrayNDFactory: ArrayNDFactory {
 
     override fun intArray1D(data: IntArray): IntArray1D =
             BufferIntArray1D(IntArrayBuffer(data))

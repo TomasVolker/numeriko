@@ -1,6 +1,5 @@
 package tomasvolker.numeriko.core.operations
 
-import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
@@ -9,7 +8,6 @@ import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.slicing.split
 import tomasvolker.numeriko.core.preconditions.requireSameRank
-import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.core.preconditions.requireValidAxis
 
 infix fun <T> ArrayND<T>.concat(other: ArrayND<T>   ): ArrayND<T>    = concatenate(this, other, axis = 0)
