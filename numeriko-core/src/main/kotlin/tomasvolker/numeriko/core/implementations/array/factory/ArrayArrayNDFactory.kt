@@ -13,19 +13,19 @@ import tomasvolker.numeriko.core.interfaces.factory.ArrayNDFactory
 class ArrayArrayNDFactory: ArrayNDFactory {
 
     override fun intArray1D(data: IntArray): IntArray1D =
-            ArrayIntArray1D(IntArrayBuffer(data))
+            BufferIntArray1D(IntArrayBuffer(data))
 
     override fun <T> arrayND(shape: IntArray, data: Array<T>): ArrayND<T> =
-            ArrayGenericArrayND(intArray1D(shape), ArrayBuffer(data))
+            BufferGenericArrayND(intArray1D(shape), ArrayBuffer(data))
 
     override fun doubleArrayND(shape: IntArray, data: DoubleArray): DoubleArrayND =
-            ArrayDoubleArrayND(intArray1D(shape), DoubleArrayBuffer(data))
+            BufferDoubleArrayND(intArray1D(shape), DoubleArrayBuffer(data))
 
     override fun floatArrayND(shape: IntArray, data: FloatArray): FloatArrayND =
-            ArrayFloatArrayND(intArray1D(shape), FloatArrayBuffer(data))
+            BufferFloatArrayND(intArray1D(shape), FloatArrayBuffer(data))
 
     override fun intArrayND(shape: IntArray, data: IntArray): IntArrayND =
-            ArrayIntArrayND(intArray1D(shape), IntArrayBuffer(data))
+            BufferIntArrayND(intArray1D(shape), IntArrayBuffer(data))
 
 
 }

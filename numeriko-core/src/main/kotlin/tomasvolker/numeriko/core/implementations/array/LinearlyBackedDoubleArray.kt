@@ -3,13 +3,10 @@ package tomasvolker.numeriko.core.implementations.array
 import tomasvolker.numeriko.core.implementations.array.buffer.DoubleBuffer
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
 import tomasvolker.numeriko.core.preconditions.requireRank
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
-import tomasvolker.numeriko.core.view.linearIndex
 
 interface LinearlyBackedDoubleArrayND<D: DoubleBuffer>: LinearlyBackedArrayND<Double, D>, DoubleArrayND {
 
@@ -109,10 +106,24 @@ interface LinearlyBackedMutableDoubleArrayND<D: DoubleBuffer>: LinearlyBackedDou
         requireSameShape(this, value)
 
         // Anti alias copy
-        val source = if (value is LinearlyBackedDoubleArrayND<*> && value.buffer !== this.buffer)
+        val source = if (value is LinearlyBackedMutableArrayND<*, *> && value.buffer !== this.buffer)
             value
         else
             value.copy()
+
+        if (value is LinearlyBackedDoubleArrayND<*>) {
+
+            if (this.order == value.order) {
+                value.buffer.copyInto(
+                        destination = this.buffer,
+                        destinationOffset = this.offset,
+                        startIndex = value.offset,
+                        endIndex = value.size
+                )
+                return
+            }
+
+        }
 
         source.unsafeForEachIndexed { indices, element ->
             setDouble(indices, element)

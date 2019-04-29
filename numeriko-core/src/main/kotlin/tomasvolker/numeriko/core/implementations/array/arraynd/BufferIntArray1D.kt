@@ -11,7 +11,7 @@ import tomasvolker.numeriko.core.interfaces.iteration.forEachIndex1
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.preconditions.*
 
-class ArrayIntArray1D(
+class BufferIntArray1D(
         override val buffer: IntBuffer,
         override val size: Int = buffer.size,
         override val offset: Int = 0,
@@ -20,10 +20,8 @@ class ArrayIntArray1D(
 
     override val strideArray: IntArray get() = intArrayOf(stride)
 
-    val fullData: Boolean = this.size == buffer.size
-
-    override fun getSlice(slice: ArraySlice): ArrayIntArrayND =
-            ArrayIntArrayND(
+    override fun getSlice(slice: ArraySlice): BufferIntArrayND =
+            BufferIntArrayND(
                     shape = slice.shape.toIntArray1D(),
                     buffer = buffer,
                     offset = convertIndices(slice.origin[0]),
@@ -85,7 +83,7 @@ class ArrayIntArray1D(
 
     override fun copy(): IntArray1D =
             if (fullData)
-                ArrayIntArray1D(
+                BufferIntArray1D(
                         buffer = buffer.copy(),
                         size = size,
                         offset = offset,

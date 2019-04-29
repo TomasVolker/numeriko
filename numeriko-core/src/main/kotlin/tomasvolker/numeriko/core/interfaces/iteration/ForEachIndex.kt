@@ -40,7 +40,7 @@ fun IntArray.indexIncrement(shape: IntArray): Boolean {
  */
 inline fun unsafeForEachIndex(shape: IntArray, block: (indices: IntArray)->Unit) {
 
-    if (shape.isEmpty()) return
+    if (shape.any { it == 0 }) return
 
     val index = IntArray(shape.size) { 0 }
 

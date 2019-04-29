@@ -1,11 +1,14 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.double
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.iteration.elementWise
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
+import tomasvolker.numeriko.core.interfaces.slicing.sliceReshape
+import tomasvolker.numeriko.core.preconditions.illegalArgument
 
 interface DoubleArrayND: ArrayND<Double> {
 
@@ -38,6 +41,26 @@ interface DoubleArrayND: ArrayND<Double> {
             array = this.asMutable(),
             slice = slice
     )
+
+    override fun reshape(shape: IntArray1D, copyIfNecessary: Boolean): DoubleArrayND {
+
+        if (canReshapeTo(shape)) {
+            return sliceReshape(shape)
+        } else {
+
+            val copy = if (copyIfNecessary)
+                copy()
+            else
+                illegalArgument("Cannot reshape ${this.shape} to $shape without copying")
+
+            if (!copy.canReshapeTo(shape))
+                error("Cannot reshape a copy of the array")
+
+            return copy.reshape(shape, copyIfNecessary = false)
+
+        }
+
+    }
 
     operator fun plus (other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t + o }
     operator fun minus(other: DoubleArrayND): DoubleArrayND = elementWise(this, other) { t, o -> t - o }

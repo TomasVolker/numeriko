@@ -1,10 +1,13 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.integer
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.iteration.elementWise
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
+import tomasvolker.numeriko.core.interfaces.slicing.sliceReshape
+import tomasvolker.numeriko.core.preconditions.illegalArgument
 
 interface IntArrayND: ArrayND<Int> {
 
@@ -30,6 +33,26 @@ interface IntArrayND: ArrayND<Int> {
             array = this.asMutable(),
             slice = slice
     )
+
+    override fun reshape(shape: IntArray1D, copyIfNecessary: Boolean): IntArrayND {
+
+        if (canReshapeTo(shape)) {
+            return sliceReshape(shape)
+        } else {
+
+            val copy = if (copyIfNecessary)
+                copy()
+            else
+                illegalArgument("Cannot reshape ${this.shape} to $shape without copying")
+
+            if (!copy.canReshapeTo(shape))
+                error("Cannot reshape a copy of the array")
+
+            return copy.reshape(shape, copyIfNecessary = false)
+
+        }
+
+    }
 
     override fun copy(): IntArrayND = copy(this)
 

@@ -11,6 +11,22 @@ interface DoubleBuffer: Buffer<Double> {
     operator fun set(i: Int, value: Double)
 
     override fun copy(): DoubleBuffer
+    override fun copy(start: Int, size: Int): DoubleBuffer
+
+    override fun copyInto(
+            destination: Buffer<Double>,
+            destinationOffset: Int,
+            startIndex: Int,
+            endIndex: Int
+    ) {
+        if (destination is DoubleBuffer) {
+            for (i in startIndex until endIndex) {
+                destination[destinationOffset+i] = this[i]
+            }
+        } else {
+            super.copyInto(destination, destinationOffset, startIndex, endIndex)
+        }
+    }
 
 }
 
@@ -25,5 +41,20 @@ class DoubleArrayBuffer(
     override fun set(i: Int, value: Double) { array[i] = value }
 
     override fun copy(): DoubleBuffer = DoubleArrayBuffer(array.copyOf())
+    override fun copy(start: Int, size: Int): DoubleBuffer =
+            DoubleArrayBuffer(array.copyOfRange(start, start+size))
+
+    override fun copyInto(
+            destination: Buffer<Double>,
+            destinationOffset: Int,
+            startIndex: Int,
+            endIndex: Int
+    ) {
+        if (destination is DoubleArrayBuffer) {
+            array.copyInto(destination.array, destinationOffset, startIndex, endIndex)
+        } else {
+            super.copyInto(destination, destinationOffset, startIndex, endIndex)
+        }
+    }
 
 }

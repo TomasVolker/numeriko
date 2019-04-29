@@ -1,15 +1,22 @@
 package tomasvolker.numeriko.core.implementations.array
 
 import tomasvolker.numeriko.core.implementations.array.buffer.Buffer
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DefaultMutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.MutableArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
 import tomasvolker.numeriko.core.preconditions.requireRank
 import tomasvolker.numeriko.core.preconditions.requireSameShape
 import tomasvolker.numeriko.core.preconditions.requireValidIndices
+import tomasvolker.numeriko.core.view.ElementOrder
+import tomasvolker.numeriko.core.view.elementOrderOf
 import tomasvolker.numeriko.core.view.linearIndex
 
 interface LinearlyBackedArrayND<T, D: Buffer<T>>: ArrayND<T> {
+
+    val fullData: Boolean get() = this.size == buffer.size
+    val isContiguous: Boolean get() = order != null
+    val order: ElementOrder? get() = elementOrderOf(shape.toIntArray(), strideArray)
 
     val buffer: D
 
@@ -125,6 +132,20 @@ interface LinearlyBackedMutableArrayND<T, D: Buffer<T>>: LinearlyBackedArrayND<T
             value
         else
             value.copy()
+
+        if (value is LinearlyBackedArrayND<T, *>) {
+
+            if (this.order == value.order) {
+                (value.buffer as Buffer<T>).copyInto(
+                        destination = this.buffer,
+                        destinationOffset = this.offset,
+                        startIndex = value.offset,
+                        endIndex = value.size
+                )
+                return
+            }
+
+        }
 
         source.unsafeForEachIndexed { indices, element ->
             setValue(indices, element)

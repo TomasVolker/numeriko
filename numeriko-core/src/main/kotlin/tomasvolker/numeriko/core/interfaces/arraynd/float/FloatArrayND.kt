@@ -6,6 +6,8 @@ import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.iteration.elementWise
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
+import tomasvolker.numeriko.core.interfaces.slicing.sliceReshape
+import tomasvolker.numeriko.core.preconditions.illegalArgument
 
 interface FloatArrayND: ArrayND<Float> {
 
@@ -38,6 +40,26 @@ interface FloatArrayND: ArrayND<Float> {
             array = this.asMutable(),
             slice = slice
     )
+
+    override fun reshape(shape: IntArray1D, copyIfNecessary: Boolean): FloatArrayND {
+
+        if (canReshapeTo(shape)) {
+            return sliceReshape(shape)
+        } else {
+
+            val copy = if (copyIfNecessary)
+                copy()
+            else
+                illegalArgument("Cannot reshape ${this.shape} to $shape without copying")
+
+            if (!copy.canReshapeTo(shape))
+                error("Cannot reshape a copy of the array")
+
+            return copy.reshape(shape, copyIfNecessary = false)
+
+        }
+
+    }
 
     operator fun plus (other: FloatArrayND): FloatArrayND = elementWise(this, other) { t, o -> t + o }
     operator fun minus(other: FloatArrayND): FloatArrayND = elementWise(this, other) { t, o -> t - o }

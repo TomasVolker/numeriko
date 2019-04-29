@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.implementations.array
 
 import tomasvolker.numeriko.core.implementations.array.buffer.FloatBuffer
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.MutableFloatArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndexed
@@ -106,10 +107,24 @@ interface LinearlyBackedMutableFloatArrayND<D: FloatBuffer>: LinearlyBackedFloat
         requireSameShape(this, value)
 
         // Anti alias copy
-        val source = if (value is LinearlyBackedFloatArrayND<*> && value.buffer !== this.buffer)
+        val source = if (value is LinearlyBackedMutableArrayND<*, *> && value.buffer !== this.buffer)
             value
         else
             value.copy()
+
+        if (value is LinearlyBackedFloatArrayND<*>) {
+
+            if (this.order == value.order) {
+                value.buffer.copyInto(
+                        destination = this.buffer,
+                        destinationOffset = this.offset,
+                        startIndex = value.offset,
+                        endIndex = value.size
+                )
+                return
+            }
+
+        }
 
         source.unsafeForEachIndexed { indices, element ->
             setFloat(indices, element)
