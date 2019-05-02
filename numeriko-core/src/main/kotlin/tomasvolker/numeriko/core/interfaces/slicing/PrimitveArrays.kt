@@ -1,5 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.slicing
 
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.MutableByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
@@ -33,4 +35,14 @@ operator fun MutableIntArrayND.get(vararg indices: Any): MutableIntArrayND =
         getSlice(sliceFromIndices(this, indices))
 
 operator fun MutableIntArrayND.set(vararg indices: Any, value: MutableIntArrayND): Unit =
+        this.get(*indices).setValue(value)
+
+
+operator fun ByteArrayND.get(vararg indices: Any): ByteArrayND =
+        getSlice(sliceFromIndices(this, indices))
+
+operator fun MutableByteArrayND.get(vararg indices: Any): MutableByteArrayND =
+        getSlice(sliceFromIndices(this, indices))
+
+operator fun MutableByteArrayND.set(vararg indices: Any, value: MutableByteArrayND): Unit =
         this.get(*indices).setValue(value)

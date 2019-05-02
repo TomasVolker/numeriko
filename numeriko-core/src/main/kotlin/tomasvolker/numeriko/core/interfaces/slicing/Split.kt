@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.slicing
 
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
@@ -38,6 +39,11 @@ fun DoubleArrayND.split(axis: Int, index: Int): Pair<DoubleArrayND, DoubleArrayN
 }
 
 fun FloatArrayND.split(axis: Int, index: Int): Pair<FloatArrayND, FloatArrayND> {
+    val slices = splitSlices(axis, index)
+    return getSlice(slices.first) to getSlice(slices.second)
+}
+
+fun ByteArrayND.split(axis: Int, index: Int): Pair<ByteArrayND, ByteArrayND> {
     val slices = splitSlices(axis, index)
     return getSlice(slices.first) to getSlice(slices.second)
 }

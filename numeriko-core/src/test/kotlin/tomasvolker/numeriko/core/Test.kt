@@ -4,6 +4,7 @@ import tomasvolker.numeriko.core.config.NumerikoConfig
 import tomasvolker.numeriko.core.dsl.F
 import tomasvolker.numeriko.core.dsl.I
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
+import tomasvolker.numeriko.core.interfaces.factory.toByteArrayND
 import tomasvolker.numeriko.core.interfaces.factory.unsafeDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.unsafeFloatArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.forEachIndex2

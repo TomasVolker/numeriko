@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.slicing
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
@@ -29,3 +30,4 @@ fun <T> ArrayND<T>.permutation(permutation: IntArray1D): ArrayND<T>    = getSlic
 fun IntArrayND    .permutation(permutation: IntArray1D): IntArrayND    = getSlice(permutationSlice(permutation))
 fun DoubleArrayND .permutation(permutation: IntArray1D): DoubleArrayND = getSlice(permutationSlice(permutation))
 fun FloatArrayND  .permutation(permutation: IntArray1D): FloatArrayND  = getSlice(permutationSlice(permutation))
+fun ByteArrayND   .permutation(permutation: IntArray1D): ByteArrayND   = getSlice(permutationSlice(permutation))

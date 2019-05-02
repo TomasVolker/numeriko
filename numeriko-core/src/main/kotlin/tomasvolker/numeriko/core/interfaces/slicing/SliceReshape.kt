@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.interfaces.slicing
 
 import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
@@ -46,4 +47,5 @@ fun <T> ArrayND<T>.sliceReshape(shape: IntArray1D): ArrayND<T>    = getSlice(sli
 fun IntArrayND    .sliceReshape(shape: IntArray1D): IntArrayND    = getSlice(sliceReshapeSlice(shape))
 fun DoubleArrayND .sliceReshape(shape: IntArray1D): DoubleArrayND = getSlice(sliceReshapeSlice(shape))
 fun FloatArrayND  .sliceReshape(shape: IntArray1D): FloatArrayND  = getSlice(sliceReshapeSlice(shape))
+fun ByteArrayND   .sliceReshape(shape: IntArray1D): ByteArrayND   = getSlice(sliceReshapeSlice(shape))
 

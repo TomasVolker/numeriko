@@ -3,6 +3,7 @@ package tomasvolker.numeriko.core.implementations.array.factory
 import tomasvolker.numeriko.core.implementations.array.arraynd.*
 import tomasvolker.numeriko.core.implementations.array.buffer.*
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
@@ -23,6 +24,9 @@ class BufferArrayNDFactory: ArrayNDFactory {
 
     override fun floatArrayND(shape: IntArray, data: FloatArray): FloatArrayND =
             BufferFloatArrayND(intArray1D(shape), FloatArrayBuffer(data))
+
+    override fun byteArrayND(shape: IntArray, data: ByteArray): ByteArrayND =
+            BufferByteArrayND(intArray1D(shape), ByteArrayBuffer(data))
 
     override fun intArrayND(shape: IntArray, data: IntArray): IntArrayND =
             BufferIntArrayND(intArray1D(shape), IntArrayBuffer(data))

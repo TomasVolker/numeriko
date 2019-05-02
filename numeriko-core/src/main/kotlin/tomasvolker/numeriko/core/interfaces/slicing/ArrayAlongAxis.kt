@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.interfaces.slicing
 
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
@@ -25,3 +26,4 @@ fun <T> ArrayND<T>.alongAxis(axis: Int, index: Int): ArrayND<T>    = getSlice(al
 fun IntArrayND    .alongAxis(axis: Int, index: Int): IntArrayND    = getSlice(alongAxisSlice(axis, index))
 fun DoubleArrayND .alongAxis(axis: Int, index: Int): DoubleArrayND = getSlice(alongAxisSlice(axis, index))
 fun FloatArrayND  .alongAxis(axis: Int, index: Int): FloatArrayND  = getSlice(alongAxisSlice(axis, index))
+fun ByteArrayND   .alongAxis(axis: Int, index: Int): ByteArrayND   = getSlice(alongAxisSlice(axis, index))

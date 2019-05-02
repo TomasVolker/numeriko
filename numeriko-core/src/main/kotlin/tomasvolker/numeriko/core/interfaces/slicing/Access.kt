@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.slicing
 
 import tomasvolker.numeriko.core.index.Index
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.MutableByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
@@ -31,3 +32,4 @@ operator fun <T> MutableArrayND<T>.set(i0: Index, value: T)      = setValue(i0.c
 operator fun MutableIntArrayND    .set(i0: Index, value: Int)    = set(i0.computeValue(shape(0)), value)
 operator fun MutableDoubleArrayND .set(i0: Index, value: Double) = set(i0.computeValue(shape(0)), value)
 operator fun MutableFloatArrayND  .set(i0: Index, value: Float)  = set(i0.computeValue(shape(0)), value)
+operator fun MutableByteArrayND   .set(i0: Index, value: Byte)  = set(i0.computeValue(shape(0)), value)

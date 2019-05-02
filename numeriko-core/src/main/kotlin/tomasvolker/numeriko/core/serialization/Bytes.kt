@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.serialization
 
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
@@ -29,6 +30,15 @@ fun IntArrayND.rawBytes(order: ByteOrder = ByteOrder.nativeOrder()): ByteBuffer 
     val buffer = ByteBuffer.allocate(size * 4).order(order)
     unsafeForEachIndex { indices ->
         buffer.putInt(getInt(indices))
+    }
+    buffer.rewind()
+    return buffer
+}
+
+fun ByteArrayND.rawBytes(order: ByteOrder = ByteOrder.nativeOrder()): ByteBuffer {
+    val buffer = ByteBuffer.allocate(size).order(order)
+    unsafeForEachIndex { indices ->
+        buffer.put(getByte(indices))
     }
     buffer.rewind()
     return buffer

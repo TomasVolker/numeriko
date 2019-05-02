@@ -1,11 +1,11 @@
 package tomasvolker.numeriko.core.implementations.array.arraynd
 
 import tomasvolker.numeriko.core.functions.product
-import tomasvolker.numeriko.core.implementations.array.LinearlyBackedMutableFloatArrayND
-import tomasvolker.numeriko.core.implementations.array.buffer.FloatBuffer
+import tomasvolker.numeriko.core.implementations.array.LinearlyBackedMutableByteArrayND
+import tomasvolker.numeriko.core.implementations.array.buffer.ByteBuffer
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
-import tomasvolker.numeriko.core.interfaces.arraynd.float.DefaultMutableFloatArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.DefaultMutableByteArrayND
 import tomasvolker.numeriko.core.interfaces.factory.asIntArray1D
 import tomasvolker.numeriko.core.interfaces.factory.toIntArray1D
 import tomasvolker.numeriko.core.interfaces.slicing.*
@@ -14,12 +14,12 @@ import tomasvolker.numeriko.core.view.ContiguousLastAxis
 import tomasvolker.numeriko.core.view.ElementOrder
 import tomasvolker.numeriko.core.view.elementOrderOf
 
-class BufferFloatArrayND(
+class BufferByteArrayND(
         shape: IntArray1D,
-        override val buffer: FloatBuffer,
+        override val buffer: ByteBuffer,
         override val offset: Int = 0,
         override val strideArray: IntArray = ContiguousLastAxis.strideArray(shape.toIntArray())
-): DefaultMutableFloatArrayND(), LinearlyBackedMutableFloatArrayND<FloatBuffer> {
+): DefaultMutableByteArrayND(), LinearlyBackedMutableByteArrayND<ByteBuffer> {
 
     // Performance
     private val shapeArray: IntArray = shape.toIntArray()
@@ -28,8 +28,8 @@ class BufferFloatArrayND(
 
     override val order: ElementOrder? get() = elementOrderOf(shapeArray, strideArray)
 
-    override fun getSlice(slice: ArraySlice): BufferFloatArrayND =
-            BufferFloatArrayND(
+    override fun getSlice(slice: ArraySlice): BufferByteArrayND =
+            BufferByteArrayND(
                     shape = slice.shape.toIntArray1D(),
                     buffer = buffer,
                     offset = convertIndices(slice.origin),
@@ -40,15 +40,15 @@ class BufferFloatArrayND(
             )
 
     override fun canReshapeTo(shape: IntArray1D): Boolean =
-            super<DefaultMutableFloatArrayND>.canReshapeTo(shape) ||
-                    shape.product() == size && isContiguous
+            super<DefaultMutableByteArrayND>.canReshapeTo(shape) ||
+            shape.product() == size && isContiguous
 
-    override fun reshape(shape: IntArray1D, copyIfNecessary: Boolean): FloatArrayND {
+    override fun reshape(shape: IntArray1D, copyIfNecessary: Boolean): ByteArrayND {
         require(shape.product() == size) { "$size elements in ${this.shape} cannot be reshaped to ${shape.product()} elements in $shape" }
         return when {
             canSliceReshapeTo(shape) -> sliceReshape(shape)
-            isContiguous && shape.product() == size ->
-                BufferFloatArrayND(
+            isContiguous ->
+                BufferByteArrayND(
                         shape = shape,
                         buffer = buffer,
                         offset = offset,
@@ -71,23 +71,23 @@ class BufferFloatArrayND(
     }
 
 
-    override fun copy(): FloatArrayND =
+    override fun copy(): ByteArrayND =
             when {
                 fullData ->
-                    BufferFloatArrayND(
+                    BufferByteArrayND(
                         shape = shape.copy(),
                         buffer = buffer.copy(),
                         offset = offset,
                         strideArray = strideArray.copyOf()
                     )
                 isContiguous ->
-                    BufferFloatArrayND(
+                    BufferByteArrayND(
                             shape = shape.copy(),
                             buffer = buffer.copy(offset, size),
                             offset = 0,
                             strideArray = strideArray.copyOf()
                     )
-                else ->super<DefaultMutableFloatArrayND>.copy()
+                else ->super<DefaultMutableByteArrayND>.copy()
             }
 
 

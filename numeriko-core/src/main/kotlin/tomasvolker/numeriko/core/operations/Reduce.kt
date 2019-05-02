@@ -1,13 +1,11 @@
 package tomasvolker.numeriko.core.operations
 
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
-import tomasvolker.numeriko.core.interfaces.factory.unsafeArrayND
-import tomasvolker.numeriko.core.interfaces.factory.unsafeDoubleArrayND
-import tomasvolker.numeriko.core.interfaces.factory.unsafeFloatArrayND
-import tomasvolker.numeriko.core.interfaces.factory.unsafeIntArrayND
+import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.interfaces.slicing.reduceRank
 import tomasvolker.numeriko.core.preconditions.requireValidAxis
@@ -118,3 +116,18 @@ inline fun FloatArrayND.reduce(
     return if(keepAxis) result else result.reduceRank(axis)
 }
 
+inline fun ByteArrayND.reduce(
+        axis: Int = 0,
+        keepAxis: Boolean = false,
+        reduction: (acc: ByteArrayND)->Byte
+): ByteArrayND {
+    requireValidAxis(axis)
+
+    val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
+
+    val result = unsafeByteArrayND(partialShape) { index ->
+        reduction(getSlice(reduceSlice(this, axis, index)))
+    }
+
+    return if(keepAxis) result else result.reduceRank(axis)
+}

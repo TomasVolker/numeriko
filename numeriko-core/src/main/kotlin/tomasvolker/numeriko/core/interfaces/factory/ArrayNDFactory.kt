@@ -4,6 +4,7 @@ package tomasvolker.numeriko.core.interfaces.factory
 
 import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
@@ -25,6 +26,8 @@ interface ArrayNDFactory {
 
     fun intArrayND(shape: IntArray, data: IntArray): IntArrayND
 
+    fun byteArrayND(shape: IntArray, data: ByteArray): ByteArrayND
+
     fun intArray1D(data: IntArray): IntArray1D
 
     // Copy
@@ -34,6 +37,9 @@ interface ArrayNDFactory {
 
     fun copy(array: IntArrayND): IntArrayND =
             unsafeIntArrayND(array.shape) { indices -> array.getInt(indices) }
+
+    fun copy(array: ByteArrayND): ByteArrayND =
+            unsafeByteArrayND(array.shape) { indices -> array.getByte(indices) }
 
     fun copy(array: DoubleArrayND): DoubleArrayND =
             unsafeDoubleArrayND(array.shape) { indices -> array.getDouble(indices) }
@@ -51,6 +57,9 @@ interface ArrayNDFactory {
 
     fun intZeros(shape: IntArray1D): IntArrayND =
             intArrayND(shape.toIntArray(), IntArray(shape.product()) { 0 })
+
+    fun byteZeros(shape: IntArray1D): ByteArrayND =
+            byteArrayND(shape.toIntArray(), ByteArray(shape.product()) { 0 })
 
 }
 

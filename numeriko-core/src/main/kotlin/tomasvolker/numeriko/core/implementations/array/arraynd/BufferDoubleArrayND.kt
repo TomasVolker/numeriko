@@ -1,5 +1,6 @@
 package tomasvolker.numeriko.core.implementations.array.arraynd
 
+import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.implementations.array.LinearlyBackedMutableDoubleArrayND
 import tomasvolker.numeriko.core.implementations.array.buffer.DoubleBuffer
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
@@ -36,31 +37,34 @@ class BufferDoubleArrayND(
 
     override fun canReshapeTo(shape: IntArray1D): Boolean =
             super<DefaultMutableDoubleArrayND>.canReshapeTo(shape) ||
-                    isContiguous
+                    shape.product() == size && isContiguous
 
-    override fun reshape(shape: IntArray1D, copyIfNecessary: Boolean): DoubleArrayND =
-            when {
-                canSliceReshapeTo(shape) -> sliceReshape(shape)
-                isContiguous ->
-                    BufferDoubleArrayND(
-                            shape = shape,
-                            buffer = buffer,
-                            offset = offset,
-                            strideArray = order?.strideArray(shape.toIntArray()) ?: error("Contiguous array must have order")
-                    )
-                else -> {
+    override fun reshape(shape: IntArray1D, copyIfNecessary: Boolean): DoubleArrayND {
+        require(shape.product() == size) { "$size elements in ${this.shape} cannot be reshaped to ${shape.product()} elements in $shape" }
+        return when {
+            canSliceReshapeTo(shape) -> sliceReshape(shape)
+            isContiguous && shape.product() == size ->
+                BufferDoubleArrayND(
+                        shape = shape,
+                        buffer = buffer,
+                        offset = offset,
+                        strideArray = order?.strideArray(shape.toIntArray())
+                                ?: error("Contiguous array must have order")
+                )
+            else -> {
 
-                    val copy = if (copyIfNecessary)
-                        copy()
-                    else
-                        illegalArgument("Cannot reshape ${this.shape} to $shape without copying")
+                val copy = if (copyIfNecessary)
+                    copy()
+                else
+                    illegalArgument("Cannot reshape ${this.shape} to $shape without copying")
 
-                    if (!copy.canReshapeTo(shape))
-                        error("Cannot reshape a copy of the array")
+                if (!copy.canReshapeTo(shape))
+                    error("Cannot reshape a copy of the array")
 
-                    copy.reshape(shape, copyIfNecessary = false)
-                }
+                copy.reshape(shape, copyIfNecessary = false)
             }
+        }
+    }
 
 
     override fun copy(): DoubleArrayND =
