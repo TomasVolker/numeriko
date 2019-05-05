@@ -9,6 +9,7 @@ import tomasvolker.numeriko.core.interfaces.factory.unsafeDoubleArrayND
 import tomasvolker.numeriko.core.interfaces.factory.unsafeFloatArrayND
 import tomasvolker.numeriko.core.interfaces.iteration.forEachIndex2
 import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
+import tomasvolker.numeriko.core.interfaces.slicing.alongAxis
 import tomasvolker.numeriko.core.interfaces.slicing.expandRank
 import tomasvolker.numeriko.core.primitives.d
 import tomasvolker.numeriko.core.primitives.sumFloat
@@ -28,11 +29,15 @@ infix fun FloatArrayND.matMul(other: FloatArrayND): FloatArrayND {
 
 fun main() {
 
-    val matrix = F[
-        F[0, 1, 0],
-        F[1, 1, 1],
-        F[0, 0, 1]
-    ]
+    val matrix = F[1, 2, 3, 4, 5, 6, 7, 8, 9].reshape(I[3, 3])
+
+    println(matrix)
+
+    println(matrix.alongAxis(0, 1))
+
+    println(matrix.expandRank(2))
+
+    return
 
     repeat(10) {
 

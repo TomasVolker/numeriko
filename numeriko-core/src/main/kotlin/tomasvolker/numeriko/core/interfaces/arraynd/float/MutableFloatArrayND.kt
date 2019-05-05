@@ -39,7 +39,7 @@ interface MutableFloatArrayND: FloatArrayND, MutableArrayND<Float> {
         }
     }
 
-    override fun getSlice(
+    override fun slice(
             slice: ArraySlice
     ): MutableFloatArrayND = DefaultSliceFloatArrayND(
             array = this,

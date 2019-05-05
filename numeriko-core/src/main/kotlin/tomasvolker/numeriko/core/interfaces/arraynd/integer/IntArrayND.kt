@@ -27,7 +27,7 @@ interface IntArrayND: ArrayND<Int> {
 
     fun getInt(indices: IntArray1D): Int = getInt(indices.toIntArray())
 
-    override fun getSlice(
+    override fun slice(
             slice: ArraySlice
     ): IntArrayND = DefaultSliceIntArrayND(
             array = this.asMutable(),

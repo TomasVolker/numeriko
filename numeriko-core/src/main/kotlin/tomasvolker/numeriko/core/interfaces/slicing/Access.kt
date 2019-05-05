@@ -1,6 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.slicing
 
 import tomasvolker.numeriko.core.index.Index
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.byte.MutableByteArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.double.MutableDoubleArrayND
@@ -27,9 +28,10 @@ operator fun <T> ArrayND<T>.get(i0: Index): T      = getValue(i0.computeValue(sh
 operator fun IntArrayND    .get(i0: Index): Int    = get(i0.computeValue(shape(0)))
 operator fun DoubleArrayND .get(i0: Index): Double = get(i0.computeValue(shape(0)))
 operator fun FloatArrayND  .get(i0: Index): Float  = get(i0.computeValue(shape(0)))
+operator fun ByteArrayND   .get(i0: Index): Byte   = get(i0.computeValue(shape(0)))
 
 operator fun <T> MutableArrayND<T>.set(i0: Index, value: T)      = setValue(i0.computeValue(shape(0)), value)
 operator fun MutableIntArrayND    .set(i0: Index, value: Int)    = set(i0.computeValue(shape(0)), value)
 operator fun MutableDoubleArrayND .set(i0: Index, value: Double) = set(i0.computeValue(shape(0)), value)
 operator fun MutableFloatArrayND  .set(i0: Index, value: Float)  = set(i0.computeValue(shape(0)), value)
-operator fun MutableByteArrayND   .set(i0: Index, value: Byte)  = set(i0.computeValue(shape(0)), value)
+operator fun MutableByteArrayND   .set(i0: Index, value: Byte)   = set(i0.computeValue(shape(0)), value)

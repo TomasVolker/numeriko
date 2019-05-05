@@ -33,7 +33,7 @@ interface ByteArrayND: ArrayND<Byte> {
 
     override fun asMutable(): MutableByteArrayND = this as MutableByteArrayND
 
-    override fun getSlice(
+    override fun slice(
             slice: ArraySlice
     ): ByteArrayND = DefaultSliceByteArrayND(
             array = this.asMutable(),

@@ -1,6 +1,11 @@
 package tomasvolker.numeriko.core.primitives
 
 /**
+ * Returns the value of this number as a [Byte], which may involve rounding or truncation.
+ */
+val Int.b: Byte get() = toByte()
+
+/**
  * Returns the Char with the numeric value equal to this number, truncated to 16 bits if appropriate.
  */
 val Int.c: Char get() = toChar()

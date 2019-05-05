@@ -28,7 +28,7 @@ class BufferByteArrayND(
 
     override val order: ElementOrder? get() = elementOrderOf(shapeArray, strideArray)
 
-    override fun getSlice(slice: ArraySlice): BufferByteArrayND =
+    override fun slice(slice: ArraySlice): BufferByteArrayND =
             BufferByteArrayND(
                     shape = slice.shape.toIntArray1D(),
                     buffer = buffer,

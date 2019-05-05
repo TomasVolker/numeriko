@@ -22,7 +22,7 @@ class BufferIntArray1D(
 
     override val strideArray: IntArray get() = intArrayOf(stride)
 
-    override fun getSlice(slice: ArraySlice): BufferIntArrayND =
+    override fun slice(slice: ArraySlice): BufferIntArrayND =
             BufferIntArrayND(
                     shape = slice.shape.toIntArray1D(),
                     buffer = buffer,

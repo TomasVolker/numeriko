@@ -28,7 +28,7 @@ inline fun <T, R> ArrayND<T>.reduce(
     val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
 
     val result = unsafeArrayND(partialShape) { index ->
-        reduction(getSlice(reduceSlice(this, axis, index)))
+        reduction(slice(reduceSlice(this, axis, index)))
     }
 
     return if(keepAxis) result else result.reduceRank(axis)
@@ -44,7 +44,7 @@ inline fun IntArrayND.reduce(
     val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
 
     val result = unsafeIntArrayND(partialShape) { index ->
-        reduction(getSlice(reduceSlice(this, axis, index)))
+        reduction(slice(reduceSlice(this, axis, index)))
     }
 
     return if(keepAxis) result else result.reduceRank(axis)
@@ -60,7 +60,7 @@ inline fun IntArrayND.reduceDouble(
     val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
 
     val result = unsafeDoubleArrayND(partialShape) { index ->
-        reduction(getSlice(reduceSlice(this, axis, index)))
+        reduction(slice(reduceSlice(this, axis, index)))
     }
 
     return if(keepAxis) result else result.reduceRank(axis)
@@ -76,7 +76,7 @@ inline fun IntArrayND.reduceFloat(
     val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
 
     val result = unsafeFloatArrayND(partialShape) { index ->
-        reduction(getSlice(reduceSlice(this, axis, index)))
+        reduction(slice(reduceSlice(this, axis, index)))
     }
 
     return if(keepAxis) result else result.reduceRank(axis)
@@ -93,7 +93,7 @@ inline fun DoubleArrayND.reduce(
     val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
 
     val result = unsafeDoubleArrayND(partialShape) { index ->
-        reduction(getSlice(reduceSlice(this, axis, index)))
+        reduction(slice(reduceSlice(this, axis, index)))
     }
 
     return if(keepAxis) result else result.reduceRank(axis)
@@ -110,7 +110,7 @@ inline fun FloatArrayND.reduce(
     val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
 
     val result = unsafeFloatArrayND(partialShape) { index ->
-        reduction(getSlice(reduceSlice(this, axis, index)))
+        reduction(slice(reduceSlice(this, axis, index)))
     }
 
     return if(keepAxis) result else result.reduceRank(axis)
@@ -126,7 +126,7 @@ inline fun ByteArrayND.reduce(
     val partialShape = shape.copy().asMutable().apply { set(axis, 1) }
 
     val result = unsafeByteArrayND(partialShape) { index ->
-        reduction(getSlice(reduceSlice(this, axis, index)))
+        reduction(slice(reduceSlice(this, axis, index)))
     }
 
     return if(keepAxis) result else result.reduceRank(axis)

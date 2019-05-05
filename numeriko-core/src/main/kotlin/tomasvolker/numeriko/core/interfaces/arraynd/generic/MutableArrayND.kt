@@ -61,7 +61,7 @@ interface MutableArrayND<T>: ArrayND<T> {
         }
     }
 
-    override fun getSlice(
+    override fun slice(
             slice: ArraySlice
     ): MutableArrayND<T> = DefaultSliceArrayND(
             array = this,

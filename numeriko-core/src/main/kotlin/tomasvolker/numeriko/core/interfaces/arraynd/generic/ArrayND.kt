@@ -1,11 +1,7 @@
 package tomasvolker.numeriko.core.interfaces.arraynd.generic
 
-import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
-import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
-import tomasvolker.numeriko.core.interfaces.factory.intArray1D
-import tomasvolker.numeriko.core.interfaces.factory.intZeros
 import tomasvolker.numeriko.core.interfaces.slicing.*
 import tomasvolker.numeriko.core.preconditions.illegalArgument
 import tomasvolker.numeriko.core.primitives.productInt
@@ -100,13 +96,13 @@ interface ArrayND<out T>: Collection<T> {
      * This function returns a view implementing an arbitrary permuted strided slicing.
      *
      * @param array The backing array
-     * @param permutation Array of size `shape.size` containing the axes on the backing array corresponding to the axes
-     * on the view. If `permutation[a] < 0` then `shape[a] == 1`.
+     * @param transpose Array of size `shape.size` containing the axes on the backing array corresponding to the axes
+     * on the view. If `transpose[a] < 0` then `shape[a] == 1`.
      * @param shape The shape of the resulting view
      * @param strides Array of size `shape.size` containing the stride corresponding to each dimension.
      * @param origin Array of size `array.rank` containing the indices on `array` corresponding to all zeros in the view
      */
-    fun getSlice(
+    fun slice(
             slice: ArraySlice
     ): ArrayND<T> = DefaultSliceArrayND(
             array = this.asMutable(),

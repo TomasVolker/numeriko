@@ -49,12 +49,4 @@ fun sliceFromIndices(array: ArrayND<*>, indices: Array<out Any>): ArraySlice {
 
 }
 
-operator fun <T> ArrayND<T>.get(vararg indices: Any): ArrayND<T> =
-        getSlice(sliceFromIndices(this, indices))
-
-operator fun <T> MutableArrayND<T>.get(vararg indices: Any): MutableArrayND<T> =
-        getSlice(sliceFromIndices(this, indices))
-
-operator fun <T> MutableArrayND<T>.set(vararg indices: Any, value: ArrayND<T>): Unit =
-        this.get(*indices).setValue(value)
 

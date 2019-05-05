@@ -12,7 +12,7 @@ import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
  *
  * @param array The backing array
  * @param permutation Array of size `shape.size` containing the axes on the backing array corresponding to the axes
- * on the view. If `permutation[a] < 0` then `shape[a] == 1`.
+ * on the view. If `transpose[a] < 0` then `shape[a] == 1`.
  * @param shape The shape of the resulting view
  * @param strides Array of size `shape.size` containing the stride corresponding to each dimension.
  * @param origin Array of size `array.rank` containing the indices on `array` corresponding to all zeros in the view

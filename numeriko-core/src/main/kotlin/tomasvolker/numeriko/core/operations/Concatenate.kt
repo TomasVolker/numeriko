@@ -2,10 +2,16 @@ package tomasvolker.numeriko.core.operations
 
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayNDContext
 import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.double.DoubleArrayNDContext
 import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.float.FloatArrayNDContext
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayNDContext
+import tomasvolker.numeriko.core.interfaces.arraynd.generic.GenericArrayNDContext
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
+import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayNDContext
 import tomasvolker.numeriko.core.interfaces.factory.*
 import tomasvolker.numeriko.core.interfaces.slicing.set
 import tomasvolker.numeriko.core.interfaces.slicing.split
@@ -20,36 +26,29 @@ infix fun ByteArrayND   .concat(other: ByteArrayND  ): ByteArrayND   = concatena
 
 infix fun IntArray1D    .concat(other: IntArray1D   ): IntArray1D    = concatenate(this, other)
 
-private fun resultShape(
-        array1: ArrayND<*>,
-        array2: ArrayND<*>,
-        axis: Int
-): IntArray1D {
+fun <T, A: ArrayND<T>> ArrayNDContext<A>.concatenate(
+        array1: A,
+        array2: A,
+        axis: Int = 0
+): A {
+
     requireSameRank(array1, array2)
     array1.requireValidAxis(axis)
-    return intArray1D(array1.rank) { a ->
+    val resultShape = intArray1D(array1.rank) { a ->
         when {
             a == axis -> array1.shape(a) + array2.shape(a)
             else -> array1.shape(a)
         }
     }
-}
 
-fun <T> concatenate(
-        array1: ArrayND<T>,
-        array2: ArrayND<T>,
-        axis: Int = 0
-): ArrayND<T> {
-    val resultShape = resultShape(array1, array2, axis)
+    val result = buildDefault(resultShape)
 
-    val result = arrayNDOfNulls<T>(resultShape)
-
-    val (first, second) = result.split(axis, array1.shape(axis))
+    val (first, second) = split(result, axis, array1.shape(axis))
 
     first.asMutable().setValue(array1)
     second.asMutable().setValue(array2)
 
-    return result as ArrayND<T>
+    return result
 }
 
 fun concatenate(
@@ -62,70 +61,32 @@ fun concatenate(
     return result
 }
 
+fun <T> concatenate(
+        array1: ArrayND<T>,
+        array2: ArrayND<T>,
+        axis: Int = 0
+): ArrayND<T> = GenericArrayNDContext<T>().concatenate(array1, array2, axis)
+
 fun concatenate(
         array1: IntArrayND,
         array2: IntArrayND,
         axis: Int = 0
-): IntArrayND {
-    val resultShape = resultShape(array1, array2, axis)
-
-    val result = intZeros(resultShape)
-
-    val (first, second) = result.split(axis, array1.shape(axis))
-
-    first.asMutable().setValue(array1)
-    second.asMutable().setValue(array2)
-
-    return result
-}
+): IntArrayND = IntArrayNDContext.concatenate(array1, array2, axis)
 
 fun concatenate(
         array1: DoubleArrayND,
         array2: DoubleArrayND,
         axis: Int = 0
-): DoubleArrayND {
-    val resultShape = resultShape(array1, array2, axis)
-
-    val result = doubleZeros(resultShape)
-
-    val (first, second) = result.split(axis, array1.shape(axis))
-
-    first.asMutable().setValue(array1)
-    second.asMutable().setValue(array2)
-
-    return result
-}
+): DoubleArrayND = DoubleArrayNDContext.concatenate(array1, array2, axis)
 
 fun concatenate(
         array1: FloatArrayND,
         array2: FloatArrayND,
         axis: Int = 0
-): FloatArrayND {
-    val resultShape = resultShape(array1, array2, axis)
-
-    val result = floatZeros(resultShape)
-
-    val (first, second) = result.split(axis, array1.shape(axis))
-
-    first.asMutable().setValue(array1)
-    second.asMutable().setValue(array2)
-
-    return result
-}
+): FloatArrayND = FloatArrayNDContext.concatenate(array1, array2, axis)
 
 fun concatenate(
         array1: ByteArrayND,
         array2: ByteArrayND,
         axis: Int = 0
-): ByteArrayND {
-    val resultShape = resultShape(array1, array2, axis)
-
-    val result = byteZeros(resultShape)
-
-    val (first, second) = result.split(axis, array1.shape(axis))
-
-    first.asMutable().setValue(array1)
-    second.asMutable().setValue(array2)
-
-    return result
-}
+): ByteArrayND = ByteArrayNDContext.concatenate(array1, array2, axis)

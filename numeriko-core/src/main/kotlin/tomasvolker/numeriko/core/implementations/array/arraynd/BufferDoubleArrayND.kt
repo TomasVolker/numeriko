@@ -24,7 +24,7 @@ class BufferDoubleArrayND(
     private val arrayShape: IntArray = shape.toIntArray()
     override fun shape(axis: Int): Int = arrayShape[axis]
 
-    override fun getSlice(slice: ArraySlice): BufferDoubleArrayND =
+    override fun slice(slice: ArraySlice): BufferDoubleArrayND =
             BufferDoubleArrayND(
                 shape = slice.shape.toIntArray1D(),
                 buffer = buffer,
