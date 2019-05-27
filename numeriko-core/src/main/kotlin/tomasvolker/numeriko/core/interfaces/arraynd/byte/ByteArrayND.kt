@@ -4,9 +4,12 @@ import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.iteration.elementWise
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.interfaces.slicing.sliceReshape
 import tomasvolker.numeriko.core.preconditions.illegalArgument
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 interface ByteArrayND: ArrayND<Byte> {
 
@@ -58,6 +61,15 @@ interface ByteArrayND: ArrayND<Byte> {
 
         }
 
+    }
+
+    fun rawBytes(): ByteBuffer {
+        val buffer = ByteBuffer.allocate(size)
+        unsafeForEachIndex { indices ->
+            buffer.put(getByte(indices))
+        }
+        buffer.rewind()
+        return buffer
     }
 
     operator fun plus (other: ByteArrayND): ByteArrayND = elementWise(this, other) { t, o -> (t + o).toByte() }

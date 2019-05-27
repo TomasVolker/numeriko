@@ -2,6 +2,7 @@ package tomasvolker.numeriko.core.implementations.array.arraynd
 
 import tomasvolker.numeriko.core.functions.product
 import tomasvolker.numeriko.core.implementations.array.LinearlyBackedMutableByteArrayND
+import tomasvolker.numeriko.core.implementations.array.buffer.ByteArrayBuffer
 import tomasvolker.numeriko.core.implementations.array.buffer.ByteBuffer
 import tomasvolker.numeriko.core.interfaces.array1d.integer.IntArray1D
 import tomasvolker.numeriko.core.interfaces.arraynd.byte.ByteArrayND
@@ -70,6 +71,11 @@ class BufferByteArrayND(
         }
     }
 
+    override fun rawBytes(): java.nio.ByteBuffer =
+            if (buffer is ByteArrayBuffer && order == ContiguousLastAxis && offset == 0)
+                java.nio.ByteBuffer.wrap(buffer.array).asReadOnlyBuffer()
+            else
+                super<DefaultMutableByteArrayND>.rawBytes()
 
     override fun copy(): ByteArrayND =
             when {

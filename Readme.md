@@ -5,7 +5,6 @@ NDArray library for Kotlin in development.
 Modules:
 
 - numeriko-core: ArrayND interfaces and operation definitions along with a basic backend
-- numeriko-complex: Complex number implementation
 
 ## Build instructions
 

@@ -20,30 +20,28 @@ val anArray = array1DOf("a", "1D", "array") // Array1D<String>
 val withDsl = A["another", "1D", "array"] // Array1D<String>
 
 // lambda constructor
-val withLambda = array1D(3) { i -> "data$i" } // [data0, data1, data2]
+val withLambda = arrayND(3) { (i) -> "data$i" } // [data0, data1, data2]
 
 // 
-val twoDimensions = array2D(2, 2) { i0, i1 -> "data$i0$i1" } // [[data00, data01], [data10, data11]]
+val twoDimensions = arrayND(2, 2) { (i0, i1) -> "data$i0$i1" } // [[data00, data01], [data10, data11]]
 
 ```
 
 In a very similar way primitive specializations are also constructed.
 ```kotlin
-// standard library style constructor
-val numbers = doubleArray1DOf(1.0, 2.0, 3.0) // DoubleArray1D
 
 // DSL constructor, can use be constructed from various Number
-val withDsl = D[4.0, 5, 6.5] // DoubleArray1D
+val withDsl = D[4.0, 5, 6.5] // DoubleArrayND
 
 // Can have more dimensions
 val withDsl2D = D[D[4.0, 5,  6.5],
-                  D[7.0, 8, -9  ]] // DoubleArray2D
+                  D[7.0, 8, -9  ]] // DoubleArrayND
 
 // lambda constructor
-val withLambda = doubleArray1D(4) { i -> 2.0 * i } // [0.0, 2.0, 4.0, 6.0]
+val withLambda = doubleArrayND(4) { (i) -> 2.0 * i } // [0.0, 2.0, 4.0, 6.0]
 
 // lambda constructor
-val twoDimensions = doubleArray2D(4, 4) { i0, i1 -> if (i0 <= i1) 1.0 else 0.0 } // upper triangular
+val twoDimensions = doubleArrayND(4, 4) { (i0, i1) -> if (i0 <= i1) 1.0 else 0.0 } // upper triangular
 
 ```
 
@@ -51,8 +49,8 @@ To obtain a mutable array, just call `asMutable()` to expose the mutable interfa
 
 ```kotlin
 // There is also a zero initialized array factory function
-val aLotOfZeros = doubleZeros(1000).asMutable() // MutableDoubleArray1D
-val evenMoreZeros = doubleZeros(1000, 1000).asMutable() // MutableDoubleArray2D
+val aLotOfZeros = doubleZeros(1000).asMutable() // MutableDoubleArrayND
+val evenMoreZeros = doubleZeros(1000, 1000).asMutable() // MutableDoubleArrayND
 
 ```
 
@@ -60,27 +58,27 @@ val evenMoreZeros = doubleZeros(1000, 1000).asMutable() // MutableDoubleArray2D
 
 ### Access
 
-For specialized rank interfaces, a get and set operator is available, for both
+Get and set operator are available for both
 indices and ranges. In the case of ranges a view of the array is returned,
 not a copy.
 
 ```kotlin
-val myArray = doubleArray1D(10) { i -> i.toDouble() } // DoubleArray1D
+val myArray = doubleArrayND(10) { (i) -> i.toDouble() } // DoubleArrayND
 
 myArray[4] // 4.0
 myArray[2..6] // [2.0, 3.0, 4.0, 5.0, 6.0]
 myArray[Last] // 9.0
 
-val mutable = myArray.asMutable() // MutableDoubleArray1D
+val mutable = myArray.asMutable() // MutableDoubleArrayND
 
 mutable[9] = -1.0
 mutable[7..Last] // [7.0, 8.0, -1.0]
 myArray[Last] // -1.0
 
-val myArray2D = doubleArray(4, 3) { i0, i1 -> 2.0 * i0 - i1 } // DoubleArray2D
+val myArray2D = doubleArrayND(4, 3) { (i0, i1) -> 2.0 * i0 - i1 } // DoubleArray2D
 
 myArray2D[0, 1] // -1.0
-myArrat2D[Last, Last] // 5.0
+myArrat2D[Last, All] // [6.0, 5.0, 4.0]
 
 ```
 
@@ -115,13 +113,10 @@ desired to access the array with a mutable interface. This is why `ArrayND<T>`
 implementations must implement `asMutable()` to provide a mutable interface
 to it.
 
-In addition to `ArrayND<T>`, specific implementations for primitives are planned
-to be developed, such as `DoubleArrayND` which is currently available. This follows
+In addition to `ArrayND<T>`, specific implementations for primitive types are
+to available such as `DoubleArrayND`. This follows
 kotlin's standard library conventions for `Array` such as `DoubleArray` or `IntArray`.
 It's mutable versions are also available, for example `MutableDoubleArrayND`.
 
-For additional type safety, low rank arrays have specialized interfaces, such
-as `Array1D<T>` and `Array2D<T>`. Again, primitive specializations and mutable
-versions are also available (e.g. `MutableDoubleArray2D`).
 
 

@@ -6,9 +6,11 @@ import tomasvolker.numeriko.core.interfaces.arraynd.generic.ArrayND
 import tomasvolker.numeriko.core.interfaces.arraynd.integer.IntArrayND
 import tomasvolker.numeriko.core.interfaces.factory.copy
 import tomasvolker.numeriko.core.interfaces.iteration.elementWise
+import tomasvolker.numeriko.core.interfaces.iteration.unsafeForEachIndex
 import tomasvolker.numeriko.core.interfaces.slicing.ArraySlice
 import tomasvolker.numeriko.core.interfaces.slicing.sliceReshape
 import tomasvolker.numeriko.core.preconditions.illegalArgument
+import java.nio.ByteBuffer
 
 interface DoubleArrayND: ArrayND<Double> {
 
